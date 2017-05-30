@@ -13,22 +13,19 @@ public class PropertyHelper {
     private final String FILE_DIR = getClass().getClassLoader().getResource("database-config.properties").getPath();
 
     public Properties getProperties() {
-
         Properties prop = new Properties();
-        InputStream inputStream  = null;
-
+        InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(FILE_DIR);
             prop.load(inputStream);
             inputStream.close();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         return prop;
     }
 
-    public void getMessage(String str){
+    public void getMessage(String str) {
         System.out.print(getProperties().getProperty(str));
     }
 

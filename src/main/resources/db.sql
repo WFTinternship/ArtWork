@@ -25,23 +25,14 @@ DROP TABLE IF EXISTS `artist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `artist` (
-  `user_id` int(11) DEFAULT NULL,
-  `specilization` varchar(30) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `specialization` varchar(30) NOT NULL,
   `photo` blob NOT NULL,
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `artist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `artist`
---
-
-LOCK TABLES `artist` WRITE;
-/*!40000 ALTER TABLE `artist` DISABLE KEYS */;
-INSERT INTO `artist` VALUES (1,'dadadad','safsafsdf');
-/*!40000 ALTER TABLE `artist` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `item`
@@ -57,23 +48,14 @@ CREATE TABLE `item` (
   `photo_url` varchar(60) NOT NULL,
   `price` double NOT NULL,
   `artist_id` int(11) NOT NULL,
-  `status` tinyint(4) DEFAULT NULL,
-  `item_type` varchar(30) DEFAULT NULL,
+  `status` tinyint(4) unsigned NOT NULL,
+  `item_type` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `artist_id` (`artist_id`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `item`
---
-
-LOCK TABLES `item` WRITE;
-/*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (3,'Sculptor','A very nice composition','/asasa/asasa/asas0',100,1,NULL,NULL),(4,'Sculptor','A very nice composition','/asasa/asasa/asas0',100,1,NULL,NULL),(5,'Sculptor','A very nice composition','/asasa/asasa/asas0',100,1,NULL,NULL);
-/*!40000 ALTER TABLE `item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `purchase_history`
@@ -83,24 +65,16 @@ DROP TABLE IF EXISTS `purchase_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `purchase_history` (
-  `user_id` int(11) DEFAULT NULL,
-  `item_id` int(11) DEFAULT NULL,
-  `purchase_history` datetime DEFAULT NULL,
-  KEY `user_id` (`user_id`),
-  KEY `item_id` (`item_id`),
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `purchase_date` datetime NOT NULL,
+  KEY `purchase_history_ibfk_1` (`user_id`),
+  KEY `purchase_history_ibfk_2` (`item_id`),
   CONSTRAINT `purchase_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `purchase_history_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `purchase_history`
---
-
-LOCK TABLES `purchase_history` WRITE;
-/*!40000 ALTER TABLE `purchase_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_history` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shopping_card`
@@ -119,14 +93,6 @@ CREATE TABLE `shopping_card` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `shopping_card`
---
-
-LOCK TABLES `shopping_card` WRITE;
-/*!40000 ALTER TABLE `shopping_card` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shopping_card` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -143,18 +109,10 @@ CREATE TABLE `user` (
   `email` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `user`
---
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Valod','Valodikyan',18,'dddd@gmial.com','root');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -165,4 +123,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-29  6:54:15
+-- Dump completed on 2017-05-31  0:33:01

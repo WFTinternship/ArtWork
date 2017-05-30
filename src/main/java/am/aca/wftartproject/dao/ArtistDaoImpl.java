@@ -16,43 +16,35 @@ import java.sql.SQLException;
  */
 public class ArtistDaoImpl implements ArtistDao {
 
-    Connection conn = null;
+    private Connection conn = null;
 
-    public ArtistDaoImpl() throws SQLException, ClassNotFoundException {
-        conn = new DBConnection().getDBConnection();
+    public ArtistDaoImpl(Connection conn) {
+        this.conn = conn;
     }
 
 
+    /**
+     * @param artist
+     * @see ArtistDao#addArtist(Artist)
+     */
     @Override
     public void addArtist(Artist artist) {
         try {
-            PreparedStatement ps1 = conn.prepareStatement("INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)");
-            ps1.setString(1,artist.getUser().getFirstName());
-            ps1.setString(2,artist.getUser().getLastName());
-            ps1.setInt(3,artist.getUser().getAge());
-            ps1.setString(4,artist.getUser().getEmail());
-            ps1.setString(5,artist.getUser().getPassword());
 
-
-
-            /**
+            /*
              JPEG file path should be specifed.  ${filepath}
              */
-            PreparedStatement ps2 = conn.prepareStatement("INSERT INTO artist(specilization, photo, user_id) VALUE (?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO artist(specilization, photo, user_id) VALUE (?,?,?)");
 
-            FileInputStream fileInputStream = new FileInputStream("${filepath}");
-            ps2.setString(1,artist.getSpecialization().toString());
-            ps2.setBinaryStream(2,fileInputStream,fileInputStream.available());
-            ps2.setInt(3,artist.getUser().getId());
-
-            if(ps1.executeUpdate()>0) {
-                if(ps2.executeUpdate()>0){
-                    System.out.println("The artist info was successfully inserted");
-                }else{
-                    System.out.println("There is the problem with data inserting");
-                }
+            FileInputStream fileInputStream = new FileInputStream("itemphotos\\test.jpg");
+            ps.setString(1, artist.getSpecialization().toString());
+            ps.setBinaryStream(2, fileInputStream, fileInputStream.available());
+            ps.setInt(3, artist.getUser().getId());
+            if (ps.executeUpdate() > 0) {
+                System.out.println("The artist info was successfully inserted");
+            } else {
+                System.out.println("There is the problem with data inserting");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -62,108 +54,100 @@ public class ArtistDaoImpl implements ArtistDao {
         }
     }
 
-    @Override
-    public void updateArtist(int id, String firstName, String lastName) {
 
+    /**
+     * @param id
+     * @param specialization
+     * @see ArtistDao#updateArtist(int, String)
+     */
+    @Override
+    public void updateArtist(int id, String specialization) {
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE TABLE user SET firstname=? and lastname=? WHERE id = ?");
-            ps.setString(1,firstName);
-            ps.setString(2,lastName);
-            ps.setInt(3,id);
-            if(ps.executeUpdate()>0){
+            PreparedStatement ps = conn.prepareStatement("UPDATE artist SET specialization=? WHERE id = ?");
+            ps.setString(1, specialization);
+            ps.setInt(2, id);
+            if (ps.executeUpdate() > 0) {
                 System.out.println("The artist info was successfully updated");
-            }else {
+            } else {
                 System.out.println("There is problem with artist info updating");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
+
+    /**
+     * @param id
+     * @see ArtistDao#deleteArtist(int)
+     */
     @Override
     public void deleteArtist(int id) {
         try {
-            PreparedStatement ps1 = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
-            PreparedStatement ps2 = conn.prepareStatement("DELETE FROM user WHERE id=?");
-
-            ps1.setInt(1, id);
-            ps2.setInt(1, id);
-
-            if (ps1.executeUpdate()>0) {
-                if (ps2.executeUpdate()>0) {
-                    System.out.println("The artist info was successfully deleted");
-                }else{
-                    System.out.println("There is a problem with artist info deleting");
-                }
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
+            ps.setInt(1, id);
+            if (ps.executeUpdate() > 0) {
+                System.out.println("The artist info was successfully deleted");
+            } else {
+                System.out.println("There is a problem with artist info deleting");
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * @param id
+     * @return
+     * @see ArtistDao#findArtist(int)
+     */
     @Override
     public Artist findArtist(int id) {
 
         Artist artist = new Artist();
-        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM user us INNER JOIN artist ar ON us.id=ar.user_id WHERE us.id=?")) {
-            ps.setInt(1,id);
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM artist WHERE id=?");
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
-                artist.getUser().setId(rs.getInt(1));
-                artist.getUser().setFirstName(rs.getString(2));
-                artist.getUser().setLastName(rs.getString(3));
-                artist.getUser().setAge(rs.getInt(4));
-                artist.getUser().setEmail(rs.getString(5));
-                artist.getUser().setPassword(rs.getString(6));
-                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(7)));
-                artist.setArtistPhoto(rs.getBytes(8));
+            if (rs.next()) {
+                artist.setId(rs.getInt(1));
+                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
+                artist.setArtistPhoto(rs.getBytes(3));
             }
-
 //                byte barr[] = artist.getArtistPhoto().getBytes(1,(int)artist.getArtistPhoto().length());
 //                FileOutputStream fout=new FileOutputStream("d:\\sonoo.jpg");    // file path should be specified
 //                fout.write(barr);
 //                fout.close();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return artist;
     }
 
+    /**
+     * @param email
+     * @return
+     * @see ArtistDao#findArtist(String)
+     */
     @Override
     public Artist findArtist(String email) {
         Artist artist = new Artist();
-        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM user us INNER JOIN artist ar ON us.id=ar.user_id WHERE us.email=?")) {
-            ps.setString(1,email);
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM artist WHERE email=?");
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
-                artist.getUser().setId(rs.getInt(1));
-                artist.getUser().setFirstName(rs.getString(2));
-                artist.getUser().setLastName(rs.getString(3));
-                artist.getUser().setAge(rs.getInt(4));
-                artist.getUser().setEmail(rs.getString(5));
-                artist.getUser().setPassword(rs.getString(6));
-                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(7)));
-                artist.setArtistPhoto(rs.getBytes(8));
+            if (rs.next()) {
+                artist.setId(rs.getInt(1));
+                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
+                artist.setArtistPhoto(rs.getBytes(3));
             }
-
-
 //                byte barr[] = artist.getArtistPhoto().getBytes(1,(int)artist.getArtistPhoto().length());
 //                FileOutputStream fout=new FileOutputStream("d:\\sonoo.jpg");    // file path should be specified
 //                fout.write(barr);
 //                fout.close();
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return artist;
     }
-
-
 }

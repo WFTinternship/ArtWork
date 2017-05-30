@@ -14,11 +14,15 @@ public class DBConnection {
     private PropertyHelper propertyHelper = new PropertyHelper();
     private Connection conn;
 
-    Connection getDBConnection() throws SQLException,ClassNotFoundException {
+    public enum DBType {
+        REAL,
+        TEST
+    }
 
+    public Connection getDBConnection(DBType dbType) throws SQLException, ClassNotFoundException {
         Class.forName(propertyHelper.getProperties().getProperty("jdbcDriver"));
         Connection conn = DriverManager.getConnection(
-                propertyHelper.getProperties().getProperty("jdbcUrl"),
+                propertyHelper.getProperties().getProperty(dbType.equals(DBType.REAL) ? "jdbcUrl" : "jdbcUrlTest"),
                 propertyHelper.getProperties().getProperty("jdbcUserName"),
                 propertyHelper.getProperties().getProperty("jdbcPassword")
         );

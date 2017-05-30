@@ -1,7 +1,10 @@
 package am.aca.wftartproject.dao;
 
+import am.aca.wftartproject.util.PropertyHelper;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.beans.PropertyVetoException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -10,16 +13,16 @@ import java.net.URISyntaxException;
  */
 public class ConnectionPool {
 
+    private static PropertyHelper propertyHelper = new PropertyHelper();
     private BasicDataSource connectionPool = null;
 
-
-    public void setConnectionAttributes(){
+    public void setConnectionAttributes() {
         try {
             URI dbURI = new URI(System.getenv("DATABASE_URL"));
-            String dbUrl = "jdbc:mysql://"+dbURI.getHost() + ":" +dbURI.getPort() + dbURI.getPath();
+            String dbUrl = "jdbc:mysql://" + dbURI.getHost() + ":" + dbURI.getPort() + dbURI.getPath();
             connectionPool = new BasicDataSource();
 
-            if(dbURI.getUserInfo() != null){
+            if (dbURI.getUserInfo() != null) {
                 connectionPool.setUsername(dbURI.getUserInfo().split("=")[1]);
                 connectionPool.setPassword(dbURI.getUserInfo().split("=")[3]);
             }
@@ -31,5 +34,22 @@ public class ConnectionPool {
             e.printStackTrace();
         }
 
+    }
+
+
+    public static ComboPooledDataSource getDataSource() throws PropertyVetoException {
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds.setJdbcUrl(propertyHelper.getProperties().getProperty("jdbcUrl"));
+        cpds.setUser(propertyHelper.getProperties().getProperty("jdbcUserName"));
+        cpds.setPassword(propertyHelper.getProperties().getProperty("jdbcPassword"));
+
+        // Optional Settings
+        cpds.setInitialPoolSize(5);
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
+        cpds.setMaxStatements(100);
+
+        return cpds;
     }
 }
