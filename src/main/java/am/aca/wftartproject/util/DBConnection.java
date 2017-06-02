@@ -1,6 +1,4 @@
-package am.aca.wftartproject.dao;
-
-import am.aca.wftartproject.util.PropertyHelper;
+package am.aca.wftartproject.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

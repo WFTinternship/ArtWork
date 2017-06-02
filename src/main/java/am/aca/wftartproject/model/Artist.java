@@ -7,18 +7,18 @@ import java.util.List;
  */
 public class Artist extends AbstractUser {
 
-    private User user;
+//    private User user;
     private ArtistSpecialization specialization;
     private byte[] artistPhoto;
     private List<Item> itemList;
 
-    public User getUser() {
-        return user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public ArtistSpecialization getSpecialization() {
         return specialization;
@@ -48,8 +48,8 @@ public class Artist extends AbstractUser {
 
     }
 
-    public Artist(User user, ArtistSpecialization specialization, byte[] artistPhoto, List<Item> itemList) {
-        this.user = user;
+    public Artist(/*User user,*/ ArtistSpecialization specialization, byte[] artistPhoto, List<Item> itemList) {
+//        this.user = user;
         this.specialization = specialization;
         this.artistPhoto = artistPhoto;
         this.itemList = itemList;
@@ -58,8 +58,8 @@ public class Artist extends AbstractUser {
     @Override
     public String toString() {
         return "Artist{" +
-                "user=" + user +
-                ", specialization=" + specialization +
+//                "user=" + user +
+                "specialization=" + specialization +
                 ", artistPhoto=" + artistPhoto +
                 ", itemList=" + itemList +
                 '}';

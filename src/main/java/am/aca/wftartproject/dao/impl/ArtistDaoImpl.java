@@ -1,19 +1,18 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.dao.impl;
 
+import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by ASUS on 27-May-17.
  */
+
 public class ArtistDaoImpl implements ArtistDao {
 
     private Connection conn = null;
@@ -30,20 +29,37 @@ public class ArtistDaoImpl implements ArtistDao {
     @Override
     public void addArtist(Artist artist) {
         try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, artist.getFirstName());
+            ps.setString(2, artist.getLastName());
+            ps.setInt(3, artist.getAge());
+            ps.setString(4, artist.getEmail());
+            ps.setString(5, artist.getPassword());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    artist.setId(rs.getLong(1));
+                }
+            } else {
+                throw new RuntimeException("There is a problem with user insertion");
+            }
 
-            /*
-             JPEG file path should be specifed.  ${filepath}
-             */
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO artist(specilization, photo, user_id) VALUE (?,?,?)");
 
-            FileInputStream fileInputStream = new FileInputStream("itemphotos\\test.jpg");
+
+            // JPEG file path should be specifed.  ${filepath}
+            ps = conn.prepareStatement("INSERT INTO artist(specialization, photo, user_id) VALUE (?,?,?)");
+
+            FileInputStream fileInputStream = new FileInputStream("src\\main\\resources\\itemphotos\\test.jpg");
             ps.setString(1, artist.getSpecialization().toString());
             ps.setBinaryStream(2, fileInputStream, fileInputStream.available());
-            ps.setInt(3, artist.getUser().getId());
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The artist info was successfully inserted");
-            } else {
-                System.out.println("There is the problem with data inserting");
+            ps.setLong(3, artist.getId());
+            rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+
+                throw new RuntimeException("There is a problem with data inserting");
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,18 +74,17 @@ public class ArtistDaoImpl implements ArtistDao {
     /**
      * @param id
      * @param specialization
-     * @see ArtistDao#updateArtist(int, String)
+     * @see ArtistDao#updateArtist(Long, String)
      */
     @Override
-    public void updateArtist(int id, String specialization) {
+    public void updateArtist(Long id, String specialization) {
         try {
             PreparedStatement ps = conn.prepareStatement("UPDATE artist SET specialization=? WHERE id = ?");
             ps.setString(1, specialization);
-            ps.setInt(2, id);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The artist info was successfully updated");
-            } else {
-                System.out.println("There is problem with artist info updating");
+            ps.setLong(2, id);
+            int rowsAffected = ps.executeUpdate();
+            if (!(ps.executeUpdate() > 0)) {
+                throw new RuntimeException("There is a problem with artist info updating");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,17 +94,16 @@ public class ArtistDaoImpl implements ArtistDao {
 
     /**
      * @param id
-     * @see ArtistDao#deleteArtist(int)
+     * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-    public void deleteArtist(int id) {
+    public void deleteArtist(Long id) {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
-            ps.setInt(1, id);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The artist info was successfully deleted");
-            } else {
-                System.out.println("There is a problem with artist info deleting");
+            ps.setLong(1, id);
+            int rowsAffected = ps.executeUpdate();
+            if (!(ps.executeUpdate() > 0)) {
+                throw new RuntimeException("There is a problem with artist info deleting");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,15 +116,14 @@ public class ArtistDaoImpl implements ArtistDao {
      * @see ArtistDao#findArtist(int)
      */
     @Override
-    public Artist findArtist(int id) {
-
+    public Artist findArtist(Long id) {
         Artist artist = new Artist();
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM artist WHERE id=?");
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getInt(1));
+                artist.setId(rs.getLong(1));
                 artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
                 artist.setArtistPhoto(rs.getBytes(3));
             }
@@ -137,7 +150,7 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getInt(1));
+                artist.setId(rs.getLong(1));
                 artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
                 artist.setArtistPhoto(rs.getBytes(3));
             }

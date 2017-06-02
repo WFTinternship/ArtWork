@@ -1,14 +1,14 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.model.Artist;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 30-May-17.
  */
-public interface ArtistDao {
+public interface ArtistService {
 
     /**
-     * Adds new artist info to the database
+     * Adds
      *
      * @param artist
      */

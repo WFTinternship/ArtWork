@@ -5,9 +5,19 @@ package am.aca.wftartproject.model;
  */
 public enum ItemType {
 
-    SCULPTURE,
-    PHOTOGRATHY,
-    PAINTING,
-    OTHER
+    SCULPTURE(1),
+    PHOTOGRATHY(2),
+    PAINTING(3),
+    OTHER(4);
 
+
+    private final int itemValue;
+
+    private ItemType(int itemValue) {
+        this.itemValue = itemValue;
+    }
+
+    public int getItemValue(){
+        return this.itemValue;
+    }
 }

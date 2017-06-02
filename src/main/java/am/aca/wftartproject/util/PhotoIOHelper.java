@@ -7,7 +7,7 @@ import java.io.*;
  */
 public class PhotoIOHelper {
 
-    private StringBuilder rootFolderPath = new StringBuilder("itemphotos\\");
+    private StringBuilder rootFolderPath = new StringBuilder("src\\main\\resources\\itemphotos\\test.jpg");
 
     public String addPhotoToDirectory(String fileName, Integer userId) {
         File file = new File(rootFolderPath.append(userId.toString()).append("\\").append(fileName).toString());

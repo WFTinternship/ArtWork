@@ -1,4 +1,6 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.dao.impl;
+
+import am.aca.wftartproject.dao.PurchaseHistoryDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,31 +22,23 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
     /**
      * @param userId
      * @param itemId
-     * @see PurchaseHistoryDao#addPurchase(int, int)
+     * @see PurchaseHistoryDao#addPurchase(Long, Long)
      */
     @Override
-    public void addPurchase(int userId, int itemId) {
-
+    public void addPurchase(Long userId, Long itemId) {
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)");
-            ps.setInt(1, userId);
-            ps.setInt(2, itemId);
-
+            ps.setLong(1, userId);
+            ps.setLong(2, itemId);
             Calendar cal = Calendar.getInstance();
             Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-
             ps.setTimestamp(3, timestamp);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("PurchaseHistory was successfully inserted");
-            } else {
-                System.out.println("There is a problem with purchaseHistory insertion");
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                throw new RuntimeException("There is a problem with purchaseHistory insertion");
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 }

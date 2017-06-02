@@ -1,6 +1,5 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.util;
 
-import am.aca.wftartproject.util.PropertyHelper;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 

@@ -15,7 +15,7 @@ public interface ShoppingCardDao {
      * @param user_id
      * @param balance
      */
-    void addShoppingCard(int user_id, double balance);
+    void addShoppingCard(Long user_id, Double balance);
 
     /**
      * Updates shoppingCard in database.
@@ -23,14 +23,14 @@ public interface ShoppingCardDao {
      * @param id
      * @param balance
      */
-    void updateShoppingCard(int id, double balance) throws SQLException;
+    void updateShoppingCard(Long id, Double balance) throws SQLException;
 
     /**
      * Deletes shoppingCard by id.
      *
      * @param id
      */
-    void deleteShoppingCard(int id);
+    void deleteShoppingCard(Long id);
 
     /**
      * Gets shoppingCard from database.
@@ -38,5 +38,5 @@ public interface ShoppingCardDao {
      * @param id
      * @return
      */
-    ShoppingCard getShoppingCard(int id);
+    ShoppingCard getShoppingCard(Long id);
 }

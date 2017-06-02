@@ -5,19 +5,19 @@ package am.aca.wftartproject.model;
  */
 public abstract class AbstractUser {
 
-    private int id;
-    private String firstName;
-    private String lastName;
-    private int age;
-    private String email;
-    private String password;
-    private ShoppingCard shoppingCard;
+    protected Long id;
+    protected String firstName;
+    protected String lastName;
+    protected int age;
+    protected String email;
+    protected String password;
+    protected ShoppingCard shoppingCard;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,31 +67,5 @@ public abstract class AbstractUser {
 
     public void setShoppingCard(ShoppingCard shoppingCard) {
         this.shoppingCard = shoppingCard;
-    }
-
-    public AbstractUser() {
-
-    }
-
-    public AbstractUser(String firstName, String lastName, int age, String email, String password, ShoppingCard shoppingCard) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-        this.password = password;
-        this.shoppingCard = shoppingCard;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", shoppingCard='" + shoppingCard + '\'' +
-                '}';
     }
 }
