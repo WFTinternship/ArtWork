@@ -3,7 +3,7 @@ package am.aca.wftartproject.service;
 import am.aca.wftartproject.model.User;
 
 /**
- * Created by ASUS on 30-May-17.
+ * Created by ASUS on 30-May-17
  */
 public interface UserService {
 

@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public interface PurchaseHistoryDao {
 

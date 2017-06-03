@@ -1,16 +1,19 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
+import am.aca.wftartproject.exception.DAOFailException;
 import am.aca.wftartproject.model.User;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public class UserDaoImpl implements UserDao {
 
     private Connection conn = null;
+    private static final Logger LOGGER = Logger.getLogger(UserDao.class);
 
     public UserDaoImpl(Connection conn) {
         this.conn = conn;
@@ -22,59 +25,23 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)");
+        try (PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
+                Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-
-                throw new RuntimeException("There is a problem with user insertion");
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                user.setId(rs.getLong(1));
             }
+            rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @param id
-     * @param user
-     * @see UserDao#updateUser(Long, User)
-     */
-    @Override
-    public void updateUser(Long id, User user) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE user SET firstname=? WHERE id = ?");
-            ps.setString(1, user.getFirstName());
-            ps.setLong(2, id);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with user info updating");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * @param id
-     * @see UserDao#deleteUser(Long)
-     */
-    @Override
-    public void deleteUser(Long id) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?");
-            ps.setLong(1, id);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with user info deleting");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to add User");
+            throw new DAOFailException("Failed to add User", e);
         }
     }
 
@@ -87,8 +54,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findUser(Long id) {
         User user = new User();
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?");
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?")){
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -101,11 +67,11 @@ public class UserDaoImpl implements UserDao {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to get User");
+            throw new DAOFailException("Failed to get User", e);
         }
         return user;
     }
-
 
     /**
      * @param email
@@ -115,8 +81,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findUser(String email) {
         User user = new User();
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?");
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?")){
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -129,8 +94,49 @@ public class UserDaoImpl implements UserDao {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to get User");
+            throw new DAOFailException("Failed to get User", e);
         }
         return user;
     }
+
+
+    /**
+     * @param id
+     * @param user
+     * @see UserDao#updateUser(Long, User)
+     */
+    @Override
+    public void updateUser(Long id, User user) {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "UPDATE user SET firstname=? AND lastname=? AND age=? AND email=? and password=? WHERE id = ?")){
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getAge());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPassword());
+            ps.setLong(6, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Failed to update User");
+            throw new DAOFailException("Failed to update User",e);
+        }
+    }
+
+
+    /**
+     * @param id
+     * @see UserDao#deleteUser(Long)
+     */
+    @Override
+    public void deleteUser(Long id) {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?")){
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Failed to delete User");
+            throw new DAOFailException("Failed to delete User",e);
+        }
+    }
+
 }

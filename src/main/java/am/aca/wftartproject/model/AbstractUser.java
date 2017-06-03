@@ -1,17 +1,17 @@
 package am.aca.wftartproject.model;
 
 /**
- * Created by ASUS on 30-May-17.
+ * Created by ASUS on 30-May-17
  */
 public abstract class AbstractUser {
 
-    protected Long id;
-    protected String firstName;
-    protected String lastName;
-    protected int age;
-    protected String email;
-    protected String password;
-    protected ShoppingCard shoppingCard;
+    Long id;
+    String firstName;
+    String lastName;
+    int age;
+    String email;
+    String password;
+    ShoppingCard shoppingCard;
 
     public Long getId() {
         return id;
@@ -68,4 +68,5 @@ public abstract class AbstractUser {
     public void setShoppingCard(ShoppingCard shoppingCard) {
         this.shoppingCard = shoppingCard;
     }
+
 }

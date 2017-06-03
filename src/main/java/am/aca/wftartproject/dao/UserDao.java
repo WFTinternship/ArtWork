@@ -3,7 +3,7 @@ package am.aca.wftartproject.dao;
 import am.aca.wftartproject.model.User;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public interface UserDao {
 

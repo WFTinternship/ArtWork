@@ -9,12 +9,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by ASUS on 30-May-17.
+ * Created by ASUS on 30-May-17
  */
 public class UserServiceImpl implements UserService {
 
-    Connection dbConnection = new DBConnection().getDBConnection(DBConnection.DBType.REAL);
-    UserDao userDao = new UserDaoImpl(dbConnection);
+    private Connection dbConnection = new DBConnection().getDBConnection(DBConnection.DBType.REAL);
+    private UserDao userDao = new UserDaoImpl(dbConnection);
 
     public UserServiceImpl() throws SQLException, ClassNotFoundException {
     }

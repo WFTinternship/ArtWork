@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Created by ASUS on 26-May-17.
+ * Created by ASUS on 26-May-17
  */
 public class PropertyHelper {
 

@@ -1,19 +1,19 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
+import am.aca.wftartproject.exception.DAOFailException;
 import am.aca.wftartproject.model.ShoppingCard;
+import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public class ShoppingCardDaoImpl implements ShoppingCardDao {
 
     private Connection conn = null;
+    private static final Logger LOGGER = Logger.getLogger(ShoppingCardDao.class);
 
     public ShoppingCardDaoImpl(Connection conn) {
         this.conn = conn;
@@ -21,42 +21,66 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
 
     /**
      * @param userId
-     * @param balance
-     * @see ShoppingCardDao#addShoppingCard(Long, Double)
+     * @param shoppingCard
+     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Override
-    public void addShoppingCard(Long userId, Double balance) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)");
-            ps.setDouble(1, balance);
+    public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setDouble(1, shoppingCard.getBalance());
             ps.setLong(2, userId);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with shoppingCard insertion");
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                shoppingCard.setId(rs.getLong(1));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            LOGGER.error("Failed to add ShoppingCard");
+            throw new DAOFailException("Failed to add ShoppingCard", e);
+        }
+    }
+
+    /**
+     * @param id
+     * @return
+     * @see ShoppingCardDao#getShoppingCard(Long)
+     */
+    @Override
+    public ShoppingCard getShoppingCard(Long id) {
+        ShoppingCard shoppingCard = new ShoppingCard();
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE id=?")) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                shoppingCard.setId(rs.getLong(1));
+                shoppingCard.setBalance(rs.getDouble(2));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to get ShoppingCard");
+            throw new DAOFailException("Failed to get ShoppingCard", e);
         }
+        return shoppingCard;
     }
 
 
     /**
      * @param id
-     * @param balance
-     * @see ShoppingCardDao#updateShoppingCard(Long, Double)
+     * @param shoppingCard
+     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Override
-    public void updateShoppingCard(Long id, Double balance) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE shopping_card SET balance=? WHERE id = ?");
-            ps.setDouble(1, balance);
+    public void updateShoppingCard(Long id, ShoppingCard shoppingCard) {
+        try (PreparedStatement ps = conn.prepareStatement("UPDATE shopping_card SET balance=? WHERE id = ?")) {
+            ps.setDouble(1, shoppingCard.getBalance());
             ps.setLong(2, id);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with shoppingCard updating");
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to update ShoppingCard");
+            throw new DAOFailException("Failed to update ShoppingCard", e);
         }
     }
 
@@ -67,38 +91,12 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
      */
     @Override
     public void deleteShoppingCard(Long id) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM shopping_card WHERE id=?");
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM shopping_card WHERE id=?")) {
             ps.setLong(1, id);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with shoppingCard deletion");
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to delete ShoppingCard");
+            throw new DAOFailException("Failed to delete ShoppingCard", e);
         }
-    }
-
-
-    /**
-     * @param id
-     * @return
-     * @see ShoppingCardDao#getShoppingCard(Long)
-     */
-    @Override
-    public ShoppingCard getShoppingCard(Long id) {
-        ShoppingCard shoppingCard = new ShoppingCard();
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE id=?");
-            ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                shoppingCard.setId(rs.getLong(1));
-                shoppingCard.setBalance(rs.getDouble(2));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return shoppingCard;
     }
 }

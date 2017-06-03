@@ -3,7 +3,7 @@ package am.aca.wftartproject.util;
 import java.io.*;
 
 /**
- * Created by ASUS on 26-May-17.
+ * Created by ASUS on 26-May-17
  */
 public class PhotoIOHelper {
 

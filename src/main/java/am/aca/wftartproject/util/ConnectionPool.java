@@ -8,7 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public class ConnectionPool {
 

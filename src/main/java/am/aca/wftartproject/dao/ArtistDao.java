@@ -3,7 +3,7 @@ package am.aca.wftartproject.dao;
 import am.aca.wftartproject.model.Artist;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public interface ArtistDao {
 
@@ -13,21 +13,6 @@ public interface ArtistDao {
      * @param artist
      */
     void addArtist(Artist artist);
-
-    /**
-     * Updates artist info in database
-     *
-     * @param id
-     * @param specialization
-     */
-    void updateArtist(Long id, String specialization);
-
-    /**
-     * Deletes artist from database
-     *
-     * @param id
-     */
-    void deleteArtist(Long id);
 
     /**
      * Finds artist from database by id
@@ -45,4 +30,18 @@ public interface ArtistDao {
      */
     Artist findArtist(String email);
 
+    /**
+     * Updates artist info in database
+     *
+     * @param id
+     * @param artist
+     */
+    void updateArtist(Long id, Artist artist);
+
+    /**
+     * Deletes artist from database
+     *
+     * @param id
+     */
+    void deleteArtist(Long id);
 }

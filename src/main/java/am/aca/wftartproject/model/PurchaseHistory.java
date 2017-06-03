@@ -3,7 +3,7 @@ package am.aca.wftartproject.model;
 import java.util.Date;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public class PurchaseHistory {
 

@@ -5,7 +5,7 @@ import am.aca.wftartproject.model.Item;
 import java.util.List;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public interface ItemDao {
 
@@ -18,12 +18,20 @@ public interface ItemDao {
     void addItem(Long artistID, Item item);
 
     /**
+     * Finds Item by id
+     *
+     * @param id
+     * @return
+     */
+    Item findItem(Long id);
+
+    /**
      * Updates Item price by id
      *
      * @param id
-     * @param price
+     * @param item
      */
-    void updateItem(Long id, double price);
+    void updateItem(Long id, Item item);
 
     /**
      * Deletes Item by id
@@ -31,14 +39,6 @@ public interface ItemDao {
      * @param id
      */
     void deleteItem(Long id);
-
-    /**
-     * Finds Item by id
-     *
-     * @param id
-     * @return
-     */
-    Item findItem(Long id);
 
 
     /**

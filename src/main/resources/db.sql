@@ -26,13 +26,46 @@ DROP TABLE IF EXISTS `artist`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `artist` (
   `user_id` int(11) NOT NULL,
-  `specialization` varchar(30) NOT NULL,
+  `spec_id` int(20) NOT NULL,
   `photo` blob NOT NULL,
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `artist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  KEY `artist_ibfk_2_idx` (`spec_id`),
+  CONSTRAINT `artist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `artist_ibfk_2` FOREIGN KEY (`spec_id`) REFERENCES `artist_specialization` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `artist`
+--
+
+LOCK TABLES `artist` WRITE;
+/*!40000 ALTER TABLE `artist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `artist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `artist_specialization`
+--
+
+DROP TABLE IF EXISTS `artist_specialization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `artist_specialization` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `spec_type` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `artist_specialization`
+--
+
+LOCK TABLES `artist_specialization` WRITE;
+/*!40000 ALTER TABLE `artist_specialization` DISABLE KEYS */;
+/*!40000 ALTER TABLE `artist_specialization` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `item`
@@ -49,13 +82,46 @@ CREATE TABLE `item` (
   `price` double NOT NULL,
   `artist_id` int(11) NOT NULL,
   `status` tinyint(4) unsigned NOT NULL,
-  `item_type` varchar(30) NOT NULL,
+  `type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `artist_id` (`artist_id`),
-  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`user_id`)
+  KEY `item_ibfk_2_idx` (`type_id`),
+  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`user_id`),
+  CONSTRAINT `item_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `item_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `item`
+--
+
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `item_type`
+--
+
+DROP TABLE IF EXISTS `item_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `item_type` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `type` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item_type`
+--
+
+LOCK TABLES `item_type` WRITE;
+/*!40000 ALTER TABLE `item_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item_type` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `purchase_history`
@@ -75,6 +141,14 @@ CREATE TABLE `purchase_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `purchase_history`
+--
+
+LOCK TABLES `purchase_history` WRITE;
+/*!40000 ALTER TABLE `purchase_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchase_history` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `shopping_card`
@@ -93,6 +167,14 @@ CREATE TABLE `shopping_card` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `shopping_card`
+--
+
+LOCK TABLES `shopping_card` WRITE;
+/*!40000 ALTER TABLE `shopping_card` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shopping_card` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -109,10 +191,18 @@ CREATE TABLE `user` (
   `email` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `user`
+--
 
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'Valod','Valodikyan',18,'dddd@gmial.com','root'),(2,'Poghos','Grigoryan',25,'p.grig@gmail.com','root'),(3,'Valod','Grigoryan',20,'sdfsdfsfd@gmail.com','test1234');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -123,4 +213,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-31  0:33:01
+-- Dump completed on 2017-06-03  9:35:48

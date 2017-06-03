@@ -1,7 +1,7 @@
 package am.aca.wftartproject.model;
 
 /**
- * Created by ASUS on 29-May-17.
+ * Created by ASUS on 29-May-17
  */
 public enum ItemType {
 
@@ -13,7 +13,7 @@ public enum ItemType {
 
     private final int itemValue;
 
-    private ItemType(int itemValue) {
+    ItemType(int itemValue) {
         this.itemValue = itemValue;
     }
 
