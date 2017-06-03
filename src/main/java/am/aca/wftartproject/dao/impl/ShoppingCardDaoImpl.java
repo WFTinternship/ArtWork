@@ -12,8 +12,8 @@ import java.sql.*;
  */
 public class ShoppingCardDaoImpl implements ShoppingCardDao {
 
+    private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
     private Connection conn = null;
-    private static final Logger LOGGER = Logger.getLogger(ShoppingCardDao.class);
 
     public ShoppingCardDaoImpl(Connection conn) {
         this.conn = conn;
@@ -39,8 +39,9 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error("Failed to add ShoppingCard");
-            throw new DAOFailException("Failed to add ShoppingCard", e);
+            String error = "Failed to add ShoppingCard: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 
@@ -60,8 +61,9 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
                 shoppingCard.setBalance(rs.getDouble(2));
             }
         } catch (SQLException e) {
-            LOGGER.error("Failed to get ShoppingCard");
-            throw new DAOFailException("Failed to get ShoppingCard", e);
+            String error = "Failed to get ShoppingCard: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return shoppingCard;
     }
@@ -79,8 +81,9 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.setLong(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Failed to update ShoppingCard");
-            throw new DAOFailException("Failed to update ShoppingCard", e);
+            String error = "Failed to update ShoppingCard";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 
@@ -95,8 +98,9 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Failed to delete ShoppingCard");
-            throw new DAOFailException("Failed to delete ShoppingCard", e);
+            String error = "Failed to delete ShoppingCard: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 }

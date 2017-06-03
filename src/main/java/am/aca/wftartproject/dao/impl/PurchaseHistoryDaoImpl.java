@@ -15,8 +15,8 @@ import java.util.Calendar;
  */
 public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
 
+    private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
     private Connection conn = null;
-    private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDao.class);
 
     public PurchaseHistoryDaoImpl(Connection conn) {
         this.conn = conn;
@@ -38,8 +38,9 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
             ps.setTimestamp(3, timestamp);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Failed to add PurchaseHistory");
-            throw new DAOFailException("Failed to add PurchaseHistory", e);
+            String error = "Failed to add PurchaseHistory: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 }

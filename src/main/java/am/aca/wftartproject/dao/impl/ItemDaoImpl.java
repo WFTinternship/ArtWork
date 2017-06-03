@@ -30,7 +30,7 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public void addItem(Long artistID, Item item) {
         try (PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO item(title, description, photo_url, price, artist_id, status, item_type) VALUE (?,?,?,?,?,?,?)",
+                "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUE (?,?,?,?,?,?,?)",
                 Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, item.getTitle());
@@ -47,8 +47,9 @@ public class ItemDaoImpl implements ItemDao {
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error("Failed to add Item");
-            throw new DAOFailException("Failed to add Item", e);
+            String error = "Failed to add Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 
@@ -71,12 +72,13 @@ public class ItemDaoImpl implements ItemDao {
                 item.setPhotoURL(rs.getString("photo_url"));
                 item.setPrice(rs.getDouble("price"));
                 item.setStatus(rs.getBoolean("status"));
-                item.setItemType(ItemType.valueOf(rs.getString("item_type")));
+                item.setItemType(ItemType.valueOf(rs.getString("type")));
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error("Failed to get Item");
-            throw new DAOFailException("Failed to get Item", e);
+            String error = "Failed to get Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return item;
     }
@@ -98,8 +100,9 @@ public class ItemDaoImpl implements ItemDao {
             ps.setLong(5, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Failed to update Item");
-            throw new DAOFailException("Failed to update Item", e);
+            String error = "Failed to update Item:  %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 
@@ -113,8 +116,9 @@ public class ItemDaoImpl implements ItemDao {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Failed to delete Item");
-            throw new DAOFailException("Failed to delete Item", e);
+            String error = "Failed to delete Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 
@@ -142,8 +146,9 @@ public class ItemDaoImpl implements ItemDao {
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error("Failed to get RecentlyAddedItems");
-            throw new DAOFailException("Failed to get RecentlyAddedItems", e);
+            String error = "Failed to get RecentlyAddedItems: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return itemList;
     }
@@ -172,8 +177,9 @@ public class ItemDaoImpl implements ItemDao {
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error("Failed to get ItemsByTitle");
-            throw new DAOFailException("Failed to get ItemsByTitle", e);
+            String error = "Failed to get ItemsByTitle: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return itemList;
     }
@@ -202,8 +208,9 @@ public class ItemDaoImpl implements ItemDao {
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error("Failed to get ItemsByType");
-            throw new DAOFailException("Failed to get ItemsByType", e);
+            String error = "Failed to get ItemsByType: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return itemList;
     }

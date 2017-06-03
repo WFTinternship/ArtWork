@@ -147,7 +147,7 @@ public class ArtistDaoImpl implements ArtistDao {
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
-            LOGGER.error(error);
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
         return artist;
@@ -165,13 +165,13 @@ public class ArtistDaoImpl implements ArtistDao {
             conn.setAutoCommit(false);
 
             PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE user SET firstname=? AND lastname=? AND age=? AND email=? AND password=? WHERE id = ?");
+                    "UPDATE user SET firstname=? AND lastname=? AND age=? AND password=? WHERE id = ?");
             ps.setString(1, artist.getFirstName());
             ps.setString(2, artist.getLastName());
             ps.setInt(3, artist.getAge());
-            ps.setString(4, artist.getEmail());
-            ps.setString(5, artist.getPassword());
-            ps.setLong(6, id);
+//            ps.setString(4, artist.getEmail());
+            ps.setString(4, artist.getPassword());
+            ps.setLong(5, id);
             ps.executeUpdate();
 
             ps = conn.prepareStatement(
@@ -188,7 +188,7 @@ public class ArtistDaoImpl implements ArtistDao {
             try {
                 conn.rollback();
             } catch (SQLException e1) {
-                LOGGER.error(error);
+                LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(error);
             throw new DAOFailException(error, e);
@@ -221,9 +221,9 @@ public class ArtistDaoImpl implements ArtistDao {
             try {
                 conn.rollback();
             } catch (SQLException e1) {
-                LOGGER.error(error);
+                LOGGER.error(String.format(error, e1.getMessage()));
             }
-            LOGGER.error(error);
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
     }

@@ -82,12 +82,10 @@ CREATE TABLE `item` (
   `price` double NOT NULL,
   `artist_id` int(11) NOT NULL,
   `status` tinyint(4) unsigned NOT NULL,
-  `type_id` int(11) NOT NULL,
+  `type` varchar(60) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `artist_id` (`artist_id`),
-  KEY `item_ibfk_2_idx` (`type_id`),
-  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`user_id`),
-  CONSTRAINT `item_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `item_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -98,29 +96,6 @@ CREATE TABLE `item` (
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `item_type`
---
-
-DROP TABLE IF EXISTS `item_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `item_type` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `type` varchar(40) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `item_type`
---
-
-LOCK TABLES `item_type` WRITE;
-/*!40000 ALTER TABLE `item_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -213,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-03  9:35:48
+-- Dump completed on 2017-06-03 18:12:28
