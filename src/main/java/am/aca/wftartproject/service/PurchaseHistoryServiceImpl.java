@@ -1,8 +1,8 @@
 package am.aca.wftartproject.service;
 
-import am.aca.wftartproject.dao.DBConnection;
+import am.aca.wftartproject.util.DBConnection;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.dao.PurchaseHistoryDaoImpl;
+import am.aca.wftartproject.dao.daoInterfaces.impl.PurchaseHistoryDaoImpl;
 import java.sql.SQLException;
 
 /**
@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
-    PurchaseHistoryDao purchaseHistory = null;
+    private PurchaseHistoryDao purchaseHistory = null;
 
     public PurchaseHistoryServiceImpl() throws SQLException, ClassNotFoundException {
 
@@ -23,10 +23,10 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @param userId
      * @param itemId
      *
-     * @see PurchaseHistoryService#addPurchase(int, int)
+     * @see PurchaseHistoryService#addPurchase(Long, Long)
      */
     @Override
-    public void addPurchase(int userId, int itemId) {
+    public void addPurchase(Long userId, Long itemId) {
 
         purchaseHistory.addPurchase(userId, itemId);
 

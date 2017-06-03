@@ -5,9 +5,19 @@ package am.aca.wftartproject.model;
  */
 public enum ArtistSpecialization {
 
-    PAINTER,
-    SCULPTOR,
-    PHOTOGRAPHER,
-    OTHER
+    PAINTER(1),
+    SCULPTOR(2),
+    PHOTOGRAPHER(3),
+    OTHER(4);
+
+    private int specId;
+
+    ArtistSpecialization(int specId) {
+        this.specId = specId;
+    }
+
+    public int getSpecId() {
+        return specId;
+    }
 
 }

@@ -1,11 +1,11 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.model.User;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by surik on 6/3/17
  */
-public interface UserDao {
+public interface UserService {
 
     /**
      * Add User to the database
@@ -13,7 +13,6 @@ public interface UserDao {
      * @param user
      */
     void addUser(User user);
-
 
     /**
      * Find User with the following id.
@@ -32,7 +31,6 @@ public interface UserDao {
      */
     User findUser(String email);
 
-
     /**
      * Update user info
      *
@@ -40,7 +38,6 @@ public interface UserDao {
      * @param user
      */
     void updateUser(Long id, User user);
-
 
     /**
      * Delete user with the following id.

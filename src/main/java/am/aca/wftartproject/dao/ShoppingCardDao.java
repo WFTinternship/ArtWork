@@ -9,28 +9,15 @@ import java.sql.SQLException;
  */
 public interface ShoppingCardDao {
 
+
     /**
      * Adds shoppingCard to the database.
      *
      * @param user_id
      * @param balance
      */
-    void addShoppingCard(int user_id, double balance);
+    void addShoppingCard(Long user_id, Double balance);
 
-    /**
-     * Updates shoppingCard in database.
-     *
-     * @param id
-     * @param balance
-     */
-    void updateShoppingCard(int id, double balance) throws SQLException;
-
-    /**
-     * Deletes shoppingCard by id.
-     *
-     * @param id
-     */
-    void deleteShoppingCard(int id);
 
     /**
      * Gets shoppingCard from database.
@@ -38,5 +25,22 @@ public interface ShoppingCardDao {
      * @param id
      * @return
      */
-    ShoppingCard getShoppingCard(int id);
+    ShoppingCard getShoppingCard(Long id);
+
+
+    /**
+     * Updates shoppingCard in database.
+     *
+     * @param id
+     * @param balance
+     */
+    void updateShoppingCard(Long id, Double balance) throws SQLException;
+
+
+    /**
+     * Deletes shoppingCard by id.
+     *
+     * @param id
+     */
+    void deleteShoppingCard(Long id);
 }

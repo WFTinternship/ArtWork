@@ -1,8 +1,8 @@
 package am.aca.wftartproject.service;
 
-import am.aca.wftartproject.dao.DBConnection;
+import am.aca.wftartproject.util.DBConnection;
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.ItemDaoImpl;
+import am.aca.wftartproject.dao.daoInterfaces.impl.ItemDaoImpl;
 import am.aca.wftartproject.model.Item;
 
 import java.sql.SQLException;

@@ -1,5 +1,6 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.dao.daoInterfaces.impl;
 
+import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.model.User;
 
 import java.sql.Connection;
@@ -24,16 +25,17 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)")) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)");
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The user was successfully inserted");
-            } else {
-                System.out.println("There is problem with user insertion");
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+
+                throw new RuntimeException("There is a problem with user insertion");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,41 +45,36 @@ public class UserDaoImpl implements UserDao {
     /**
      * @param id
      * @param user
-     * @see UserDao#updateUser(int, User)
+     * @see UserDao#updateUser(Long, User)
      */
     @Override
-    public void updateUser(int id, User user) {
-
+    public void updateUser(Long id, User user) {
         try {
             PreparedStatement ps = conn.prepareStatement("UPDATE user SET firstname=? WHERE id = ?");
             ps.setString(1, user.getFirstName());
-            ps.setInt(2, id);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The user info was successfully updated");
-            } else {
-                System.out.println("There is problem with user info updating");
+            ps.setLong(2, id);
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                throw new RuntimeException("There is a problem with user info updating");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
 
     /**
      * @param id
-     * @see UserDao#deleteUser(int)
+     * @see UserDao#deleteUser(Long)
      */
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?");
-            ps.setInt(1, id);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The user was successfully deleted");
-            } else {
-                System.out.println("There is problem with user deletion");
+            ps.setLong(1, id);
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                throw new RuntimeException("There is a problem with user info deleting");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,17 +85,17 @@ public class UserDaoImpl implements UserDao {
     /**
      * @param id
      * @return
-     * @see UserDao#findUser(int)
+     * @see UserDao#findUser(Long)
      */
     @Override
-    public User findUser(int id) {
+    public User findUser(Long id) {
         User user = new User();
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?");
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getInt(1));
+                user.setId(rs.getLong(1));
                 user.setFirstName(rs.getString(2));
                 user.setLastName(rs.getString(3));
                 user.setAge(rs.getInt(4));
@@ -125,9 +122,8 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) {
-                user.setId(rs.getInt(1));
+                user.setId(rs.getLong(1));
                 user.setFirstName(rs.getString(2));
                 user.setLastName(rs.getString(3));
                 user.setAge(rs.getInt(4));
@@ -135,11 +131,9 @@ public class UserDaoImpl implements UserDao {
                 user.setPassword(rs.getString(6));
             }
             rs.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return user;
     }
 

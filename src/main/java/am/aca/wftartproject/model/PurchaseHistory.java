@@ -7,23 +7,23 @@ import java.util.Date;
  */
 public class PurchaseHistory {
 
-    private int userId;
-    private int itemId;
+    private Long userId;
+    private Long itemId;
     private Date purchaseDate;
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public int getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 

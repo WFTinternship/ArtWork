@@ -10,60 +10,61 @@ import java.util.List;
 public interface ItemDao {
 
     /**
-     * Add Item info for appropriate artist
+     * Adds Item info for appropriate artist
      *
      * @param artistID
      * @param item
      */
-    void addItem(int artistID, Item item);
+    void addItem(Long artistID, Item item);
 
     /**
-     * Update Item price by id
-     *
-     * @param id
-     * @param price
-     */
-    void updateItem(int id, double price);
-
-    /**
-     * Delete Item by id
-     *
-     * @param id
-     */
-    void deleteItem(int id);
-
-    /**
-     * Find Item by id
+     * Finds Item by id
      *
      * @param id
      * @return
      */
-    Item findItem(int id);
-
+    Item findItem(Long id);
 
     /**
-     * Get recently added items
+     * Gets recently added items
      *
      * @param limit
      * @return
      */
     List<Item> getRecentlyAddedItems(int limit);
 
+
     /**
-     * Get all items with the following title.
+     * Gets all items with the following title.
      *
      * @param title
      * @return
      */
     List<Item> getItemsByTitle(String title);
 
-
     /**
-     * Get all items with the following type.
+     * Gets all items with the following type.
      *
      * @param itemType
      * @return
      */
     List<Item> getItemsByType(String itemType);
+
+
+    /**
+     * Updates Item price by id
+     *
+     * @param id
+     * @param price
+     */
+    void updateItem(Long id, double price);
+
+    /**
+     * Deletes Item by id
+     *
+     * @param id
+     */
+    void deleteItem(Long id);
+
 
 }

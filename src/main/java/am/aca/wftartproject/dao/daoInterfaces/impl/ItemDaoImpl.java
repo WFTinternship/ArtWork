@@ -1,5 +1,6 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.dao.daoInterfaces.impl;
 
+import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
 
@@ -24,27 +25,23 @@ public class ItemDaoImpl implements ItemDao {
     /**
      * @param artistID
      * @param item
-     * @see ItemDao#addItem(int, Item)
+     * @see ItemDao#addItem(Long, Item)
      */
     @Override
-    public void addItem(int artistID, Item item) {
+    public void addItem(Long artistID, Item item) {
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO item(title, description, photo_url, price, artist_id, status, item_type) VALUE (?,?,?,?,?,?,?)");
-
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO item(title, description, photo_url, price, artist_id, status, type_id) VALUE (?,?,?,?,?,?,?)");
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
             ps.setString(3, item.getPhotoURL());
             ps.setDouble(4, item.getPrice());
-            ps.setInt(5, artistID);
+            ps.setLong(5, artistID);
             ps.setBoolean(6, item.isStatus());
-            ps.setString(7, item.getItemType().toString());
-
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The item was successfully inserted");
-            } else {
-                System.out.println("There is problem with item inserting");
+            ps.setInt(7, item.getItemType().getTypeId());
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                throw new RuntimeException("There is a problem with item inserting");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,20 +51,18 @@ public class ItemDaoImpl implements ItemDao {
     /**
      * @param id
      * @param price
-     * @see ItemDao#updateItem(int, double)
+     * @see ItemDao#updateItem(Long, double)
      */
     @Override
-    public void updateItem(int id, double price) {
+    public void updateItem(Long id, double price) {
         try {
             PreparedStatement ps = conn.prepareStatement("UPDATE item SET price=? WHERE id=?");
             ps.setDouble(1, price);
-            ps.setInt(2, id);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The item info was successfully updated");
-            } else {
-                System.out.println("There is a problem with item info updating");
+            ps.setLong(2, id);
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                throw new RuntimeException("There is a problem with item updating");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,17 +70,16 @@ public class ItemDaoImpl implements ItemDao {
 
     /**
      * @param id
-     * @see ItemDao#deleteItem(int)
+     * @see ItemDao#deleteItem(Long)
      */
     @Override
-    public void deleteItem(int id) {
+    public void deleteItem(Long id) {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
-            ps.setInt(1, id);
-            if (ps.executeUpdate() > 0) {
-                System.out.println("The item was successfully deleted");
-            } else {
-                System.out.println("There is a problem with item deleting");
+            ps.setLong(1, id);
+            int rowsAffected = ps.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                throw new RuntimeException("There is a problem with item deleting");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,17 +90,17 @@ public class ItemDaoImpl implements ItemDao {
     /**
      * @param id
      * @return
-     * @see ItemDao#findItem(int)
+     * @see ItemDao#findItem(Long)
      */
     @Override
-    public Item findItem(int id) {
+    public Item findItem(Long id) {
         Item item = new Item();
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?");
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                item.setId(rs.getInt("id"));
+                item.setId(rs.getLong("id"));
                 item.setTitle(rs.getString("title"));
                 item.setDescription(rs.getString("description"));
                 item.setPhotoURL(rs.getString("photo_url"));
@@ -140,7 +134,7 @@ public class ItemDaoImpl implements ItemDao {
                         rs.getDouble(5),
                         rs.getBoolean(7),
                         ItemType.valueOf(rs.getString(8)));
-                tempItem.setId(rs.getInt(1));
+                tempItem.setId(rs.getLong(1));
                 itemList.add(tempItem);
             }
         } catch (SQLException e) {
@@ -168,7 +162,7 @@ public class ItemDaoImpl implements ItemDao {
                         rs.getDouble(5),
                         rs.getBoolean(7),
                         ItemType.valueOf(rs.getString(8)));
-                tempItem.setId(rs.getInt(1));
+                tempItem.setId(rs.getLong(1));
                 itemList.add(tempItem);
             }
         } catch (SQLException e) {
@@ -186,8 +180,8 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsByType(String itemType) {
         List<Item> itemList = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE item_type=?")) {
-            ps.setString(1, itemType);
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE type_id=?")) {
+            ps.setInt(1, ItemType.getIdByType(itemType));
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Item tempItem = new Item(rs.getString(2),
@@ -196,7 +190,7 @@ public class ItemDaoImpl implements ItemDao {
                         rs.getDouble(5),
                         rs.getBoolean(7),
                         ItemType.valueOf(rs.getString(8)));
-                tempItem.setId(rs.getInt(1));
+                tempItem.setId(rs.getLong(1));
                 itemList.add(tempItem);
             }
         } catch (SQLException e) {
@@ -204,5 +198,4 @@ public class ItemDaoImpl implements ItemDao {
         }
         return itemList;
     }
-
 }

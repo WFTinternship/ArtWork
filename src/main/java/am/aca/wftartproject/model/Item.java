@@ -5,7 +5,7 @@ package am.aca.wftartproject.model;
  */
 public class Item {
 
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private String photoURL;
@@ -13,11 +13,11 @@ public class Item {
     private boolean status;
     private ItemType itemType;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

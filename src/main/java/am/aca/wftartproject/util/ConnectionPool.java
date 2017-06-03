@@ -1,19 +1,14 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.util;
 
-import am.aca.wftartproject.util.PropertyLoader;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-/**
- * Created by ASUS on 27-May-17.
- */
 public class ConnectionPool {
 
-    private Properties properties = PropertyLoader.getProperties("c3p0.properties");
+    private Properties properties = new PropertyHelper().getProperties();
 
     private static ConnectionPool instance;
 

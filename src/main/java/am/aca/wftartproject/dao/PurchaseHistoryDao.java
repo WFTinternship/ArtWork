@@ -11,5 +11,5 @@ public interface PurchaseHistoryDao {
      * @param userId
      * @param itemId
      */
-    void addPurchase(int userId, int itemId);
+    void addPurchase(Long userId, Long itemId);
 }
