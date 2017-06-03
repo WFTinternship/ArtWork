@@ -5,24 +5,31 @@ package am.aca.wftartproject.model;
  */
 public enum ArtistSpecialization {
 
-    PAINTER(1),
-    SCULPTOR(2),
-    PHOTOGRAPHER(3),
-    OTHER(4);
+    PAINTER(1, "PAINTER"),
+    SCULPTOR(2, "SCULPTUR"),
+    PHOTOGRAPHER(3, "PHOTOGRAPHER"),
+    OTHER(4, "OTHER");
 
 
-    private final int specValue;
+    private final int id;
+    private final String type;
 
-    ArtistSpecialization(int specValue){
-        this.specValue = specValue;
+    ArtistSpecialization(int id,String type){
+        this.id = id;
+        this.type = type;
     }
 
-    public int getSpecValue(){
-        return this.specValue;
+    public int getId(){
+        return this.id;
     }
 
-    public String getSpecName(int specValue){
-        return this.name();
+    public String getType(){
+        return this.type;
     }
+
+    public int getSpecId(){
+        return ArtistSpecialization.valueOf(type).getId();
+    }
+
 
 }

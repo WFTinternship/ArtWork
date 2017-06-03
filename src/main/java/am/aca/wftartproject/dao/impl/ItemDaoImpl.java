@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemDaoImpl implements ItemDao {
 
     private Connection conn = null;
-    private static final Logger LOGGER = Logger.getLogger(ItemDao.class);
+    private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
     public ItemDaoImpl(Connection conn) {
         this.conn = conn;
@@ -94,7 +94,7 @@ public class ItemDaoImpl implements ItemDao {
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
-            ps.setInt(4, item.getItemType().getItemValue());
+            ps.setInt(4, item.getItemType().getTypeId());
             ps.setLong(5, id);
             ps.executeUpdate();
         } catch (SQLException e) {

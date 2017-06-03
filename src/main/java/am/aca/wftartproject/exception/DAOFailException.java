@@ -13,7 +13,6 @@ public class DAOFailException extends RuntimeException {
         super(message);
     }
 
-
     public DAOFailException(String message, Exception e){
         super(message,e);
     }

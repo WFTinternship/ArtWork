@@ -6,9 +6,6 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 
 /**
@@ -17,8 +14,8 @@ import java.sql.*;
 
 public class ArtistDaoImpl implements ArtistDao {
 
+    private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
     private Connection conn = null;
-    private static final Logger LOGGER = Logger.getLogger(ArtistDao.class);
 
     public ArtistDaoImpl(Connection conn) {
         this.conn = conn;
@@ -48,31 +45,26 @@ public class ArtistDaoImpl implements ArtistDao {
             if (rs.next()) {
                 artist.setId(rs.getLong(1));
             }
+            ps.close();
 
-            // JPEG file path should be specifed.  ${filepath}
+
             ps = conn.prepareStatement("INSERT INTO artist(specialization, photo, user_id) VALUE (?,?,?)");
-
-            FileInputStream fileInputStream = new FileInputStream("src\\main\\resources\\itemphotos\\test.jpg");
             ps.setString(1, artist.getSpecialization().toString());
-            ps.setBinaryStream(2, fileInputStream, fileInputStream.available());
+            ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, artist.getId());
             ps.executeUpdate();
-
             ps.close();
 
             conn.commit();
         } catch (SQLException e) {
+            String error = "Failed to add Artist: %s";
             try {
                 conn.rollback();
             } catch (SQLException e1) {
-                LOGGER.error("Failed to add Artist");
+                LOGGER.error(String.format(error, e1.getMessage()));
             }
-            LOGGER.error("Failed to add Artist");
-            throw new DAOFailException("Failed to add Artist", e);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(String.format(error, e.getMessage()));
         }
     }
 
@@ -85,9 +77,6 @@ public class ArtistDaoImpl implements ArtistDao {
     public Artist findArtist(Long id) {
         Artist artist = new Artist();
         try {
-            //Start Transaction
-            conn.setAutoCommit(false);
-
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id=?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
@@ -99,31 +88,27 @@ public class ArtistDaoImpl implements ArtistDao {
                 artist.setEmail(rs.getString(5));
                 artist.setPassword(rs.getString(6));
             }
+            ps.close();
 
-            ps = conn.prepareStatement("SELECT * FROM artist WHERE user_id=?");
+            ps = conn.prepareStatement(
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setSpecialization(ArtistSpecialization.SCULPTOR);      // #TODO  Should be configured dynamically by rs.getInt(2).
-                artist.setArtistPhoto(rs.getBytes(3));
+                artist.setArtistPhoto(rs.getBytes(1));
+                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
             }
             ps.close();
             rs.close();
-
-//                byte barr[] = artist.getArtistPhoto().getBytes(1,(int)artist.getArtistPhoto().length());
-//                FileOutputStream fout=new FileOutputStream("d:\\sonoo.jpg");    // file path should be specified
-//                fout.write(barr);
-//                fout.close();
-
-            conn.commit();
         } catch (SQLException e) {
+            String error = "Failed to get Artist: %s";
             try {
                 conn.rollback();
             } catch (SQLException e1) {
-                LOGGER.error("Failed to get Artist");
+                LOGGER.error(String.format(error, e1.getMessage()));
             }
-            LOGGER.error("Failed to get Artist");
-            throw new DAOFailException("Failed to get Artist", e);
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(String.format(error, e.getMessage()));
         }
         return artist;
     }
@@ -137,9 +122,6 @@ public class ArtistDaoImpl implements ArtistDao {
     public Artist findArtist(String email) {
         Artist artist = new Artist();
         try {
-            //Start Transaction
-            conn.setAutoCommit(false);
-
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -151,29 +133,22 @@ public class ArtistDaoImpl implements ArtistDao {
                 artist.setEmail(rs.getString(5));
                 artist.setPassword(rs.getString(6));
             }
+            ps.close();
 
-            ps = conn.prepareStatement("SELECT * FROM artist WHERE user_id=?");
+            ps = conn.prepareStatement(
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, artist.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setSpecialization(ArtistSpecialization.SCULPTOR);      // #TODO  Should be configured dynamically by rs.getInt(2).
-                artist.setArtistPhoto(rs.getBytes(3));
+                artist.setArtistPhoto(rs.getBytes(1));
+                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
             }
             ps.close();
             rs.close();
-//                byte barr[] = artist.getArtistPhoto().getBytes(1,(int)artist.getArtistPhoto().length());
-//                FileOutputStream fout=new FileOutputStream("d:\\sonoo.jpg");    // file path should be specified
-//                fout.write(barr);
-//                fout.close();
-            conn.commit();
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                LOGGER.error("Failed to get Artist");
-            }
-            LOGGER.error("Failed to get Artist");
-            throw new DAOFailException("Failed to get Artist", e);
+            String error = "Failed to get Artist: %s";
+            LOGGER.error(error);
+            throw new DAOFailException(error, e);
         }
         return artist;
     }
@@ -201,25 +176,24 @@ public class ArtistDaoImpl implements ArtistDao {
 
             ps = conn.prepareStatement(
                     "UPDATE artist SET spec_id=? AND photo=? WHERE id = ?");
-            ps.setInt(1, artist.getSpecialization().getSpecValue());
+            ps.setInt(1, artist.getSpecialization().getId());
             ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, id);
             ps.executeUpdate();
-
             ps.close();
 
             conn.commit();
         } catch (SQLException e) {
+            String error = "Failed to update Artist: %s";
             try {
                 conn.rollback();
             } catch (SQLException e1) {
-                LOGGER.error("Failed to update Artist");
+                LOGGER.error(error);
             }
-            LOGGER.error("Failed to update Artist");
-            throw new DAOFailException("Failed to update Artist", e);
+            LOGGER.error(error);
+            throw new DAOFailException(error, e);
         }
     }
-
 
     /**
      * @param id
@@ -234,6 +208,7 @@ public class ArtistDaoImpl implements ArtistDao {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
+            ps.close();
 
             ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
             ps.setLong(1, id);
@@ -242,13 +217,14 @@ public class ArtistDaoImpl implements ArtistDao {
 
             conn.commit();
         } catch (SQLException e) {
+            String error = "Failed to delete Artist: %s";
             try {
                 conn.rollback();
             } catch (SQLException e1) {
-                LOGGER.error("Failed to delete Artist");
+                LOGGER.error(error);
             }
-            LOGGER.error("Failed to delete Artist");
-            throw new DAOFailException("Failed to delete Artist", e);
+            LOGGER.error(error);
+            throw new DAOFailException(error, e);
         }
     }
 }

@@ -5,19 +5,33 @@ package am.aca.wftartproject.model;
  */
 public enum ItemType {
 
-    SCULPTURE(1),
-    PHOTOGRATHY(2),
-    PAINTING(3),
-    OTHER(4);
+    SCULPTURE(1, "SCULPTURE"),
+    PHOTOGRATHY(2, "PHOTOGRATHY"),
+    PAINTING(3, "PAINTING"),
+    OTHER(4, "OTHER");
 
 
-    private final int itemValue;
+    private final int typeId;
+    private final String type;
 
-    ItemType(int itemValue) {
-        this.itemValue = itemValue;
+    ItemType(int itemId,String type) {
+        this.typeId = itemId;
+        this.type = type;
     }
 
-    public int getItemValue(){
-        return this.itemValue;
+    public String getType() {
+        return type;
+    }
+
+    public int getTypeId(){
+        return this.typeId;
+    }
+
+    public static int getIdByType(String type){
+        return ItemType.valueOf(type).getTypeId();
+    }
+
+    public static ItemType getItemType(String type){
+        return ItemType.valueOf(type);
     }
 }

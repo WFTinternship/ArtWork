@@ -40,8 +40,6 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             LOGGER.error("Failed to add PurchaseHistory");
             throw new DAOFailException("Failed to add PurchaseHistory", e);
-
-//            e.printStackTrace();
         }
     }
 }
