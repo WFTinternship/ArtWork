@@ -1,22 +1,22 @@
-package am.aca.wftartproject.dao.daoInterfaces.impl;
+package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
+import am.aca.wftartproject.exception.DAOFailException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
+import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public class ItemDaoImpl implements ItemDao {
 
     private Connection conn = null;
+    private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
     public ItemDaoImpl(Connection conn) {
         this.conn = conn;
@@ -29,60 +29,27 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Long artistID, Item item) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO item(title, description, photo_url, price, artist_id, status, type_id) VALUE (?,?,?,?,?,?,?)");
+        try (PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
-            ps.setString(3, item.getPhotoURL());
-            ps.setDouble(4, item.getPrice());
-            ps.setLong(5, artistID);
+            ps.setDouble(3, item.getPrice());
+            ps.setLong(4, artistID);
+            ps.setString(5, item.getPhotoURL());
             ps.setBoolean(6, item.isStatus());
-            ps.setInt(7, item.getItemType().getTypeId());
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with item inserting");
+            ps.setString(7, item.getItemType().getType());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                item.setId(rs.getLong(1));
             }
+            rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * @param id
-     * @param price
-     * @see ItemDao#updateItem(Long, double)
-     */
-    @Override
-    public void updateItem(Long id, double price) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE item SET price=? WHERE id=?");
-            ps.setDouble(1, price);
-            ps.setLong(2, id);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with item updating");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @param id
-     * @see ItemDao#deleteItem(Long)
-     */
-    @Override
-    public void deleteItem(Long id) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
-            ps.setLong(1, id);
-            int rowsAffected = ps.executeUpdate();
-            if (!(rowsAffected > 0)) {
-                throw new RuntimeException("There is a problem with item deleting");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            String error = "Failed to add Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
     }
 
@@ -95,8 +62,7 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public Item findItem(Long id) {
         Item item = new Item();
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?");
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?")) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -106,15 +72,16 @@ public class ItemDaoImpl implements ItemDao {
                 item.setPhotoURL(rs.getString("photo_url"));
                 item.setPrice(rs.getDouble("price"));
                 item.setStatus(rs.getBoolean("status"));
-                item.setItemType(ItemType.valueOf(rs.getString("item_type")));
+                item.setItemType(ItemType.valueOf(rs.getString("type")));
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String error = "Failed to get Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return item;
     }
-
 
     /**
      * @param limit
@@ -137,8 +104,11 @@ public class ItemDaoImpl implements ItemDao {
                 tempItem.setId(rs.getLong(1));
                 itemList.add(tempItem);
             }
+            rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String error = "Failed to get RecentlyAddedItems: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return itemList;
     }
@@ -165,8 +135,11 @@ public class ItemDaoImpl implements ItemDao {
                 tempItem.setId(rs.getLong(1));
                 itemList.add(tempItem);
             }
+            rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String error = "Failed to get ItemsByTitle: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return itemList;
     }
@@ -180,8 +153,8 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsByType(String itemType) {
         List<Item> itemList = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE type_id=?")) {
-            ps.setInt(1, ItemType.getIdByType(itemType));
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE type=?")) {
+            ps.setString(1, itemType);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Item tempItem = new Item(rs.getString(2),
@@ -193,9 +166,52 @@ public class ItemDaoImpl implements ItemDao {
                 tempItem.setId(rs.getLong(1));
                 itemList.add(tempItem);
             }
+            rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String error = "Failed to get ItemsByType: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
         }
         return itemList;
+    }
+
+
+    /**
+     * @param id
+     * @param item
+     * @see ItemDao#updateItem(Long, Item)
+     */
+    @Override
+    public void updateItem(Long id, Item item) {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?")) {
+
+            ps.setString(1, item.getTitle());
+            ps.setString(2, item.getDescription());
+            ps.setDouble(3, item.getPrice());
+            ps.setString(4, item.getItemType().getType());
+            ps.setLong(5, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            String error = "Failed to update Item:  %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
+        }
+    }
+
+    /**
+     * @param id
+     * @see ItemDao#deleteItem(Long)
+     */
+    @Override
+    public void deleteItem(Long id) {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?")) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            String error = "Failed to delete Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
+        }
     }
 }

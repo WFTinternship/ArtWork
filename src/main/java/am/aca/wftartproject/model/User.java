@@ -1,7 +1,7 @@
 package am.aca.wftartproject.model;
 
 /**
- * Created by ASUS on 24-May-17.
+ * Created by ASUS on 24-May-17
  */
 
 public class User extends AbstractUser {

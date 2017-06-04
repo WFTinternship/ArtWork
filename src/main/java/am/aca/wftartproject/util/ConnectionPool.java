@@ -8,13 +8,15 @@ import java.util.Properties;
 
 public class ConnectionPool {
 
-    private Properties properties = new PropertyHelper().getProperties();
-
     private static ConnectionPool instance;
 
     private ComboPooledDataSource dataSource;
 
+
+
     private ConnectionPool() throws PropertyVetoException {
+
+        Properties properties = new PropertyHelper().getProperties();
         dataSource = new ComboPooledDataSource();
         dataSource.setDriverClass(properties.getProperty("c3p0.driver"));
         dataSource.setJdbcUrl(properties.getProperty("c3p0.jdbcURL"));

@@ -15,22 +15,7 @@ public interface ItemService {
      * @param artistID
      * @param item
      */
-    void addItem(int artistID, Item item);
-
-    /**
-     * Update Item price by id
-     *
-     * @param id
-     * @param price
-     */
-    void updateItem(int id, double price);
-
-    /**
-     * Delete Item by id
-     *
-     * @param id
-     */
-    void deleteItem(int id);
+    void addItem(Long artistID, Item item);
 
     /**
      * Find Item by id
@@ -38,8 +23,7 @@ public interface ItemService {
      * @param id
      * @return
      */
-    Item findItem(int id);
-
+    Item findItem(Long id);
 
     /**
      * Get recently added items
@@ -49,6 +33,7 @@ public interface ItemService {
      */
     List<Item> getRecentlyAddedItems(int limit);
 
+
     /**
      * Get all items with the following title.
      *
@@ -57,7 +42,6 @@ public interface ItemService {
      */
     List<Item> getItemsByTitle(String title);
 
-
     /**
      * Get all items with the following type.
      *
@@ -65,6 +49,22 @@ public interface ItemService {
      * @return
      */
     List<Item> getItemsByType(String itemType);
+
+
+    /**
+     * Update Item price by id
+     *
+     * @param id
+     * @param item
+     */
+    void updateItem(Long id, Item item);
+
+    /**
+     * Delete Item by id
+     *
+     * @param id
+     */
+    void deleteItem(Long id);
 
 
 

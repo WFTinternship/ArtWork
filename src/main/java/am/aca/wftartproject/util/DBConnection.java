@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public class DBConnection {
 

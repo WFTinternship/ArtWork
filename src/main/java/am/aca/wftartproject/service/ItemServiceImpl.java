@@ -2,7 +2,7 @@ package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.util.DBConnection;
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.daoInterfaces.impl.ItemDaoImpl;
+import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.model.Item;
 
 import java.sql.SQLException;
@@ -28,10 +28,10 @@ public class ItemServiceImpl implements ItemService {
      * @param artistID
      * @param item
      *
-     * @see ItemService#addItem(int, Item)
+     * @see ItemService#addItem(Long, Item)
      */
     @Override
-    public void addItem(int artistID, Item item) {
+    public void addItem(Long artistID, Item item) {
 
         itemDao.addItem(artistID, item);
 
@@ -40,14 +40,14 @@ public class ItemServiceImpl implements ItemService {
 
     /**
      * @param id
-     * @param price
+     * @param item
      *
-     * @see ItemService#updateItem(int, double)
+     * @see ItemService#updateItem(Long, Item)
      */
     @Override
-    public void updateItem(int id, double price) {
+    public void updateItem(Long id, Item item) {
 
-        itemDao.updateItem(id, price);
+        itemDao.updateItem(id, item);
 
     }
 
@@ -55,10 +55,10 @@ public class ItemServiceImpl implements ItemService {
     /**
      * @param id
      *
-     * @see ItemService#deleteItem(int)
+     * @see ItemService#deleteItem(Long)
      */
     @Override
-    public void deleteItem(int id) {
+    public void deleteItem(Long id) {
 
         itemDao.deleteItem(id);
 
@@ -69,10 +69,10 @@ public class ItemServiceImpl implements ItemService {
      * @param id
      * @return
      *
-     * @see ItemService#findItem(int)
+     * @see ItemService#findItem(Long)
      */
     @Override
-    public Item findItem(int id) {
+    public Item findItem(Long id) {
 
         return itemDao.findItem(id);
 

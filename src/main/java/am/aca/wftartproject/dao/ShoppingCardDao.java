@@ -5,7 +5,7 @@ import am.aca.wftartproject.model.ShoppingCard;
 import java.sql.SQLException;
 
 /**
- * Created by ASUS on 27-May-17.
+ * Created by ASUS on 27-May-17
  */
 public interface ShoppingCardDao {
 
@@ -14,9 +14,9 @@ public interface ShoppingCardDao {
      * Adds shoppingCard to the database.
      *
      * @param user_id
-     * @param balance
+     * @param shoppingCard
      */
-    void addShoppingCard(Long user_id, Double balance);
+    void addShoppingCard(Long user_id, ShoppingCard shoppingCard);
 
 
     /**
@@ -32,9 +32,9 @@ public interface ShoppingCardDao {
      * Updates shoppingCard in database.
      *
      * @param id
-     * @param balance
+     * @param shoppingCard
      */
-    void updateShoppingCard(Long id, Double balance) throws SQLException;
+    void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException;
 
 
     /**

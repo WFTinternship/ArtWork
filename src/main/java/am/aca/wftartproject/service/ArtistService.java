@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.Artist;
 public interface ArtistService {
 
     /**
-     * Adds
+     * Adds artist into the database
      *
      * @param artist
      */
@@ -34,9 +34,9 @@ public interface ArtistService {
      * Updates artist info in database
      *
      * @param id
-     * @param specialization
+     * @param artist
      */
-    void updateArtist(Long id, String specialization);
+    void updateArtist(Long id, Artist artist);
 
     /**
      * Deletes artist from database
