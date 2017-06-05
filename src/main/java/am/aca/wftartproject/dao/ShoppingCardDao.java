@@ -31,7 +31,7 @@ public interface ShoppingCardDao {
      * @param id
      * @param shoppingCard
      */
-    void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException;
+    void updateShoppingCard(Long id, ShoppingCard shoppingCard);
 
     /**
      * Deletes shoppingCard by id.

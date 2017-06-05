@@ -22,7 +22,7 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     @Override
-    public void addArtist(Artist artist) {
+    public void addArtist(Artist artist) throws SQLException {
         artistDao.addArtist(artist);
     }
 

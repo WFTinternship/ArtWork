@@ -48,8 +48,8 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.close();
 
 
-            ps = conn.prepareStatement("INSERT INTO artist(specialization, photo, user_id) VALUE (?,?,?)");
-            ps.setString(1, artist.getSpecialization().toString());
+            ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
+            ps.setInt(1, artist.getSpecialization().getId());
             ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, artist.getId());
             ps.executeUpdate();
@@ -165,7 +165,7 @@ public class ArtistDaoImpl implements ArtistDao {
             conn.setAutoCommit(false);
 
             PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE user SET firstname=? AND lastname=? AND age=? AND password=? WHERE id = ?");
+                    "UPDATE user SET firstname=?, lastname=?, age=?, password=? WHERE id = ?");
             ps.setString(1, artist.getFirstName());
             ps.setString(2, artist.getLastName());
             ps.setInt(3, artist.getAge());
@@ -173,9 +173,10 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.setString(4, artist.getPassword());
             ps.setLong(5, id);
             ps.executeUpdate();
+            ps.close();
 
             ps = conn.prepareStatement(
-                    "UPDATE artist SET spec_id=? AND photo=? WHERE id = ?");
+                    "UPDATE artist SET spec_id=?, photo=? WHERE user_id = ?");
             ps.setInt(1, artist.getSpecialization().getId());
             ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, id);
@@ -200,20 +201,23 @@ public class ArtistDaoImpl implements ArtistDao {
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-    public void deleteArtist(Long id) {
+public void deleteArtist(Long id) {
         try {
             //Start Transaction
             conn.setAutoCommit(false);
-
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
             ps.close();
 
-            ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
+
+
+            ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
             ps.close();
+
+
 
             conn.commit();
         } catch (SQLException e) {

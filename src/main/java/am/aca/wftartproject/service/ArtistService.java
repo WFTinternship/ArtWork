@@ -2,6 +2,8 @@ package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.model.Artist;
 
+import java.sql.SQLException;
+
 /**
  * Created by ASUS on 30-May-17
  */
@@ -12,7 +14,7 @@ public interface ArtistService {
      *
      * @param artist
      */
-    void addArtist(Artist artist);
+    void addArtist(Artist artist) throws SQLException;
 
     /**
      * Updates artist info in database

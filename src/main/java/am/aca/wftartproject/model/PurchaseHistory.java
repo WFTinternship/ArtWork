@@ -1,5 +1,6 @@
 package am.aca.wftartproject.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ public class PurchaseHistory {
 
     private Long userId;
     private Long itemId;
-    private Date purchaseDate;
+    private Timestamp purchaseDate;
 
     public Long getUserId() {
         return userId;
@@ -31,14 +32,14 @@ public class PurchaseHistory {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
+    public void setPurchaseDate(Timestamp purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
     public PurchaseHistory() {
     }
 
-    public PurchaseHistory(Date purchaseDate) {
+    public PurchaseHistory(Timestamp purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 

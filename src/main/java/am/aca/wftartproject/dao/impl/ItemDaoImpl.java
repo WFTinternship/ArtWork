@@ -23,23 +23,23 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
-     * @param artistID
+     * @param userID
      * @param item
      * @see ItemDao#addItem(Long, Item)
      */
     @Override
-    public void addItem(Long artistID, Item item) {
+    public void addItem(Long userID, Item item) {
         try (PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUE (?,?,?,?,?,?,?)",
+                "INSERT INTO item(title, description, price, user_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
                 Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
-            ps.setString(3, item.getPhotoURL());
-            ps.setDouble(4, item.getPrice());
-            ps.setLong(5, artistID);
+            ps.setDouble(3, item.getPrice());
+            ps.setLong(4, userID);
+            ps.setString(5, item.getPhotoURL());
             ps.setBoolean(6, item.isStatus());
-            ps.setString(7, item.getItemType().toString());
+            ps.setString(7, item.getItemType().getType());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -91,12 +91,12 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public void updateItem(Long id, Item item) {
         try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE item SET title=? AND description=? AND price=? AND type_id=? WHERE id=?")) {
+                "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?")) {
 
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
-            ps.setInt(4, item.getItemType().getTypeId());
+            ps.setString(4, item.getItemType().getType());
             ps.setLong(5, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -116,6 +116,10 @@ public class ItemDaoImpl implements ItemDao {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
+            String error = "Failed to delete Item: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOFailException(error, e);
+        } catch (NullPointerException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
@@ -209,7 +213,7 @@ public class ItemDaoImpl implements ItemDao {
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get ItemsByType: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
         return itemList;

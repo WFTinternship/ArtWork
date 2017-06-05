@@ -43,6 +43,11 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOFailException(error, e);
         }
+        catch (Exception e){
+            String error = "Failed to add ShoppingCard: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
+        }
     }
 
     /**
@@ -61,6 +66,11 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
                 shoppingCard.setBalance(rs.getDouble(2));
             }
         } catch (SQLException e) {
+            String error = "Failed to get ShoppingCard: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
+        }
+        catch (Exception e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOFailException(error, e);
@@ -85,6 +95,11 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOFailException(error, e);
         }
+        catch (Exception e) {
+            String error = "Failed to update ShoppingCard";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
+        }
     }
 
 
@@ -99,6 +114,11 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.executeUpdate();
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
+            throw new DAOFailException(error, e);
+        }
+        catch (Exception e) {
+            String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOFailException(error, e);
         }

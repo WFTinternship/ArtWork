@@ -112,7 +112,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUser(Long id, User user) {
         try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE user SET firstname=? AND lastname=? AND age=? AND password=? WHERE id = ?")){
+                "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?")){
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
