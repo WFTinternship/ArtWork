@@ -5,16 +5,16 @@ package am.aca.wftartproject.exception;
  */
 public class DAOFailException extends RuntimeException {
 
-    public DAOFailException(Exception e){
-        super("DB error: ",e);
+    public DAOFailException(Exception e) {
+        super("DB error: ", e);
     }
 
-    public DAOFailException(String message){
+    public DAOFailException(String message) {
         super(message);
     }
 
-    public DAOFailException(String message, Exception e){
-        super(message,e);
+    public DAOFailException(String message, Exception e) {
+        super(message, e);
     }
 
 }

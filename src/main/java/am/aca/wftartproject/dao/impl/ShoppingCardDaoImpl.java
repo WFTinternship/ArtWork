@@ -40,7 +40,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to add ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
     }
@@ -57,12 +57,12 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                shoppingCard.setId(rs.getLong(1));
-                shoppingCard.setBalance(rs.getDouble(2));
+                shoppingCard.setId(rs.getLong("id"));
+                shoppingCard.setBalance(rs.getDouble("balance"));
             }
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
         return shoppingCard;
@@ -82,7 +82,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.executeUpdate();
         } catch (SQLException e) {
             String error = "Failed to update ShoppingCard";
-            LOGGER.error(String.format(error,e.getMessage()));
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
     }
@@ -99,7 +99,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.executeUpdate();
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
     }

@@ -33,7 +33,7 @@ public class ArtistDaoImpl implements ArtistDao {
             conn.setAutoCommit(false);
 
             PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
+                    "INSERT INTO user(firstname, lastname, age, email, password) VALUES (?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, artist.getFirstName());
             ps.setString(2, artist.getLastName());
@@ -48,10 +48,10 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.close();
 
 
-            ps = conn.prepareStatement("INSERT INTO artist(specialization, photo, user_id) VALUE (?,?,?)");
-            ps.setString(1, artist.getSpecialization().toString());
+            ps = conn.prepareStatement("INSERT INTO artist(user_id, photo, spec_id) VALUES (?,?,?)");
+            ps.setLong(1, artist.getId());
             ps.setBytes(2, artist.getArtistPhoto());
-            ps.setLong(3, artist.getId());
+            ps.setInt(3, artist.getSpecialization().getId());
             ps.executeUpdate();
             ps.close();
 
@@ -81,22 +81,22 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getLong(1));
-                artist.setFirstName(rs.getString(2));
-                artist.setLastName(rs.getString(3));
-                artist.setAge(rs.getInt(4));
-                artist.setEmail(rs.getString(5));
-                artist.setPassword(rs.getString(6));
+                artist.setId(rs.getLong("id"));
+                artist.setFirstName(rs.getString("firstname"));
+                artist.setLastName(rs.getString("lastname"));
+                artist.setAge(rs.getInt("age"));
+                artist.setEmail(rs.getString("email"));
+                artist.setPassword(rs.getString("password"));
             }
             ps.close();
 
             ps = conn.prepareStatement(
-                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization_lsp art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setArtistPhoto(rs.getBytes(1));
-                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
+                artist.setArtistPhoto(rs.getBytes("photo"));
+                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
             }
             ps.close();
             rs.close();
@@ -126,22 +126,22 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getLong(1));
-                artist.setFirstName(rs.getString(2));
-                artist.setLastName(rs.getString(3));
-                artist.setAge(rs.getInt(4));
-                artist.setEmail(rs.getString(5));
-                artist.setPassword(rs.getString(6));
+                artist.setId(rs.getLong("id"));
+                artist.setFirstName(rs.getString("firstname"));
+                artist.setLastName(rs.getString("lastname"));
+                artist.setAge(rs.getInt("age"));
+                artist.setEmail(rs.getString("email"));
+                artist.setPassword(rs.getString("password"));
             }
             ps.close();
 
             ps = conn.prepareStatement(
-                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization_lsp art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, artist.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setArtistPhoto(rs.getBytes(1));
-                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
+                artist.setArtistPhoto(rs.getBytes("photo"));
+                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
             }
             ps.close();
             rs.close();
@@ -165,7 +165,7 @@ public class ArtistDaoImpl implements ArtistDao {
             conn.setAutoCommit(false);
 
             PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE user SET firstname=? AND lastname=? AND age=? AND password=? WHERE id = ?");
+                    "UPDATE user SET firstname=?, lastname=?, age=?, password=? WHERE id = ?");
             ps.setString(1, artist.getFirstName());
             ps.setString(2, artist.getLastName());
             ps.setInt(3, artist.getAge());
@@ -175,7 +175,7 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.executeUpdate();
 
             ps = conn.prepareStatement(
-                    "UPDATE artist SET spec_id=? AND photo=? WHERE id = ?");
+                    "UPDATE artist SET spec_id=?, photo=? WHERE user_id = ?");
             ps.setInt(1, artist.getSpecialization().getId());
             ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, id);
@@ -205,15 +205,16 @@ public class ArtistDaoImpl implements ArtistDao {
             //Start Transaction
             conn.setAutoCommit(false);
 
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
             ps.close();
 
-            ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
+            ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
             ps.close();
+
 
             conn.commit();
         } catch (SQLException e) {

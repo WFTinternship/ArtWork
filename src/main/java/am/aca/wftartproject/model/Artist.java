@@ -3,7 +3,7 @@ package am.aca.wftartproject.model;
 import java.util.List;
 
 /**
- * Created by ASUS on 24-May-17.
+ * Created by ASUS on 24-May-17
  */
 public class Artist extends AbstractUser {
 

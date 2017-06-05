@@ -14,20 +14,20 @@ public enum ArtistSpecialization {
     private final int id;
     private final String type;
 
-    ArtistSpecialization(int id,String type){
+    ArtistSpecialization(int id, String type) {
         this.id = id;
         this.type = type;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
-    public String getType(){
+    public String getType() {
         return this.type;
     }
 
-    public int getSpecId(){
+    public int getSpecId() {
         return ArtistSpecialization.valueOf(type).getId();
     }
 

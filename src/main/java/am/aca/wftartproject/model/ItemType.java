@@ -14,7 +14,7 @@ public enum ItemType {
     private final int typeId;
     private final String type;
 
-    ItemType(int itemId,String type) {
+    ItemType(int itemId, String type) {
         this.typeId = itemId;
         this.type = type;
     }
@@ -23,15 +23,15 @@ public enum ItemType {
         return type;
     }
 
-    public int getTypeId(){
+    public int getTypeId() {
         return this.typeId;
     }
 
-    public static int getIdByType(String type){
+    public static int getIdByType(String type) {
         return ItemType.valueOf(type).getTypeId();
     }
 
-    public static ItemType getItemType(String type){
+    public static ItemType getItemType(String type) {
         return ItemType.valueOf(type);
     }
 }
