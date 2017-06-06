@@ -15,24 +15,27 @@ public class PurchaseHistory {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public PurchaseHistory setUserId(Long userId) {
         this.userId = userId;
+        return this;
     }
 
     public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(Long itemId) {
+    public PurchaseHistory setItemId(Long itemId) {
         this.itemId = itemId;
+        return this;
     }
 
     public Date getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
+    public PurchaseHistory setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
+        return this;
     }
 
     public PurchaseHistory() {

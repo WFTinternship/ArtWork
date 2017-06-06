@@ -9,23 +9,9 @@ import java.sql.SQLException;
 /**
  * Created by ASUS on 27-May-17
  */
-public class SingletonConnection implements DatabaseConnection {
+public class BasicConnection implements DatabaseConnection {
 
-    private static volatile SingletonConnection connectionInstance;
-
-    private SingletonConnection() {
-    }
-
-    public static SingletonConnection getInstance() {
-        if (connectionInstance == null) {
-            synchronized (SingletonConnection.class) {
-                if (connectionInstance == null) {
-                    connectionInstance = new SingletonConnection();
-                }
-            }
-        }
-        return connectionInstance;
-    }
+    private static PropertyHelper propertyHelper = new PropertyHelper();
 
     @Override
     public Connection getProductionDBConnection() throws SQLException, ClassNotFoundException {
@@ -39,7 +25,6 @@ public class SingletonConnection implements DatabaseConnection {
 
 
     public Connection getDBConnection(String dbUrl) throws ClassNotFoundException, SQLException {
-        PropertyHelper propertyHelper = new PropertyHelper();
         Class.forName(propertyHelper.getProperties().getProperty("jdbcDriver"));
         Connection conn = DriverManager.getConnection(
                 propertyHelper.getProperties().getProperty(dbUrl),
@@ -48,12 +33,5 @@ public class SingletonConnection implements DatabaseConnection {
         );
         return conn;
     }
-
-
-//    public enum DBType {
-//        REAL,
-//        TEST
-//    }
-
 
 }

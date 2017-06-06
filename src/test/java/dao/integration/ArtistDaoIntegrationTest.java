@@ -2,7 +2,7 @@ package dao.integration;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
@@ -33,7 +33,9 @@ public class ArtistDaoIntegrationTest {
     public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection,artistDaoImplementation and artist for testing
 
-        Connection conn = new ConnectionFactory().getConnection(ConnectionModel.SINGLETON).getTestDBConnection();
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.BASIC)
+                .getTestDBConnection();
 
         artistDao = new ArtistDaoImpl(conn);
 
@@ -71,7 +73,7 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#addArtist(Artist)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addArtist_Failure() throws SQLException {
 
         //set artist into db, get generated id

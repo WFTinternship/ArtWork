@@ -3,7 +3,7 @@ package dao.integration;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
@@ -38,7 +38,10 @@ public class ItemDaoIntegrationTest {
     public void setUp() throws SQLException, ClassNotFoundException {
         //creating new DB connection, artistDao and itemDao implementations
 
-        Connection conn = new ConnectionFactory().getConnection(ConnectionModel.SINGLETON).getTestDBConnection();
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.BASIC)
+                .getTestDBConnection();
+
         artistDao = new ArtistDaoImpl(conn);
         itemDao = new ItemDaoImpl(conn);
 
@@ -79,7 +82,7 @@ public class ItemDaoIntegrationTest {
     /**
      * @see ItemDao#addItem(Long, Item)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addItem_failure() {
 
         //check testItem for null
@@ -131,7 +134,7 @@ public class ItemDaoIntegrationTest {
     /**
      * @see ItemDao#updateItem(Long, Item)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void updateitem_failure() {
         //check testItem for null
 

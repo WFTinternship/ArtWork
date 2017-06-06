@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
 
@@ -39,7 +39,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -53,23 +53,22 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
 
-        PurchaseHistory purchaseHistory = null;
+        PurchaseHistory purchaseHistory = new PurchaseHistory();
         try (PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM purchase_history WHERE user_id = ? AND item_Id = ?")) {
             ps.setLong(1, userId);
             ps.setLong(2, itemId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                purchaseHistory = new PurchaseHistory(
-                        rs.getDate(3));
-                purchaseHistory.setItemId(itemId);
-                purchaseHistory.setUserId(userId);
+                purchaseHistory.setItemId(rs.getLong("item_id"))
+                        .setUserId(rs.getLong("user_id"))
+                        .setPurchaseDate(rs.getDate("purchase_date"));
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return purchaseHistory;
     }
@@ -84,23 +83,26 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
     public List<PurchaseHistory> getPurchase(Long userId) {
 
         List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
+        PurchaseHistory purchaseHistory = new PurchaseHistory();
         try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE user_id = ?")) {
             ps.setLong(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                PurchaseHistory purchaseHistory = new PurchaseHistory(rs.getDate("purchase_date"));
-                purchaseHistory.setUserId(userId);
-                purchaseHistory.setItemId(rs.getLong("item_id"));
+                purchaseHistory.setUserId(rs.getLong("user_id"))
+                        .setItemId(rs.getLong("item_id"))
+                        .setPurchaseDate(rs.getDate("purchase_date"));
+
                 purchaseHistoryList.add(purchaseHistory);
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return purchaseHistoryList;
     }
+
 
     /**
      * @param userId
@@ -119,7 +121,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 

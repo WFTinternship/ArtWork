@@ -11,23 +11,8 @@ import java.sql.SQLException;
  */
 public class ConnectionPool implements DatabaseConnection {
 
-    private static volatile ConnectionPool connectionInstance;
-
-    private ConnectionPool() {
-    }
-
-    public static ConnectionPool getInstance() {
-        if (connectionInstance == null) {
-            synchronized (ConnectionPool.class) {
-                if (connectionInstance == null) {
-                    connectionInstance = new ConnectionPool();
-                }
-            }
-        }
-        return connectionInstance;
-    }
-
-
+    private static ComboPooledDataSource cpds = new ComboPooledDataSource();
+    private static PropertyHelper propertyHelper = new PropertyHelper();
 
     @Override
     public Connection getProductionDBConnection() throws SQLException, ClassNotFoundException {
@@ -39,9 +24,9 @@ public class ConnectionPool implements DatabaseConnection {
         return getDBConnection("jdbcUrlTest");
     }
 
+
     public Connection getDBConnection(String dbUrl) throws SQLException {
-        PropertyHelper propertyHelper = new PropertyHelper();
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
+
         cpds.setJdbcUrl(propertyHelper.getProperties().getProperty(dbUrl));
         cpds.setUser(propertyHelper.getProperties().getProperty("jdbcUserName"));
         cpds.setPassword(propertyHelper.getProperties().getProperty("jdbcPassword"));

@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
@@ -64,7 +64,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
     }
 
@@ -81,12 +81,12 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getLong("id"));
-                artist.setFirstName(rs.getString("firstname"));
-                artist.setLastName(rs.getString("lastname"));
-                artist.setAge(rs.getInt("age"));
-                artist.setEmail(rs.getString("email"));
-                artist.setPassword(rs.getString("password"));
+                artist.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
             }
             ps.close();
 
@@ -108,7 +108,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return artist;
     }
@@ -126,12 +126,12 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getLong("id"));
-                artist.setFirstName(rs.getString("firstname"));
-                artist.setLastName(rs.getString("lastname"));
-                artist.setAge(rs.getInt("age"));
-                artist.setEmail(rs.getString("email"));
-                artist.setPassword(rs.getString("password"));
+                artist.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
             }
             ps.close();
 
@@ -148,7 +148,7 @@ public class ArtistDaoImpl implements ArtistDao {
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return artist;
     }
@@ -191,7 +191,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(error);
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -225,7 +225,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 }

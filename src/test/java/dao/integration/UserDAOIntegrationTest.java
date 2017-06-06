@@ -2,7 +2,7 @@ package dao.integration;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
@@ -36,7 +36,9 @@ public class UserDAOIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
 
-        Connection conn = new ConnectionFactory().getConnection(ConnectionModel.SINGLETON).getTestDBConnection();
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.BASIC)
+                .getTestDBConnection();
 
         userDao = new UserDaoImpl(conn);
 
@@ -74,7 +76,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#addUser(User)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addUser_Failure() {
         //test user already inserted in setup, get record by userId
 
@@ -107,7 +109,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#updateUser(Long, User)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void updateUser_Failure() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -136,7 +138,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#deleteUser(Long)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void deleteUser_failure() {
 
         userDao.addUser(testUser);

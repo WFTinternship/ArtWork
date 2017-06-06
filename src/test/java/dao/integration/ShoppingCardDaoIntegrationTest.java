@@ -41,7 +41,10 @@ public class ShoppingCardDaoIntegrationTest {
 
         //create test user and shoppingCard, add user into db
 
-        Connection conn = new ConnectionFactory().getConnection(ConnectionModel.SINGLETON).getTestDBConnection();
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.BASIC)
+                .getTestDBConnection();
+
         userDao = new UserDaoImpl(conn);
         shoppingCardDao = new ShoppingCardDaoImpl(conn);
 

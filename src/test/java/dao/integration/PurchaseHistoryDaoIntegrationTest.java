@@ -8,7 +8,7 @@ import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
@@ -50,7 +50,9 @@ public class PurchaseHistoryDaoIntegrationTest {
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        Connection conn = new ConnectionFactory().getConnection(ConnectionModel.SINGLETON).getTestDBConnection();
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.BASIC)
+                .getTestDBConnection();
 
         userDao = new UserDaoImpl(conn);
         artistDao = new ArtistDaoImpl(conn);
@@ -104,7 +106,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     /**
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addPurchase_failure() {
 
         //check for null purchasehistory
@@ -148,7 +150,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     /**
      * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void getPurchase_Failure() {
 
         purchaseHistoryDao.addPurchase(purchaseHistory);
@@ -187,7 +189,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
 
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void deletePurcaseHistory_failure() {
 
         //check for null purchasehistory;

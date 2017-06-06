@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
 
@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -59,18 +59,18 @@ public class UserDaoImpl implements UserDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getLong("id"));
-                user.setFirstName(rs.getString("firstname"));
-                user.setLastName(rs.getString("lastname"));
-                user.setAge(rs.getInt("age"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                user.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return user;
     }
@@ -87,18 +87,18 @@ public class UserDaoImpl implements UserDao {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getLong("id"));
-                user.setFirstName(rs.getString("firstname"));
-                user.setLastName(rs.getString("lastname"));
-                user.setAge(rs.getInt("age"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                user.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return user;
     }
@@ -123,7 +123,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -140,7 +140,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 

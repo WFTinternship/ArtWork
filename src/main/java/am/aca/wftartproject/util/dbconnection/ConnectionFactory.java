@@ -11,10 +11,10 @@ public class ConnectionFactory {
             return null;
         }
 
-        if (connModel.equals(ConnectionModel.SINGLETON)) {
-            return SingletonConnection.getInstance();
-        } else if (connModel.equals(ConnectionModel.CONNECTIONPOOL)) {
-            return ConnectionPool.getInstance();
+        if (connModel.equals(ConnectionModel.BASIC)) {
+            return new BasicConnection();
+        } else if (connModel.equals(ConnectionModel.POOL)) {
+            return new ConnectionPool();
         }
         return null;
     }

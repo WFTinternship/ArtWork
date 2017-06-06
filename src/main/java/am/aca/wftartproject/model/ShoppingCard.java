@@ -12,16 +12,18 @@ public class ShoppingCard {
         return id;
     }
 
-    public void setId(Long id) {
+    public ShoppingCard setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public ShoppingCard setBalance(double balance) {
         this.balance = balance;
+        return this;
     }
 
 

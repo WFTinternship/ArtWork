@@ -15,24 +15,27 @@ public class Artist extends AbstractUser {
         return specialization;
     }
 
-    public void setSpecialization(ArtistSpecialization specialization) {
+    public Artist setSpecialization(ArtistSpecialization specialization) {
         this.specialization = specialization;
+        return this;
     }
 
     public byte[] getArtistPhoto() {
         return artistPhoto;
     }
 
-    public void setArtistPhoto(byte[] artistPhoto) {
+    public AbstractUser setArtistPhoto(byte[] artistPhoto) {
         this.artistPhoto = artistPhoto;
+        return this;
     }
 
     public List<Item> getItemList() {
         return itemList;
     }
 
-    public void setItemList(List<Item> itemList) {
+    public AbstractUser setItemList(List<Item> itemList) {
         this.itemList = itemList;
+        return this;
     }
 
     public Artist() {
