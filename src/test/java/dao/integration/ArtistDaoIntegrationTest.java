@@ -34,7 +34,7 @@ public class ArtistDaoIntegrationTest {
         //create db connection,artistDaoImplementation and artist for testing
 
         Connection conn = new ConnectionFactory()
-                .getConnection(ConnectionModel.BASIC)
+                .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
         artistDao = new ArtistDaoImpl(conn);

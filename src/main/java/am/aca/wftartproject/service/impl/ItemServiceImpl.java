@@ -30,6 +30,7 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public void addItem(Long artistID, Item item) {
+
         itemDao.addItem(artistID, item);
     }
 
