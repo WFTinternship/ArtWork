@@ -6,7 +6,7 @@ package am.aca.wftartproject.model;
 public class ShoppingCard {
 
     private Long id;
-    private double balance;
+    private Double balance;
 
     public Long getId() {
         return id;
@@ -16,11 +16,11 @@ public class ShoppingCard {
         this.id = id;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
@@ -28,7 +28,7 @@ public class ShoppingCard {
     public ShoppingCard() {
     }
 
-    public ShoppingCard(double balance) {
+    public ShoppingCard(Double balance) {
         this.balance = balance;
     }
 

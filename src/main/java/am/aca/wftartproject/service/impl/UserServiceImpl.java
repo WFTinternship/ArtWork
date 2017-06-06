@@ -1,8 +1,9 @@
-package am.aca.wftartproject.service;
+package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.util.DBConnection;
 
 import java.sql.Connection;

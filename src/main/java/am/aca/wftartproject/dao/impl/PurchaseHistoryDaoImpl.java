@@ -1,13 +1,12 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -64,7 +63,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return purchaseHistory;
     }
@@ -86,7 +85,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return purchaseHistoryList;
     }
@@ -103,7 +102,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 }

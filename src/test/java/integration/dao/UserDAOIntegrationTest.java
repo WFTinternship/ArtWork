@@ -3,6 +3,7 @@ package integration.dao;
 import am.aca.wftartproject.dao.UserDao;
 
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.DBConnection;
 import integration.service.TestObjectTemplate;
@@ -18,7 +19,7 @@ import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 
 /**
- * Created by Armen on 5/30/2017.
+ * Created by Armen on 5/30/2017
  */
 public class UserDAOIntegrationTest {
     private DBConnection connection = new DBConnection();
@@ -29,8 +30,13 @@ public class UserDAOIntegrationTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException, ClassNotFoundException {
+
+        connection = new DBConnection();
+        userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+
         //create test user
+
         testUser = TestObjectTemplate.createTestUser();
 
     }
@@ -45,13 +51,14 @@ public class UserDAOIntegrationTest {
 
         testUser.setId(null);
 
-        userDao.addUser(testUser);
-        System.out.println(testUser.getId());
-
-        // Test method
-
+        // add user into db and check id for null
         assertNotNull(testUser);
+
+        userDao.addUser(testUser);
+
         assertNotNull(testUser.getId());
+
+        // get user by id and check for sameness with original
 
         Long id = testUser.getId();
 
@@ -65,12 +72,14 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#addUser(User)
      */
-    @Test(expected = SQLException.class)
+    @Test(expected = DAOException.class)
     public void addUser_Failure() {
         //test user already inserted in setup, get record by userId
+
         testUser.setId(null);
 
         // Test method
+
         testUser.setLastName(null);
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -96,7 +105,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#updateUser(Long, User)
      */
-    @Test(expected = SQLException.class)
+    @Test(expected = DAOException.class)
     public void updateUser_Failure() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -119,16 +128,24 @@ public class UserDAOIntegrationTest {
 
         User deleteTest = userDao.findUser(testUser.getId());
 
-        assertNull(deleteTest);
+        assertNull(deleteTest.getId());
     }
 
     /**
      * @see UserDao#deleteUser(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteUser_failure() {
 
-        userDao.deleteUser(-1L);
+        userDao.addUser(testUser);
+        assertNotNull(testUser);
+        testUser.setLastName(null);
+        userDao.updateUser(testUser.getId(), testUser);
+        userDao.deleteUser(testUser.getId());
+
+        User deleteTest = userDao.findUser(testUser.getId());
+
+        assertNull(deleteTest.getId());
 
     }
 
@@ -139,8 +156,8 @@ public class UserDAOIntegrationTest {
     @Test
     public void findUser_success() {
         userDao.addUser(testUser);
-        User findresult = userDao.findUser(testUser.getId());
-        assertEqualUsers(testUser, findresult);
+        User findResult = userDao.findUser(testUser.getId());
+        assertEqualUsers(testUser, findResult);
     }
 
     /**
@@ -149,9 +166,9 @@ public class UserDAOIntegrationTest {
     @Test
     public void findUser_failure() {
         userDao.addUser(testUser);
-        testUser.setId(-8L);
-        User findresult = userDao.findUser(testUser.getId());
-        assertNotSame(testUser, findresult);
+        testUser.setId(-7L);
+        User findResult = userDao.findUser(testUser.getId());
+        assertNotSame(testUser, findResult);
     }
 
 

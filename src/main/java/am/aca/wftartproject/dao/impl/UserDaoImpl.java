@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
 
@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return user;
     }
@@ -98,7 +98,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return user;
     }
@@ -123,7 +123,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -140,7 +140,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 

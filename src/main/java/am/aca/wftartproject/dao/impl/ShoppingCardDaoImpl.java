@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
 
@@ -41,7 +41,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
         } catch (SQLException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -64,7 +64,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return shoppingCard;
     }
@@ -84,7 +84,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
         } catch (SQLException e) {
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -101,7 +101,7 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 }

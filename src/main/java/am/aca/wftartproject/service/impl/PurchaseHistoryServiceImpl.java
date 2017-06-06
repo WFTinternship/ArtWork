@@ -1,6 +1,7 @@
-package am.aca.wftartproject.service;
+package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.util.DBConnection;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;

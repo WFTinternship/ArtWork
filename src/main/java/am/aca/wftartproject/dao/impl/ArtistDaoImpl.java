@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
@@ -64,7 +64,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
     }
 
@@ -108,7 +108,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return artist;
     }
@@ -148,7 +148,7 @@ public class ArtistDaoImpl implements ArtistDao {
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(error);
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return artist;
     }
@@ -190,7 +190,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -226,7 +226,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 }

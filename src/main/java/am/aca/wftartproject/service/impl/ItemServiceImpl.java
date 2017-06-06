@@ -1,5 +1,6 @@
-package am.aca.wftartproject.service;
+package am.aca.wftartproject.service.impl;
 
+import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.util.DBConnection;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
