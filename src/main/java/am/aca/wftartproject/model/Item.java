@@ -17,56 +17,63 @@ public class Item {
         return id;
     }
 
-    public void setId(Long id) {
+    public Item setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Item setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Item setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getPhotoURL() {
         return photoURL;
     }
 
-    public void setPhotoURL(String photo) {
+    public Item setPhotoURL(String photo) {
         this.photoURL = photo;
+        return this;
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public Item setPrice(double price) {
         this.price = price;
+        return this;
     }
 
     public Boolean isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public Item setStatus(boolean status) {
         this.status = status;
+        return this;
     }
 
     public ItemType getItemType() {
         return itemType;
     }
 
-    public void setItemType(ItemType itemType) {
+    public Item setItemType(ItemType itemType) {
         this.itemType = itemType;
+        return this;
     }
 
     public Item() {

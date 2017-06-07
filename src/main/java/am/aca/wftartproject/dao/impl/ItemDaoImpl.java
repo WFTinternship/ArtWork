@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
 import org.apache.log4j.Logger;
@@ -23,20 +23,20 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
-     * @param userID
+     * @param artistID
      * @param item
      * @see ItemDao#addItem(Long, Item)
      */
     @Override
-    public void addItem(Long userID, Item item) {
+    public void addItem(Long artistID, Item item) {
         try (PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO item(title, description, price, user_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
+                "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
                 Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
-            ps.setLong(4, userID);
+            ps.setLong(4, artistID);
             ps.setString(5, item.getPhotoURL());
             ps.setBoolean(6, item.isStatus());
             ps.setString(7, item.getItemType().getType());
@@ -49,7 +49,7 @@ public class ItemDaoImpl implements ItemDao {
         } catch (SQLException e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -66,19 +66,19 @@ public class ItemDaoImpl implements ItemDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                item.setId(rs.getLong("id"));
-                item.setTitle(rs.getString("title"));
-                item.setDescription(rs.getString("description"));
-                item.setPhotoURL(rs.getString("photo_url"));
-                item.setPrice(rs.getDouble("price"));
-                item.setStatus(rs.getBoolean("status"));
-                item.setItemType(ItemType.valueOf(rs.getString("type")));
+                item.setId(rs.getLong("id"))
+                        .setTitle(rs.getString("title"))
+                        .setDescription(rs.getString("description"))
+                        .setPhotoURL(rs.getString("photo_url"))
+                        .setPrice(rs.getDouble("price"))
+                        .setStatus(rs.getBoolean("status"))
+                        .setItemType(ItemType.valueOf(rs.getString("type")));
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return item;
     }
@@ -102,7 +102,7 @@ public class ItemDaoImpl implements ItemDao {
         } catch (SQLException e) {
             String error = "Failed to update Item:  %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -118,11 +118,7 @@ public class ItemDaoImpl implements ItemDao {
         } catch (SQLException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
-        } catch (NullPointerException e) {
-            String error = "Failed to delete Item: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -135,24 +131,25 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
         List<Item> itemList = new ArrayList<>();
+        Item item = new Item();
         try (PreparedStatement ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?")) {
             ps.setInt(1, limit);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Item tempItem = new Item(rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getDouble(5),
-                        rs.getBoolean(7),
-                        ItemType.valueOf(rs.getString(8)));
-                tempItem.setId(rs.getLong(1));
-                itemList.add(tempItem);
+                item.setId(rs.getLong("id"))
+                        .setTitle(rs.getString("title"))
+                        .setDescription(rs.getString("description"))
+                        .setPrice(rs.getDouble("price"))
+                        .setPhotoURL(rs.getString("photo_url"))
+                        .setStatus(rs.getBoolean("status"))
+                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get RecentlyAddedItems: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return itemList;
     }
@@ -166,24 +163,25 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsByTitle(String title) {
         List<Item> itemList = new ArrayList<>();
+        Item item = new Item();
         try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE title=?")) {
             ps.setString(1, title);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Item tempItem = new Item(rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getDouble(5),
-                        rs.getBoolean(7),
-                        ItemType.valueOf(rs.getString(8)));
-                tempItem.setId(rs.getLong(1));
-                itemList.add(tempItem);
+                item.setId(rs.getLong("id"))
+                        .setTitle(rs.getString("title"))
+                        .setDescription(rs.getString("description"))
+                        .setPrice(rs.getDouble("price"))
+                        .setPhotoURL(rs.getString("photo_url"))
+                        .setStatus(rs.getBoolean("status"))
+                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return itemList;
     }
@@ -197,24 +195,25 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsByType(String itemType) {
         List<Item> itemList = new ArrayList<>();
+        Item item = new Item();
         try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE item_type=?")) {
             ps.setString(1, itemType);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Item tempItem = new Item(rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getDouble(5),
-                        rs.getBoolean(7),
-                        ItemType.valueOf(rs.getString(8)));
-                tempItem.setId(rs.getLong(1));
-                itemList.add(tempItem);
+                item.setId(rs.getLong("id"))
+                        .setTitle(rs.getString("title"))
+                        .setDescription(rs.getString("description"))
+                        .setPrice(rs.getDouble("price"))
+                        .setPhotoURL(rs.getString("photo_url"))
+                        .setStatus(rs.getBoolean("status"))
+                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return itemList;
     }

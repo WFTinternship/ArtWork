@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
@@ -41,8 +41,8 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to add ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
         }
 
     }
@@ -59,14 +59,14 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                shoppingCard.setId(rs.getLong(1));
-                shoppingCard.setBalance(rs.getDouble(2));
+                shoppingCard.setId(rs.getLong("id"))
+                        .setBalance(rs.getDouble("balance"));
             }
             else throw new DAOFailException("No such element in db");
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
         }
         catch (DAOFailException e ){
             String error = "Failed to get ShoppingCard: %s";
@@ -96,8 +96,8 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
         }
         catch (DAOFailException e) {
             String error = "Failed to update ShoppingCard";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
         }
         catch (SQLException e) {
             String error = "Failed to update ShoppingCard";
@@ -124,8 +124,8 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             else throw  new DAOFailException("Failed to delete ShoppingCard");
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
         }
         catch (DAOFailException e) {
             String error = "Failed to delete ShoppingCard";
