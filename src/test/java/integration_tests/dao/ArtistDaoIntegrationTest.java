@@ -1,30 +1,26 @@
 package integration_tests.dao;
 
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
-import am.aca.wftartproject.util.*;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import integration_tests.service.AssertTemplates;
 import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
-
-
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * Created by Armen on 6/1/2017.
  */
 public class ArtistDaoIntegrationTest {
-    //create connection,testArtist and artistDaoImplementation
-
-    private DBConnection connection = null;
+    //testArtist and artistDaoImplementation
 
     private Artist testArtist;
 
@@ -35,13 +31,14 @@ public class ArtistDaoIntegrationTest {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException
-    {
+    public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection,artistDaoImplementation and artist for testing
 
-        connection = new DBConnection();
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
 
-        artistDao = new ArtistDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+        artistDao = new ArtistDaoImpl(conn);
 
         testArtist = TestObjectTemplate.createTestArtist();
 
@@ -51,8 +48,7 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#addArtist(Artist)
      */
     @Test
-    public void addArtist_Success() throws SQLException
-    {
+    public void addArtist_Success() throws SQLException {
         //set artist into db, get generated id
 
         artistDao.addArtist(testArtist);
@@ -78,7 +74,7 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#addArtist(Artist)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addArtist_Failure() throws SQLException {
 
         //set artist into db, get generated id
@@ -129,9 +125,8 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#updateArtist(Long, Artist)
      */
-    @Test(expected = DAOFailException.class)
-    public void updateArtist_failure()
-    {
+    @Test(expected = DAOException.class)
+    public void updateArtist_failure() {
         //set artist specialization  and add into db
 
         artistDao.addArtist(testArtist);

@@ -10,10 +10,8 @@ public interface ArtistSpecializationLcpDao {
 
     /**
      * Adds artist specializations into database
-     *
-     * @param specialization
      */
-    void addArtistSpecialization(ArtistSpecialization specialization);
+    void addArtistSpecialization();
 
     /**
      * Gets artist specialization by id
@@ -32,9 +30,7 @@ public interface ArtistSpecializationLcpDao {
 
     /**
      * Deletes artist specialization
-     *
-     * @param id
      */
-    void deleteArtistSpecialization(int id);
+    void deleteArtistSpecialization();
 
 }

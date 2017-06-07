@@ -1,30 +1,29 @@
 package integration_tests.dao;
 
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import integration_tests.service.*;
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.util.DBConnection;
-
 import static integration_tests.service.AssertTemplates.assertEqualItems;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * Created by Armen on 6/1/2017.
  */
 public class ItemDaoIntegrationTest {
-    private DBConnection connection = null;
+
     private ArtistDaoImpl artistDao;
     private ItemDaoImpl itemDao;
     private Item testitem;
@@ -38,9 +37,11 @@ public class ItemDaoIntegrationTest {
     public void setUp() throws SQLException, ClassNotFoundException {
         //creating new DB connectio, artisdao and itemdao imlementations
 
-        connection = new DBConnection();
-        artistDao = new ArtistDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
-        itemDao = new ItemDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
+        artistDao = new ArtistDaoImpl(conn);
+        itemDao = new ItemDaoImpl(conn);
 
         //create test artist and user
 
@@ -79,7 +80,7 @@ public class ItemDaoIntegrationTest {
     /**
      * @see ItemDao#addItem(Long, Item)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addItem_failure() {
 
         //check testitem for null
@@ -133,7 +134,7 @@ public class ItemDaoIntegrationTest {
     /**
      * @see ItemDao#updateItem(Long, Item)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void updateitem_failure() {
         //check testitem for null
 

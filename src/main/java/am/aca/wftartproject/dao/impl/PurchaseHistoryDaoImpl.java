@@ -1,13 +1,16 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by ASUS on 27-May-17
@@ -43,13 +46,13 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
     }
 
     @Override
-    public PurchaseHistory getPurchaseHistory(Long user_id, Long item_id) {
+    public PurchaseHistory getPurchase(Long user_id, Long item_id) {
         PurchaseHistory purchaseHistory = new PurchaseHistory();
         try (PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ")) {
@@ -61,25 +64,44 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
               purchaseHistory.setUserId(rs.getLong("user_id"));
               purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
             }
-            else throw new DAOFailException("No such element in db");
+            else return purchaseHistory = null;
 
-            //else System.out.println(rs.getWarnings());
             ps.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
-        catch (DAOFailException e ){
-            String error = "Failed to get PurchaseHistory: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
-        }
+
         return purchaseHistory;
     }
 
     @Override
-    public Boolean deletePurchaseHistory(Long user_id, Long item_id) {
+    public List<PurchaseHistory> getPurchase(Long userId) {
+
+        List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
+        PurchaseHistory purchaseHistory = new PurchaseHistory();
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE user_id = ?")) {
+            ps.setLong(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                purchaseHistory.setUserId(rs.getLong("user_id"));
+                purchaseHistory.setItemId(rs.getLong("item_id"));
+                purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
+
+                purchaseHistoryList.add(purchaseHistory);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String error = "Failed to get PurchaseHistory: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        }
+        return purchaseHistoryList;
+    }
+
+    @Override
+    public Boolean deletePurchase(Long user_id, Long item_id) {
         Boolean success = false;
         try (PreparedStatement ps = conn.prepareStatement(
                 " DELETE FROM purchase_history WHERE user_id=? and item_id = ? ")) {
@@ -92,7 +114,7 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return success;
     }

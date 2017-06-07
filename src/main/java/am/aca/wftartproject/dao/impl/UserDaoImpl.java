@@ -1,7 +1,8 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
@@ -43,7 +44,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -70,19 +71,14 @@ public class UserDaoImpl implements UserDao {
             else{
                 user = null;
                 rs.close();
-                throw new DAOFailException("");
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
-        catch (DAOFailException e) {
-            String error = "Failed to get User: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
-        }
+      
         return user;
     }
 
@@ -109,7 +105,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return user;
     }
@@ -122,7 +118,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public Boolean updateUser(Long id, User user) {
-        Boolean success;
+        Boolean success = false;
         try (PreparedStatement ps = conn.prepareStatement(
                 "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?")){
             ps.setString(1, user.getFirstName());
@@ -134,17 +130,12 @@ public class UserDaoImpl implements UserDao {
             if(ps.executeUpdate()>0){
                 success = true;
             }
-            else throw new DAOFailException("Failed to update User");
+            
         }
         catch (SQLException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
-        }
-        catch (DAOFailException e) {
-            String error = "Failed to update User: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return success;
 
@@ -162,18 +153,11 @@ public class UserDaoImpl implements UserDao {
             ps.setLong(1, id);
             if(ps.executeUpdate()>0){
                 success = true;
-                System.out.println("user was successfully deleted");
             }
-            else throw new DAOFailException("Failed to delete User");
         } catch (SQLException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
-        }
-        catch (DAOFailException e) {
-            String error = "Failed to delete User: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return success;
     }

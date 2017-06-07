@@ -2,10 +2,13 @@ package am.aca.wftartproject.dao;
 
 import am.aca.wftartproject.model.PurchaseHistory;
 
+import java.util.List;
+
 /**
  * Created by ASUS on 27-May-17
  */
 public interface PurchaseHistoryDao {
+
 
     /**
      * Adds purchased item to the database.
@@ -16,18 +19,31 @@ public interface PurchaseHistoryDao {
 
 
     /**
-     * Adds purchased item to the database.
+     * Gets purchase item by userId and itemId
      *
-     * @param user_id,
-     * @param item_id
+     * @param userId
+     * @param itemId
+     * @return
      */
-    PurchaseHistory getPurchaseHistory(Long user_id,Long  item_id );
+    PurchaseHistory getPurchase(Long userId, Long itemId);
+
 
     /**
-     * Adds purchased item to the database.
+     * Gets all purchase items by userId
      *
-     * @param user_id,
-     * @param item_id
+     * @param userId
+     * @return
      */
-    Boolean deletePurchaseHistory(Long user_id,Long  item_id );
+    List<PurchaseHistory> getPurchase(Long userId);
+
+
+    /**
+     * Deletes purchase item by userId and itemId
+     *
+     * @param userId
+     * @param itemId
+     */
+    Boolean deletePurchase(Long userId, Long itemId);
+
+
 }

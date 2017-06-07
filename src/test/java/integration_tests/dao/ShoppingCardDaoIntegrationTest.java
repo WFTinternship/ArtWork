@@ -1,27 +1,25 @@
 package integration_tests.dao;
-
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.*;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.*;
 import static integration_tests.service.AssertTemplates.assertEqualShoppingCards;
 import static junit.framework.TestCase.*;
-
-import am.aca.wftartproject.util.DBConnection;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * Created by Armen on 6/2/2017.
  */
 public class ShoppingCardDaoIntegrationTest {
-    private DBConnection connection = new DBConnection();
-    private UserDao userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
-    private ShoppingCardDao shoppingCardDao = new ShoppingCardDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+    private UserDao userDao;
+    private ShoppingCardDao shoppingCardDao;
     private User testUser;
     private ShoppingCard testShoppingCard;
 
@@ -29,7 +27,15 @@ public class ShoppingCardDaoIntegrationTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException, ClassNotFoundException
+    {
+        //create db connection
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
+
+        userDao = new UserDaoImpl(conn);
+        shoppingCardDao = new ShoppingCardDaoImpl(conn);
 
         //create test user and shoppingCard, add user into db
 
@@ -57,7 +63,7 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addShoppingCard_failure() {
 
         assertNotNull(testUser.getId());
@@ -83,12 +89,12 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#getShoppingCard(Long)
      */
-    @Test(expected = DAOFailException.class)
+    @Test
     public void getShoppingCard_Failure() {
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard.getId());
-        ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(1515131651654151351L);
+        shoppingCardDao.getShoppingCard(1515131651654151351L);
     }
 
     /**
@@ -111,7 +117,7 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
-    @Test(expected = DAOFailException.class)
+    @Test
     public void update_ShoppingCard_Failure() {
 
         assertNotNull(testUser.getId());
@@ -119,7 +125,7 @@ public class ShoppingCardDaoIntegrationTest {
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
-       assertFalse(shoppingCardDao.updateShoppingCard(1516516516351635163L,testShoppingCard));
+        assertFalse(shoppingCardDao.updateShoppingCard(1516516516351635163L, testShoppingCard));
 
 
     }
@@ -128,8 +134,7 @@ public class ShoppingCardDaoIntegrationTest {
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Test
-    public void deleteShoppingCard_Success()
-    {
+    public void deleteShoppingCard_Success() {
         // check all components for null and check delete result for true
 
         assertNotNull(testUser.getId());
@@ -143,9 +148,8 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
-    @Test(expected = DAOFailException.class)
-    public void deleteShoppingCard_Failure()
-    {
+    @Test
+    public void deleteShoppingCard_Failure() {
         // check all components for null and check delete result for true
 
         assertNotNull(testUser.getId());

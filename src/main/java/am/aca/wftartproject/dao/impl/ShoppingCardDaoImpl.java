@@ -62,17 +62,13 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
                 shoppingCard.setId(rs.getLong("id"))
                         .setBalance(rs.getDouble("balance"));
             }
-            else throw new DAOFailException("No such element in db");
+
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        catch (DAOFailException e ){
-            String error = "Failed to get ShoppingCard: %s";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
-        }
+
 
         return shoppingCard;
     }
@@ -92,17 +88,11 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
            if(ps.executeUpdate()>0){
                success = true;
            }
-           else throw new DAOFailException("Failed to update shoppingCard");
-        }
-        catch (DAOFailException e) {
-            String error = "Failed to update ShoppingCard";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
         }
         catch (SQLException e) {
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return success;
 
@@ -121,16 +111,10 @@ public class ShoppingCardDaoImpl implements ShoppingCardDao {
             if(ps.executeUpdate()>0){
                 success = true;
             }
-            else throw  new DAOFailException("Failed to delete ShoppingCard");
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }
-        catch (DAOFailException e) {
-            String error = "Failed to delete ShoppingCard";
-            LOGGER.error(String.format(error,e.getMessage()));
-            throw new DAOFailException(error, e);
         }
         return success;
     }

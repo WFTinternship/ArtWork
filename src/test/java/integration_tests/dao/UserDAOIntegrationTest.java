@@ -1,17 +1,16 @@
 package integration_tests.dao;
-
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
-import am.aca.wftartproject.util.*;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import java.sql.Connection;
 import java.sql.SQLException;
-
 import static integration_tests.service.AssertTemplates.assertEqualUsers;
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
@@ -20,18 +19,20 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 5/30/2017.
  */
 public class UserDAOIntegrationTest {
-    private DBConnection connection = new DBConnection();
-    private UserDaoImpl userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+    private UserDaoImpl userDao;
     private User testUser;
 
     public UserDAOIntegrationTest() throws SQLException, ClassNotFoundException {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException {
-
-        connection = new DBConnection();
-        userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+    public void setUp() throws SQLException, ClassNotFoundException
+    {
+        //create db connection
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
+        userDao = new UserDaoImpl(conn);
 
         //create test user
 
@@ -70,7 +71,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#addUser(User)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addUser_Failure() {
         //test user already inserted in setup, get record by user
         testUser.setLastName(null);
@@ -98,7 +99,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#updateUser(Long, User)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void updateUser_Failure() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -125,7 +126,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#deleteUser(Long)
      */
-    @Test(expected = DAOFailException.class)
+    @Test
     public void deleteUser_failure() {
 
         userDao.addUser(testUser);
@@ -147,7 +148,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#findUser(Long)
      */
-    @Test(expected = DAOFailException.class)
+    @Test
     public void findUser_failure() {
         userDao.addUser(testUser);
         User findresult = userDao.findUser(-7L);
@@ -156,8 +157,7 @@ public class UserDAOIntegrationTest {
 
 
     @After
-    public void tearDown()
-    {
+    public void tearDown() {
 
         //delete inserted test users from db
 

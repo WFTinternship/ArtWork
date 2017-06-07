@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
@@ -49,7 +49,7 @@ public class ArtistDaoImpl implements ArtistDao {
 
             // ensure all mandatory Artist members provided
             if (artist.getSpecialization() == null) {
-                throw new DAOFailException("Artist specialization not defined");
+                throw new DAOException("Artist specialization not defined");
             }
 
             ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
@@ -68,7 +68,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
     }
 
@@ -98,7 +98,7 @@ public class ArtistDaoImpl implements ArtistDao {
             rs.close();
 
             ps = conn.prepareStatement(
-                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -118,7 +118,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return artist;
     }
@@ -135,7 +135,7 @@ public class ArtistDaoImpl implements ArtistDao {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1, email);
             if(ps.executeUpdate()!=1){
-                throw new DAOFailException("Failed to find Artist");
+                throw new DAOException("Failed to find Artist");
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -149,7 +149,7 @@ public class ArtistDaoImpl implements ArtistDao {
             ps.close();
 
             ps = conn.prepareStatement(
-                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, artist.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -161,7 +161,7 @@ public class ArtistDaoImpl implements ArtistDao {
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
         return artist;
     }
@@ -205,7 +205,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
     }
 
@@ -247,18 +247,9 @@ public Boolean deleteArtist(Long id) {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOFailException(error, e);
+            throw new DAOException(error, e);
         }
-        catch (DAOFailException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                LOGGER.error(String.format( e1.getMessage()));
-            }
-            LOGGER.error(String.format(e.getMessage()));
-            throw new DAOFailException(e.getMessage());
 
-        }
         return success;
     }
 

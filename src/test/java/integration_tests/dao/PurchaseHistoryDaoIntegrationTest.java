@@ -1,22 +1,19 @@
 package integration_tests.dao;
-
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
-import am.aca.wftartproject.exception.DAOFailException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.*;
-
 import static integration_tests.service.AssertTemplates.assertEqualPurchaseHistory;
 import static junit.framework.TestCase.*;
-
-import am.aca.wftartproject.util.DBConnection;
-import integration_tests.service.AssertTemplates;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import java.sql.Connection;
 import java.sql.SQLException;
 
 
@@ -24,7 +21,6 @@ import java.sql.SQLException;
  * Created by Armen on 6/2/2017.
  */
 public class PurchaseHistoryDaoIntegrationTest {
-    private DBConnection connection = null;
     private UserDao userDao;
     private ItemDao itemDao;
     private PurchaseHistoryDao purchaseHistoryDao;
@@ -36,11 +32,17 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException {
-        connection = new DBConnection();
-        userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
-        itemDao = new ItemDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
-        purchaseHistoryDao = new PurchaseHistoryDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+    public void setUp() throws SQLException, ClassNotFoundException
+    {
+
+        //create db connection
+
+        Connection conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
+        userDao = new UserDaoImpl(conn);
+        itemDao = new ItemDaoImpl(conn);
+        purchaseHistoryDao = new PurchaseHistoryDaoImpl(conn);
 
         //create test Item,User, purchaseHistory and set them into db
 
@@ -70,7 +72,7 @@ public class PurchaseHistoryDaoIntegrationTest {
 
         //get added purchasehistory from db and check for sameness with origin
 
-        PurchaseHistory added = purchaseHistoryDao.getPurchaseHistory(testUser.getId(), testItem.getId());
+        PurchaseHistory added = purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId());
         assertEqualPurchaseHistory(added, purchaseHistory);
         System.out.println(added);
         System.out.println(purchaseHistory);
@@ -81,7 +83,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     /**
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
-    @Test(expected = DAOFailException.class)
+    @Test(expected = DAOException.class)
     public void addPurchase_failure() {
 
         //check for null purchasehistory
@@ -91,12 +93,14 @@ public class PurchaseHistoryDaoIntegrationTest {
         //set out of range value for itemid column and add purchasehistory into db
 
         purchaseHistory.setItemId(1234567891011L);
+
         purchaseHistoryDao.addPurchase(purchaseHistory);
+
 
     }
 
     /**
-     * @see PurchaseHistoryDao#getPurchaseHistory(Long, Long)
+     * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
     @Test
     public void getPurchaseHistory_Success() {
@@ -106,7 +110,7 @@ public class PurchaseHistoryDaoIntegrationTest {
         //find and get purchase item from DB
 
         PurchaseHistory purchaseItem = purchaseHistoryDao.
-                getPurchaseHistory(purchaseHistory.getUserId(), purchaseHistory.getItemId());
+                getPurchase(purchaseHistory.getUserId(), purchaseHistory.getItemId());
 
         //check for sameness with purchaseHistory
 
@@ -114,39 +118,40 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
     /**
-     * @see PurchaseHistoryDao#getPurchaseHistory(Long, Long)
+     * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
-    @Test(expected = DAOFailException.class)
+    @Test
     public void getPurchase_Failure() {
 
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
         //find and get purchase item from DB
 
-        PurchaseHistory added = purchaseHistoryDao.getPurchaseHistory(123456789101112131L, 123456789101112L);
+        PurchaseHistory added = purchaseHistoryDao.getPurchase(123456789101112131L, 123456789101112L);
 
         //check for sameness with purchaseHistory
 
         assertNull(added);
     }
 
-    @Test(expected = DAOFailException.class)
-    public void deletePurcaseHistory() {
+    @Test
+    public void deletePurcaseHistory_success() {
 
         //check for null purchasehistory
 
         assertNotNull(purchaseHistory);
-        purchaseHistoryDao.addPurchase(purchaseHistory);
-        assertNotNull(purchaseHistoryDao.getPurchaseHistory(testUser.getId(), testItem.getId()));
 
         //add purchasehistory into db
 
-        assertTrue(purchaseHistoryDao.deletePurchaseHistory(testUser.getId(), testItem.getId()));
+        purchaseHistoryDao.addPurchase(purchaseHistory);
 
-        //get added purchasehistory from db and check for sameness with origin
+        assertNotNull(purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId()));
 
-        PurchaseHistory deleteded = purchaseHistoryDao.getPurchaseHistory(testUser.getId(), testItem.getId());
 
+
+        assertTrue(purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId()));
+
+        purchaseHistory.setUserId(null);
 
 
     }
@@ -161,14 +166,10 @@ public class PurchaseHistoryDaoIntegrationTest {
         //add purchasehistory into db get and check for null
 
         purchaseHistoryDao.addPurchase(purchaseHistory);
-        assertNotNull(purchaseHistoryDao.getPurchaseHistory(testUser.getId(), testItem.getId()));
+        assertNotNull(purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId()));
 
-        assertFalse(purchaseHistoryDao.deletePurchaseHistory(1456325896615358332L, testItem.getId()));
+        assertFalse(purchaseHistoryDao.deletePurchase(1456325896615358332L, testItem.getId()));
 
-        //get deleted purchasehistory from db and check fields for null
-
-        PurchaseHistory deleteded = purchaseHistoryDao.getPurchaseHistory(testUser.getId(), testItem.getId());
-        assertNotNull(deleteded.getItemId());
 
 
     }
@@ -178,7 +179,7 @@ public class PurchaseHistoryDaoIntegrationTest {
         //delete inserted test users,artists and items  from db
 
         if (purchaseHistory.getUserId() != null)
-            purchaseHistoryDao.deletePurchaseHistory(testUser.getId(), testItem.getId());
+            purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId());
 
         if (testItem.getId() != null)
             itemDao.deleteItem(testItem.getId());
