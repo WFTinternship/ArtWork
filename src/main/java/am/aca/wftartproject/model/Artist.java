@@ -51,8 +51,13 @@ public class Artist extends AbstractUser {
         return "Artist{" +
                 "user=" +
                 ", specialization=" + specialization +
-                ", artistPhoto=" + artistPhoto +
                 ", itemList=" + itemList +
                 '}';
+    }
+
+    public boolean isValidArtist(){
+        return
+                super.isValidUser() &&
+                specialization != null;
     }
 }

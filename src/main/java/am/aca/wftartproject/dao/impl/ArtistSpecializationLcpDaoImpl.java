@@ -4,10 +4,8 @@ import am.aca.wftartproject.dao.ArtistSpecializationLcpDao;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -23,19 +21,19 @@ public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDa
     }
 
     /**
-     * @param specialization
-     *
-     * @see ArtistSpecializationLcpDao#addArtistSpecialization(ArtistSpecialization)
+     * @see ArtistSpecializationLcpDao#addArtistSpecialization()
      */
     @Override
-    public void addArtistSpecialization(ArtistSpecialization specialization) {
-        try(PreparedStatement ps = conn.prepareStatement("INSERT INTO artist_specialization_lcp(id, spec_type) VALUES (?, ?)")) {
-
-            ps.setInt(1, specialization.getSpecId());
-            ps.setString(2, specialization.getSpecialization());
-
-            ps.executeUpdate();
-
+    public void addArtistSpecialization() {
+        try {
+            PreparedStatement ps;
+            for (ArtistSpecialization artSpecElement : ArtistSpecialization.values()) {
+                ps = conn.prepareStatement("INSERT INTO artist_specialization_lcp(id,spec_type) VALUES(?,?)");
+                ps.setInt(1, artSpecElement.getSpecId());
+                ps.setString(2, artSpecElement.getSpecialization());
+                ps.executeUpdate();
+                ps.close();
+            }
         } catch (SQLException e) {
             String error = "Failed to add specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -51,20 +49,21 @@ public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDa
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
-        ArtistSpecialization art = ArtistSpecialization.OTHER;
-        try(PreparedStatement ps = conn.prepareStatement("SELECT id, spec_type FROM artist_specialization_lcp WHERE id = ?")) {
+        ArtistSpecialization artSpec = ArtistSpecialization.PAINTER;
+        try (PreparedStatement ps = conn.prepareStatement(
+                "SELECT * FROM artist_specialization_lcp WHERE id = ?")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()){
-                art.valueOf(rs.getString(2));
+            if (rs.next()) {
+                artSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
             }
-            return art;
-
+            rs.close();
         } catch (SQLException e) {
             String error = "Failed to get specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
+        return artSpec;
     }
 
     /**
@@ -75,35 +74,33 @@ public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDa
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
-        ArtistSpecialization art = ArtistSpecialization.OTHER;
-        try(PreparedStatement ps = conn.prepareStatement("SELECT id, spec_type FROM artist_specialization_lcp WHERE spec_type = ?")) {
+        ArtistSpecialization artSpec = ArtistSpecialization.OTHER;
+        try (PreparedStatement ps = conn.prepareStatement(
+                "SELECT * FROM artist_specialization_lcp WHERE spec_type = ?")) {
             ps.setString(1, specialization);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()){
-                art.valueOf(rs.getString(2));
+            if (rs.next()) {
+                artSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
             }
-            return art;
-
         } catch (SQLException e) {
             String error = "Failed to get specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
+        return artSpec;
     }
 
     /**
-     * @param id
-     *
-     * @see ArtistSpecializationLcpDao#deleteArtistSpecialization(int)
+     * @see ArtistSpecializationLcpDao#deleteArtistSpecialization()
      */
     @Override
-    public void deleteArtistSpecialization(int id) {
-        try(PreparedStatement ps = conn.prepareStatement("DELETE FROM artist_specialization_lcp WHERE id = ?")) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
+    public void deleteArtistSpecialization() {
+        try (Statement st = conn.createStatement()) {
+            st.executeUpdate("DELETE FROM artist_specialization_lcp");
         } catch (SQLException e) {
             String error = "Failed to delete specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);        }
+            throw new DAOException(error, e);
+        }
     }
 }
