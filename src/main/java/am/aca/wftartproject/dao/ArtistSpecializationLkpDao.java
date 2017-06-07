@@ -6,7 +6,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
  * Created by suro on 06-Jun-17
  */
 
-public interface ArtistSpecializationLcpDao {
+public interface ArtistSpecializationLkpDao {
 
     /**
      * Adds artist specializations into database

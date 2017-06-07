@@ -1,6 +1,6 @@
 package am.aca.wftartproject.dao.impl;
 
-import am.aca.wftartproject.dao.ArtistSpecializationLcpDao;
+import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
@@ -10,17 +10,17 @@ import java.sql.*;
 /**
  * @author surik
  */
-public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDao {
+public class ArtistSpecializationLkpDaoImpl implements ArtistSpecializationLkpDao {
 
     private Connection conn = null;
-    private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLcpDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
 
-    public ArtistSpecializationLcpDaoImpl(Connection conn) {
+    public ArtistSpecializationLkpDaoImpl(Connection conn) {
         this.conn = conn;
     }
 
     /**
-     * @see ArtistSpecializationLcpDao#addArtistSpecialization()
+     * @see ArtistSpecializationLkpDao#addArtistSpecialization()
      */
     @Override
     public void addArtistSpecialization() {
@@ -43,7 +43,7 @@ public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDa
     /**
      * @param id
      * @return
-     * @see ArtistSpecializationLcpDao#getArtistSpecialization(int)
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
@@ -67,7 +67,7 @@ public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDa
     /**
      * @param specialization
      * @return
-     * @see ArtistSpecializationLcpDao#getArtistSpecialization(String)
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
@@ -88,7 +88,7 @@ public class ArtistSpecializationLcpDaoImpl implements ArtistSpecializationLcpDa
     }
 
     /**
-     * @see ArtistSpecializationLcpDao#deleteArtistSpecialization()
+     * @see ArtistSpecializationLkpDao#deleteArtistSpecialization()
      */
     @Override
     public void deleteArtistSpecialization() {
