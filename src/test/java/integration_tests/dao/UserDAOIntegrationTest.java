@@ -72,12 +72,7 @@ public class UserDAOIntegrationTest {
      */
     @Test(expected = DAOFailException.class)
     public void addUser_Failure() {
-        //test user already inserted in setup, get record by userId
-
-        testUser.setId(null);
-
-        // Test method
-
+        //test user already inserted in setup, get record by user
         testUser.setLastName(null);
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -122,11 +117,9 @@ public class UserDAOIntegrationTest {
     public void deleteUser_success() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
-        userDao.deleteUser(testUser.getId());
+        assertTrue(userDao.deleteUser(testUser.getId()));
 
-        User deleteTest = userDao.findUser(testUser.getId());
-
-        assertNull(deleteTest.getId());
+        testUser.setId(null);
     }
 
     /**
@@ -137,14 +130,7 @@ public class UserDAOIntegrationTest {
 
         userDao.addUser(testUser);
         assertNotNull(testUser);
-        testUser.setLastName(null);
-        userDao.updateUser(testUser.getId(), testUser);
-        userDao.deleteUser(testUser.getId());
-
-        User deleteTest = userDao.findUser(testUser.getId());
-
-        assertNull(deleteTest.getId());
-
+        assertFalse(userDao.deleteUser(4546465465465L));
     }
 
 
@@ -161,22 +147,25 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#findUser(Long)
      */
-    @Test
+    @Test(expected = DAOFailException.class)
     public void findUser_failure() {
         userDao.addUser(testUser);
-        testUser.setId(-7L);
-        User findresult = userDao.findUser(testUser.getId());
-        assertNotSame(testUser, findresult);
+        User findresult = userDao.findUser(-7L);
+        assertNull(findresult);
     }
 
 
     @After
-    public void tearDown() {
+    public void tearDown()
+    {
+
         //delete inserted test users from db
+
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());
 
-        //delete test user object
+        //set temp instance refs to null
+
         testUser = null;
     }
 

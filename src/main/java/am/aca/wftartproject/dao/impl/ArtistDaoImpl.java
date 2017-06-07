@@ -47,6 +47,10 @@ public class ArtistDaoImpl implements ArtistDao {
             }
             ps.close();
 
+            // ensure all mandatory Artist members provided
+            if (artist.getSpecialization() == null) {
+                throw new DAOFailException("Artist specialization not defined");
+            }
 
             ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
             ps.setInt(1, artist.getSpecialization().getId());
@@ -80,6 +84,7 @@ public class ArtistDaoImpl implements ArtistDao {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id=?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
                 artist.setId(rs.getLong(1));
                 artist.setFirstName(rs.getString(2));
@@ -88,7 +93,9 @@ public class ArtistDaoImpl implements ArtistDao {
                 artist.setEmail(rs.getString(5));
                 artist.setPassword(rs.getString(6));
             }
+            else return null;
             ps.close();
+            rs.close();
 
             ps = conn.prepareStatement(
                     "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization art ON ar.spec_id=art.id WHERE user_id=?");
@@ -98,9 +105,12 @@ public class ArtistDaoImpl implements ArtistDao {
                 artist.setArtistPhoto(rs.getBytes(1));
                 artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
             }
+            else return null;
+
             ps.close();
             rs.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             try {
                 conn.rollback();
@@ -124,6 +134,9 @@ public class ArtistDaoImpl implements ArtistDao {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1, email);
+            if(ps.executeUpdate()!=1){
+                throw new DAOFailException("Failed to find Artist");
+            }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 artist.setId(rs.getLong(1));
@@ -191,7 +204,7 @@ public class ArtistDaoImpl implements ArtistDao {
             } catch (SQLException e1) {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
-            LOGGER.error(error);
+            LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
     }
@@ -201,20 +214,26 @@ public class ArtistDaoImpl implements ArtistDao {
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-public void deleteArtist(Long id) {
+public Boolean deleteArtist(Long id) {
+        Boolean success = false;
         try {
             //Start Transaction
             conn.setAutoCommit(false);
             PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
             ps.setLong(1, id);
-            ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            if(affectedRows>0){
+                success = true;
+            }
             ps.close();
 
 
 
             ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
-            ps.executeUpdate();
+            if(ps.executeUpdate()<0){
+                success = false;
+            }
             ps.close();
 
 
@@ -230,5 +249,17 @@ public void deleteArtist(Long id) {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOFailException(error, e);
         }
+        catch (DAOFailException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                LOGGER.error(String.format( e1.getMessage()));
+            }
+            LOGGER.error(String.format(e.getMessage()));
+            throw new DAOFailException(e.getMessage());
+
+        }
+        return success;
     }
+
 }

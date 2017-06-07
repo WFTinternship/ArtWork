@@ -5,9 +5,8 @@ import am.aca.wftartproject.dao.impl.*;
 import am.aca.wftartproject.exception.DAOFailException;
 import am.aca.wftartproject.model.*;
 import static integration_tests.service.AssertTemplates.assertEqualShoppingCards;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.*;
+
 import am.aca.wftartproject.util.DBConnection;
 import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
@@ -63,10 +62,7 @@ public class ShoppingCardDaoIntegrationTest {
 
         assertNotNull(testUser.getId());
         assertNotNull(testShoppingCard);
-        shoppingCardDao.addShoppingCard(null, testShoppingCard);
-        ShoppingCard added = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
-        assertEqualShoppingCards(added, testShoppingCard);
-
+        shoppingCardDao.addShoppingCard(124561515415313L, testShoppingCard);
     }
 
     /**
@@ -89,14 +85,10 @@ public class ShoppingCardDaoIntegrationTest {
      */
     @Test(expected = DAOFailException.class)
     public void getShoppingCard_Failure() {
-
-
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
-        assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
-        ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(null);
-        assertEqualShoppingCards(shoppingCard, testShoppingCard);
+        ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(1515131651654151351L);
     }
 
     /**
@@ -127,9 +119,8 @@ public class ShoppingCardDaoIntegrationTest {
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
-        shoppingCardDao.updateShoppingCard(testShoppingCard.getId(), null);
-        ShoppingCard updatedShoppingCard = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
-        assertEquals(updatedShoppingCard.getBalance(), testShoppingCard.getBalance());
+       assertFalse(shoppingCardDao.updateShoppingCard(1516516516351635163L,testShoppingCard));
+
 
     }
 
@@ -137,29 +128,31 @@ public class ShoppingCardDaoIntegrationTest {
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Test
-    public void deleteShoppingCard_Success() {
+    public void deleteShoppingCard_Success()
+    {
+        // check all components for null and check delete result for true
+
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
-        shoppingCardDao.deleteShoppingCard(testShoppingCard.getId());
-        ShoppingCard deletedShoppingCard = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
-        assertNull(deletedShoppingCard.getId());
-
+        assertTrue(shoppingCardDao.deleteShoppingCard(testShoppingCard.getId()));
+        testShoppingCard.setId(null);
     }
 
     /**
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Test(expected = DAOFailException.class)
-    public void deleteShoppingCard_Failure() {
+    public void deleteShoppingCard_Failure()
+    {
+        // check all components for null and check delete result for true
+
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
-        shoppingCardDao.deleteShoppingCard(null);
-        ShoppingCard deletedShoppingCard = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
-        assertNull(deletedShoppingCard.getId());
+        assertFalse(shoppingCardDao.deleteShoppingCard(4154541654564654656L));
 
     }
 
@@ -170,6 +163,8 @@ public class ShoppingCardDaoIntegrationTest {
             shoppingCardDao.deleteShoppingCard(testShoppingCard.getId());
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());
+
+        //set temp instance refs to null
 
         testShoppingCard = null;
 

@@ -24,7 +24,7 @@ import java.sql.SQLException;
 public class ArtistDaoIntegrationTest {
     //create connection,testArtist and artistDaoImplementation
 
-    private DBConnection connection= null;
+    private DBConnection connection = null;
 
     private Artist testArtist;
 
@@ -35,8 +35,10 @@ public class ArtistDaoIntegrationTest {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException {
+    public void setUp() throws SQLException, ClassNotFoundException
+    {
         //create db connection,artistDaoImplementation and artist for testing
+
         connection = new DBConnection();
 
         artistDao = new ArtistDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
@@ -49,7 +51,8 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#addArtist(Artist)
      */
     @Test
-    public void addArtist_Success() throws SQLException {
+    public void addArtist_Success() throws SQLException
+    {
         //set artist into db, get generated id
 
         artistDao.addArtist(testArtist);
@@ -126,25 +129,24 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#updateArtist(Long, Artist)
      */
-    @Test(expected = NullPointerException.class)
-    public void updateArtist_failure() {
+    @Test(expected = DAOFailException.class)
+    public void updateArtist_failure()
+    {
         //set artist specialization  and add into db
 
-        testArtist.setSpecialization(null);
         artistDao.addArtist(testArtist);
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
-        System.out.println(testArtist.getSpecialization().getId());
+
 
         //update artists specialization field in db, get from db
 
+        testArtist.setFirstName(null);
         artistDao.updateArtist(testArtist.getId(), testArtist);
         Artist updated = artistDao.findArtist(testArtist.getId());
-        System.out.println(updated.getSpecialization().getId());
-        System.out.println(testArtist.getSpecialization().getId());
 
         //check for sameness
 
-        assertNotSame(updated.getSpecialization().getId(), testArtist.getSpecialization().getId());
+        assertEquals(updated.getSpecialization().getId(), ArtistSpecialization.OTHER.getId());
 
     }
 
@@ -159,13 +161,32 @@ public class ArtistDaoIntegrationTest {
 
         //delete artist from db by id
 
-        artistDao.deleteArtist(testArtist.getId());
+
+        assertTrue(artistDao.deleteArtist(testArtist.getId()));
 
         //check isdeleted
 
         Artist deleted = artistDao.findArtist(testArtist.getId());
-        assertNull(deleted.getId());
+        assertNull(deleted);
         testArtist.setId(null);
+
+    }
+
+    /**
+     * @see ArtistDao#deleteArtist(Long)
+     */
+    @Test
+    public void deleteArtist_Failure() {
+        //add artist into db
+
+        artistDao.addArtist(testArtist);
+
+        //delete artist from db by id
+
+        assertFalse(artistDao.deleteArtist(-36L));
+
+        //check isdeleted
+
 
     }
 
@@ -179,6 +200,7 @@ public class ArtistDaoIntegrationTest {
         //find and get artist from db
 
         Artist findArtist = artistDao.findArtist(testArtist.getId());
+        System.out.println(findArtist);
 
         AssertTemplates.assertEqualArtists(findArtist, testArtist);
 
@@ -193,13 +215,13 @@ public class ArtistDaoIntegrationTest {
     public void findArtist_failure() {
         artistDao.addArtist(testArtist);
 
-        testArtist.setFirstName("lll");
 
         //find and get artist from db
 
-        Artist findArtist = artistDao.findArtist(testArtist.getId());
+        Artist findArtist = artistDao.findArtist(-8L);
 
-        assertNotSame(findArtist.getFirstName(), testArtist.getFirstName());
+
+        assertNull(findArtist);
 
         //check for sameness with testartist
 
@@ -209,9 +231,10 @@ public class ArtistDaoIntegrationTest {
     public void tearDown() {
         //delete inserted test users and artists from db
 
-        if (testArtist.getId() != null)
-
+        if (testArtist.getId() != null) {
             artistDao.deleteArtist(testArtist.getId());
+        }
+
 
         //set null test artist  object
 
