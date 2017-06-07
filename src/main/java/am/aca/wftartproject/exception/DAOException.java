@@ -6,7 +6,7 @@ package am.aca.wftartproject.exception;
 public class DAOException extends RuntimeException {
 
     public DAOException(Exception e) {
-        super("DB error: ", e);
+        super("DAO layer error: ", e);
     }
 
     public DAOException(String message) {

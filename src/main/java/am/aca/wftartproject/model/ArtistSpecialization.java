@@ -6,7 +6,7 @@ package am.aca.wftartproject.model;
 public enum ArtistSpecialization {
 
     PAINTER(1, "PAINTER"),
-    SCULPTOR(2, "SCULPTUR"),
+    SCULPTOR(2, "SCULPTOR"),
     PHOTOGRAPHER(3, "PHOTOGRAPHER"),
     OTHER(4, "OTHER");
 
@@ -29,6 +29,11 @@ public enum ArtistSpecialization {
 
     public int getSpecId() {
         return ArtistSpecialization.valueOf(type).getId();
+    }
+
+    @Override
+    public String toString() {
+        return this.id + " " + this.type;
     }
 
 
