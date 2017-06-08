@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+        <!--<bean id="item" class="am.aca.wftartproject.model.Item" scope="prototype" autowire="byName">-->
+            <!--<property name="description" value="Poghos"/>-->
+            <!--<property name="photoURL" value="/rtrg"/>-->
+            <!--<property name="price" value="500.0"/>-->
+            <!--<property name="status" value="true"/>-->
+            <!--<property name="title" value="harutik"/>-->
+            <!--<property name="itemType" value="PAINTING"/>-->
+        <!--</bean>-->
+
+
+        <!--<bean id="artist" class="am.aca.wftartproject.model.Artist" scope="prototype">-->
+            <!--<property name="age" value="20"/>-->
+        <!--</bean>-->
+
+
+
+
+
+
+
+        <!--<bean id="connection" class="am.aca.wftartproject.util.dbconnection.BasicConnection">-->
+        <!--</bean>-->
+
+
+        <!--<bean id="userDAO" class="am.aca.wftartproject.dao.impl.UserDaoImpl">-->
+            <!--<constructor-arg name="dataSource" ref="connection"/>-->
+        <!--</bean>-->
+
+
+        <!--<bean id="userService" class="am.aca.wftartproject.service.impl.UserServiceImpl">-->
+            <!--<property name="userDao" ref="userDAO"/>-->
+            <!--<property name="dataSource" ref="connection"/>-->
+        <!--</bean>-->
+
+
+
+</beans>
