@@ -1,16 +1,18 @@
 package am.aca.wftartproject.service.impl;
 
 
-import am.aca.wftartproject.dao.ArtistSpecializationLcpDao;
-import am.aca.wftartproject.dao.impl.ArtistSpecializationLcpDaoImpl;
+import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
+import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
-import am.aca.wftartproject.util.DBConnection;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -20,10 +22,12 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
 
     private static final Logger LOGGER = Logger.getLogger(ArtistService.class);
 
-    private ArtistSpecializationLcpDao lcpDao = null;
+    private Connection conn;
+    private ArtistSpecializationLkpDao lkpDao = null;
 
     public ArtistSpecializationServiceImpl() throws SQLException, ClassNotFoundException {
-        lcpDao = new ArtistSpecializationLcpDaoImpl(new DBConnection().getDBConnection(DBConnection.DBType.REAL));
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        lkpDao = new ArtistSpecializationLkpDaoImpl(conn);
     }
 
     /**
@@ -33,7 +37,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     public void addArtistSpecialization() {
 
         try{
-            lcpDao.addArtistSpecialization();
+            lkpDao.addArtistSpecialization();
         }catch (DAOException e){
             String error = "Failed to add ArtistSpecialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -52,7 +56,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     public ArtistSpecialization getArtistSpecialization(int id) {
 
         try{
-            return lcpDao.getArtistSpecialization(id);
+            return lkpDao.getArtistSpecialization(id);
         }catch (DAOException e){
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -71,7 +75,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     public ArtistSpecialization getArtistSpecialization(String specialization) {
 
         try{
-            return lcpDao.getArtistSpecialization(specialization);
+            return lkpDao.getArtistSpecialization(specialization);
         }catch (DAOException e){
             String error = "Failed to add Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -87,7 +91,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     public void deleteArtistSpecialization() {
 
         try{
-            lcpDao.deleteArtistSpecialization();
+            lkpDao.deleteArtistSpecialization();
         }catch (DAOException e){
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

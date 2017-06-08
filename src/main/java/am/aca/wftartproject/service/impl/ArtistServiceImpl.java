@@ -6,7 +6,8 @@ import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.util.DBConnection;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -21,10 +22,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
-    private Connection conn = new DBConnection().getDBConnection(DBConnection.DBType.REAL);
-    private ArtistDao artistDao = new ArtistDaoImpl(conn);
+    private Connection conn;
+    private ArtistDao artistDao;
 
     public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        artistDao = new ArtistDaoImpl(conn);
     }
 
 

@@ -1,18 +1,20 @@
 package am.aca.wftartproject.service.impl;
 
-import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.exception.ServiceException;
-import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.util.DBConnection;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
+import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.*;
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by surik on 6/1/17
@@ -21,15 +23,14 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.*;
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
+
+    private Connection conn;
     private ItemDao itemDao;
 
 
     public ItemServiceImpl() throws SQLException, ClassNotFoundException {
-
-        //TODO change line bellow(getConnection)
-        itemDao = null;
-        itemDao = new ItemDaoImpl(new DBConnection().getDBConnection(DBConnection.DBType.REAL));
-
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        itemDao = new ItemDaoImpl(conn);
     }
 
 

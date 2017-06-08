@@ -6,14 +6,14 @@ import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.validator.ValidatorUtil;
-import am.aca.wftartproject.util.DBConnection;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.apache.log4j.Logger;
 
-import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.*;
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by surik on 6/3/17
@@ -21,10 +21,13 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.*;
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-    private Connection dbConnection = new DBConnection().getDBConnection(DBConnection.DBType.REAL);
-    private UserDao userDao = new UserDaoImpl(dbConnection);
+
+    private Connection conn ;
+    private UserDao userDao;
 
     public UserServiceImpl() throws SQLException, ClassNotFoundException {
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        userDao = new UserDaoImpl(conn);
     }
 
     /**

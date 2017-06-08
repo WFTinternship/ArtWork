@@ -1,15 +1,18 @@
 package am.aca.wftartproject.service.impl;
 
+import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
-import am.aca.wftartproject.util.DBConnection;
-import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import org.apache.log4j.Logger;
+
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 /**
  * Created by surik on 6/1/17
@@ -17,13 +20,14 @@ import org.apache.log4j.Logger;
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
+
+    private Connection conn;
     private PurchaseHistoryDao purchaseHistoryDao = null;
 
 
     public PurchaseHistoryServiceImpl() throws SQLException, ClassNotFoundException {
-
-        purchaseHistoryDao= new PurchaseHistoryDaoImpl(new DBConnection().getDBConnection(DBConnection.DBType.REAL));
-
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        purchaseHistoryDao= new PurchaseHistoryDaoImpl(conn);
     }
 
 

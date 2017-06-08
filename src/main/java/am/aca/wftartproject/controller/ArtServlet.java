@@ -24,10 +24,5 @@ public class ArtServlet extends HttpServlet {
         request.setAttribute("artSpec",ArtistSpecialization.values());
         dispatcher.forward(request,response);
 
-
     }
-
-
-
-
 }

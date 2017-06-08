@@ -1,5 +1,7 @@
 package am.aca.wftartproject.model;
 
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
+
 /**
  * Created by ASUS on 30-May-17
  */
