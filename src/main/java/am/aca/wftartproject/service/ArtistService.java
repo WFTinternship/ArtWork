@@ -3,31 +3,16 @@ package am.aca.wftartproject.service;
 import am.aca.wftartproject.model.Artist;
 
 /**
- * Created by ASUS on 30-May-17
+ * Created by surik on 6/3/17
  */
 public interface ArtistService {
 
     /**
-     * Adds
+     * Adds artist into the database
      *
      * @param artist
      */
     void addArtist(Artist artist);
-
-    /**
-     * Updates artist info in database
-     *
-     * @param id
-     * @param artist
-     */
-    void updateArtist(Long id, Artist artist);
-
-    /**
-     * Deletes artist from database
-     *
-     * @param id
-     */
-    void deleteArtist(Long id);
 
     /**
      * Finds artist from database by id
@@ -44,5 +29,20 @@ public interface ArtistService {
      * @return
      */
     Artist findArtist(String email);
+
+    /**
+     * Updates artist info in database
+     *
+     * @param id
+     * @param artist
+     */
+    void updateArtist(Long id, Artist artist);
+
+    /**
+     * Deletes artist from database
+     *
+     * @param id
+     */
+    void deleteArtist(Long id);
 
 }

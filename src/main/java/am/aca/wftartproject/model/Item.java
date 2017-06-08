@@ -102,4 +102,14 @@ public class Item {
                 ", itemType=" + itemType.toString() +
                 '}';
     }
+
+    public boolean isValidItem() {
+        return
+                id != null &&
+                id > 0 &&
+                !isEmptyString(title) &&
+                !isEmptyString(photoURL) &&
+                price != 0 &&
+                itemType != null;
+    }
 }

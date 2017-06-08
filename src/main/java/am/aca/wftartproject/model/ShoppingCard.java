@@ -42,4 +42,8 @@ public class ShoppingCard {
                 ", balance=" + balance +
                 '}';
     }
+
+    public boolean isValidShoppingCard() {
+        return (id != null && balance != null);
+    }
 }
