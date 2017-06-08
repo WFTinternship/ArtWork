@@ -18,7 +18,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
 
     public ArtistDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        setDataSource(dataSource);
     }
 
 
@@ -30,7 +30,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public void addArtist(Artist artist) {
         Connection conn = null;
         try {
-            conn = dataSource.getConnection();
+            conn = getDataSource().getConnection();
+
             //Start Transaction
             conn.setAutoCommit(false);
 
@@ -65,7 +66,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         } catch (SQLException e) {
             String error = "Failed to add Artist: %s";
             try {
-                conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (SQLException e1) {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
@@ -73,7 +76,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -87,14 +92,13 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(Long id) {
-        Artist artist = new Artist();
         Connection conn = null;
+        Artist artist = new Artist();
         try {
-            conn = dataSource.getConnection();
+            conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id=?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) {
                 artist.setId(rs.getLong(1));
                 artist.setFirstName(rs.getString(2));
@@ -113,7 +117,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             if (rs.next()) {
                 artist.setArtistPhoto(rs.getBytes(1));
                 artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
-            } else return null;
+            }
 
             ps.close();
             rs.close();
@@ -123,7 +127,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -138,10 +144,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(String email) {
-        Artist artist = new Artist();
         Connection conn = null;
+        Artist artist = new Artist();
         try {
-            conn = dataSource.getConnection();
+            conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1, email);
             if (ps.executeUpdate() != 1) {
@@ -174,7 +180,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -191,7 +199,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public void updateArtist(Long id, Artist artist) {
         Connection conn = null;
         try {
-            conn = dataSource.getConnection();
+            conn = getDataSource().getConnection();
             //Start Transaction
             conn.setAutoCommit(false);
 
@@ -218,7 +226,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         } catch (SQLException e) {
             String error = "Failed to update Artist: %s";
             try {
-                conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (SQLException e1) {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
@@ -226,7 +236,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -238,11 +250,11 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-    public Boolean deleteArtist(Long id) {
+    public Boolean deleteArtist(Long id)  {
         Connection conn = null;
         Boolean success = false;
         try {
-            conn = dataSource.getConnection();
+            conn = getDataSource().getConnection();
             //Start Transaction
             conn.setAutoCommit(false);
             PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
@@ -252,7 +264,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                 success = true;
             }
             ps.close();
-
 
             ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
@@ -265,7 +276,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         } catch (SQLException e) {
             String error = "Failed to delete Artist: %s";
             try {
-                conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (SQLException e1) {
                 LOGGER.error(String.format(error, e1.getMessage()));
             }
@@ -273,7 +286,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

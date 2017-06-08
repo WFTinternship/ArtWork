@@ -19,7 +19,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
 
     public PurchaseHistoryDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        setDataSource(dataSource);
     }
 
     /**
@@ -27,10 +27,12 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Override
-    public void addPurchase(PurchaseHistory purchaseHistory) {
+    public void addPurchase(PurchaseHistory purchaseHistory)  {
         Connection conn = null;
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(
-                "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)");
             ps.setLong(1, purchaseHistory.getUserId());
             ps.setLong(2, purchaseHistory.getItemId());
             Calendar cal = Calendar.getInstance();
@@ -46,7 +48,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -58,8 +62,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     public PurchaseHistory getPurchase(Long user_id, Long item_id) {
         Connection conn = null;
         PurchaseHistory purchaseHistory = new PurchaseHistory();
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ");
             ps.setLong(1, item_id);
             ps.setLong(2, user_id);
             ResultSet rs = ps.executeQuery();
@@ -67,7 +73,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
                 purchaseHistory.setItemId(rs.getLong("item_id"));
                 purchaseHistory.setUserId(rs.getLong("user_id"));
                 purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
-            } else return purchaseHistory = null;
+            }
 
             ps.close();
         } catch (SQLException e) {
@@ -76,7 +82,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -87,11 +95,12 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
-
         Connection conn = null;
         List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
         PurchaseHistory purchaseHistory = new PurchaseHistory();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE user_id = ?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE user_id = ?");
             ps.setLong(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -108,7 +117,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -118,10 +129,12 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
     @Override
     public Boolean deletePurchase(Long user_id, Long item_id) {
-        Boolean success = false;
         Connection conn = null;
-        try (PreparedStatement ps = conn.prepareStatement(
-                " DELETE FROM purchase_history WHERE user_id=? and item_id = ? ")) {
+        Boolean success = false;
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    " DELETE FROM purchase_history WHERE user_id=? and item_id = ? ");
             ps.setLong(1, user_id);
             ps.setLong(2, item_id);
             if (ps.executeUpdate() > 0) {
@@ -133,7 +146,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

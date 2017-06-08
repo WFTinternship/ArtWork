@@ -30,11 +30,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#addItem(Long, Item)
      */
     @Override
-    public void addItem(Long artistID, Item item) {
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(
-                "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS)) {
-
+    public void addItem(Long artistID, Item item)  {
+        Connection conn = null;
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
@@ -52,6 +54,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -63,8 +73,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Item findItem(Long id) {
+        Connection conn = null;
         Item item = new Item();
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM item WHERE id = ?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -81,6 +94,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return item;
     }
@@ -91,10 +112,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#updateItem(Long, Item)
      */
     @Override
-    public void updateItem(Long id, Item item) {
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(
-                "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?")) {
-
+    public void updateItem(Long id, Item item)  {
+        Connection conn = null;
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?");
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
@@ -105,6 +128,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to update Item:  %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -113,14 +144,25 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#deleteItem(Long)
      */
     @Override
-    public void deleteItem(Long id) {
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("DELETE FROM item WHERE id=?")) {
+    public void deleteItem(Long id)  {
+        Connection conn = null;
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -132,9 +174,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
+        Connection conn = null;
         List<Item> itemList = new ArrayList<>();
         Item item = new Item();
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?");
             ps.setInt(1, limit);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -152,6 +197,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to get RecentlyAddedItems: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return itemList;
     }
@@ -163,10 +216,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#getItemsByTitle(String)
      */
     @Override
-    public List<Item> getItemsByTitle(String title) {
+    public List<Item> getItemsByTitle(String title)  {
+        Connection conn = null;
         List<Item> itemList = new ArrayList<>();
         Item item = new Item();
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM item WHERE title=?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE title=?");
             ps.setString(1, title);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -184,6 +240,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return itemList;
     }
@@ -195,10 +259,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#getItemsByType(String)
      */
     @Override
-    public List<Item> getItemsByType(String itemType) {
+    public List<Item> getItemsByType(String itemType)  {
+        Connection conn = null;
         List<Item> itemList = new ArrayList<>();
         Item item = new Item();
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM item WHERE item_type=?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE item_type=?");
             ps.setString(1, itemType);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -216,6 +283,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return itemList;
     }

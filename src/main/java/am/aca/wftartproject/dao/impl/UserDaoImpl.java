@@ -16,7 +16,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        setDataSource(dataSource);
     }
 
     /**
@@ -26,9 +26,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public void addUser(User user) {
         Connection conn = null;
-        try (PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
@@ -46,7 +48,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -60,10 +64,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * @see UserDao#findUser(Long)
      */
     @Override
-    public User findUser(Long id) {
+    public User findUser(Long id)  {
         Connection conn = null;
         User user = new User();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -84,12 +90,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
         return user;
     }
 
@@ -102,7 +109,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public User findUser(String email) {
         Connection conn = null;
         User user = new User();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -120,7 +129,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -138,8 +149,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public Boolean updateUser(Long id, User user) {
         Connection conn = null;
         Boolean success = false;
-        try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?")) {
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?");
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
@@ -149,14 +162,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-
         } catch (SQLException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -174,7 +188,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public Boolean deleteUser(Long id) {
         Connection conn = null;
         Boolean success = false;
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?")) {
+        try  {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?");
             ps.setLong(1, id);
             if (ps.executeUpdate() > 0) {
                 success = true;
@@ -185,7 +201,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

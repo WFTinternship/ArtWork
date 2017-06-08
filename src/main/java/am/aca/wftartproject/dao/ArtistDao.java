@@ -12,7 +12,7 @@ public interface ArtistDao {
      *
      * @param artist
      */
-    void addArtist(Artist artist);
+    void addArtist(Artist artist) ;
 
     /**
      * Finds artist from database by id
@@ -20,7 +20,7 @@ public interface ArtistDao {
      * @param id
      * @return
      */
-    Artist findArtist(Long id);
+    Artist findArtist(Long id) ;
 
     /**
      * Finds artist from database by email
@@ -28,7 +28,7 @@ public interface ArtistDao {
      * @param email
      * @return
      */
-    Artist findArtist(String email);
+    Artist findArtist(String email) ;
 
     /**
      * Updates artist info in database
@@ -36,12 +36,12 @@ public interface ArtistDao {
      * @param id
      * @param artist
      */
-    void updateArtist(Long id, Artist artist);
+    void updateArtist(Long id, Artist artist) ;
 
     /**
      * Deletes artist from database
      *
      * @param id
      */
-    Boolean deleteArtist(Long id);
+    Boolean deleteArtist(Long id) ;
 }

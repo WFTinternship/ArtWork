@@ -5,7 +5,7 @@ import am.aca.wftartproject.model.*;
 import static org.junit.Assert.*;
 
 /**
- * Created by Armen on 5/30/2017.
+ * Created by Armen on 5/30/2017
  */
 public class AssertTemplates {
     public static void assertEqualUsers(User expectedUser, User actualUser) {

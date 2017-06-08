@@ -49,7 +49,7 @@ public class PurchaseHistoryDaoIntegrationTest {
         //create db connection
 
         DataSource conn = new ConnectionFactory()
-                .getConnection(ConnectionModel.BASIC)
+                .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
         userDao = new UserDaoImpl(conn);
         itemDao = new ItemDaoImpl(conn);

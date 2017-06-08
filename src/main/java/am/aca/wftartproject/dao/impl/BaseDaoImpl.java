@@ -7,7 +7,7 @@ import javax.sql.DataSource;
  */
 public abstract class BaseDaoImpl {
 
-    protected DataSource dataSource = null;
+    private DataSource dataSource = null;
 
     public DataSource getDataSource() {
         return dataSource;

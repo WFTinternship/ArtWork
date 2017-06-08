@@ -32,10 +32,10 @@ public class ConnectionPool implements DatabaseConnection {
         cpds.setPassword(propertyHelper.getProperties().getProperty("jdbcPassword"));
 
         // Optional Settings
-        cpds.setInitialPoolSize(15);
-        cpds.setMinPoolSize(15);
-        cpds.setAcquireIncrement(15);
-        cpds.setMaxPoolSize(50);
+        cpds.setInitialPoolSize(5);
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
         cpds.setMaxStatements(100);
 
         return cpds;

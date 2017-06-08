@@ -17,7 +17,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     public ArtistSpecializationLkpDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        setDataSource(dataSource);
     }
 
     /**
@@ -27,7 +27,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     public void addArtistSpecialization() {
         Connection conn = null;
         try {
-            conn = dataSource.getConnection();
+            conn = getDataSource().getConnection();
             PreparedStatement ps;
             for (ArtistSpecialization artSpecElement : ArtistSpecialization.values()) {
                 ps = conn.prepareStatement("INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(?,?)");
@@ -42,7 +42,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -58,9 +60,11 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     public ArtistSpecialization getArtistSpecialization(int id) {
         Connection conn = null;
         ArtistSpecialization artSpec = ArtistSpecialization.PAINTER;
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM artist_specialization_lkp WHERE id = ?")) {
-            conn = dataSource.getConnection();
+        try {
+            conn = getDataSource().getConnection();
+
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT * FROM artist_specialization_lkp WHERE id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -73,7 +77,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -90,9 +96,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     public ArtistSpecialization getArtistSpecialization(String specialization) {
         Connection conn = null;
         ArtistSpecialization artSpec = ArtistSpecialization.OTHER;
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM artist_specialization_lkp WHERE spec_type = ?")) {
-            conn = dataSource.getConnection();
+        try {
+            conn = getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT * FROM artist_specialization_lkp WHERE spec_type = ?");
             ps.setString(1, specialization);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -104,7 +111,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -118,8 +127,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     @Override
     public void deleteArtistSpecialization() {
         Connection conn = null;
-        try (Statement st = conn.createStatement()) {
-            conn = dataSource.getConnection();
+        try {
+            conn = getDataSource().getConnection();
+            Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM artist_specialization_lkp");
         } catch (SQLException e) {
             String error = "Failed to delete specialization: %s";
@@ -127,7 +137,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         } finally {
             try {
-                conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

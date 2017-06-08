@@ -5,7 +5,7 @@ import am.aca.wftartproject.model.*;
 import java.util.Random;
 
 /**
- * Created by Armen on 5/30/2017.
+ * Created by Armen on 5/30/2017
  */
 public class TestObjectTemplate {
     public static Artist createTestArtist(){
