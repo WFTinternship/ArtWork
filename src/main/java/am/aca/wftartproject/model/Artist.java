@@ -25,7 +25,7 @@ public class Artist extends AbstractUser {
         return artistPhoto;
     }
 
-    public AbstractUser setArtistPhoto(byte[] artistPhoto) {
+    public Artist setArtistPhoto(byte[] artistPhoto) {
         this.artistPhoto = artistPhoto;
         return this;
     }
@@ -34,7 +34,7 @@ public class Artist extends AbstractUser {
         return itemList;
     }
 
-    public AbstractUser setItemList(List<Item> itemList) {
+    public Artist setItemList(List<Item> itemList) {
         this.itemList = itemList;
         return this;
     }
@@ -65,9 +65,8 @@ public class Artist extends AbstractUser {
                 '}';
     }
 
-    public boolean isValidArtist(){
-        return
-                super.isValidUser() &&
+    public boolean isValidArtist() {
+        return super.isValidUser() &&
                 specialization != null;
     }
 }

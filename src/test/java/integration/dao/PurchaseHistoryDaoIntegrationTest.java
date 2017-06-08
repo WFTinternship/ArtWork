@@ -22,7 +22,7 @@ import static util.AssertTemplates.assertEqualPurchaseHistory;
 
 
 /**
- * Created by Armen on 6/2/2017.
+ * Created by Armen on 6/2/2017
  */
 public class PurchaseHistoryDaoIntegrationTest {
     private UserDao userDao;
@@ -77,7 +77,7 @@ public class PurchaseHistoryDaoIntegrationTest {
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Test
-    public void addPurchase() {
+    public void addPurchase_Success() {
 
         //check for null purchasehistory
 
@@ -102,7 +102,7 @@ public class PurchaseHistoryDaoIntegrationTest {
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Test(expected = DAOException.class)
-    public void addPurchase_failure() {
+    public void addPurchase_Failure() {
 
         //check for null purchasehistory
 
@@ -150,7 +150,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
     @Test
-    public void deletePurcaseHistory_success() {
+    public void deletePurchaseHistory_Success() {
 
         //check for null purchasehistory
 
@@ -171,13 +171,13 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
     @Test(expected = DAOException.class)
-    public void deletePurcaseHistory_failure() {
+    public void deletePurchaseHistory_Failure() {
 
-        //check for null purchasehistory;
+        //check for null purchaseHistory;
 
         assertNotNull(purchaseHistory);
 
-        //add purchasehistory into db get and check for null
+        //add purchaseHistory into db get and check for null
 
         purchaseHistoryDao.addPurchase(purchaseHistory);
         assertNotNull(purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId()));

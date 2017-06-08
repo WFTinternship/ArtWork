@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import static junit.framework.TestCase.*;
 
 /**
- * Created by Armen on 6/1/2017.
+ * Created by Armen on 6/1/2017
  */
 public class ArtistDaoIntegrationTest {
     //create testArtist and artistDaoImplementation
@@ -29,7 +29,7 @@ public class ArtistDaoIntegrationTest {
     private Artist testArtist;
 
     private ArtistDao artistDao;
-    ArtistSpecializationLkpDao artistSpecialization ;
+    private ArtistSpecializationLkpDao artistSpecialization ;
 
     public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }
@@ -49,8 +49,8 @@ public class ArtistDaoIntegrationTest {
         artistDao = new ArtistDaoImpl(conn);
 
         testArtist = TestObjectTemplate.createTestArtist();
-
     }
+
 
     /**
      * @see ArtistDao#addArtist(Artist)
@@ -76,8 +76,8 @@ public class ArtistDaoIntegrationTest {
         //check for equals
 
         AssertTemplates.assertEqualArtists(testArtist, addedArtist);
-
     }
+
 
     /**
      * @see ArtistDao#addArtist(Artist)
@@ -112,7 +112,7 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#updateArtist(Long, Artist)
      */
     @Test
-    public void updateArtist_success() {
+    public void updateArtist_Success() {
         //set artist specialization  and add into db
 
         testArtist.setSpecialization(ArtistSpecialization.PAINTER);
@@ -134,7 +134,7 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#updateArtist(Long, Artist)
      */
     @Test(expected = DAOException.class)
-    public void updateArtist_failure() {
+    public void updateArtist_Failure() {
         //set artist specialization  and add into db
 
         artistDao.addArtist(testArtist);
@@ -157,7 +157,7 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#deleteArtist(Long)
      */
     @Test
-    public void deleteArtist_success() {
+    public void deleteArtist_Success() {
         //add artist into db
 
         artistDao.addArtist(testArtist);
@@ -197,7 +197,7 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#findArtist(Long)
      */
     @Test
-    public void findArtist_success() {
+    public void findArtist_Success() {
         artistDao.addArtist(testArtist);
 
         //find and get artist from db
@@ -215,7 +215,7 @@ public class ArtistDaoIntegrationTest {
      * @see ArtistDao#findArtist(Long)
      */
     @Test
-    public void findArtist_failure() {
+    public void findArtist_Failure() {
         artistDao.addArtist(testArtist);
 
 

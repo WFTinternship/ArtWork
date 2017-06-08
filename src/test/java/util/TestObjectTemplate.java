@@ -8,8 +8,8 @@ import java.util.Random;
  * Created by Armen on 5/30/2017
  */
 public class TestObjectTemplate {
-    public static Artist createTestArtist(){
 
+    public static Artist createTestArtist(){
         Artist testArtist = new Artist();
         testArtist.setArtistPhoto(new byte[10]);
         testArtist.setSpecialization(ArtistSpecialization.PAINTER);
@@ -21,6 +21,7 @@ public class TestObjectTemplate {
        // testArtist.setShoppingCard(new ShoppingCard(getRandomNumber() + 1.1));
         return  testArtist;
     }
+
     public static User createTestUser() {
         User testUser = new User();
         testUser.setFirstName("Test FirstName" + getRandomNumber());
@@ -42,10 +43,8 @@ public class TestObjectTemplate {
         return item;
     }
 
-
     public static int getRandomNumber() {
         Random rand = new Random();
-        int n = rand.nextInt(100000) + 1;
-        return n;
+        return rand.nextInt(100000) + 1;
     }
 }

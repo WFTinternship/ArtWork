@@ -24,12 +24,10 @@ public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
-    private DataSource conn;
     private ItemDao itemDao;
 
-
     public ItemServiceImpl() throws SQLException, ClassNotFoundException {
-        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         itemDao = new ItemDaoImpl(conn);
     }
 
@@ -60,7 +58,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
 
 
@@ -72,11 +69,11 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public Item findItem(Long id) {
-
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is invalid: %s", id));
             throw new ServiceException("Invalid Id");
         }
+
         try {
             return itemDao.findItem(id);
         }catch (DAOException e){
@@ -84,7 +81,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
 
 
@@ -109,7 +105,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
 
 
@@ -126,6 +121,7 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format("title is invalid: %s", title));
             throw new ServiceException("Invalid title");
         }
+
         try {
             return itemDao.getItemsByTitle(title);
         }catch (DAOException e){
@@ -133,7 +129,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
 
 
@@ -150,6 +145,7 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format("itemType is invalid: %s", itemType));
             throw new ServiceException("Invalid itemType");
         }
+
         try {
             return itemDao.getItemsByType(itemType);
         }catch (DAOException e){
@@ -157,8 +153,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
-
     }
 
 
@@ -196,11 +190,11 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public void deleteItem(Long id) {
-
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is invalid: %s", id));
             throw new ServiceException("Invalid Id");
         }
+
         try {
             itemDao.deleteItem(id);
         }catch (DAOException e){
@@ -208,7 +202,5 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
-
 }

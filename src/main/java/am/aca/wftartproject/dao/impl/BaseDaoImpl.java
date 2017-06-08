@@ -16,6 +16,4 @@ public abstract class BaseDaoImpl {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
-
 }

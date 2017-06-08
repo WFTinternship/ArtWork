@@ -18,7 +18,7 @@ import static junit.framework.TestCase.*;
 import static util.AssertTemplates.assertEqualUsers;
 
 /**
- * Created by Armen on 5/30/2017.
+ * Created by Armen on 5/30/2017
  */
 public class UserDAOIntegrationTest {
     private UserDaoImpl userDao;
@@ -117,7 +117,7 @@ public class UserDAOIntegrationTest {
      * @see UserDao#deleteUser(Long)
      */
     @Test
-    public void deleteUser_success() {
+    public void deleteUser_Success() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
         assertTrue(userDao.deleteUser(testUser.getId()));
@@ -129,7 +129,7 @@ public class UserDAOIntegrationTest {
      * @see UserDao#deleteUser(Long)
      */
     @Test
-    public void deleteUser_failure() {
+    public void deleteUser_Failure() {
 
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -141,7 +141,7 @@ public class UserDAOIntegrationTest {
      * @see UserDao#findUser(Long)
      */
     @Test
-    public void findUser_success() {
+    public void findUser_Success() {
         userDao.addUser(testUser);
         User findresult = userDao.findUser(testUser.getId());
         assertEqualUsers(testUser, findresult);
@@ -151,10 +151,10 @@ public class UserDAOIntegrationTest {
      * @see UserDao#findUser(Long)
      */
     @Test
-    public void findUser_failure() {
+    public void findUser_Failure() {
         userDao.addUser(testUser);
-        User findresult = userDao.findUser(-7L);
-        assertNull(findresult);
+        User findResult = userDao.findUser(-7L);
+        assertNull(findResult);
     }
 
 

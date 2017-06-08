@@ -50,11 +50,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             }
             ps.close();
 
-            // ensure all mandatory Artist members provided
-            if (artist.getSpecialization() == null) {
-                throw new DAOException("Artist specialization not defined");
-            }
-
             ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
             ps.setInt(1, artist.getSpecialization().getId());
             ps.setBytes(2, artist.getArtistPhoto());
@@ -100,27 +95,30 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getLong(1));
-                artist.setFirstName(rs.getString(2));
-                artist.setLastName(rs.getString(3));
-                artist.setAge(rs.getInt(4));
-                artist.setEmail(rs.getString(5));
-                artist.setPassword(rs.getString(6));
-            } else return null;
-            ps.close();
+                artist.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
+            } else {
+                return null;
+            }
             rs.close();
+            ps.close();
 
             ps = conn.prepareStatement(
-                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?");
+                    "SELECT ar.photo,art.spec_type FROM artist ar " +
+                            "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setArtistPhoto(rs.getBytes(1));
-                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
+                artist.setArtistPhoto(rs.getBytes("photo"))
+                        .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
             }
 
-            ps.close();
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -137,6 +135,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         return artist;
     }
 
+
     /**
      * @param email
      * @return
@@ -150,30 +149,31 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1, email);
-            if (ps.executeUpdate() != 1) {
-                throw new DAOException("Failed to find Artist");
-            }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setId(rs.getLong(1));
-                artist.setFirstName(rs.getString(2));
-                artist.setLastName(rs.getString(3));
-                artist.setAge(rs.getInt(4));
-                artist.setEmail(rs.getString(5));
-                artist.setPassword(rs.getString(6));
+                artist.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
+            } else {
+                return null;
             }
+            rs.close();
             ps.close();
 
             ps = conn.prepareStatement(
-                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?");
+                    "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN " +
+                            "artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?");
             ps.setLong(1, artist.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
-                artist.setArtistPhoto(rs.getBytes(1));
-                artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
+                artist.setArtistPhoto(rs.getBytes("photo"))
+                        .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
             }
-            ps.close();
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -190,6 +190,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         return artist;
     }
 
+
     /**
      * @param id
      * @param artist
@@ -200,6 +201,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         Connection conn = null;
         try {
             conn = getDataSource().getConnection();
+
             //Start Transaction
             conn.setAutoCommit(false);
 
@@ -208,7 +210,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             ps.setString(1, artist.getFirstName());
             ps.setString(2, artist.getLastName());
             ps.setInt(3, artist.getAge());
-//            ps.setString(4, artist.getEmail());
             ps.setString(4, artist.getPassword());
             ps.setLong(5, id);
             ps.executeUpdate();
@@ -245,16 +246,18 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
     }
 
+
     /**
      * @param id
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-    public Boolean deleteArtist(Long id)  {
+    public Boolean deleteArtist(Long id) {
         Connection conn = null;
         Boolean success = false;
         try {
             conn = getDataSource().getConnection();
+
             //Start Transaction
             conn.setAutoCommit(false);
             PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
@@ -293,8 +296,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                 e.printStackTrace();
             }
         }
-
         return success;
     }
-
 }

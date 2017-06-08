@@ -23,7 +23,7 @@ import static junit.framework.TestCase.*;
 import static util.AssertTemplates.assertEqualItems;
 
 /**
- * Created by Armen on 6/1/2017.
+ * Created by Armen on 6/1/2017
  */
 public class ItemDaoIntegrationTest {
 
@@ -66,7 +66,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#addItem(Long, Item)
      */
     @Test
-    public void addItem() {
+    public void addItem_Success() {
         //check testItem for null
 
         assertNotNull(testItem);
@@ -89,7 +89,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#addItem(Long, Item)
      */
     @Test(expected = DAOException.class)
-    public void addItem_failure() {
+    public void addItem_Failure() {
 
         //check testItem for null
 
@@ -114,7 +114,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#updateItem(Long, Item)
      */
     @Test
-    public void updateitem() {
+    public void updateItem_Success() {
         //check testItem for null
 
         assertNotNull(testItem);
@@ -143,7 +143,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#updateItem(Long, Item)
      */
     @Test(expected = DAOException.class)
-    public void updateitem_failure() {
+    public void updateItem_Failure() {
         //check testItem for null
 
         assertNotNull(testItem);
@@ -172,7 +172,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#deleteItem(Long)
      */
     @Test
-    public void deleteItem_success() {
+    public void deleteItem_Success() {
         //add item into db
 
         itemDao.addItem(testArtist.getId(), testItem);
@@ -198,7 +198,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#deleteItem(Long)
      */
     @Test
-    public void deleteItem_failure() {
+    public void deleteItem_Failure() {
 
         //add item into db
 
@@ -225,7 +225,7 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#findItem(Long)
      */
     @Test
-    public void findItem_success() {
+    public void findItem_Success() {
         //add item into db
 
         itemDao.addItem(testArtist.getId(), testItem);

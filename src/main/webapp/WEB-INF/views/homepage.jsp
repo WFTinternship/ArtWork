@@ -74,7 +74,7 @@
         <div class="row">
 
             <div class="col-md-3">
-                <p class="lead">Art Type</p>
+                <p class="lead">Artist Type</p>
                 <div class="list-group">
                     <c:forEach items="${artSpec}" var="artSpecType" >
                         <a href="#" class="list-group-item">${artSpecType.name()}</a>

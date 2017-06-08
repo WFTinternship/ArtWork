@@ -18,11 +18,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
-//    private DataSource dataSource = null;
-
     public ItemDaoImpl(DataSource dataSource) {
         setDataSource(dataSource);
     }
+
 
     /**
      * @param artistID
@@ -30,7 +29,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#addItem(Long, Item)
      */
     @Override
-    public void addItem(Long artistID, Item item)  {
+    public void addItem(Long artistID, Item item) {
         Connection conn = null;
         try {
             conn = getDataSource().getConnection();
@@ -50,11 +49,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 item.setId(rs.getLong(1));
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -90,11 +90,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                         .setItemType(ItemType.valueOf(rs.getString("type")));
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -106,13 +107,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return item;
     }
 
+
     /**
      * @param id
      * @param item
      * @see ItemDao#updateItem(Long, Item)
      */
     @Override
-    public void updateItem(Long id, Item item)  {
+    public void updateItem(Long id, Item item) {
         Connection conn = null;
         try {
             conn = getDataSource().getConnection();
@@ -124,11 +126,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setString(4, item.getItemType().getType());
             ps.setLong(5, id);
             ps.executeUpdate();
+
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to update Item:  %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -139,23 +143,25 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
     }
 
+
     /**
      * @param id
      * @see ItemDao#deleteItem(Long)
      */
     @Override
-    public void deleteItem(Long id)  {
+    public void deleteItem(Long id) {
         Connection conn = null;
         try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -175,8 +181,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
         Connection conn = null;
-        List<Item> itemList = new ArrayList<>();
         Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?");
@@ -193,11 +199,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 itemList.add(item);
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get RecentlyAddedItems: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -216,10 +223,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#getItemsByTitle(String)
      */
     @Override
-    public List<Item> getItemsByTitle(String title)  {
+    public List<Item> getItemsByTitle(String title) {
         Connection conn = null;
-        List<Item> itemList = new ArrayList<>();
         Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE title=?");
@@ -236,11 +243,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 itemList.add(item);
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -259,10 +267,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#getItemsByType(String)
      */
     @Override
-    public List<Item> getItemsByType(String itemType)  {
+    public List<Item> getItemsByType(String itemType) {
         Connection conn = null;
-        List<Item> itemList = new ArrayList<>();
         Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE item_type=?");
@@ -279,11 +287,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 itemList.add(item);
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();

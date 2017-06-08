@@ -16,11 +16,10 @@ import java.sql.SQLException;
  */
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
-    private DataSource conn;
     private ShoppingCardDao shoppingCardDao = null;
 
     public ShoppingCardServiceImpl() throws PropertyVetoException, SQLException, ClassNotFoundException {
-        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         shoppingCardDao = new ShoppingCardDaoImpl(conn);
     }
 
@@ -47,7 +46,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     }
 
 
-
     /**
      * @param id
      * @param shoppingCard
@@ -57,7 +55,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException {
         shoppingCardDao.updateShoppingCard(id, shoppingCard);
     }
-
 
 
     /**

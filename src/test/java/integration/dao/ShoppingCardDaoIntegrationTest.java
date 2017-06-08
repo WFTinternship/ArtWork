@@ -20,7 +20,7 @@ import static junit.framework.TestCase.*;
 import static util.AssertTemplates.assertEqualShoppingCards;
 
 /**
- * Created by Armen on 6/2/2017.
+ * Created by Armen on 6/2/2017
  */
 public class ShoppingCardDaoIntegrationTest {
     private UserDao userDao;
@@ -55,21 +55,20 @@ public class ShoppingCardDaoIntegrationTest {
      * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Test
-    public void addShoppingCard() {
+    public void addShoppingCard_Success() {
 
         assertNotNull(testUser.getId());
         assertNotNull(testShoppingCard);
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         ShoppingCard added = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
         assertEqualShoppingCards(added, testShoppingCard);
-
     }
 
     /**
      * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Test(expected = DAOException.class)
-    public void addShoppingCard_failure() {
+    public void addShoppingCard_Failure() {
 
         assertNotNull(testUser.getId());
         assertNotNull(testShoppingCard);
@@ -106,7 +105,7 @@ public class ShoppingCardDaoIntegrationTest {
      * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Test
-    public void update_ShoppingCard_Success() {
+    public void updateShoppingCard_Success() {
 
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
@@ -123,7 +122,7 @@ public class ShoppingCardDaoIntegrationTest {
      * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Test
-    public void update_ShoppingCard_Failure() {
+    public void updateShoppingCard_Failure() {
 
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);

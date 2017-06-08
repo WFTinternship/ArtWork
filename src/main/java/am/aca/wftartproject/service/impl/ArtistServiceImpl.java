@@ -22,11 +22,10 @@ public class ArtistServiceImpl implements ArtistService {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
-    private DataSource conn;
     private ArtistDao artistDao;
 
     public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
-        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         artistDao = new ArtistDaoImpl(conn);
     }
 
@@ -37,7 +36,6 @@ public class ArtistServiceImpl implements ArtistService {
      */
     @Override
     public void addArtist(Artist artist) {
-
         if (artist == null || !artist.isValidArtist()) {
             LOGGER.error(String.format("Artist is invalid: %s", artist));
             throw new ServiceException("Invalid artist");
@@ -50,9 +48,8 @@ public class ArtistServiceImpl implements ArtistService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
-
     }
+
 
     /**
      * @param id
@@ -75,6 +72,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
     }
 
+
     /**
      * @param email
      * @return
@@ -96,6 +94,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
     }
 
+
     /**
      * @param id
      * @param artist
@@ -103,11 +102,11 @@ public class ArtistServiceImpl implements ArtistService {
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
-        if (id == null || id < 0){
+        if (id == null || id < 0) {
             LOGGER.error(String.format("Id is invalid: %s", id));
             throw new ServiceException("Invalid id");
         }
-        if (artist == null || !artist.isValidArtist()){
+        if (artist == null || !artist.isValidArtist()) {
             LOGGER.error(String.format("Artist is invalid: %s", id));
             throw new ServiceException("Invalid artist");
         }
@@ -121,20 +120,20 @@ public class ArtistServiceImpl implements ArtistService {
         }
     }
 
+
     /**
      * @param id
      * @see ArtistService#deleteArtist(Long)
      */
     @Override
     public void deleteArtist(Long id) {
-        if (id == null || id < 0){
+        if (id == null || id < 0) {
             LOGGER.error(String.format("Id is invalid: %s", id));
             throw new ServiceException("Invalid id");
         }
 
         try {
             artistDao.deleteArtist(id);
-//        userDao.deleteUser(id);
         } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

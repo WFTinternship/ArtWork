@@ -79,9 +79,7 @@ public abstract class AbstractUser {
     }
 
     public boolean isValidUser() {
-
-        return
-                id != null &&
+        return  id != null &&
                 id > 0 &&
                 !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&

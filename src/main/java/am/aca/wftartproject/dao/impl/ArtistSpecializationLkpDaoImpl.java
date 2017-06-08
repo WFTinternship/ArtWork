@@ -14,10 +14,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
     private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
 
-
     public ArtistSpecializationLkpDaoImpl(DataSource dataSource) {
         setDataSource(dataSource);
     }
+
 
     /**
      * @see ArtistSpecializationLkpDao#addArtistSpecialization()
@@ -50,6 +50,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
         }
     }
 
+
     /**
      * @param id
      * @return
@@ -58,7 +59,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
         Connection conn = null;
-        ArtistSpecialization artSpec = ArtistSpecialization.PAINTER;
+        ArtistSpecialization tempArtSpec = null;
         try {
             conn = getDataSource().getConnection();
 
@@ -67,10 +68,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
+                tempArtSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
             }
-            else artSpec = null;
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -84,8 +85,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
                 e.printStackTrace();
             }
         }
-        return artSpec;
+        return tempArtSpec;
     }
+
 
     /**
      * @param specialization
@@ -95,7 +97,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
         Connection conn = null;
-        ArtistSpecialization artSpec = ArtistSpecialization.OTHER;
+        ArtistSpecialization tempArtSpec = null;
         try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(
@@ -103,8 +105,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             ps.setString(1, specialization);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                artSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
+                tempArtSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
             }
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -118,8 +121,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
                 e.printStackTrace();
             }
         }
-        return artSpec;
+        return tempArtSpec;
     }
+
 
     /**
      * @see ArtistSpecializationLkpDao#deleteArtistSpecialization()
@@ -131,6 +135,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             conn = getDataSource().getConnection();
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM artist_specialization_lkp");
+            st.close();
         } catch (SQLException e) {
             String error = "Failed to delete specialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));

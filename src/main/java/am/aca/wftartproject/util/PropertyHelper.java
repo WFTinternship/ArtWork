@@ -14,7 +14,7 @@ public class PropertyHelper {
 
     public Properties getProperties() {
         Properties prop = new Properties();
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = new FileInputStream(FILE_DIR);
             prop.load(inputStream);

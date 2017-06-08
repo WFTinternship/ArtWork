@@ -22,12 +22,13 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         setDataSource(dataSource);
     }
 
+
     /**
      * @param purchaseHistory
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Override
-    public void addPurchase(PurchaseHistory purchaseHistory)  {
+    public void addPurchase(PurchaseHistory purchaseHistory) {
         Connection conn = null;
         try {
             conn = getDataSource().getConnection();
@@ -41,7 +42,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             if (ps.executeUpdate() > 0) {
                 purchaseHistory.setPurchaseDate(timestamp);
             }
-
+            ps.close();
         } catch (SQLException e) {
             purchaseHistory.setUserId(null);
             String error = "Failed to add PurchaseHistory: %s";
@@ -56,9 +57,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
                 e.printStackTrace();
             }
         }
-
     }
 
+    /**
+     * @param user_id
+     * @param item_id
+     * @return
+     * @see PurchaseHistoryDao#getPurchase(Long, Long)
+     */
     @Override
     public PurchaseHistory getPurchase(Long user_id, Long item_id) {
         Connection conn = null;
@@ -71,28 +77,19 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             ps.setLong(2, user_id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                purchaseHistory.setItemId(rs.getLong("item_id"));
-                purchaseHistory.setUserId(rs.getLong("user_id"));
-                purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
+                purchaseHistory.setItemId(rs.getLong("item_id"))
+                        .setUserId(rs.getLong("user_id"))
+                        .setPurchaseDate(rs.getTimestamp("purchase_date"));
+            } else {
+                return null;
             }
-            else
-            {
-                purchaseHistory = null;
-                throw new DAOException("");
-            }
-
+            rs.close();
             ps.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-
-        }
-        catch (DAOException e) {
-            String error = "Failed to get PurchaseHistory";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);}
-        finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -105,24 +102,30 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     }
 
 
+    /**
+     * @param userId
+     * @return
+     * @see PurchaseHistoryDao#getPurchase(Long)
+     */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
         Connection conn = null;
-        List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
         PurchaseHistory purchaseHistory = new PurchaseHistory();
+        List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE user_id = ?");
             ps.setLong(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                purchaseHistory.setUserId(rs.getLong("user_id"));
-                purchaseHistory.setItemId(rs.getLong("item_id"));
-                purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
+                purchaseHistory.setUserId(rs.getLong("user_id"))
+                        .setItemId(rs.getLong("item_id"))
+                        .setPurchaseDate(rs.getTimestamp("purchase_date"));
 
                 purchaseHistoryList.add(purchaseHistory);
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -139,6 +142,13 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         return purchaseHistoryList;
     }
 
+
+    /**
+     * @param user_id
+     * @param item_id
+     * @return
+     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
+     */
     @Override
     public Boolean deletePurchase(Long user_id, Long item_id) {
         Connection conn = null;
@@ -152,19 +162,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-            else {
-                throw new DAOException("");
-            }
         } catch (SQLException e) {
             String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        }
-        catch (DAOException e) {
-            String error = "Failed to delete PurchaseHistory";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);}
-        finally {
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();

@@ -44,6 +44,6 @@ public class ShoppingCard {
     }
 
     public boolean isValidShoppingCard() {
-        return (id != null && balance != 0.0);
+        return (id != null && balance != 0);
     }
 }

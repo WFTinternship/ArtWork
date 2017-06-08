@@ -22,81 +22,74 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
 
     private static final Logger LOGGER = Logger.getLogger(ArtistService.class);
 
-    private DataSource conn;
     private ArtistSpecializationLkpDao lkpDao = null;
 
     public ArtistSpecializationServiceImpl() throws SQLException, ClassNotFoundException {
-        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         lkpDao = new ArtistSpecializationLkpDaoImpl(conn);
     }
+
 
     /**
      * @see ArtistSpecializationService#addArtistSpecialization()
      */
     @Override
     public void addArtistSpecialization() {
-
-        try{
+        try {
             lkpDao.addArtistSpecialization();
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to add ArtistSpecialization: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
+
 
     /**
      * @param id
      * @return
-     *
      * @see ArtistSpecializationService#getArtistSpecialization(int)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
-
-        try{
+        try {
             return lkpDao.getArtistSpecialization(id);
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
+
 
     /**
      * @param specialization
      * @return
-     *
      * @see ArtistSpecializationService#getArtistSpecialization(String)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
-
-        try{
+        try {
             return lkpDao.getArtistSpecialization(specialization);
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to add Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
+
 
     /**
      * @see ArtistSpecializationService#deleteArtistSpecialization()
      */
     @Override
     public void deleteArtistSpecialization() {
-
-        try{
+        try {
             lkpDao.deleteArtistSpecialization();
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
     }
 }

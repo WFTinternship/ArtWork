@@ -13,7 +13,7 @@ public interface ShoppingCardDao {
      * @param userId
      * @param shoppingCard
      */
-    void addShoppingCard(Long userId, ShoppingCard shoppingCard) ;
+    void addShoppingCard(Long userId, ShoppingCard shoppingCard);
 
     /**
      * Gets shoppingCard from database.
@@ -21,7 +21,7 @@ public interface ShoppingCardDao {
      * @param id
      * @return
      */
-    ShoppingCard getShoppingCard(Long id) ;
+    ShoppingCard getShoppingCard(Long id);
 
     /**
      * Updates shoppingCard in database.
@@ -36,5 +36,5 @@ public interface ShoppingCardDao {
      *
      * @param id
      */
-    Boolean deleteShoppingCard(Long id) ;
+    Boolean deleteShoppingCard(Long id);
 }

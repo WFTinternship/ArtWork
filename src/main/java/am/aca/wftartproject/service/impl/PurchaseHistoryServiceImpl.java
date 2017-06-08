@@ -21,12 +21,10 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
 
-    private DataSource conn;
     private PurchaseHistoryDao purchaseHistoryDao = null;
 
-
     public PurchaseHistoryServiceImpl() throws SQLException, ClassNotFoundException {
-        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         purchaseHistoryDao= new PurchaseHistoryDaoImpl(conn);
     }
 
@@ -38,11 +36,11 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
-
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistroy()) {
             LOGGER.error(String.format("purchaseHistory is invalid: %s", purchaseHistory));
             throw new ServiceException("Invalid purchaseHistory");
         }
+
         try {
             purchaseHistoryDao.addPurchase(purchaseHistory);
         } catch (DAOException e) {
@@ -51,6 +49,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
     }
+
 
     /**
      * @param userId
@@ -61,7 +60,6 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      */
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
-
         if (userId == null || userId < 0){
             LOGGER.error(String.format("userId is invalid: %s", userId));
             throw new ServiceException("Invalid userId");
@@ -70,6 +68,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
             LOGGER.error(String.format("itemId is invalid: %s", itemId));
             throw new ServiceException("Invalid itemId");
         }
+
         try {
             return purchaseHistoryDao.getPurchase(userId, itemId);
         }catch (DAOException e) {
@@ -79,6 +78,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
         }
     }
 
+
     /**
      * @param userId
      * @return
@@ -87,11 +87,11 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
-
         if (userId == null || userId < 0){
             LOGGER.error(String.format("userId is invalid: %s", userId));
             throw new ServiceException("Invalid userId");
         }
+
         try {
             return purchaseHistoryDao.getPurchase(userId);
         }catch (DAOException e) {
@@ -101,6 +101,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
         }
     }
 
+
     /**
      * @param userId
      * @param itemId
@@ -109,7 +110,6 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      */
     @Override
     public void deletePurchase(Long userId, Long itemId) {
-
         if (userId == null || userId < 0){
             LOGGER.error(String.format("userId is invalid: %s", userId));
             throw new ServiceException("Invalid userId");
@@ -118,6 +118,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
             LOGGER.error(String.format("itemId is invalid: %s", itemId));
             throw new ServiceException("Invalid itemId");
         }
+
         try {
             purchaseHistoryDao.deletePurchase(userId, itemId);
         }catch (DAOException e) {
@@ -126,5 +127,4 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
     }
-
 }

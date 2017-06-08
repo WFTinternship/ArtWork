@@ -106,8 +106,7 @@ public class Item {
     }
 
     public boolean isValidItem() {
-        return
-                id != null &&
+        return id != null &&
                 id > 0 &&
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL) &&

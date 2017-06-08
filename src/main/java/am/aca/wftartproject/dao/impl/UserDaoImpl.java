@@ -42,6 +42,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(rs.getLong(1));
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -64,7 +65,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * @see UserDao#findUser(Long)
      */
     @Override
-    public User findUser(Long id)  {
+    public User findUser(Long id) {
         Connection conn = null;
         User user = new User();
         try {
@@ -73,17 +74,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getLong(1));
-                user.setFirstName(rs.getString(2));
-                user.setLastName(rs.getString(3));
-                user.setAge(rs.getInt(4));
-                user.setEmail(rs.getString(5));
-                user.setPassword(rs.getString(6));
+                user.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
             } else {
-                user = null;
-                rs.close();
+                return null;
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -100,6 +101,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return user;
     }
 
+
     /**
      * @param email
      * @return
@@ -115,14 +117,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getLong(1));
-                user.setFirstName(rs.getString(2));
-                user.setLastName(rs.getString(3));
-                user.setAge(rs.getInt(4));
-                user.setEmail(rs.getString(5));
-                user.setPassword(rs.getString(6));
+                user.setId(rs.getLong("id"))
+                        .setFirstName(rs.getString("firstname"))
+                        .setLastName(rs.getString("lastname"))
+                        .setAge(rs.getInt("age"))
+                        .setEmail(rs.getString("email"))
+                        .setPassword(rs.getString("password"));
+            } else {
+                return null;
             }
             rs.close();
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -156,12 +161,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
-//            ps.setString(4, user.getEmail());
             ps.setString(4, user.getPassword());
             ps.setLong(5, id);
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -176,7 +181,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         }
         return success;
-
     }
 
 
@@ -188,13 +192,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public Boolean deleteUser(Long id) {
         Connection conn = null;
         Boolean success = false;
-        try  {
+        try {
             conn = getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?");
             ps.setLong(1, id);
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -210,5 +215,4 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         }
         return success;
     }
-
 }
