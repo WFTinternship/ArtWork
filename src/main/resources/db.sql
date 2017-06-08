@@ -31,7 +31,7 @@ CREATE TABLE `artist` (
   UNIQUE KEY `user_id` (`user_id`),
   KEY `artist_ibfk_2_idx` (`spec_id`),
   CONSTRAINT `artist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `artist_ibfk_2` FOREIGN KEY (`spec_id`) REFERENCES `artist_specialization_lsp` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `artist_ibfk_2` FOREIGN KEY (`spec_id`) REFERENCES `artist_specialization_lkp` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -45,13 +45,13 @@ LOCK TABLES `artist` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `artist_specialization_lsp`
+-- Table structure for table `artist_specialization_lkp`
 --
 
-DROP TABLE IF EXISTS `artist_specialization_lsp`;
+DROP TABLE IF EXISTS `artist_specialization_lkp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `artist_specialization_lsp` (
+CREATE TABLE `artist_specialization_lkp` (
   `id` int(11) NOT NULL,
   `spec_type` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
@@ -59,12 +59,12 @@ CREATE TABLE `artist_specialization_lsp` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `artist_specialization_lsp`
+-- Dumping data for table `artist_specialization_lkp`
 --
 
-LOCK TABLES `artist_specialization_lsp` WRITE;
-/*!40000 ALTER TABLE `artist_specialization_lsp` DISABLE KEYS */;
-/*!40000 ALTER TABLE `artist_specialization_lsp` ENABLE KEYS */;
+LOCK TABLES `artist_specialization_lkp` WRITE;
+/*!40000 ALTER TABLE `artist_specialization_lkp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `artist_specialization_lkp` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -187,4 +187,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-05 19:46:50
+-- Dump completed on 2017-06-08  1:38:49

@@ -11,7 +11,11 @@
 
     <servlet-mapping>
         <servlet-name>Servlet Mapping</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/homepage</url-pattern>
     </servlet-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/views/hello.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>

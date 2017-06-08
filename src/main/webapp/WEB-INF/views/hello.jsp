@@ -12,5 +12,6 @@
 </head>
 <body>
     <h1>Hello World Valodik</h1>
+    <h2>Please move to the /homepage directory</h2>
 </body>
 </html>
