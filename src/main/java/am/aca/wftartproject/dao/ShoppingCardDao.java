@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao;
 
 import am.aca.wftartproject.model.ShoppingCard;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.sql.SQLException;
 
@@ -31,12 +32,12 @@ public interface ShoppingCardDao {
      * @param id
      * @param shoppingCard
      */
-    void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException;
+    Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard);
 
     /**
      * Deletes shoppingCard by id.
      *
      * @param id
      */
-    void deleteShoppingCard(Long id);
+    Boolean deleteShoppingCard(Long id);
 }

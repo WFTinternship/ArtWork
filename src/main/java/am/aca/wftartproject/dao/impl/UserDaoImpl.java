@@ -2,7 +2,9 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -27,7 +29,7 @@ public class UserDaoImpl implements UserDao {
     public void addUser(User user) {
         try (PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS)) {
+                Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
@@ -41,7 +43,7 @@ public class UserDaoImpl implements UserDao {
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to add User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
     }
@@ -55,23 +57,28 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findUser(Long id) {
         User user = new User();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?")) {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?")){
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getLong("id"))
-                        .setFirstName(rs.getString("firstname"))
-                        .setLastName(rs.getString("lastname"))
-                        .setAge(rs.getInt("age"))
-                        .setEmail(rs.getString("email"))
-                        .setPassword(rs.getString("password"));
+                user.setId(rs.getLong(1));
+                user.setFirstName(rs.getString(2));
+                user.setLastName(rs.getString(3));
+                user.setAge(rs.getInt(4));
+                user.setEmail(rs.getString(5));
+                user.setPassword(rs.getString(6));
+            }
+            else{
+                user = null;
+                rs.close();
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
+      
         return user;
     }
 
@@ -83,21 +90,21 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findUser(String email) {
         User user = new User();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?")) {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?")){
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getLong("id"))
-                        .setFirstName(rs.getString("firstname"))
-                        .setLastName(rs.getString("lastname"))
-                        .setAge(rs.getInt("age"))
-                        .setEmail(rs.getString("email"))
-                        .setPassword(rs.getString("password"));
+                user.setId(rs.getLong(1));
+                user.setFirstName(rs.getString(2));
+                user.setLastName(rs.getString(3));
+                user.setAge(rs.getInt(4));
+                user.setEmail(rs.getString(5));
+                user.setPassword(rs.getString(6));
             }
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
         return user;
@@ -110,21 +117,28 @@ public class UserDaoImpl implements UserDao {
      * @see UserDao#updateUser(Long, User)
      */
     @Override
-    public void updateUser(Long id, User user) {
+    public Boolean updateUser(Long id, User user) {
+        Boolean success = false;
         try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE user SET firstname=?, lastname=?, age=?, password=? WHERE id = ?")) {
+                "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?")){
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getAge());
 //            ps.setString(4, user.getEmail());
             ps.setString(4, user.getPassword());
             ps.setLong(5, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
+            if(ps.executeUpdate()>0){
+                success = true;
+            }
+            
+        }
+        catch (SQLException e) {
             String error = "Failed to update User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
+        return success;
+
     }
 
 
@@ -133,15 +147,19 @@ public class UserDaoImpl implements UserDao {
      * @see UserDao#deleteUser(Long)
      */
     @Override
-    public void deleteUser(Long id) {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?")) {
+    public Boolean deleteUser(Long id) {
+        Boolean success = false;
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE id =?")){
             ps.setLong(1, id);
-            ps.executeUpdate();
+            if(ps.executeUpdate()>0){
+                success = true;
+            }
         } catch (SQLException e) {
             String error = "Failed to delete User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
+        return success;
     }
 
 }

@@ -43,5 +43,5 @@ public interface ArtistDao {
      *
      * @param id
      */
-    void deleteArtist(Long id);
+    Boolean deleteArtist(Long id);
 }

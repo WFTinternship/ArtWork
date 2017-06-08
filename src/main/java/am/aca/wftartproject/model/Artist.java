@@ -1,5 +1,6 @@
 package am.aca.wftartproject.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,7 +52,15 @@ public class Artist extends AbstractUser {
     @Override
     public String toString() {
         return "Artist{" +
-                "specialization=" + specialization +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", specialization=" + specialization +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", artistPhoto=" + Arrays.toString(artistPhoto) +
+                ", shoppingCard=" + shoppingCard +
                 ", itemList=" + itemList +
                 '}';
     }

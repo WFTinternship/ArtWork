@@ -9,8 +9,8 @@ public class Item {
     private String title;
     private String description;
     private String photoURL;
-    private double price;
-    private boolean status;
+    private Double price;
+    private Boolean status;
     private ItemType itemType;
 
     public Long getId() {
@@ -49,7 +49,7 @@ public class Item {
         return this;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -58,7 +58,7 @@ public class Item {
         return this;
     }
 
-    public boolean isStatus() {
+    public Boolean isStatus() {
         return status;
     }
 
@@ -99,7 +99,7 @@ public class Item {
                 ", photoURL=" + photoURL +
                 ", price=" + price +
                 ", status=" + status +
-                ", itemType=" + itemType.toString() +
+                ", itemType=" + itemType +
                 '}';
     }
 

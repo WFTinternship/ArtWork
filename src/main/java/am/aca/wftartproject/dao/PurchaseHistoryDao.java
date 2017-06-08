@@ -43,7 +43,7 @@ public interface PurchaseHistoryDao {
      * @param userId
      * @param itemId
      */
-    void deletePurchase(Long userId, Long itemId);
+    Boolean deletePurchase(Long userId, Long itemId);
 
 
 }

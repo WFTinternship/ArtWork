@@ -2,7 +2,9 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -29,56 +31,51 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
         try (PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)")) {
+                "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)"))
+        {
             ps.setLong(1, purchaseHistory.getUserId());
             ps.setLong(2, purchaseHistory.getItemId());
             Calendar cal = Calendar.getInstance();
             Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
             ps.setTimestamp(3, timestamp);
-            ps.executeUpdate();
+            if(ps.executeUpdate()>0)
+            {
+                purchaseHistory.setPurchaseDate(timestamp);
+            }
+
         } catch (SQLException e) {
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error, e.getMessage()));
         }
+
     }
 
-
-    /**
-     * @param userId
-     * @param itemId
-     * @return
-     * @see PurchaseHistoryDao#getPurchase(Long, Long)
-     */
     @Override
-    public PurchaseHistory getPurchase(Long userId, Long itemId) {
-
+    public PurchaseHistory getPurchase(Long user_id, Long item_id) {
         PurchaseHistory purchaseHistory = new PurchaseHistory();
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM purchase_history WHERE user_id = ? AND item_Id = ?")) {
-            ps.setLong(1, userId);
-            ps.setLong(2, itemId);
+                "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ")) {
+            ps.setLong(1, item_id);
+            ps.setLong(2, user_id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                purchaseHistory.setItemId(rs.getLong("item_id"))
-                        .setUserId(rs.getLong("user_id"))
-                        .setPurchaseDate(rs.getDate("purchase_date"));
+              purchaseHistory.setItemId(rs.getLong("item_id"));
+              purchaseHistory.setUserId(rs.getLong("user_id"));
+              purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
             }
-            rs.close();
+            else return purchaseHistory = null;
+
+            ps.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
+
         return purchaseHistory;
     }
 
-
-    /**
-     * @param userId
-     * @return
-     * @see PurchaseHistoryDao#getPurchase(Long)
-     */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
 
@@ -88,9 +85,9 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
             ps.setLong(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                purchaseHistory.setUserId(rs.getLong("user_id"))
-                        .setItemId(rs.getLong("item_id"))
-                        .setPurchaseDate(rs.getDate("purchase_date"));
+                purchaseHistory.setUserId(rs.getLong("user_id"));
+                purchaseHistory.setItemId(rs.getLong("item_id"));
+                purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
 
                 purchaseHistoryList.add(purchaseHistory);
             }
@@ -103,27 +100,22 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
         return purchaseHistoryList;
     }
 
-
-    /**
-     * @param userId
-     * @param itemId
-     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
-     */
     @Override
-    public void deletePurchase(Long userId, Long itemId) {
-
-        try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM purchase_history WHERE user_id = ? AND item_id = ?");
-            ps.setLong(1, userId);
-            ps.setLong(2, itemId);
-            ps.executeUpdate();
-
+    public Boolean deletePurchase(Long user_id, Long item_id) {
+        Boolean success = false;
+        try (PreparedStatement ps = conn.prepareStatement(
+                " DELETE FROM purchase_history WHERE user_id=? and item_id = ? ")) {
+            ps.setLong(1,user_id);
+            ps.setLong(2,item_id);
+            if(ps.executeUpdate()>0){
+                success = true;
+            }
+            ps.close();
         } catch (SQLException e) {
-            String error = "Failed to delete PurchaseHistory: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
+            String error = "Failed to get PurchaseHistory: %s";
+            LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
         }
+        return success;
     }
-
-
 }

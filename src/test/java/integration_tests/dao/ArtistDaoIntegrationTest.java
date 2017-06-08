@@ -1,33 +1,34 @@
-package dao.integration;
+package integration_tests.dao;
 
-import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import integration_tests.service.AssertTemplates;
+import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import util.AssertTemplates;
-import util.TestObjectTemplate;
-
+import static junit.framework.TestCase.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static junit.framework.Assert.assertNotSame;
-import static junit.framework.TestCase.*;
-
 /**
- * Created by Armen on 6/1/2017
+ * Created by Armen on 6/1/2017.
  */
 public class ArtistDaoIntegrationTest {
-    //create connection,testArtist and artistDaoImplementation
+    //testArtist and artistDaoImplementation
 
     private Artist testArtist;
+
     private ArtistDao artistDao;
 
+
+    public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
+    }
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
@@ -61,7 +62,7 @@ public class ArtistDaoIntegrationTest {
         //get artist by id from db
 
         Long id = testArtist.getId();
-
+        System.out.println(id);
         Artist addedArtist = artistDao.findArtist(id);
 
         //check for equals
@@ -80,6 +81,7 @@ public class ArtistDaoIntegrationTest {
 
         testArtist.setFirstName(null);
         artistDao.addArtist(testArtist);
+        System.out.println(testArtist);
 
         //check testartist object and testartist id for null
 
@@ -89,6 +91,7 @@ public class ArtistDaoIntegrationTest {
         //get artist by id from db
 
         Long id = testArtist.getId();
+        System.out.println(id);
         Artist addedArtist = artistDao.findArtist(id);
 
         //check for equals
@@ -107,12 +110,14 @@ public class ArtistDaoIntegrationTest {
         testArtist.setSpecialization(ArtistSpecialization.PAINTER);
         artistDao.addArtist(testArtist);
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
+        System.out.println(testArtist.getSpecialization().getId());
 
         //update artists specialization field in db, get from db and check for sameness
 
         artistDao.updateArtist(testArtist.getId(), testArtist);
         Artist updated = artistDao.findArtist(testArtist.getId());
-
+        System.out.println(updated.getSpecialization().getId());
+        System.out.println(testArtist.getSpecialization().getId());
         assertEquals(updated.getSpecialization().getId(), testArtist.getSpecialization().getId());
 
     }
@@ -120,22 +125,23 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#updateArtist(Long, Artist)
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = DAOException.class)
     public void updateArtist_failure() {
         //set artist specialization  and add into db
 
-        testArtist.setSpecialization(null);
         artistDao.addArtist(testArtist);
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
 
+
         //update artists specialization field in db, get from db
 
+        testArtist.setFirstName(null);
         artistDao.updateArtist(testArtist.getId(), testArtist);
         Artist updated = artistDao.findArtist(testArtist.getId());
 
         //check for sameness
 
-        assertNotSame(updated.getSpecialization().getId(), testArtist.getSpecialization().getId());
+        assertEquals(updated.getSpecialization().getId(), ArtistSpecialization.OTHER.getId());
 
     }
 
@@ -150,13 +156,32 @@ public class ArtistDaoIntegrationTest {
 
         //delete artist from db by id
 
-        artistDao.deleteArtist(testArtist.getId());
+
+        assertTrue(artistDao.deleteArtist(testArtist.getId()));
 
         //check isdeleted
 
         Artist deleted = artistDao.findArtist(testArtist.getId());
-        assertNull(deleted.getId());
+        assertNull(deleted);
         testArtist.setId(null);
+
+    }
+
+    /**
+     * @see ArtistDao#deleteArtist(Long)
+     */
+    @Test
+    public void deleteArtist_Failure() {
+        //add artist into db
+
+        artistDao.addArtist(testArtist);
+
+        //delete artist from db by id
+
+        assertFalse(artistDao.deleteArtist(-36L));
+
+        //check isdeleted
+
 
     }
 
@@ -170,6 +195,7 @@ public class ArtistDaoIntegrationTest {
         //find and get artist from db
 
         Artist findArtist = artistDao.findArtist(testArtist.getId());
+        System.out.println(findArtist);
 
         AssertTemplates.assertEqualArtists(findArtist, testArtist);
 
@@ -184,13 +210,13 @@ public class ArtistDaoIntegrationTest {
     public void findArtist_failure() {
         artistDao.addArtist(testArtist);
 
-        testArtist.setFirstName("lll");
 
         //find and get artist from db
 
-        Artist findArtist = artistDao.findArtist(testArtist.getId());
+        Artist findArtist = artistDao.findArtist(-8L);
 
-        assertNotSame(findArtist.getFirstName(), testArtist.getFirstName());
+
+        assertNull(findArtist);
 
         //check for sameness with testartist
 
@@ -200,9 +226,10 @@ public class ArtistDaoIntegrationTest {
     public void tearDown() {
         //delete inserted test users and artists from db
 
-        if (testArtist.getId() != null)
-
+        if (testArtist.getId() != null) {
             artistDao.deleteArtist(testArtist.getId());
+        }
+
 
         //set null test artist  object
 
