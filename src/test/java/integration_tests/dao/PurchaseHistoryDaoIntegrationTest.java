@@ -1,5 +1,6 @@
 package integration_tests.dao;
 import am.aca.wftartproject.dao.*;
+import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
@@ -22,9 +23,11 @@ import java.sql.SQLException;
  */
 public class PurchaseHistoryDaoIntegrationTest {
     private UserDao userDao;
+    private ArtistDao artistDao;
     private ItemDao itemDao;
     private PurchaseHistoryDao purchaseHistoryDao;
     private User testUser;
+    private Artist testArtist;
     private Item testItem;
     private PurchaseHistory purchaseHistory;
 
@@ -41,17 +44,20 @@ public class PurchaseHistoryDaoIntegrationTest {
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
         userDao = new UserDaoImpl(conn);
+        artistDao = new ArtistDaoImpl(conn);
         itemDao = new ItemDaoImpl(conn);
         purchaseHistoryDao = new PurchaseHistoryDaoImpl(conn);
 
         //create test Item,User, purchaseHistory and set them into db
-
+        testArtist = TestObjectTemplate.createTestArtist();
         testItem = TestObjectTemplate.createTestItem();
         purchaseHistory = new PurchaseHistory();
         testUser = TestObjectTemplate.createTestUser();
         userDao.addUser(testUser);
+        testArtist.setId(testUser.getId());
+        artistDao.addArtist(testArtist);
 
-        itemDao.addItem(testUser.getId(), testItem);
+        itemDao.addItem(testArtist.getId(), testItem);
         purchaseHistory.setItemId(testItem.getId());
         purchaseHistory.setUserId(testUser.getId());
     }
@@ -183,6 +189,9 @@ public class PurchaseHistoryDaoIntegrationTest {
 
         if (testItem.getId() != null)
             itemDao.deleteItem(testItem.getId());
+
+        if (testArtist.getId() != null)
+            artistDao.deleteArtist(testArtist.getId());
 
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());

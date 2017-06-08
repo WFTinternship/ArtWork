@@ -48,6 +48,13 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
+        finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -71,6 +78,13 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
+        }
+        finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return purchaseHistory;
@@ -97,6 +111,13 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
+        finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return purchaseHistoryList;
     }
 
@@ -115,6 +136,13 @@ public class PurchaseHistoryDaoImpl implements PurchaseHistoryDao {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error,e.getMessage()));
             throw new DAOException(error, e);
+        }
+        finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return success;
     }
