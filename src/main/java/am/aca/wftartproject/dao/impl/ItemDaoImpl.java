@@ -6,6 +6,7 @@ import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,14 @@ import java.util.List;
 /**
  * Created by ASUS on 27-May-17
  */
-public class ItemDaoImpl implements ItemDao {
+public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
-    private Connection conn = null;
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
-    public ItemDaoImpl(Connection conn) {
-        this.conn = conn;
+//    private DataSource dataSource = null;
+
+    public ItemDaoImpl(DataSource dataSource) {
+        setDataSource(dataSource);
     }
 
     /**
@@ -29,7 +31,7 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Long artistID, Item item) {
-        try (PreparedStatement ps = conn.prepareStatement(
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(
                 "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
                 Statement.RETURN_GENERATED_KEYS)) {
 
@@ -62,7 +64,7 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public Item findItem(Long id) {
         Item item = new Item();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?")) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM item WHERE id = ?")) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -90,7 +92,7 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public void updateItem(Long id, Item item) {
-        try (PreparedStatement ps = conn.prepareStatement(
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(
                 "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?")) {
 
             ps.setString(1, item.getTitle());
@@ -112,7 +114,7 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public void deleteItem(Long id) {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?")) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("DELETE FROM item WHERE id=?")) {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -132,7 +134,7 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getRecentlyAddedItems(int limit) {
         List<Item> itemList = new ArrayList<>();
         Item item = new Item();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?")) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?")) {
             ps.setInt(1, limit);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -164,7 +166,7 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getItemsByTitle(String title) {
         List<Item> itemList = new ArrayList<>();
         Item item = new Item();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE title=?")) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM item WHERE title=?")) {
             ps.setString(1, title);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -196,7 +198,7 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getItemsByType(String itemType) {
         List<Item> itemList = new ArrayList<>();
         Item item = new Item();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE item_type=?")) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM item WHERE item_type=?")) {
             ps.setString(1, itemType);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

@@ -6,19 +6,19 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
  * Created by ASUS on 27-May-17
  */
 
-public class ArtistDaoImpl implements ArtistDao {
+public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
-    private Connection conn = null;
 
-    public ArtistDaoImpl(Connection conn) {
-        this.conn = conn;
+    public ArtistDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
 
@@ -28,7 +28,9 @@ public class ArtistDaoImpl implements ArtistDao {
      */
     @Override
     public void addArtist(Artist artist) {
+        Connection conn = null;
         try {
+            conn = dataSource.getConnection();
             //Start Transaction
             conn.setAutoCommit(false);
 
@@ -69,6 +71,12 @@ public class ArtistDaoImpl implements ArtistDao {
             }
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -80,7 +88,9 @@ public class ArtistDaoImpl implements ArtistDao {
     @Override
     public Artist findArtist(Long id) {
         Artist artist = new Artist();
+        Connection conn = null;
         try {
+            conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE id=?");
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
@@ -92,8 +102,7 @@ public class ArtistDaoImpl implements ArtistDao {
                 artist.setAge(rs.getInt(4));
                 artist.setEmail(rs.getString(5));
                 artist.setPassword(rs.getString(6));
-            }
-            else return null;
+            } else return null;
             ps.close();
             rs.close();
 
@@ -104,21 +113,20 @@ public class ArtistDaoImpl implements ArtistDao {
             if (rs.next()) {
                 artist.setArtistPhoto(rs.getBytes(1));
                 artist.setSpecialization(ArtistSpecialization.valueOf(rs.getString(2)));
-            }
-            else return null;
+            } else return null;
 
             ps.close();
             rs.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                LOGGER.error(String.format(error, e1.getMessage()));
-            }
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return artist;
     }
@@ -131,10 +139,12 @@ public class ArtistDaoImpl implements ArtistDao {
     @Override
     public Artist findArtist(String email) {
         Artist artist = new Artist();
+        Connection conn = null;
         try {
+            conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1, email);
-            if(ps.executeUpdate()!=1){
+            if (ps.executeUpdate() != 1) {
                 throw new DAOException("Failed to find Artist");
             }
             ResultSet rs = ps.executeQuery();
@@ -162,6 +172,12 @@ public class ArtistDaoImpl implements ArtistDao {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return artist;
     }
@@ -173,7 +189,9 @@ public class ArtistDaoImpl implements ArtistDao {
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
+        Connection conn = null;
         try {
+            conn = dataSource.getConnection();
             //Start Transaction
             conn.setAutoCommit(false);
 
@@ -206,6 +224,12 @@ public class ArtistDaoImpl implements ArtistDao {
             }
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -214,29 +238,28 @@ public class ArtistDaoImpl implements ArtistDao {
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-public Boolean deleteArtist(Long id) {
+    public Boolean deleteArtist(Long id) {
+        Connection conn = null;
         Boolean success = false;
         try {
+            conn = dataSource.getConnection();
             //Start Transaction
             conn.setAutoCommit(false);
             PreparedStatement ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
             ps.setLong(1, id);
             int affectedRows = ps.executeUpdate();
-            if(affectedRows>0){
+            if (affectedRows > 0) {
                 success = true;
             }
             ps.close();
 
 
-
             ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
-            if(ps.executeUpdate()<0){
+            if (ps.executeUpdate() < 0) {
                 success = false;
             }
             ps.close();
-
-
 
             conn.commit();
         } catch (SQLException e) {
@@ -248,6 +271,12 @@ public Boolean deleteArtist(Long id) {
             }
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return success;

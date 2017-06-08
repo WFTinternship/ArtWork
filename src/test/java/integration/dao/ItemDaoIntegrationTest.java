@@ -1,53 +1,53 @@
 package integration.dao;
 
-import am.aca.wftartproject.dao.*;
+import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.util.DBConnection;
-import integration.service.AssertTemplates;
-import integration.service.TestObjectTemplate;
-
-import static integration.service.AssertTemplates.assertEqualItems;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
-
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import util.AssertTemplates;
+import util.TestObjectTemplate;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
+import static junit.framework.TestCase.*;
+import static util.AssertTemplates.assertEqualItems;
+
 /**
- * Created by Armen on 6/1/2017
+ * Created by Armen on 6/1/2017.
  */
 public class ItemDaoIntegrationTest {
-    private DBConnection connection;
+
     private ArtistDaoImpl artistDao;
     private ItemDaoImpl itemDao;
-    private Item testitem;
+    private Item testItem;
     private Artist testArtist;
 
 
     public ItemDaoIntegrationTest() throws SQLException, ClassNotFoundException {
-        connection = null;
     }
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        //creating new DB connection, artistDao and itemDao implementations
+        //creating new DB connectio, artisdao and itemdao imlementations
 
-        connection = new DBConnection();
-        artistDao = new ArtistDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
-        itemDao = new ItemDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+        DataSource conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
+        artistDao = new ArtistDaoImpl(conn);
+        itemDao = new ItemDaoImpl(conn);
 
         //create test artist and user
 
         testArtist = TestObjectTemplate.createTestArtist();
-        testitem = TestObjectTemplate.createTestItem();
+        testItem = TestObjectTemplate.createTestItem();
 
         //insert test Artist into db, get generated id
 
@@ -62,19 +62,19 @@ public class ItemDaoIntegrationTest {
     public void addItem() {
         //check testItem for null
 
-        assertNotNull(testitem);
+        assertNotNull(testItem);
 
         //add item into db and get generated id
 
-        itemDao.addItem(testArtist.getId(), testitem);
+        itemDao.addItem(testArtist.getId(), testItem);
 
         //find added item from db
 
-        Item item = itemDao.findItem(testitem.getId());
+        Item item = itemDao.findItem(testItem.getId());
 
         //check for sameness
 
-        AssertTemplates.assertEqualItems(testitem, item);
+        AssertTemplates.assertEqualItems(testItem, item);
 
     }
 
@@ -86,19 +86,19 @@ public class ItemDaoIntegrationTest {
 
         //check testItem for null
 
-        assertNotNull(testitem);
-        testitem.setTitle(null);
+        assertNotNull(testItem);
+        testItem.setTitle(null);
 
         //add item into db and get generated id
 
-        itemDao.addItem(testArtist.getId(), testitem);
+        itemDao.addItem(testArtist.getId(), testItem);
 
         //find added item from db
 
-        Item item = itemDao.findItem(testitem.getId());
+        Item item = itemDao.findItem(testItem.getId());
 
         //check for sameness
-        AssertTemplates.assertEqualItems(testitem, item);
+        AssertTemplates.assertEqualItems(testItem, item);
 
     }
 
@@ -107,28 +107,28 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#updateItem(Long, Item)
      */
     @Test
-    public void updateItem() {
+    public void updateitem() {
         //check testItem for null
 
-        assertNotNull(testitem);
+        assertNotNull(testItem);
 
         //add item into db and get generated id
 
-        itemDao.addItem(testArtist.getId(), testitem);
-        System.out.println(testitem.getId());
-        testitem.setTitle("ankap item");
-        itemDao.updateItem(testitem.getId(), testitem);
-        System.out.println(itemDao.findItem(testitem.getId()));
+        itemDao.addItem(testArtist.getId(), testItem);
+        System.out.println(testItem.getId());
+        testItem.setTitle("ankap item");
+        itemDao.updateItem(testItem.getId(), testItem);
+        System.out.println(itemDao.findItem(testItem.getId()));
 
         //find added item from db
 
-        Item item = itemDao.findItem(testitem.getId());
-        System.out.println(testitem.getTitle());
+        Item item = itemDao.findItem(testItem.getId());
+        System.out.println(testItem.getTitle());
         System.out.println(item.getTitle());
 
         //check for sameness
 
-        assertEquals(testitem.getTitle(), item.getTitle());
+        assertEquals(testItem.getTitle(), item.getTitle());
 
     }
 
@@ -136,28 +136,28 @@ public class ItemDaoIntegrationTest {
      * @see ItemDao#updateItem(Long, Item)
      */
     @Test(expected = DAOException.class)
-    public void updateItem_failure() {
+    public void updateitem_failure() {
         //check testItem for null
 
-        assertNotNull(testitem);
+        assertNotNull(testItem);
 
         //add item into db and get generated id
 
-        itemDao.addItem(testArtist.getId(), testitem);
-        System.out.println(testitem.getId());
-        testitem.setTitle(null);
-        itemDao.updateItem(testitem.getId(), testitem);
-        System.out.println(itemDao.findItem(testitem.getId()));
+        itemDao.addItem(testArtist.getId(), testItem);
+        System.out.println(testItem.getId());
+        testItem.setTitle(null);
+        itemDao.updateItem(testItem.getId(), testItem);
+        System.out.println(itemDao.findItem(testItem.getId()));
 
         //find added item from db
 
-        Item item = itemDao.findItem(testitem.getId());
-        System.out.println(testitem.getTitle());
+        Item item = itemDao.findItem(testItem.getId());
+        System.out.println(testItem.getTitle());
         System.out.println(item.getTitle());
 
         //check for sameness
 
-        assertEquals(testitem.getTitle(), item.getTitle());
+        assertEquals(testItem.getTitle(), item.getTitle());
 
     }
 
@@ -168,19 +168,19 @@ public class ItemDaoIntegrationTest {
     public void deleteItem_success() {
         //add item into db
 
-        itemDao.addItem(testArtist.getId(), testitem);
+        itemDao.addItem(testArtist.getId(), testItem);
 
         //check item in db for null
 
-        assertNotNull(itemDao.findItem(testitem.getId()));
+        assertNotNull(itemDao.findItem(testItem.getId()));
 
         //delete item from db
 
-        itemDao.deleteItem(testitem.getId());
+        itemDao.deleteItem(testItem.getId());
 
         //get deleted item from db
 
-        Item deletedItem = itemDao.findItem(testitem.getId());
+        Item deletedItem = itemDao.findItem(testItem.getId());
 
         //check for null
 
@@ -195,10 +195,10 @@ public class ItemDaoIntegrationTest {
 
         //add item into db
 
-        itemDao.addItem(testArtist.getId(), testitem);
+        itemDao.addItem(testArtist.getId(), testItem);
         //check item in db for null
 
-        assertNotNull(itemDao.findItem(testitem.getId()));
+        assertNotNull(itemDao.findItem(testItem.getId()));
 
         //delete item from db
 
@@ -207,7 +207,7 @@ public class ItemDaoIntegrationTest {
 
         //get deleted item from db
 
-        Item deletedItem = itemDao.findItem(testitem.getId());
+        Item deletedItem = itemDao.findItem(testItem.getId());
 
         //check for null
 
@@ -221,16 +221,16 @@ public class ItemDaoIntegrationTest {
     public void findItem_success() {
         //add item into db
 
-        itemDao.addItem(testArtist.getId(), testitem);
+        itemDao.addItem(testArtist.getId(), testItem);
 
         //find and get item from db
 
-        Item expectedItem = itemDao.findItem(testitem.getId());
+        Item expectedItem = itemDao.findItem(testItem.getId());
 
-        //check for null testItem and expectedItem
+        //check for null testItem and expecteditem
 
-        assertNotNull(testitem);
-        assertEqualItems(expectedItem, testitem);
+        assertNotNull(testItem);
+        assertEqualItems(expectedItem, testItem);
     }
 
     @After
@@ -238,8 +238,8 @@ public class ItemDaoIntegrationTest {
 
         //delete inserted test users,artists and items  from db
 
-        if (testitem.getId() != null)
-            itemDao.deleteItem(testitem.getId());
+        if (testItem.getId() != null)
+            itemDao.deleteItem(testItem.getId());
 
         if (testArtist.getId() != null)
             artistDao.deleteArtist(testArtist.getId());
@@ -248,6 +248,6 @@ public class ItemDaoIntegrationTest {
 
         testArtist = null;
 
-        testitem = null;
+        testItem = null;
     }
 }

@@ -1,39 +1,40 @@
 package integration.dao;
-
 import am.aca.wftartproject.dao.UserDao;
-
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
-import am.aca.wftartproject.util.DBConnection;
-import integration.service.TestObjectTemplate;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import util.TestObjectTemplate;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
-import static integration.service.AssertTemplates.assertEqualUsers;
 import static junit.framework.Assert.assertNotSame;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.*;
+import static util.AssertTemplates.assertEqualUsers;
 
 /**
- * Created by Armen on 5/30/2017
+ * Created by Armen on 5/30/2017.
  */
 public class UserDAOIntegrationTest {
-    private DBConnection connection = new DBConnection();
-    private UserDaoImpl userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+    private UserDaoImpl userDao;
     private User testUser;
 
     public UserDAOIntegrationTest() throws SQLException, ClassNotFoundException {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException {
-
-        connection = new DBConnection();
-        userDao = new UserDaoImpl(connection.getDBConnection(DBConnection.DBType.TEST));
+    public void setUp() throws SQLException, ClassNotFoundException
+    {
+        //create db connection
+        DataSource conn = new ConnectionFactory()
+                .getConnection(ConnectionModel.POOL)
+                .getTestDBConnection();
+        userDao = new UserDaoImpl(conn);
 
         //create test user
 
@@ -58,7 +59,7 @@ public class UserDAOIntegrationTest {
 
         assertNotNull(testUser.getId());
 
-        // get user by id and check for sameness with original
+        // get user by id and ceck for sameness with otigin
 
         Long id = testUser.getId();
 
@@ -74,12 +75,7 @@ public class UserDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void addUser_Failure() {
-        //test user already inserted in setup, get record by userId
-
-        testUser.setId(null);
-
-        // Test method
-
+        //test user already inserted in setup, get record by user
         testUser.setLastName(null);
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -124,29 +120,20 @@ public class UserDAOIntegrationTest {
     public void deleteUser_success() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
-        userDao.deleteUser(testUser.getId());
+        assertTrue(userDao.deleteUser(testUser.getId()));
 
-        User deleteTest = userDao.findUser(testUser.getId());
-
-        assertNull(deleteTest.getId());
+        testUser.setId(null);
     }
 
     /**
      * @see UserDao#deleteUser(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void deleteUser_failure() {
 
         userDao.addUser(testUser);
         assertNotNull(testUser);
-        testUser.setLastName(null);
-        userDao.updateUser(testUser.getId(), testUser);
-        userDao.deleteUser(testUser.getId());
-
-        User deleteTest = userDao.findUser(testUser.getId());
-
-        assertNull(deleteTest.getId());
-
+        assertFalse(userDao.deleteUser(4546465465465L));
     }
 
 
@@ -156,8 +143,8 @@ public class UserDAOIntegrationTest {
     @Test
     public void findUser_success() {
         userDao.addUser(testUser);
-        User findResult = userDao.findUser(testUser.getId());
-        assertEqualUsers(testUser, findResult);
+        User findresult = userDao.findUser(testUser.getId());
+        assertEqualUsers(testUser, findresult);
     }
 
     /**
@@ -166,19 +153,21 @@ public class UserDAOIntegrationTest {
     @Test
     public void findUser_failure() {
         userDao.addUser(testUser);
-        testUser.setId(-7L);
-        User findResult = userDao.findUser(testUser.getId());
-        assertNotSame(testUser, findResult);
+        User findresult = userDao.findUser(-7L);
+        assertNull(findresult);
     }
 
 
     @After
     public void tearDown() {
+
         //delete inserted test users from db
+
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());
 
-        //delete test user object
+        //set temp instance refs to null
+
         testUser = null;
     }
 

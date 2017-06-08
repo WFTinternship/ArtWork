@@ -1,6 +1,6 @@
 package am.aca.wftartproject.util.dbconnection;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
@@ -8,8 +8,8 @@ import java.sql.SQLException;
  */
 public interface DatabaseConnection {
 
-    Connection getTestDBConnection() throws SQLException, ClassNotFoundException;
+    DataSource getTestDBConnection() throws SQLException, ClassNotFoundException;
 
-    Connection getProductionDBConnection() throws SQLException, ClassNotFoundException;
+    DataSource getProductionDBConnection() throws SQLException, ClassNotFoundException;
 
 }

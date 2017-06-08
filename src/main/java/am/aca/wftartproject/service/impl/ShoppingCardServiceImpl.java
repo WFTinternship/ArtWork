@@ -7,8 +7,8 @@ import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
-    private Connection conn;
+    private DataSource conn;
     private ShoppingCardDao shoppingCardDao = null;
 
     public ShoppingCardServiceImpl() throws PropertyVetoException, SQLException, ClassNotFoundException {
