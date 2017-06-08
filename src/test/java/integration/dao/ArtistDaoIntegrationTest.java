@@ -1,7 +1,9 @@
 package integration.dao;
 
 import am.aca.wftartproject.dao.ArtistDao;
+import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
+import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
@@ -22,12 +24,12 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 6/1/2017.
  */
 public class ArtistDaoIntegrationTest {
-    //testArtist and artistDaoImplementation
+    //create testArtist and artistDaoImplementation
 
     private Artist testArtist;
 
     private ArtistDao artistDao;
-
+    ArtistSpecializationLkpDao artistSpecialization ;
 
     public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }
@@ -35,11 +37,15 @@ public class ArtistDaoIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection,artistDaoImplementation and artist for testing
-
         DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
+        artistSpecialization = new ArtistSpecializationLkpDaoImpl(conn);
+
+        if (artistSpecialization.getArtistSpecialization(1) == null) {
+            artistSpecialization.addArtistSpecialization();
+        }
         artistDao = new ArtistDaoImpl(conn);
 
         testArtist = TestObjectTemplate.createTestArtist();
@@ -225,9 +231,8 @@ public class ArtistDaoIntegrationTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException, ClassNotFoundException {
         //delete inserted test users and artists from db
-
         if (testArtist.getId() != null) {
             artistDao.deleteArtist(testArtist.getId());
         }

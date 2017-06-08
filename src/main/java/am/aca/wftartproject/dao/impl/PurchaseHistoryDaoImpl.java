@@ -43,6 +43,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             }
 
         } catch (SQLException e) {
+            purchaseHistory.setUserId(null);
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
@@ -74,13 +75,24 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
                 purchaseHistory.setUserId(rs.getLong("user_id"));
                 purchaseHistory.setPurchaseDate(rs.getTimestamp("purchase_date"));
             }
+            else
+            {
+                purchaseHistory = null;
+                throw new DAOException("");
+            }
 
             ps.close();
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        } finally {
+
+        }
+        catch (DAOException e) {
+            String error = "Failed to get PurchaseHistory";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);}
+        finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -140,11 +152,19 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
+            else {
+                throw new DAOException("");
+            }
         } catch (SQLException e) {
-            String error = "Failed to get PurchaseHistory: %s";
+            String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
-        } finally {
+        }
+        catch (DAOException e) {
+            String error = "Failed to delete PurchaseHistory";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);}
+        finally {
             try {
                 if (conn != null) {
                     conn.close();

@@ -69,6 +69,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             if (rs.next()) {
                 artSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
             }
+            else artSpec = null;
             rs.close();
         } catch (SQLException e) {
             String error = "Failed to get specialization: %s";

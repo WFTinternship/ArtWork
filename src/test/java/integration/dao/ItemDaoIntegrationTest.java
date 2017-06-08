@@ -1,7 +1,9 @@
 package integration.dao;
 
+import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
+import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
@@ -29,18 +31,23 @@ public class ItemDaoIntegrationTest {
     private ItemDaoImpl itemDao;
     private Item testItem;
     private Artist testArtist;
-
+    ArtistSpecializationLkpDao artistSpecialization ;
 
     public ItemDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        //creating new DB connectio, artisdao and itemdao imlementations
+        //creating new DB connection, artisdao and itemdao imlementations
 
         DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
+        artistSpecialization = new ArtistSpecializationLkpDaoImpl(conn);
+
+        if (artistSpecialization.getArtistSpecialization(1) == null) {
+            artistSpecialization.addArtistSpecialization();
+        }
         artistDao = new ArtistDaoImpl(conn);
         itemDao = new ItemDaoImpl(conn);
 
