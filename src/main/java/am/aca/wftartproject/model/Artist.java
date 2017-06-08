@@ -64,4 +64,10 @@ public class Artist extends AbstractUser {
                 ", itemList=" + itemList +
                 '}';
     }
+
+    public boolean isValidArtist(){
+        return
+                super.isValidUser() &&
+                specialization != null;
+    }
 }

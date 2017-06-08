@@ -4,9 +4,11 @@ import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -14,11 +16,11 @@ import java.sql.SQLException;
  */
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
-    private Connection conn = null;
+    private DataSource conn;
     private ShoppingCardDao shoppingCardDao = null;
 
     public ShoppingCardServiceImpl() throws PropertyVetoException, SQLException, ClassNotFoundException {
-//        Connection conn = new dbconnection().getConnection(ConnectionModel.SINGLETON).getProductionDBConnection();
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         shoppingCardDao = new ShoppingCardDaoImpl(conn);
     }
 

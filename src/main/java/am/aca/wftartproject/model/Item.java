@@ -1,5 +1,7 @@
 package am.aca.wftartproject.model;
 
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
+
 /**
  * Created by ASUS on 24-May-17
  */
@@ -101,5 +103,15 @@ public class Item {
                 ", status=" + status +
                 ", itemType=" + itemType +
                 '}';
+    }
+
+    public boolean isValidItem() {
+        return
+                id != null &&
+                id > 0 &&
+                !isEmptyString(title) &&
+                !isEmptyString(photoURL) &&
+                price != 0 &&
+                itemType != null;
     }
 }

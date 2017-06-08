@@ -1,21 +1,30 @@
-package integration_tests.dao;
-import am.aca.wftartproject.dao.*;
+package integration.dao;
+
+import am.aca.wftartproject.dao.ArtistDao;
+import am.aca.wftartproject.dao.ItemDao;
+import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.model.*;
-import static integration_tests.service.AssertTemplates.assertEqualPurchaseHistory;
-import static junit.framework.TestCase.*;
+import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
-import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.sql.Connection;
+import util.TestObjectTemplate;
+
+import javax.sql.DataSource;
 import java.sql.SQLException;
+
+import static junit.framework.TestCase.*;
+import static util.AssertTemplates.assertEqualPurchaseHistory;
 
 
 /**
@@ -23,11 +32,11 @@ import java.sql.SQLException;
  */
 public class PurchaseHistoryDaoIntegrationTest {
     private UserDao userDao;
-    private ArtistDao artistDao;
     private ItemDao itemDao;
+    private ArtistDao artistDao;
     private PurchaseHistoryDao purchaseHistoryDao;
-    private User testUser;
     private Artist testArtist;
+    private User testUser;
     private Item testItem;
     private PurchaseHistory purchaseHistory;
 
@@ -35,24 +44,24 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException
-    {
+    public void setUp() throws SQLException, ClassNotFoundException {
 
         //create db connection
 
-        Connection conn = new ConnectionFactory()
+        DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
         userDao = new UserDaoImpl(conn);
-        artistDao = new ArtistDaoImpl(conn);
         itemDao = new ItemDaoImpl(conn);
+        artistDao = new ArtistDaoImpl(conn);
         purchaseHistoryDao = new PurchaseHistoryDaoImpl(conn);
 
         //create test Item,User, purchaseHistory and set them into db
-        testArtist = TestObjectTemplate.createTestArtist();
+
         testItem = TestObjectTemplate.createTestItem();
         purchaseHistory = new PurchaseHistory();
         testUser = TestObjectTemplate.createTestUser();
+        testArtist = TestObjectTemplate.createTestArtist();
         userDao.addUser(testUser);
         testArtist.setId(testUser.getId());
         artistDao.addArtist(testArtist);
@@ -154,7 +163,6 @@ public class PurchaseHistoryDaoIntegrationTest {
         assertNotNull(purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId()));
 
 
-
         assertTrue(purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId()));
 
         purchaseHistory.setUserId(null);
@@ -177,7 +185,6 @@ public class PurchaseHistoryDaoIntegrationTest {
         assertFalse(purchaseHistoryDao.deletePurchase(1456325896615358332L, testItem.getId()));
 
 
-
     }
 
     @After
@@ -189,9 +196,6 @@ public class PurchaseHistoryDaoIntegrationTest {
 
         if (testItem.getId() != null)
             itemDao.deleteItem(testItem.getId());
-
-        if (testArtist.getId() != null)
-            artistDao.deleteArtist(testArtist.getId());
 
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());

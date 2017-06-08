@@ -25,7 +25,7 @@ public interface PurchaseHistoryDao {
      * @param itemId
      * @return
      */
-    PurchaseHistory getPurchase(Long userId, Long itemId);
+    PurchaseHistory getPurchase(Long userId, Long itemId) ;
 
 
     /**
@@ -34,7 +34,7 @@ public interface PurchaseHistoryDao {
      * @param userId
      * @return
      */
-    List<PurchaseHistory> getPurchase(Long userId);
+    List<PurchaseHistory> getPurchase(Long userId) ;
 
 
     /**
@@ -43,7 +43,7 @@ public interface PurchaseHistoryDao {
      * @param userId
      * @param itemId
      */
-    Boolean deletePurchase(Long userId, Long itemId);
+    Boolean deletePurchase(Long userId, Long itemId) ;
 
 
 }

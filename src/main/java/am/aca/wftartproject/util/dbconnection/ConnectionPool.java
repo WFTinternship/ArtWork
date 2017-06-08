@@ -3,7 +3,7 @@ package am.aca.wftartproject.util.dbconnection;
 import am.aca.wftartproject.util.PropertyHelper;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
@@ -15,17 +15,17 @@ public class ConnectionPool implements DatabaseConnection {
     private static PropertyHelper propertyHelper = new PropertyHelper();
 
     @Override
-    public Connection getProductionDBConnection() throws SQLException, ClassNotFoundException {
+    public DataSource getProductionDBConnection() throws SQLException, ClassNotFoundException {
         return getDBConnection("jdbcUrl");
     }
 
     @Override
-    public Connection getTestDBConnection() throws SQLException, ClassNotFoundException {
+    public DataSource getTestDBConnection() throws SQLException, ClassNotFoundException {
         return getDBConnection("jdbcUrlTest");
     }
 
 
-    public Connection getDBConnection(String dbUrl) throws SQLException {
+    public DataSource getDBConnection(String dbUrl) throws SQLException {
 
         cpds.setJdbcUrl(propertyHelper.getProperties().getProperty(dbUrl));
         cpds.setUser(propertyHelper.getProperties().getProperty("jdbcUserName"));
@@ -38,7 +38,7 @@ public class ConnectionPool implements DatabaseConnection {
         cpds.setMaxPoolSize(20);
         cpds.setMaxStatements(100);
 
-        return cpds.getConnection();
+        return cpds;
     }
 
 

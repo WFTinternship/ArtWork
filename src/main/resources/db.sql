@@ -36,7 +36,7 @@ CREATE TABLE `artist` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `artist`
+-- Dumping dataSource for table `artist`
 --
 
 LOCK TABLES `artist` WRITE;
@@ -59,7 +59,7 @@ CREATE TABLE `artist_specialization_lkp` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `artist_specialization_lkp`
+-- Dumping dataSource for table `artist_specialization_lkp`
 --
 
 LOCK TABLES `artist_specialization_lkp` WRITE;
@@ -90,7 +90,7 @@ CREATE TABLE `item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `item`
+-- Dumping dataSource for table `item`
 --
 
 LOCK TABLES `item` WRITE;
@@ -117,7 +117,7 @@ CREATE TABLE `purchase_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase_history`
+-- Dumping dataSource for table `purchase_history`
 --
 
 LOCK TABLES `purchase_history` WRITE;
@@ -143,7 +143,7 @@ CREATE TABLE `shopping_card` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `shopping_card`
+-- Dumping dataSource for table `shopping_card`
 --
 
 LOCK TABLES `shopping_card` WRITE;
@@ -170,7 +170,7 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping dataSource for table `user`
 --
 
 LOCK TABLES `user` WRITE;

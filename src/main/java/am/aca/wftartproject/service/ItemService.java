@@ -5,12 +5,12 @@ import am.aca.wftartproject.model.Item;
 import java.util.List;
 
 /**
- * Created by ASUS on 03-Jun-17
+ * Created by surik on 6/1/17
  */
 public interface ItemService {
 
     /**
-     * Adds Item info for appropriate artist
+     * Add Item info for appropriate artist
      *
      * @param artistID
      * @param item
@@ -18,7 +18,7 @@ public interface ItemService {
     void addItem(Long artistID, Item item);
 
     /**
-     * Finds Item by id
+     * Find Item by id
      *
      * @param id
      * @return
@@ -26,7 +26,33 @@ public interface ItemService {
     Item findItem(Long id);
 
     /**
-     * Updates Item price by id
+     * Get recently added items
+     *
+     * @param limit
+     * @return
+     */
+    List<Item> getRecentlyAddedItems(int limit);
+
+
+    /**
+     * Get all items with the following title.
+     *
+     * @param title
+     * @return
+     */
+    List<Item> getItemsByTitle(String title);
+
+    /**
+     * Get all items with the following type.
+     *
+     * @param itemType
+     * @return
+     */
+    List<Item> getItemsByType(String itemType);
+
+
+    /**
+     * Update Item price by id
      *
      * @param id
      * @param item
@@ -34,35 +60,12 @@ public interface ItemService {
     void updateItem(Long id, Item item);
 
     /**
-     * Deletes Item by id
+     * Delete Item by id
      *
      * @param id
      */
     void deleteItem(Long id);
 
 
-    /**
-     * Gets recently added items
-     *
-     * @param limit
-     * @return
-     */
-    List<Item> getRecentlyAddedItems(int limit);
 
-    /**
-     * Gets all items with the following title.
-     *
-     * @param title
-     * @return
-     */
-    List<Item> getItemsByTitle(String title);
-
-
-    /**
-     * Gets all items with the following type.
-     *
-     * @param itemType
-     * @return
-     */
-    List<Item> getItemsByType(String itemType);
 }

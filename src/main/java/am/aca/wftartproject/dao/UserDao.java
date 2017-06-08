@@ -1,7 +1,6 @@
 package am.aca.wftartproject.dao;
 
 import am.aca.wftartproject.model.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * Created by ASUS on 27-May-17
@@ -45,7 +44,6 @@ public interface UserDao {
      * @param id
      */
     Boolean deleteUser(Long id);
-
 
 
 }

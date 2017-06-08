@@ -1,9 +1,6 @@
 package am.aca.wftartproject.dao;
 
 import am.aca.wftartproject.model.ShoppingCard;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
-import java.sql.SQLException;
 
 /**
  * Created by ASUS on 27-May-17
@@ -16,7 +13,7 @@ public interface ShoppingCardDao {
      * @param userId
      * @param shoppingCard
      */
-    void addShoppingCard(Long userId, ShoppingCard shoppingCard);
+    void addShoppingCard(Long userId, ShoppingCard shoppingCard) ;
 
     /**
      * Gets shoppingCard from database.
@@ -24,7 +21,7 @@ public interface ShoppingCardDao {
      * @param id
      * @return
      */
-    ShoppingCard getShoppingCard(Long id);
+    ShoppingCard getShoppingCard(Long id) ;
 
     /**
      * Updates shoppingCard in database.
@@ -39,5 +36,5 @@ public interface ShoppingCardDao {
      *
      * @param id
      */
-    Boolean deleteShoppingCard(Long id);
+    Boolean deleteShoppingCard(Long id) ;
 }

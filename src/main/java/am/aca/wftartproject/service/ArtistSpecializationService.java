@@ -1,24 +1,23 @@
-package am.aca.wftartproject.dao;
+package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.model.ArtistSpecialization;
 
 /**
- * Created by suro on 06-Jun-17
+ * @author surik
  */
-
-public interface ArtistSpecializationLkpDao {
+public interface ArtistSpecializationService {
 
     /**
      * Adds artist specializations into database
      */
-    void addArtistSpecialization() ;
+    void addArtistSpecialization();
 
     /**
      * Gets artist specialization by id
      *
      * @param id
      */
-    ArtistSpecialization getArtistSpecialization(int id) ;
+    ArtistSpecialization getArtistSpecialization(int id);
 
     /**
      * Gets artist specialization
@@ -26,11 +25,11 @@ public interface ArtistSpecializationLkpDao {
      * @param specialization
      * @return
      */
-    ArtistSpecialization getArtistSpecialization(String specialization) ;
+    ArtistSpecialization getArtistSpecialization(String specialization);
 
     /**
      * Deletes artist specialization
      */
-    void deleteArtistSpecialization() ;
+    void deleteArtistSpecialization();
 
 }

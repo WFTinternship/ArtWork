@@ -3,7 +3,7 @@ package am.aca.wftartproject.service;
 import am.aca.wftartproject.model.User;
 
 /**
- * Created by ASUS on 30-May-17
+ * Created by surik on 6/3/17
  */
 public interface UserService {
 
@@ -13,6 +13,23 @@ public interface UserService {
      * @param user
      */
     void addUser(User user);
+
+    /**
+     * Find User with the following id.
+     *
+     * @param id
+     * @return
+     */
+    User findUser(Long id);
+
+
+    /**
+     * Find User with the following email.
+     *
+     * @param email
+     * @return
+     */
+    User findUser(String email);
 
     /**
      * Update user info
@@ -29,20 +46,4 @@ public interface UserService {
      */
     void deleteUser(Long id);
 
-
-    /**
-     * Find User with the following id.
-     *
-     * @param id
-     * @return
-     */
-    User findUser(Long id);
-
-    /**
-     * Find User with the following email.
-     *
-     * @param email
-     * @return
-     */
-    User findUser(String email);
 }

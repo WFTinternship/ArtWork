@@ -8,6 +8,19 @@ import java.util.Random;
  * Created by Armen on 5/30/2017
  */
 public class TestObjectTemplate {
+    public static Artist createTestArtist(){
+
+        Artist testArtist = new Artist();
+        testArtist.setArtistPhoto(new byte[10]);
+        testArtist.setSpecialization(ArtistSpecialization.PAINTER);
+        testArtist.setAge(26);
+        testArtist.setEmail("test" + getRandomNumber() + "@test.com");
+        testArtist.setFirstName("Test FirstName" + getRandomNumber());
+        testArtist.setLastName("Test LastName" + getRandomNumber());
+        testArtist.setPassword("test123");
+       // testArtist.setShoppingCard(new ShoppingCard(getRandomNumber() + 1.1));
+        return  testArtist;
+    }
     public static User createTestUser() {
         User testUser = new User();
         testUser.setFirstName("Test FirstName" + getRandomNumber());
@@ -17,28 +30,14 @@ public class TestObjectTemplate {
         testUser.setPassword("testPassword");
         return testUser;
     }
-
-    public static Artist createTestArtist() {
-        Artist testArtist = new Artist();
-        testArtist.setFirstName("Test FirstName" + getRandomNumber());
-        testArtist.setLastName("Test LastName");
-        testArtist.setAge(26);
-        testArtist.setEmail("test" + getRandomNumber() + "@test.com");
-        testArtist.setPassword("testPassword");
-        testArtist.setSpecialization(ArtistSpecialization.SCULPTOR);
-        testArtist.setArtistPhoto(new byte[10]);
-        return testArtist;
-    }
-
-
     //title, description, photo_url, price, artist_id, status, item_type
     public static Item createTestItem() {
         Item item = new Item();
-        item.setTitle("test_Photo");
+        item.setTitle("test_item");
         item.setDescription("test item");
         item.setItemType(ItemType.PAINTING);
         item.setPhotoURL("test");
-        item.setPrice(getRandomNumber() + 1.1);
+        item.setPrice(getRandomNumber()+1.1);
         item.setStatus(true);
         return item;
     }
@@ -46,6 +45,7 @@ public class TestObjectTemplate {
 
     public static int getRandomNumber() {
         Random rand = new Random();
-        return rand.nextInt(100000) + 1;
+        int n = rand.nextInt(100000) + 1;
+        return n;
     }
 }

@@ -2,77 +2,139 @@ package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
+import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
+import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import org.apache.log4j.Logger;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
+
 /**
- * Created by ASUS on 30-May-17
+ * Created by surik on 6/3/17
  */
 public class UserServiceImpl implements UserService {
 
-    private Connection conn = null;
-    private UserDao userDao = null;
+    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+
+    private DataSource conn ;
+    private UserDao userDao;
 
     public UserServiceImpl() throws SQLException, ClassNotFoundException {
-//        Connection conn = new dbconnection().getConnection(ConnectionModel.SINGLETON).getProductionDBConnection();
+        conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
         userDao = new UserDaoImpl(conn);
     }
 
     /**
      * @param user
+     *
      * @see UserService#addUser(User)
      */
     @Override
     public void addUser(User user) {
-        userDao.addUser(user);
+        if (user == null || !user.isValidUser()){
+            LOGGER.error(String.format("user is invalid: %s", user));
+            throw new ServiceException("Invalid user");
+        }
+        try {
+            userDao.addUser(user);
+        }catch (DAOException e){
+            String error = "Failed to add User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
-
 
     /**
      * @param id
      * @return
+     *
      * @see UserService#findUser(Long)
      */
     @Override
     public User findUser(Long id) {
-        return userDao.findUser(id);
+        if (id == null || id < 0) {
+            LOGGER.error(String.format("Id is invalid: %s", id));
+            throw new ServiceException("Invalid Id");
+        }
+        try {
+            return userDao.findUser(id);
+        }catch (DAOException e){
+            String error = "Failed to find User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
-
 
     /**
      * @param email
      * @return
+     *
      * @see UserService#findUser(String)
      */
     @Override
     public User findUser(String email) {
-        return userDao.findUser(email);
+        if (!isEmptyString(email)){
+            LOGGER.error(String.format("email is invalid: %s", email));
+            throw new ServiceException("Invalid email");
+        }
+        try {
+            return userDao.findUser(email);
+        }catch (DAOException e){
+            String error = "Failed to find User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
-
 
     /**
      * @param id
      * @param user
+     *
      * @see UserService#updateUser(Long, User)
      */
     @Override
     public void updateUser(Long id, User user) {
-        userDao.updateUser(id, user);
+        if (id == null || id < 0) {
+            LOGGER.error(String.format("Id is invalid: %s", id));
+            throw new ServiceException("Invalid Id");
+        }
+        if (user == null || !user.isValidUser()){
+            LOGGER.error(String.format("user is invalid: %s", user));
+            throw new ServiceException("Invalid user");
+        }
+        try{
+            userDao.updateUser(id, user);
+        }catch (DAOException e){
+            String error = "Failed to update User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
-
 
     /**
      * @param id
+     *
      * @see UserService#deleteUser(Long)
      */
     @Override
     public void deleteUser(Long id) {
-        userDao.deleteUser(id);
+
+        if (id == null || id < 0) {
+            LOGGER.error(String.format("Id is invalid: %s", id));
+            throw new ServiceException("Invalid Id");
+        }
+        try {
+            userDao.deleteUser(id);
+        }catch (DAOException e){
+            String error = "Failed to delete User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
-
-
-
 }

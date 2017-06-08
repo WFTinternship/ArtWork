@@ -6,7 +6,7 @@ package am.aca.wftartproject.model;
 public enum ItemType {
 
     SCULPTURE(1, "SCULPTURE"),
-    PHOTOGRATHY(2, "PHOTOGRATHY"),
+    PHOTOGRAPHY(2, "PHOTOGRAPHY"),
     PAINTING(3, "PAINTING"),
     OTHER(4, "OTHER");
 

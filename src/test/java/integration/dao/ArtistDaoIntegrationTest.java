@@ -1,20 +1,22 @@
-package integration_tests.dao;
+package integration.dao;
 
+import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
-import integration_tests.service.AssertTemplates;
-import integration_tests.service.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static junit.framework.TestCase.*;
-import java.sql.Connection;
+import util.AssertTemplates;
+import util.TestObjectTemplate;
+
+import javax.sql.DataSource;
 import java.sql.SQLException;
+
+import static junit.framework.TestCase.*;
 
 /**
  * Created by Armen on 6/1/2017.
@@ -34,7 +36,7 @@ public class ArtistDaoIntegrationTest {
     public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection,artistDaoImplementation and artist for testing
 
-        Connection conn = new ConnectionFactory()
+        DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
@@ -52,7 +54,7 @@ public class ArtistDaoIntegrationTest {
         //set artist into db, get generated id
 
         artistDao.addArtist(testArtist);
-
+        System.out.println(testArtist);
 
         //check testartist object and testartist id for null
 
@@ -81,6 +83,7 @@ public class ArtistDaoIntegrationTest {
 
         testArtist.setFirstName(null);
         artistDao.addArtist(testArtist);
+        System.out.println(testArtist);
 
         //check testartist object and testartist id for null
 
@@ -109,13 +112,14 @@ public class ArtistDaoIntegrationTest {
         testArtist.setSpecialization(ArtistSpecialization.PAINTER);
         artistDao.addArtist(testArtist);
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
-
+        System.out.println(testArtist.getSpecialization().getId());
 
         //update artists specialization field in db, get from db and check for sameness
 
         artistDao.updateArtist(testArtist.getId(), testArtist);
         Artist updated = artistDao.findArtist(testArtist.getId());
-
+        System.out.println(updated.getSpecialization().getId());
+        System.out.println(testArtist.getSpecialization().getId());
         assertEquals(updated.getSpecialization().getId(), testArtist.getSpecialization().getId());
 
     }
@@ -193,6 +197,7 @@ public class ArtistDaoIntegrationTest {
         //find and get artist from db
 
         Artist findArtist = artistDao.findArtist(testArtist.getId());
+        System.out.println(findArtist);
 
         AssertTemplates.assertEqualArtists(findArtist, testArtist);
 

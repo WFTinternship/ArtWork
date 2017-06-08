@@ -53,5 +53,14 @@ public class PurchaseHistory {
                 '}';
     }
 
+    public boolean isValidPurchaseHistroy(){
+        return
+                userId != null &&
+                userId > 0 &&
+                itemId != null &&
+                itemId > 0 &&
+                purchaseDate != null;
+    }
+
 
 }
