@@ -41,20 +41,22 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             if (rs.next()) {
                 shoppingCard.setId(rs.getLong(1));
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -78,20 +80,22 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
                 shoppingCard.setId(rs.getLong("id"))
                         .setBalance(rs.getDouble("balance"));
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return shoppingCard;
     }
@@ -114,19 +118,21 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return success;
     }
@@ -147,19 +153,21 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return success;
     }

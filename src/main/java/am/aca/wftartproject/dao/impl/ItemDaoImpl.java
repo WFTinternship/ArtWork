@@ -48,20 +48,22 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             if (rs.next()) {
                 item.setId(rs.getLong(1));
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -89,20 +91,22 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                         .setStatus(rs.getBoolean("status"))
                         .setItemType(ItemType.valueOf(rs.getString("type")));
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return item;
     }
@@ -127,19 +131,21 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setLong(5, id);
             ps.executeUpdate();
 
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to update Item:  %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -156,19 +162,21 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -198,20 +206,22 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                         .setItemType(ItemType.valueOf(rs.getString("type")));
                 itemList.add(item);
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get RecentlyAddedItems: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return itemList;
     }
@@ -242,20 +252,22 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                         .setItemType(ItemType.valueOf(rs.getString("type")));
                 itemList.add(item);
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return itemList;
     }
@@ -286,20 +298,22 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                         .setItemType(ItemType.valueOf(rs.getString("type")));
                 itemList.add(item);
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return itemList;
     }

@@ -41,20 +41,22 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             if (rs.next()) {
                 user.setId(rs.getLong(1));
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -83,20 +85,22 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             } else {
                 return null;
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return user;
     }
@@ -126,20 +130,22 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             } else {
                 return null;
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return user;
     }
@@ -166,19 +172,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return success;
     }
@@ -199,19 +207,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return success;
     }

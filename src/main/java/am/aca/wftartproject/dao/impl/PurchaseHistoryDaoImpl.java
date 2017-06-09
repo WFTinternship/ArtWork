@@ -42,20 +42,22 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             if (ps.executeUpdate() > 0) {
                 purchaseHistory.setPurchaseDate(timestamp);
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);
         } catch (SQLException e) {
             purchaseHistory.setUserId(null);
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -83,20 +85,22 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             } else {
                 return null;
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return purchaseHistory;
     }
@@ -124,20 +128,22 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
                 purchaseHistoryList.add(purchaseHistory);
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return purchaseHistoryList;
     }
@@ -162,18 +168,20 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
+            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return success;
     }

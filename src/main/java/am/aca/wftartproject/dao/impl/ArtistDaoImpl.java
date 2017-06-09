@@ -48,14 +48,16 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             if (rs.next()) {
                 artist.setId(rs.getLong(1));
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);//rs??
 
             ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
             ps.setInt(1, artist.getSpecialization().getId());
             ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, artist.getId());
             ps.executeUpdate();
-            ps.close();
+//            ps.close();
+            closeResources(ps);
 
             conn.commit();
         } catch (SQLException e) {
@@ -70,13 +72,14 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -104,8 +107,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             } else {
                 return null;
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
 
             ps = conn.prepareStatement(
                     "SELECT ar.photo,art.spec_type FROM artist ar " +
@@ -117,20 +121,23 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                         .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
             }
 
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
+
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return artist;
     }
@@ -160,8 +167,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             } else {
                 return null;
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
 
             ps = conn.prepareStatement(
                     "SELECT ar.photo,art.spec_type FROM artist ar INNER JOIN " +
@@ -172,20 +180,23 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                 artist.setArtistPhoto(rs.getBytes("photo"))
                         .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
             }
-            rs.close();
-            ps.close();
+            /*rs.close();
+            ps.close();*/
+            closeResources(rs, ps);
+
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return artist;
     }
@@ -213,7 +224,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             ps.setString(4, artist.getPassword());
             ps.setLong(5, id);
             ps.executeUpdate();
-            ps.close();
+//            ps.close();
+            closeResources(ps);
 
             ps = conn.prepareStatement(
                     "UPDATE artist SET spec_id=?, photo=? WHERE user_id = ?");
@@ -221,7 +233,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             ps.setBytes(2, artist.getArtistPhoto());
             ps.setLong(3, id);
             ps.executeUpdate();
-            ps.close();
+//            ps.close();
+            closeResources(ps);
 
             conn.commit();
         } catch (SQLException e) {
@@ -236,13 +249,14 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
     }
 
@@ -266,14 +280,15 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             if (affectedRows > 0) {
                 success = true;
             }
-            ps.close();
-
+//            ps.close();
+            closeResources(ps);
             ps = conn.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setLong(1, id);
             if (ps.executeUpdate() < 0) {
                 success = false;
             }
-            ps.close();
+//            ps.close();
+            closeResources(ps);
 
             conn.commit();
         } catch (SQLException e) {
@@ -288,13 +303,14 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            try {
+            /*try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
+            closeResources(conn);
         }
         return success;
     }
