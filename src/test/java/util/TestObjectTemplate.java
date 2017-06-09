@@ -9,37 +9,38 @@ import java.util.Random;
  */
 public class TestObjectTemplate {
 
-    public static Artist createTestArtist(){
+    public static Artist createTestArtist() {
         Artist testArtist = new Artist();
-        testArtist.setArtistPhoto(new byte[10]);
-        testArtist.setSpecialization(ArtistSpecialization.PAINTER);
-        testArtist.setAge(26);
-        testArtist.setEmail("test" + getRandomNumber() + "@test.com");
-        testArtist.setFirstName("Test FirstName" + getRandomNumber());
-        testArtist.setLastName("Test LastName" + getRandomNumber());
-        testArtist.setPassword("test123");
-       // testArtist.setShoppingCard(new ShoppingCard(getRandomNumber() + 1.1));
-        return  testArtist;
+        testArtist.setArtistPhoto(new byte[10])
+                .setSpecialization(ArtistSpecialization.PAINTER)
+                .setAge(26)
+                .setEmail("test" + getRandomNumber() + "@test.com")
+                .setFirstName("Test FirstName" + getRandomNumber())
+                .setLastName("Test LastName" + getRandomNumber())
+                .setPassword("test123");
+        // testArtist.setShoppingCard(new ShoppingCard(getRandomNumber() + 1.1));
+        return testArtist;
     }
 
     public static User createTestUser() {
         User testUser = new User();
-        testUser.setFirstName("Test FirstName" + getRandomNumber());
-        testUser.setLastName("Test LastName");
-        testUser.setAge(26);
-        testUser.setEmail("test" + getRandomNumber() + "@test.com");
-        testUser.setPassword("testPassword");
+        testUser.setFirstName("Test FirstName" + getRandomNumber())
+                .setLastName("Test LastName")
+                .setAge(26)
+                .setEmail("test" + getRandomNumber() + "@test.com")
+                .setPassword("testPassword");
         return testUser;
     }
+
     //title, description, photo_url, price, artist_id, status, item_type
     public static Item createTestItem() {
         Item item = new Item();
-        item.setTitle("test_item");
-        item.setDescription("test item");
-        item.setItemType(ItemType.PAINTING);
-        item.setPhotoURL("test");
-        item.setPrice(getRandomNumber()+1.1);
-        item.setStatus(true);
+        item.setTitle("test_item")
+                .setDescription("test item")
+                .setItemType(ItemType.PAINTING)
+                .setPhotoURL("test")
+                .setPrice(getRandomNumber() + 1.1)
+                .setStatus(true);
         return item;
     }
 

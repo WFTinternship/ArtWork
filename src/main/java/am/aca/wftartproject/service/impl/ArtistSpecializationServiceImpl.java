@@ -2,18 +2,12 @@ package am.aca.wftartproject.service.impl;
 
 
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
-import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
-import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
-import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.apache.log4j.Logger;
-
-import javax.sql.DataSource;
-import java.sql.SQLException;
 
 /**
  * @author surik
@@ -24,10 +18,14 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
 
     private ArtistSpecializationLkpDao lkpDao = null;
 
-    public ArtistSpecializationServiceImpl() throws SQLException, ClassNotFoundException {
-        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-        lkpDao = new ArtistSpecializationLkpDaoImpl(conn);
+    public void setLkpDao(ArtistSpecializationLkpDao lkpDao) {
+        this.lkpDao = lkpDao;
     }
+
+//        public ArtistSpecializationServiceImpl() throws SQLException, ClassNotFoundException {
+//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+//        lkpDao = new ArtistSpecializationLkpDaoImpl(conn);
+//    }
 
 
     /**

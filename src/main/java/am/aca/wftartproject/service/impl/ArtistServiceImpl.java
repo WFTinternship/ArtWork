@@ -1,17 +1,11 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
-import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
-import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import org.apache.log4j.Logger;
-
-import javax.sql.DataSource;
-import java.sql.SQLException;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
@@ -24,10 +18,14 @@ public class ArtistServiceImpl implements ArtistService {
 
     private ArtistDao artistDao;
 
-    public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
-        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-        artistDao = new ArtistDaoImpl(conn);
+    public void setArtistDao(ArtistDao artistDao) {
+        this.artistDao = artistDao;
     }
+
+//        public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
+//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
+//        artistDao = new ArtistDaoImpl(conn);
+//    }
 
 
     /**

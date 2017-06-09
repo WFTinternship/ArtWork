@@ -9,7 +9,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 public interface ArtistSpecializationLkpDao {
 
     /**
-     * Adds artist specializations into database
+     * Adds artist specializations into springconfig.database
      */
     void addArtistSpecialization();
 

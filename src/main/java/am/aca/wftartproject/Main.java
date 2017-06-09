@@ -1,5 +1,10 @@
 package am.aca.wftartproject;
 
+import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.impl.ItemServiceImpl;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import java.sql.SQLException;
 
 /**
@@ -8,9 +13,9 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        AbstractApplicationContext context = new ClassPathXmlApplicationContext("app-config.xml");
-//        Item item = (Item)context.getBean("item");
-//        System.out.println(item);
+        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
+        ItemService itemService = context.getBean("itemService",ItemServiceImpl.class);
+        System.out.println(itemService);
 
     }
 }

@@ -157,8 +157,12 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your category</option>
+                                        <%--<option value="1" class="fa fa-fire-extinguisher">${artistSpecType[0]}</option>--%>
+                                        <%--<option value="1" class="fa fa-camera-retro">${artistSpecType[1]}</option>--%>
+                                        <%--<option value="3" class="fa fa-pencil">${artistSpecType[2]}</option>--%>
+                                        <%--<option value="4" class="fa fa-eyedropper">${artistSpecType[3]}</option>--%>
                                         <option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>
-										<option value="1" class="fa fa-camera-retro">Photogenic Art</option>                                                                                
+										<option value="1" class="fa fa-camera-retro">Photogenic Art</option>
                                         <option value="3" class="fa fa-pencil">Sketches</option>
                                         <option value="4" class="fa fa-eyedropper">Dropper Painting</option>
                                     </select>                                    
@@ -185,8 +189,11 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your type</option>
+                                        <%--<c:forEach items="${itemType}" var="itemTypeElement">--%>
+                                            <%--<option value="1" class="fa fa-flask">${itemTypeElement}</option>--%>
+                                        <%--</c:forEach>--%>
                                         <option value="1" class="fa fa-flask">Acrylic</option>
-										<option value="2" class="fa fa-paint-brush">Oil Painting</option>                                        
+										<option value="2" class="fa fa-paint-brush">Oil Painting</option>
                                         <option value="2" class="fa fa-scissors">Sculpture</option>
                                         <option value="3" class="fa fa-tint">Water Painting</option>
                                     </select>                                    

@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.User;
 public interface UserDao {
 
     /**
-     * Adds user to the database
+     * Adds user to the springconfig.database
      *
      * @param user
      */

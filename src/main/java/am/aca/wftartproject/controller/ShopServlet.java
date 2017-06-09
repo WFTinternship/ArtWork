@@ -1,6 +1,7 @@
 package am.aca.wftartproject.controller;
 
 import am.aca.wftartproject.model.ArtistSpecialization;
+import am.aca.wftartproject.model.ItemType;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,8 +18,10 @@ public class ShopServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-          RequestDispatcher  dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/shop.jsp");
-            dispatcher.forward(request, response);
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/shop.jsp");
+        request.setAttribute("artistSpecType", ArtistSpecialization.values());
+        request.setAttribute("itemType", ItemType.values());
+        dispatcher.forward(request, response);
 
     }
 }
