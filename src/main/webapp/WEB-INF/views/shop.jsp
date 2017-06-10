@@ -5,7 +5,7 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<%--<c:set var="itemTypes" value="<%=request.getParameter("itemTypes")%>" />--%>
+<c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -160,12 +160,12 @@
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your category</option>
                                         <c:forEach items="${itemTypes}" var="element">
-                                            <option value="${element.getId()}" class="fa fa-fire-extinguisher">${element.getType()}</option>
+                                            <option value="${element.id}" class="fa fa-fire-extinguisher">${element.type}</option>
                                         </c:forEach>
-                                        <%--<option value="1" class="fa fa-fire-extinguisher">${artistSpecType[0]}</option>--%>
-                                        <%--<option value="1" class="fa fa-camera-retro">${artistSpecType[1]}</option>--%>
-                                        <%--<option value="3" class="fa fa-pencil">${artistSpecType[2]}</option>--%>
-                                        <%--<option value="4" class="fa fa-eyedropper">${artistSpecType[3]}</option>--%>
+                                        <%--<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>--%>
+                                        <%--<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>--%>
+                                        <%--<option value="3" class="fa fa-pencil">${itemTypes[2].getType()}</option>--%>
+                                        <%--<option value="4" class="fa fa-eyedropper">${itemTypes[3].getType()}</option>--%>
 
 
                                         <%--<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>--%>

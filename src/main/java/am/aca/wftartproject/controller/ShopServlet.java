@@ -24,7 +24,5 @@ public class ShopServlet extends HttpServlet {
         request.setAttribute("itemTypes", ItemType.values());
 
         dispatcher.forward(request, response);
-
-
     }
 }
