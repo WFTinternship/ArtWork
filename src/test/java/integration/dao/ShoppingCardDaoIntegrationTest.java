@@ -9,6 +9,8 @@ import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,10 @@ import static util.AssertTemplates.assertEqualShoppingCards;
  * Created by Armen on 6/2/2017
  */
 public class ShoppingCardDaoIntegrationTest {
+
+    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private DataSource conn;
+
     private UserDao userDao;
     private ShoppingCardDao shoppingCardDao;
     private User testUser;
@@ -35,7 +41,7 @@ public class ShoppingCardDaoIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection
-        DataSource conn = new ConnectionFactory()
+        conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
@@ -48,6 +54,10 @@ public class ShoppingCardDaoIntegrationTest {
         userDao.addUser(testUser);
         testShoppingCard = new ShoppingCard();
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
+
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
 
     }
 
@@ -165,7 +175,7 @@ public class ShoppingCardDaoIntegrationTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException, ClassNotFoundException {
         //delete inserted test users,shoppingCards from db
         if (testShoppingCard.getId() != null)
             shoppingCardDao.deleteShoppingCard(testShoppingCard.getId());
@@ -177,5 +187,9 @@ public class ShoppingCardDaoIntegrationTest {
         testShoppingCard = null;
 
         testUser = null;
+
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
     }
 }

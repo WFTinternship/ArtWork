@@ -9,6 +9,8 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +26,10 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 6/1/2017
  */
 public class ArtistDaoIntegrationTest {
-    //create testArtist and artistDaoImplementation
 
+    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private DataSource conn;
+    //create testArtist and artistDaoImplementation
     private Artist testArtist;
 
     private ArtistDao artistDao;
@@ -37,7 +41,7 @@ public class ArtistDaoIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection,artistDaoImplementation and artist for testing
-        DataSource conn = new ConnectionFactory()
+        conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
@@ -49,6 +53,15 @@ public class ArtistDaoIntegrationTest {
         artistDao = new ArtistDaoImpl(conn);
 
         testArtist = TestObjectTemplate.createTestArtist();
+
+        if (conn instanceof ComboPooledDataSource) {
+            try {
+                LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 
@@ -241,6 +254,10 @@ public class ArtistDaoIntegrationTest {
         //set null test artist  object
 
         testArtist = null;
+
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
 
     }
 }

@@ -9,6 +9,8 @@ import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +27,10 @@ import static util.AssertTemplates.assertEqualPurchaseHistory;
  * Created by Armen on 6/2/2017
  */
 public class PurchaseHistoryDaoIntegrationTest {
+
+    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private DataSource conn;
+
     private UserDao userDao;
     private ItemDao itemDao;
     private ArtistDao artistDao;
@@ -43,7 +49,7 @@ public class PurchaseHistoryDaoIntegrationTest {
 
         //create db connection
 
-        DataSource conn = new ConnectionFactory()
+        conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
@@ -71,6 +77,10 @@ public class PurchaseHistoryDaoIntegrationTest {
         itemDao.addItem(testArtist.getId(), testItem);
         purchaseHistory.setItemId(testItem.getId());
         purchaseHistory.setUserId(testUser.getId());
+
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
     }
 
     /**
@@ -188,7 +198,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         //delete inserted test users,artists and items  from db
 
         if (purchaseHistory.getUserId() != null) {
@@ -211,5 +221,9 @@ public class PurchaseHistoryDaoIntegrationTest {
         purchaseHistoryDao = null;
         testUser = null;
         testItem = null;
+
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
     }
 }
