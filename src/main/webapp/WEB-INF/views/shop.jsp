@@ -6,6 +6,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
+<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -159,7 +160,7 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your category</option>
-                                        <c:forEach items="${itemTypes}" var="element">
+                                        <c:forEach items="${artistSpecTypes}" var="element">
                                             <option value="${element.id}" class="fa fa-fire-extinguisher">${element.type}</option>
                                         </c:forEach>
                                         <%--<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>--%>
@@ -196,13 +197,13 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your type</option>
-                                        <%--<c:forEach items="${itemType}" var="itemTypeElement">--%>
-                                            <%--<option value="1" class="fa fa-flask">${itemTypeElement}</option>--%>
-                                        <%--</c:forEach>--%>
-                                        <option value="1" class="fa fa-flask">Acrylic</option>
-										<option value="2" class="fa fa-paint-brush">Oil Painting</option>
-                                        <option value="2" class="fa fa-scissors">Sculpture</option>
-                                        <option value="3" class="fa fa-tint">Water Painting</option>
+                                        <c:forEach items="${itemTypes}" var="element">
+                                            <option value="${element.typeId}" class="fa fa-fire-extinguisher">${element.type}</option>
+                                        </c:forEach>
+                                        <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
+										<%--<option value="2" class="fa fa-paint-brush">Oil Painting</option>--%>
+                                        <%--<option value="2" class="fa fa-scissors">Sculpture</option>--%>
+                                        <%--<option value="3" class="fa fa-tint">Water Painting</option>--%>
                                     </select>                                    
                                 </div>
                             </div>
