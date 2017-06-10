@@ -29,8 +29,8 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @param artist
      * @see ArtistService#addArtist(Artist)
+     * @param artist
      */
     @Override
     public void addArtist(Artist artist) {
@@ -50,9 +50,9 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
+     * @see ArtistService#findArtist(Long)
      * @param id
      * @return
-     * @see ArtistService#findArtist(Long)
      */
     @Override
     public Artist findArtist(Long id) {
@@ -72,9 +72,9 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
+     * @see ArtistService#findArtist(String)
      * @param email
      * @return
-     * @see ArtistService#findArtist(String)
      */
     @Override
     public Artist findArtist(String email) {
@@ -94,9 +94,9 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
+     * @see ArtistService#updateArtist(Long, Artist)
      * @param id
      * @param artist
-     * @see ArtistService#updateArtist(Long, Artist)
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
@@ -120,8 +120,8 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @param id
      * @see ArtistService#deleteArtist(Long)
+     * @param id
      */
     @Override
     public void deleteArtist(Long id) {

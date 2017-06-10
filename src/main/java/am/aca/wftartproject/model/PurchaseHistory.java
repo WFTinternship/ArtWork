@@ -56,7 +56,7 @@ public class PurchaseHistory {
                 '}';
     }
 
-    public boolean isValidPurchaseHistroy() {
+    public boolean isValidPurchaseHistory() {
         return userId != null &&
                 userId > 0 &&
                 itemId != null &&

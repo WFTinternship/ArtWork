@@ -54,9 +54,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     /**
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      * @param id
      * @return
-     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
@@ -94,9 +94,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     /**
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      * @param specialization
      * @return
-     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {

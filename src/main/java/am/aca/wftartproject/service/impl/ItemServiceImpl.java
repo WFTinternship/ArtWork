@@ -32,9 +32,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#addItem(Long, Item)
      * @param artistID
      * @param item
-     * @see ItemService#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
@@ -60,9 +60,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#findItem(Long)
      * @param id
      * @return
-     * @see ItemService#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
@@ -82,9 +82,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getRecentlyAddedItems(int)
      * @param limit
      * @return
-     * @see ItemService#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
@@ -105,9 +105,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getItemsByTitle(String)
      * @param title
      * @return
-     * @see ItemService#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
@@ -128,9 +128,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getItemsByType(String)
      * @param itemType
      * @return
-     * @see ItemService#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
@@ -151,9 +151,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#updateItem(Long, Item)
      * @param id
      * @param item
-     * @see ItemService#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
@@ -177,8 +177,8 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param id
      * @see ItemService#deleteItem(Long)
+     * @param id
      */
     @Override
     public void deleteItem(Long id) {

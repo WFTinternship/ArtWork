@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * @param user
      * @see UserService#addUser(User)
+     * @param user
      */
     @Override
     public void addUser(User user) {
@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
 
 
     /**
+     * @see UserService#findUser(Long)
      * @param id
      * @return
-     * @see UserService#findUser(Long)
      */
     @Override
     public User findUser(Long id) {
@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
 
 
     /**
+     * @see UserService#findUser(String)
      * @param email
      * @return
-     * @see UserService#findUser(String)
      */
     @Override
     public User findUser(String email) {
@@ -94,9 +94,9 @@ public class UserServiceImpl implements UserService {
 
 
     /**
+     * @see UserService#updateUser(Long, User)
      * @param id
      * @param user
-     * @see UserService#updateUser(Long, User)
      */
     @Override
     public void updateUser(Long id, User user) {
@@ -120,8 +120,8 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * @param id
      * @see UserService#deleteUser(Long)
+     * @param id
      */
     @Override
     public void deleteUser(Long id) {

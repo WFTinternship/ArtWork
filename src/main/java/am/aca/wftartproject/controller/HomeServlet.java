@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Armen on 6/9/2017.
+ * Created by Armen on 6/9/2017
  */
 public class HomeServlet extends HttpServlet {
     @Override

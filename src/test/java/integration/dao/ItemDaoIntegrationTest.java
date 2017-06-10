@@ -38,8 +38,8 @@ public class ItemDaoIntegrationTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        //creating new DB connection, artisdao and itemdao imlementations
 
+        //creating new DB connection, artistDao and itemDao implementations
         DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
@@ -52,12 +52,10 @@ public class ItemDaoIntegrationTest {
         itemDao = new ItemDaoImpl(conn);
 
         //create test artist and user
-
         testArtist = TestObjectTemplate.createTestArtist();
         testItem = TestObjectTemplate.createTestItem();
 
         //insert test Artist into db, get generated id
-
         artistDao.addArtist(testArtist);
 
     }
@@ -67,20 +65,17 @@ public class ItemDaoIntegrationTest {
      */
     @Test
     public void addItem_Success() {
-        //check testItem for null
 
+        //check testItem for null
         assertNotNull(testItem);
 
         //add item into db and get generated id
-
         itemDao.addItem(testArtist.getId(), testItem);
 
         //find added item from db
-
         Item item = itemDao.findItem(testItem.getId());
 
         //check for sameness
-
         AssertTemplates.assertEqualItems(testItem, item);
 
     }
@@ -92,16 +87,13 @@ public class ItemDaoIntegrationTest {
     public void addItem_Failure() {
 
         //check testItem for null
-
         assertNotNull(testItem);
         testItem.setTitle(null);
 
         //add item into db and get generated id
-
         itemDao.addItem(testArtist.getId(), testItem);
 
         //find added item from db
-
         Item item = itemDao.findItem(testItem.getId());
 
         //check for sameness
@@ -115,12 +107,11 @@ public class ItemDaoIntegrationTest {
      */
     @Test
     public void updateItem_Success() {
-        //check testItem for null
 
+        //check testItem for null
         assertNotNull(testItem);
 
         //add item into db and get generated id
-
         itemDao.addItem(testArtist.getId(), testItem);
         System.out.println(testItem.getId());
         testItem.setTitle("ankap item");
@@ -128,13 +119,11 @@ public class ItemDaoIntegrationTest {
         System.out.println(itemDao.findItem(testItem.getId()));
 
         //find added item from db
-
         Item item = itemDao.findItem(testItem.getId());
         System.out.println(testItem.getTitle());
         System.out.println(item.getTitle());
 
         //check for sameness
-
         assertEquals(testItem.getTitle(), item.getTitle());
 
     }
@@ -144,12 +133,11 @@ public class ItemDaoIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void updateItem_Failure() {
-        //check testItem for null
 
+        //check testItem for null
         assertNotNull(testItem);
 
         //add item into db and get generated id
-
         itemDao.addItem(testArtist.getId(), testItem);
         System.out.println(testItem.getId());
         testItem.setTitle(null);
@@ -157,13 +145,11 @@ public class ItemDaoIntegrationTest {
         System.out.println(itemDao.findItem(testItem.getId()));
 
         //find added item from db
-
         Item item = itemDao.findItem(testItem.getId());
         System.out.println(testItem.getTitle());
         System.out.println(item.getTitle());
 
         //check for sameness
-
         assertEquals(testItem.getTitle(), item.getTitle());
 
     }
@@ -173,24 +159,20 @@ public class ItemDaoIntegrationTest {
      */
     @Test
     public void deleteItem_Success() {
-        //add item into db
 
+        //add item into db
         itemDao.addItem(testArtist.getId(), testItem);
 
         //check item in db for null
-
         assertNotNull(itemDao.findItem(testItem.getId()));
 
         //delete item from db
-
         itemDao.deleteItem(testItem.getId());
 
         //get deleted item from db
-
         Item deletedItem = itemDao.findItem(testItem.getId());
 
         //check for null
-
         assertNull(deletedItem.getId());
     }
 
@@ -201,23 +183,18 @@ public class ItemDaoIntegrationTest {
     public void deleteItem_Failure() {
 
         //add item into db
-
         itemDao.addItem(testArtist.getId(), testItem);
-        //check item in db for null
 
+        //check item in db for null
         assertNotNull(itemDao.findItem(testItem.getId()));
 
         //delete item from db
-
         itemDao.deleteItem(-7L);
 
-
         //get deleted item from db
-
         Item deletedItem = itemDao.findItem(testItem.getId());
 
         //check for null
-
         assertNotNull(deletedItem.getId());
     }
 
@@ -226,16 +203,14 @@ public class ItemDaoIntegrationTest {
      */
     @Test
     public void findItem_Success() {
-        //add item into db
 
+        //add item into db
         itemDao.addItem(testArtist.getId(), testItem);
 
         //find and get item from db
-
         Item expectedItem = itemDao.findItem(testItem.getId());
 
         //check for null testItem and expecteditem
-
         assertNotNull(testItem);
         assertEqualItems(expectedItem, testItem);
     }
@@ -244,7 +219,6 @@ public class ItemDaoIntegrationTest {
     public void tearDown() {
 
         //delete inserted test users,artists and items  from db
-
         if (testItem.getId() != null)
             itemDao.deleteItem(testItem.getId());
 
@@ -252,9 +226,7 @@ public class ItemDaoIntegrationTest {
             artistDao.deleteArtist(testArtist.getId());
 
         // set testArtist and testItem to null
-
         testArtist = null;
-
         testItem = null;
     }
 }

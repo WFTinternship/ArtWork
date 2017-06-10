@@ -23,8 +23,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
-     * @param artist
      * @see ArtistDao#addArtist(Artist)
+     * @param artist
      */
     @Override
     public void addArtist(Artist artist) {
@@ -49,7 +49,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                 artist.setId(rs.getLong(1));
             }
 //            ps.close();
-            closeResources(ps);//rs??
+            closeResources(rs, ps);//rs??
 
             ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
             ps.setInt(1, artist.getSpecialization().getId());
@@ -84,9 +84,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     }
 
     /**
+     * @see ArtistDao#findArtist(Long)
      * @param id
      * @return
-     * @see ArtistDao#findArtist(Long)
      */
     @Override
     public Artist findArtist(Long id) {
@@ -144,9 +144,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
+     * @see ArtistDao#findArtist(String)
      * @param email
      * @return
-     * @see ArtistDao#findArtist(String)
      */
     @Override
     public Artist findArtist(String email) {
@@ -203,9 +203,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
+     * @see ArtistDao#updateArtist(Long, Artist)
      * @param id
      * @param artist
-     * @see ArtistDao#updateArtist(Long, Artist)
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
@@ -262,8 +262,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
-     * @param id
      * @see ArtistDao#deleteArtist(Long)
+     * @param id
      */
     @Override
     public Boolean deleteArtist(Long id) {

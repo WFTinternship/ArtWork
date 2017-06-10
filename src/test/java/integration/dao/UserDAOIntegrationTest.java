@@ -30,6 +30,7 @@ public class UserDAOIntegrationTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
+
         //create db connection
         DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
@@ -37,7 +38,6 @@ public class UserDAOIntegrationTest {
         userDao = new UserDaoImpl(conn);
 
         //create test user
-
         testUser = TestObjectTemplate.createTestUser();
 
     }
@@ -47,9 +47,8 @@ public class UserDAOIntegrationTest {
      */
     @Test
     public void addUser_Success() {
+
         //test user already inserted in setup, get record by userId
-
-
         testUser.setId(null);
 
         // add user into db and check id for null
@@ -59,8 +58,7 @@ public class UserDAOIntegrationTest {
 
         assertNotNull(testUser.getId());
 
-        // get user by id and ceck for sameness with otigin
-
+        // get user by id and check for sameness with origin
         Long id = testUser.getId();
 
         User dbUser = userDao.findUser(id);
@@ -75,6 +73,7 @@ public class UserDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void addUser_Failure() {
+
         //test user already inserted in setup, get record by user
         testUser.setLastName(null);
         userDao.addUser(testUser);
@@ -143,8 +142,8 @@ public class UserDAOIntegrationTest {
     @Test
     public void findUser_Success() {
         userDao.addUser(testUser);
-        User findresult = userDao.findUser(testUser.getId());
-        assertEqualUsers(testUser, findresult);
+        User findResult = userDao.findUser(testUser.getId());
+        assertEqualUsers(testUser, findResult);
     }
 
     /**
@@ -162,14 +161,10 @@ public class UserDAOIntegrationTest {
     public void tearDown() {
 
         //delete inserted test users from db
-
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());
 
         //set temp instance refs to null
-
         testUser = null;
     }
-
-
 }

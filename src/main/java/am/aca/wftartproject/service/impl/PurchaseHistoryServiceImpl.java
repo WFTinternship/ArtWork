@@ -29,13 +29,12 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
-     * @param purchaseHistory
-     *
      * @see PurchaseHistoryService#addPurchase(PurchaseHistory)
+     * @param purchaseHistory
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
-        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistroy()) {
+        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
             LOGGER.error(String.format("purchaseHistory is invalid: %s", purchaseHistory));
             throw new ServiceException("Invalid purchaseHistory");
         }
@@ -51,11 +50,10 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
+     * @see PurchaseHistoryService#getPurchase(Long, Long)
      * @param userId
      * @param itemId
      * @return
-     *
-     * @see PurchaseHistoryService#getPurchase(Long, Long)
      */
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
@@ -79,10 +77,9 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
+     * @see PurchaseHistoryService#getPurchase(Long)
      * @param userId
      * @return
-     *
-     * @see PurchaseHistoryService#getPurchase(Long)
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
@@ -102,10 +99,9 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
+     * @see PurchaseHistoryService#deletePurchase(Long, Long)
      * @param userId
      * @param itemId
-     *
-     * @see PurchaseHistoryService#deletePurchase(Long, Long)
      */
     @Override
     public void deletePurchase(Long userId, Long itemId) {

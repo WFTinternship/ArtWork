@@ -29,9 +29,9 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
+     * @see ShoppingCardService#addShoppingCard(Long, ShoppingCard)
      * @param userId
      * @param shoppingCard
-     * @see ShoppingCardService#addShoppingCard(Long, ShoppingCard)
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
@@ -54,9 +54,9 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
+     * @see ShoppingCardService#getShoppingCard(Long)
      * @param id
      * @return
-     * @see ShoppingCardService#getShoppingCard(Long)
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
@@ -75,9 +75,9 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
+     * @see ShoppingCardService#updateShoppingCard(Long, ShoppingCard)
      * @param id
      * @param shoppingCard
-     * @see ShoppingCardService#updateShoppingCard(Long, ShoppingCard)
      */
     @Override
     public void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException {
@@ -100,8 +100,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
-     * @param id
      * @see ShoppingCardService#deleteShoppingCard(Long)
+     * @param id
      */
     @Override
     public void deleteShoppingCard(Long id) {

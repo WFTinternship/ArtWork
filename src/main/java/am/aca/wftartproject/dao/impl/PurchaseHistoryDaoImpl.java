@@ -24,8 +24,8 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
-     * @param purchaseHistory
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
+     * @param purchaseHistory
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
@@ -62,10 +62,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     }
 
     /**
+     * @see PurchaseHistoryDao#getPurchase(Long, Long)
      * @param user_id
      * @param item_id
      * @return
-     * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
     @Override
     public PurchaseHistory getPurchase(Long user_id, Long item_id) {
@@ -107,9 +107,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
+     * @see PurchaseHistoryDao#getPurchase(Long)
      * @param userId
      * @return
-     * @see PurchaseHistoryDao#getPurchase(Long)
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
@@ -150,10 +150,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
+     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
      * @param user_id
      * @param item_id
      * @return
-     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
      */
     @Override
     public Boolean deletePurchase(Long user_id, Long item_id) {

@@ -34,6 +34,7 @@ public class ShoppingCardDaoIntegrationTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
+
         //create db connection
         DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
@@ -43,7 +44,6 @@ public class ShoppingCardDaoIntegrationTest {
         shoppingCardDao = new ShoppingCardDaoImpl(conn);
 
         //create test user and shoppingCard, add user into db
-
         testUser = TestObjectTemplate.createTestUser();
         userDao.addUser(testUser);
         testShoppingCard = new ShoppingCard();
@@ -166,6 +166,7 @@ public class ShoppingCardDaoIntegrationTest {
 
     @After
     public void tearDown() {
+
         //delete inserted test users,shoppingCards from db
         if (testShoppingCard.getId() != null)
             shoppingCardDao.deleteShoppingCard(testShoppingCard.getId());

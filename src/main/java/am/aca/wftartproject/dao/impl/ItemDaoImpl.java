@@ -24,9 +24,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#addItem(Long, Item)
      * @param artistID
      * @param item
-     * @see ItemDao#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
@@ -69,9 +69,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#findItem(Long)
      * @param id
      * @return
-     * @see ItemDao#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
@@ -113,9 +113,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#updateItem(Long, Item)
      * @param id
      * @param item
-     * @see ItemDao#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
@@ -151,8 +151,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
-     * @param id
      * @see ItemDao#deleteItem(Long)
+     * @param id
      */
     @Override
     public void deleteItem(Long id) {
@@ -182,9 +182,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getRecentlyAddedItems(int)
      * @param limit
      * @return
-     * @see ItemDao#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
@@ -228,9 +228,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getItemsByTitle(String)
      * @param title
      * @return
-     * @see ItemDao#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
@@ -274,9 +274,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getItemsByType(String)
      * @param itemType
      * @return
-     * @see ItemDao#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
@@ -285,7 +285,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE item_type=?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM wft.item WHERE item_type =?");
             ps.setString(1, itemType);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

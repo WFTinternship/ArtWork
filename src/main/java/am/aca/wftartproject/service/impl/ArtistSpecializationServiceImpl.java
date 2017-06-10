@@ -44,9 +44,9 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
 
 
     /**
+     * @see ArtistSpecializationService#getArtistSpecialization(int)
      * @param id
      * @return
-     * @see ArtistSpecializationService#getArtistSpecialization(int)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
@@ -61,9 +61,9 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
 
 
     /**
+     * @see ArtistSpecializationService#getArtistSpecialization(String)
      * @param specialization
      * @return
-     * @see ArtistSpecializationService#getArtistSpecialization(String)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
