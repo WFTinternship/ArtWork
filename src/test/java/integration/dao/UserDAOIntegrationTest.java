@@ -6,6 +6,8 @@ import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,10 @@ import static util.AssertTemplates.assertEqualUsers;
  * Created by Armen on 5/30/2017
  */
 public class UserDAOIntegrationTest {
+
+    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private DataSource conn;
+
     private UserDaoImpl userDao;
     private User testUser;
 
@@ -32,13 +38,17 @@ public class UserDAOIntegrationTest {
     public void setUp() throws SQLException, ClassNotFoundException {
 
         //create db connection
-        DataSource conn = new ConnectionFactory()
+        conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
         userDao = new UserDaoImpl(conn);
 
         //create test user
         testUser = TestObjectTemplate.createTestUser();
+
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
 
     }
 
@@ -158,7 +168,7 @@ public class UserDAOIntegrationTest {
 
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
 
         //delete inserted test users from db
         if (testUser.getId() != null)
@@ -166,5 +176,8 @@ public class UserDAOIntegrationTest {
 
         //set temp instance refs to null
         testUser = null;
+        if (conn instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        }
     }
 }

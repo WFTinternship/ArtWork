@@ -96,7 +96,7 @@
                     </li>
                     <li class="menu-item-simple-parent"><a href="shop.jsp">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="shop-detail.html">Shop Detail</a></li>
+                            <li><a href="shop-detail.jsp">Shop Detail</a></li>
                             <li><a href="shop-cart.html">Cart Page</a></li>
                             <li><a href="shop-checkout.html">Checkout Page</a></li>
                         </ul>
@@ -301,210 +301,210 @@
                     </div>
                 </div><!-- **Full-width-section Ends Here** -->
                 <div class="clear"></div>              
-                <div class="container">
-                    <div class="main-title animate" data-animation="pullDown" data-delay="100">
-                        <h2 class="aligncenter"> Blog </h2>
-                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>
-                    </div>
-                </div>	
-                <div class="fullwidth-section"><!-- **Full-width-section Starts Here** -->
-                	<div class="blog-section">
-                        <article class="blog-entry">
-                            <div class="entry-thumb">
-                                <ul class="blog-slider">
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider1" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider2" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider3" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider4" alt="" title=""> </li>
-                                </ul>
-                            </div> 
-                            <div class="entry-details">
-                                <div class="entry-title">
-                                    <h3><a href="blog-detail.html">Acrylic</a></h3>
-                                </div>
-                                <div class="entry-body">
-                                    <p><b>Acrylic painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>
-                                </div>
-                                <a class="type1 dt-sc-button small" href="gallery-detail.html">View Gallery<i class="fa fa-angle-right"></i></a>
-                            </div>                   	
-                        </article>
-					</div>
-                    
-                	<div class="blog-section">
-                        <article class="blog-entry type2">
-                            <div class="entry-details">
-                                <div class="entry-title">
-                                    <h3><a href="blog-detail.html">Encaustic</a></h3>
-                                </div>
-                                <div class="entry-body">
-                                    <p><b>Encaustic painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>
-                                </div>
-                                <a class="type1 dt-sc-button small" href="gallery-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>
-                            </div>                   	
-							<div class="entry-thumb">
-                                <ul class="blog-slider">
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider5" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider6" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider7" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider8" alt="" title=""> </li>
-                                </ul>
-                            </div>                             
-                        </article>
-					</div>
-                    
-                	<div class="blog-section">
-                        <article class="blog-entry">
-                            <div class="entry-thumb">
-                                <ul class="blog-slider">
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider9" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider10" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider11" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider12" alt="" title=""> </li>
-                                </ul>
-                            </div> 
-                            <div class="entry-details">
-                                <div class="entry-title">
-                                    <h3><a href="blog-detail-with-lhs.html">Oil painting</a></h3>
-                                </div>
-                                <div class="entry-body">
-                                    <p><b>Oil painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>
-                                </div>
-                                <a class="type1 dt-sc-button small" href="gallery-detail-with-rhs.html">View Gallery<i class="fa fa-angle-right"></i></a>
-                            </div>                   	
-                        </article>
-					</div>
-                    
-                	<div class="blog-section">
-                        <article class="blog-entry type2">
-                            <div class="entry-details">
-                                <div class="entry-title">
-                                    <h3><a href="blog-detail-with-rhs.html">Impasto</a></h3>
-                                </div>
-                                <div class="entry-body">
-                                    <p><b>Impasto painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>
-                                </div>
-                                <a class="type1 dt-sc-button small" href="gallery-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>
-                            </div>                   	
-							<div class="entry-thumb">
-                                <ul class="blog-slider">
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider13" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider14" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider15" alt="" title=""> </li>
-                                    <li> <img src="http://placehold.it/955x470&text=Blog+Slider16" alt="" title=""> </li>
-                                </ul>
-                            </div>                             
-                        </article>
-					</div>
-                </div><!-- **Full-width-section Ends Here** -->
-                <div class="clear"></div>             
+                <%--<div class="container">--%>
+                    <%--<div class="main-title animate" data-animation="pullDown" data-delay="100">--%>
+                        <%--<h2 class="aligncenter"> Blog </h2>--%>
+                        <%--<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>--%>
+                    <%--</div>--%>
+                <%--</div>	--%>
+                <%--<div class="fullwidth-section"><!-- **Full-width-section Starts Here** -->--%>
+                	<%--<div class="blog-section">--%>
+                        <%--<article class="blog-entry">--%>
+                            <%--<div class="entry-thumb">--%>
+                                <%--<ul class="blog-slider">--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider1" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider2" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider3" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider4" alt="" title=""> </li>--%>
+                                <%--</ul>--%>
+                            <%--</div> --%>
+                            <%--<div class="entry-details">--%>
+                                <%--<div class="entry-title">--%>
+                                    <%--<h3><a href="blog-detail.html">Acrylic</a></h3>--%>
+                                <%--</div>--%>
+                                <%--<div class="entry-body">--%>
+                                    <%--<p><b>Acrylic painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
+                                <%--</div>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery-detail.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                            <%--</div>                   	--%>
+                        <%--</article>--%>
+					<%--</div>--%>
+                    <%----%>
+                	<%--<div class="blog-section">--%>
+                        <%--<article class="blog-entry type2">--%>
+                            <%--<div class="entry-details">--%>
+                                <%--<div class="entry-title">--%>
+                                    <%--<h3><a href="blog-detail.html">Encaustic</a></h3>--%>
+                                <%--</div>--%>
+                                <%--<div class="entry-body">--%>
+                                    <%--<p><b>Encaustic painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
+                                <%--</div>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                            <%--</div>                   	--%>
+							<%--<div class="entry-thumb">--%>
+                                <%--<ul class="blog-slider">--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider5" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider6" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider7" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider8" alt="" title=""> </li>--%>
+                                <%--</ul>--%>
+                            <%--</div>                             --%>
+                        <%--</article>--%>
+					<%--</div>--%>
+                    <%----%>
+                	<%--<div class="blog-section">--%>
+                        <%--<article class="blog-entry">--%>
+                            <%--<div class="entry-thumb">--%>
+                                <%--<ul class="blog-slider">--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider9" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider10" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider11" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider12" alt="" title=""> </li>--%>
+                                <%--</ul>--%>
+                            <%--</div> --%>
+                            <%--<div class="entry-details">--%>
+                                <%--<div class="entry-title">--%>
+                                    <%--<h3><a href="blog-detail-with-lhs.html">Oil painting</a></h3>--%>
+                                <%--</div>--%>
+                                <%--<div class="entry-body">--%>
+                                    <%--<p><b>Oil painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
+                                <%--</div>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery-detail-with-rhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                            <%--</div>                   	--%>
+                        <%--</article>--%>
+					<%--</div>--%>
+                    <%----%>
+                	<%--<div class="blog-section">--%>
+                        <%--<article class="blog-entry type2">--%>
+                            <%--<div class="entry-details">--%>
+                                <%--<div class="entry-title">--%>
+                                    <%--<h3><a href="blog-detail-with-rhs.html">Impasto</a></h3>--%>
+                                <%--</div>--%>
+                                <%--<div class="entry-body">--%>
+                                    <%--<p><b>Impasto painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
+                                <%--</div>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                            <%--</div>                   	--%>
+							<%--<div class="entry-thumb">--%>
+                                <%--<ul class="blog-slider">--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider13" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider14" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider15" alt="" title=""> </li>--%>
+                                    <%--<li> <img src="http://placehold.it/955x470&text=Blog+Slider16" alt="" title=""> </li>--%>
+                                <%--</ul>--%>
+                            <%--</div>                             --%>
+                        <%--</article>--%>
+					<%--</div>--%>
+                <%--</div><!-- **Full-width-section Ends Here** -->--%>
+                <%--<div class="clear"></div>             --%>
+                <%----%>
+                <%--<div class="fullwidth-section"><!-- **Full-width-section Starts Here** -->--%>
+                    <%--<div class="container">--%>
+                        <%--<div class="main-title animate" data-animation="pullDown" data-delay="100">--%>
+                            <%--<h2 class="aligncenter"> Frames </h2>--%>
+                            <%--<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="frame-grid"><!-- **Frame-Grid Starts Here** -->--%>
+                        <%--<div class="frame-thumb"><!-- **Frame-Thumb Starts Here** -->--%>
+                            <%--<div class="frame-fullwidth">--%>
+                                <%--<div class="dt-sc-frame-container isotope"> <!-- **dt-sc-portfolio-container Starts Here** -->--%>
+                                    <%--<div class="frame ceramic dt-sc-one-third">--%>
+                                        <%--<figure>--%>
+                                            <%--<img src="http://placehold.it/272x185" alt="" title="">--%>
+                                       <%--</figure>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="frame plastic dt-sc-one-third">--%>
+                                        <%--<figure>--%>
+                                            <%--<img src="http://placehold.it/200x250" alt="" title="">--%>
+                                       <%--</figure>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="frame steel dt-sc-one-third">--%>
+                                        <%--<figure>--%>
+                                            <%--<img src="http://placehold.it/260x195" alt="" title="">--%>
+                                       <%--</figure>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="frame wooden dt-sc-one-third">--%>
+                                        <%--<figure>--%>
+                                            <%--<img src="http://placehold.it/470x500" alt="" title="">--%>
+                                       <%--</figure>--%>
+                                    <%--</div>                                    --%>
+                                    <%--<div class="frame wooden dt-sc-one-third">--%>
+                                        <%--<figure>--%>
+                                            <%--<img src="http://placehold.it/375x300" alt="" title="">--%>
+                                       <%--</figure>--%>
+                                    <%--</div>--%>
+                                <%--</div><!-- **dt-sc-portfolio-container Ends Here** -->--%>
+                            <%--</div>--%>
+                        <%--</div><!-- **Frame-Thumb Starts Here** -->--%>
+                        <%--<div class="frame-details"><!-- **Frame-Details Starts Here** -->--%>
+                        	<%--<div class="frame-content">--%>
+                            	<%--<div id="frame-all" class="dt-frames">--%>
+                                    <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>--%>
+                                <%--</div>--%>
+                            	<%--<div id="frame-steel" class="dt-frames hidden">--%>
+                                    <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>--%>
+                                <%--</div>--%>
+                            	<%--<div id="frame-wooden" class="dt-frames hidden">--%>
+                                    <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>--%>
+                                <%--</div>--%>
+                            	<%--<div id="frame-plastic" class="dt-frames hidden">--%>
+                                    <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>--%>
+                                <%--</div>--%>
+                            	<%--<div id="frame-ceramic" class="dt-frames hidden">--%>
+                                    <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="frame-sorting"><!-- **Frame-sorting Starts Here** -->--%>
+                                <%--<a data-filter="*" href="#" class="active-sort type1 dt-sc-button animate" data-animation="fadeIn" data-delay="100">All</a>--%>
+                                <%--<a data-filter=".steel" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="200">Steel</a>--%>
+                                <%--<a data-filter=".wooden" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="300">Wooden</a>--%>
+                                <%--<a data-filter=".plastic" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="400">plastic</a>--%>
+                                <%--<a data-filter=".ceramic" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="500">Ceramic</a>--%>
+                            <%--</div><!-- **Frame-sorting Ends Here** -->--%>
+                        <%--</div><!-- **Frame-Details Ends Here** -->--%>
+                    <%--</div><!-- **Frame-Grid Ends Here** -->--%>
+                <%--</div><!-- **Full-width-section Ends Here** -->--%>
                 
-                <div class="fullwidth-section"><!-- **Full-width-section Starts Here** -->
-                    <div class="container">
-                        <div class="main-title animate" data-animation="pullDown" data-delay="100">
-                            <h2 class="aligncenter"> Frames </h2>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>
-                        </div>
-                    </div>
-                    <div class="frame-grid"><!-- **Frame-Grid Starts Here** -->
-                        <div class="frame-thumb"><!-- **Frame-Thumb Starts Here** -->
-                            <div class="frame-fullwidth">
-                                <div class="dt-sc-frame-container isotope"> <!-- **dt-sc-portfolio-container Starts Here** -->
-                                    <div class="frame ceramic dt-sc-one-third">
-                                        <figure>
-                                            <img src="http://placehold.it/272x185" alt="" title="">
-                                       </figure>
-                                    </div>
-                                    <div class="frame plastic dt-sc-one-third">
-                                        <figure>
-                                            <img src="http://placehold.it/200x250" alt="" title="">
-                                       </figure>
-                                    </div>
-                                    <div class="frame steel dt-sc-one-third">
-                                        <figure>
-                                            <img src="http://placehold.it/260x195" alt="" title="">
-                                       </figure>
-                                    </div>
-                                    <div class="frame wooden dt-sc-one-third">
-                                        <figure>
-                                            <img src="http://placehold.it/470x500" alt="" title="">
-                                       </figure>
-                                    </div>                                    
-                                    <div class="frame wooden dt-sc-one-third">
-                                        <figure>
-                                            <img src="http://placehold.it/375x300" alt="" title="">
-                                       </figure>
-                                    </div>
-                                </div><!-- **dt-sc-portfolio-container Ends Here** -->
-                            </div>
-                        </div><!-- **Frame-Thumb Starts Here** -->
-                        <div class="frame-details"><!-- **Frame-Details Starts Here** -->
-                        	<div class="frame-content">
-                            	<div id="frame-all" class="dt-frames">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                                </div>
-                            	<div id="frame-steel" class="dt-frames hidden">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-                                </div>
-                            	<div id="frame-wooden" class="dt-frames hidden">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            	<div id="frame-plastic" class="dt-frames hidden">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            	<div id="frame-ceramic" class="dt-frames hidden">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                                </div>
-                            </div>
-                            <div class="frame-sorting"><!-- **Frame-sorting Starts Here** -->
-                                <a data-filter="*" href="#" class="active-sort type1 dt-sc-button animate" data-animation="fadeIn" data-delay="100">All</a>
-                                <a data-filter=".steel" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="200">Steel</a>
-                                <a data-filter=".wooden" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="300">Wooden</a>
-                                <a data-filter=".plastic" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="400">plastic</a>
-                                <a data-filter=".ceramic" href="#" class="type1 dt-sc-button animate" data-animation="fadeIn" data-delay="500">Ceramic</a>
-                            </div><!-- **Frame-sorting Ends Here** -->
-                        </div><!-- **Frame-Details Ends Here** -->
-                    </div><!-- **Frame-Grid Ends Here** -->
-                </div><!-- **Full-width-section Ends Here** -->
-                
-            	<div class="dt-sc-hr-invisible-small"></div>
-                <div class="clear"></div>
+            	<%--<div class="dt-sc-hr-invisible-small"></div>--%>
+                <%--<div class="clear"></div>--%>
 
-                <div class="fullwidth-section"><!-- **Full-width-section Starts Here** -->
-                    <div class="container">
-                    
-                        <div class="main-title animate" data-animation="pullDown" data-delay="100">
-                            <h2 class="aligncenter"> About Me </h2>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>
-                        </div>
-                        
-                        <div class="about-section">
-                        
-                            <div class="dt-sc-one-half column first">
-                                <img src="../../resources/images/about.png" title="" alt="">
-                            </div>
-                            
-                            <div class="dt-sc-one-half column">
-                                <h3 class="animate" data-animation="fadeInLeft" data-delay="200"> A Little Intro</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                                <h3 class="animate" data-animation="fadeInLeft" data-delay="300">My Exhibitions</h3>
-                                <p>Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Lorem ipsum dolor quis nostrud exercitation ullamco</p>
-                                <h3 class="animate" data-animation="fadeInLeft" data-delay="400">Newsletter</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-                                <form method="post" class="mailchimp-form dt-sc-three-fourth" name="frmnewsletter" action="../../resources/php/subscribe.php">
-                                    <p class="input-text">
-                                       <input class="input-field" type="email" name="mc_email" value="" required/>
-                                       <label class="input-label">
-                                                <i class="fa fa-envelope-o icon"></i>
-                                                <span class="input-label-content">Mail</span>
-                                            </label>
-                                       <input type="submit" name="submit" class="submit" value="Subscribe" />
-                                    </p>
-                                </form>
-                                <div id="ajax_subscribe_msg"></div>                               
-                            </div>
-                        </div>
-                    </div>
-				</div><!-- **Full-width-section Ends Here** -->
+                <%--<div class="fullwidth-section"><!-- **Full-width-section Starts Here** -->--%>
+                    <%--<div class="container">--%>
+                    <%----%>
+                        <%--<div class="main-title animate" data-animation="pullDown" data-delay="100">--%>
+                            <%--<h2 class="aligncenter"> About Me </h2>--%>
+                            <%--<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>--%>
+                        <%--</div>--%>
+                        <%----%>
+                        <%--<div class="about-section">--%>
+                        <%----%>
+                            <%--<div class="dt-sc-one-half column first">--%>
+                                <%--<img src="../../resources/images/about.png" title="" alt="">--%>
+                            <%--</div>--%>
+                            <%----%>
+                            <%--<div class="dt-sc-one-half column">--%>
+                                <%--<h3 class="animate" data-animation="fadeInLeft" data-delay="200"> A Little Intro</h3>--%>
+                                <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>--%>
+                                <%--<h3 class="animate" data-animation="fadeInLeft" data-delay="300">My Exhibitions</h3>--%>
+                                <%--<p>Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Lorem ipsum dolor quis nostrud exercitation ullamco</p>--%>
+                                <%--<h3 class="animate" data-animation="fadeInLeft" data-delay="400">Newsletter</h3>--%>
+                                <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>--%>
+                                <%--<form method="post" class="mailchimp-form dt-sc-three-fourth" name="frmnewsletter" action="../../resources/php/subscribe.php">--%>
+                                    <%--<p class="input-text">--%>
+                                       <%--<input class="input-field" type="email" name="mc_email" value="" required/>--%>
+                                       <%--<label class="input-label">--%>
+                                                <%--<i class="fa fa-envelope-o icon"></i>--%>
+                                                <%--<span class="input-label-content">Mail</span>--%>
+                                            <%--</label>--%>
+                                       <%--<input type="submit" name="submit" class="submit" value="Subscribe" />--%>
+                                    <%--</p>--%>
+                                <%--</form>--%>
+                                <%--<div id="ajax_subscribe_msg"></div>                               --%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+				<%--</div><!-- **Full-width-section Ends Here** -->--%>
                 
             	<div class="dt-sc-hr-invisible-small"></div>
                 

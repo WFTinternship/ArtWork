@@ -5,6 +5,9 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
+<c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
+<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -14,7 +17,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
 	<title>Red Art - Digital Painting</title>
 	
     <meta name="description" content="">
@@ -157,14 +160,19 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your category</option>
-                                        <%--<option value="1" class="fa fa-fire-extinguisher">${artistSpecType[0]}</option>--%>
-                                        <%--<option value="1" class="fa fa-camera-retro">${artistSpecType[1]}</option>--%>
-                                        <%--<option value="3" class="fa fa-pencil">${artistSpecType[2]}</option>--%>
-                                        <%--<option value="4" class="fa fa-eyedropper">${artistSpecType[3]}</option>--%>
-                                        <option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>
-										<option value="1" class="fa fa-camera-retro">Photogenic Art</option>
-                                        <option value="3" class="fa fa-pencil">Sketches</option>
-                                        <option value="4" class="fa fa-eyedropper">Dropper Painting</option>
+                                        <c:forEach items="${artistSpecTypes}" var="element">
+                                            <option value="${element.id}" class="fa fa-fire-extinguisher">${element.type}</option>
+                                        </c:forEach>
+                                        <%--<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>--%>
+                                        <%--<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>--%>
+                                        <%--<option value="3" class="fa fa-pencil">${itemTypes[2].getType()}</option>--%>
+                                        <%--<option value="4" class="fa fa-eyedropper">${itemTypes[3].getType()}</option>--%>
+
+
+                                        <%--<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>--%>
+										<%--<option value="2" class="fa fa-camera-retro">Photogenic Art</option>--%>
+                                        <%--<option value="3" class="fa fa-pencil">Sketches</option>--%>
+                                        <%--<option value="4" class="fa fa-eyedropper">Dropper Painting</option>--%>
                                     </select>                                    
                                 </div>
                             </div>
@@ -189,51 +197,51 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your type</option>
-                                        <%--<c:forEach items="${itemType}" var="itemTypeElement">--%>
-                                            <%--<option value="1" class="fa fa-flask">${itemTypeElement}</option>--%>
-                                        <%--</c:forEach>--%>
-                                        <option value="1" class="fa fa-flask">Acrylic</option>
-										<option value="2" class="fa fa-paint-brush">Oil Painting</option>
-                                        <option value="2" class="fa fa-scissors">Sculpture</option>
-                                        <option value="3" class="fa fa-tint">Water Painting</option>
+                                        <c:forEach items="${itemTypes}" var="element">
+                                            <option value="${element.typeId}" class="fa fa-fire-extinguisher">${element.type}</option>
+                                        </c:forEach>
+                                        <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
+										<%--<option value="2" class="fa fa-paint-brush">Oil Painting</option>--%>
+                                        <%--<option value="2" class="fa fa-scissors">Sculpture</option>--%>
+                                        <%--<option value="3" class="fa fa-tint">Water Painting</option>--%>
                                     </select>                                    
                                 </div>
                             </div>
                         </div>
-                    	<div class="dt-sc-one-fifth column">
-                            <div class="categories">
-                                <h5>Size &amp; Shape</h5>
-                                <div class="selection-box">
-                                    <select class="shop-dropdown">
-                                        <option value="-1" selected>Choose your shape</option>
-                                        <option value="1" class="fa fa-picture-o">Landscape</option>
-                                        <option value="2" class="fa fa-barcode">Portrait</option>
-                                        <option value="3" class="fa fa-area-chart">Skew Framed</option>
-                                    </select>                                    
-                                </div>
-                            </div>
-                        </div>
-                    	<div class="dt-sc-one-fifth column">
-                            <div class="categories">
-                                <h5>Color</h5>
-                                <div class="selection-box">
-                                    <select class="shop-dropdown">
-                                        <option value="-1" selected>Choose your color</option>
-                                        <option value="1" class="fa fa-bookmark red">Red</option>
-                                        <option value="2" class="fa fa-bookmark yellow">Yellow</option>
-                                        <option value="3" class="fa fa-bookmark blue">Blue</option>
-                                        <option value="4" class="fa fa-bookmark green">Green</option>
-                                        <option value="5" class="fa fa-bookmark black">Black</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>                                               
+                    	<%--<div class="dt-sc-one-fifth column">--%>
+                            <%--<div class="categories">--%>
+                                <%--<h5>Size &amp; Shape</h5>--%>
+                                <%--<div class="selection-box">--%>
+                                    <%--<select class="shop-dropdown">--%>
+                                        <%--<option value="-1" selected>Choose your shape</option>--%>
+                                        <%--<option value="1" class="fa fa-picture-o">Landscape</option>--%>
+                                        <%--<option value="2" class="fa fa-barcode">Portrait</option>--%>
+                                        <%--<option value="3" class="fa fa-area-chart">Skew Framed</option>--%>
+                                    <%--</select>                                    --%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    	<%--<div class="dt-sc-one-fifth column">--%>
+                            <%--<div class="categories">--%>
+                                <%--<h5>Color</h5>--%>
+                                <%--<div class="selection-box">--%>
+                                    <%--<select class="shop-dropdown">--%>
+                                        <%--<option value="-1" selected>Choose your color</option>--%>
+                                        <%--<option value="1" class="fa fa-bookmark red">Red</option>--%>
+                                        <%--<option value="2" class="fa fa-bookmark yellow">Yellow</option>--%>
+                                        <%--<option value="3" class="fa fa-bookmark blue">Blue</option>--%>
+                                        <%--<option value="4" class="fa fa-bookmark green">Green</option>--%>
+                                        <%--<option value="5" class="fa fa-bookmark black">Black</option>--%>
+                                    <%--</select>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>                                               --%>
                     </div><!-- sorting-products Ends Here -->
                     <ul class="products isotope">
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x300&text=Product+Image+1" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -250,7 +258,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/577x800&text=Product+Image+2" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -267,7 +275,7 @@
 						<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/500x340&text=Product+Image+3" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -284,7 +292,7 @@
 						<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/500x400&text=Product+Image+4" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -301,7 +309,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/2500x1724&text=Product+Image+5" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -318,7 +326,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x350&text=Product+Image+6" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -335,7 +343,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x500&text=Product+Image+7" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -352,7 +360,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x400&text=Product+Image+8" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -369,7 +377,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x400&text=Product+Image+9" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -386,7 +394,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x300&text=Product+Image+10" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -403,7 +411,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x750&text=Product+Image+11" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -420,7 +428,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x500&text=Product+Image+12" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -437,7 +445,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x740&text=Product+Image+13" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -454,7 +462,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/600x600&text=Product+Image+14" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
@@ -471,7 +479,7 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="http://placehold.it/700x500&text=Product+Image+15" alt="image"/> </div> </a>
+                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
                                     <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
