@@ -5,6 +5,8 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
+<%--<c:set var="itemTypes" value="<%=request.getParameter("itemTypes")%>" />--%>
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -14,7 +16,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
 	<title>Red Art - Digital Painting</title>
 	
     <meta name="description" content="">
@@ -157,14 +159,19 @@
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
                                         <option value="-1" selected>Choose your category</option>
+                                        <c:forEach items="${itemTypes}" var="element">
+                                            <option value="${element.getId()}" class="fa fa-fire-extinguisher">${element.getType()}</option>
+                                        </c:forEach>
                                         <%--<option value="1" class="fa fa-fire-extinguisher">${artistSpecType[0]}</option>--%>
                                         <%--<option value="1" class="fa fa-camera-retro">${artistSpecType[1]}</option>--%>
                                         <%--<option value="3" class="fa fa-pencil">${artistSpecType[2]}</option>--%>
                                         <%--<option value="4" class="fa fa-eyedropper">${artistSpecType[3]}</option>--%>
-                                        <option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>
-										<option value="2" class="fa fa-camera-retro">Photogenic Art</option>
-                                        <option value="3" class="fa fa-pencil">Sketches</option>
-                                        <option value="4" class="fa fa-eyedropper">Dropper Painting</option>
+
+
+                                        <%--<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>--%>
+										<%--<option value="2" class="fa fa-camera-retro">Photogenic Art</option>--%>
+                                        <%--<option value="3" class="fa fa-pencil">Sketches</option>--%>
+                                        <%--<option value="4" class="fa fa-eyedropper">Dropper Painting</option>--%>
                                     </select>                                    
                                 </div>
                             </div>

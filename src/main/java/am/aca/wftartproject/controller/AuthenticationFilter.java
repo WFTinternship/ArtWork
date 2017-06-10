@@ -10,7 +10,7 @@ import java.io.IOException;
  * Created by ASUS on 10-Jun-17
  */
 
-//@WebFilter("/AuthenticationFilter")
+
 public class AuthenticationFilter implements Filter {
 
     private ServletContext context;

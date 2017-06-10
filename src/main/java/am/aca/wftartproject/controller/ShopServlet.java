@@ -19,9 +19,12 @@ public class ShopServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/shop.jsp");
-        request.setAttribute("artistSpecType", ArtistSpecialization.values());
-        request.setAttribute("itemType", ItemType.values());
+
+        request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
+        request.setAttribute("itemTypes", ItemType.values());
+
         dispatcher.forward(request, response);
+
 
     }
 }

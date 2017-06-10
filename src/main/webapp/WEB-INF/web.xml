@@ -13,7 +13,7 @@
 
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/shop/*</url-pattern>
+        <url-pattern>/shop</url-pattern>
     </filter-mapping>
 
 
