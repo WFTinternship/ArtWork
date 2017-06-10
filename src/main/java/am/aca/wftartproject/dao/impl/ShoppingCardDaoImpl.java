@@ -21,153 +21,121 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      * @param userId
      * @param shoppingCard
+     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
         Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement(
+            ps = conn.prepareStatement(
                     "INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             ps.setDouble(1, shoppingCard.getBalance());
             ps.setLong(2, userId);
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 shoppingCard.setId(rs.getLong(1));
             }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(rs, ps, conn);
         }
     }
 
 
     /**
-     * @see ShoppingCardDao#getShoppingCard(Long)
      * @param id
      * @return
+     * @see ShoppingCardDao#getShoppingCard(Long)
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
         Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         ShoppingCard shoppingCard = new ShoppingCard();
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE id=?");
+            ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE id=?");
 
             ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
                 shoppingCard.setId(rs.getLong("id"))
                         .setBalance(rs.getDouble("balance"));
             }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(rs, ps, conn);
         }
         return shoppingCard;
     }
 
 
     /**
-     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      * @param id
      * @param shoppingCard
+     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Override
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
         Connection conn = null;
+        PreparedStatement ps = null;
         Boolean success = false;
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("UPDATE shopping_card SET balance=? WHERE id = ?");
+            ps = conn.prepareStatement("UPDATE shopping_card SET balance=? WHERE id = ?");
             ps.setDouble(1, shoppingCard.getBalance());
             ps.setLong(2, id);
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-//            ps.close();
-            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(ps, conn);
         }
         return success;
     }
 
 
     /**
-     * @see ShoppingCardDao#deleteShoppingCard(Long)
      * @param id
+     * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Override
     public Boolean deleteShoppingCard(Long id) {
         Connection conn = null;
+        PreparedStatement ps = null;
         Boolean success = false;
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM shopping_card WHERE id=?");
+            ps = conn.prepareStatement("DELETE FROM shopping_card WHERE id=?");
             ps.setLong(1, id);
             if (ps.executeUpdate() > 0) {
                 success = true;
             }
-//            ps.close();
-            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to delete ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(ps, conn);
         }
         return success;
     }

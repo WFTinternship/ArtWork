@@ -27,7 +27,7 @@ import static util.AssertTemplates.assertEqualShoppingCards;
  */
 public class ShoppingCardDaoIntegrationTest {
 
-    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
     private DataSource conn;
 
     private UserDao userDao;
@@ -40,7 +40,6 @@ public class ShoppingCardDaoIntegrationTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-
         //create db connection
         conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
@@ -55,10 +54,10 @@ public class ShoppingCardDaoIntegrationTest {
         testShoppingCard = new ShoppingCard();
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
 
+        //Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }
-
     }
 
     /**
@@ -90,7 +89,6 @@ public class ShoppingCardDaoIntegrationTest {
      */
     @Test
     public void getShoppingCard_Success() {
-
 
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
@@ -125,7 +123,6 @@ public class ShoppingCardDaoIntegrationTest {
         shoppingCardDao.updateShoppingCard(testShoppingCard.getId(), testShoppingCard);
         ShoppingCard updatedShoppingCard = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
         assertEquals(updatedShoppingCard.getBalance(), testShoppingCard.getBalance());
-
     }
 
     /**
@@ -140,8 +137,6 @@ public class ShoppingCardDaoIntegrationTest {
         assertNotNull(testShoppingCard.getId());
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
         assertFalse(shoppingCardDao.updateShoppingCard(1516516516351635163L, testShoppingCard));
-
-
     }
 
     /**
@@ -149,8 +144,8 @@ public class ShoppingCardDaoIntegrationTest {
      */
     @Test
     public void deleteShoppingCard_Success() {
-        // check all components for null and check delete result for true
 
+        // check all components for null and check delete result for true
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard);
@@ -164,14 +159,13 @@ public class ShoppingCardDaoIntegrationTest {
      */
     @Test
     public void deleteShoppingCard_Failure() {
-        // check all components for null and check delete result for true
 
+        // check all components for null and check delete result for true
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
         assertFalse(shoppingCardDao.deleteShoppingCard(4154541654564654656L));
-
     }
 
     @After
@@ -184,11 +178,10 @@ public class ShoppingCardDaoIntegrationTest {
             userDao.deleteUser(testUser.getId());
 
         //set temp instance refs to null
-
         testShoppingCard = null;
-
         testUser = null;
 
+        //Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }

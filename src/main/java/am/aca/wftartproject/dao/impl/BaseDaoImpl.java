@@ -1,11 +1,13 @@
 package am.aca.wftartproject.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.sql.*;
-
-import org.apache.log4j.Logger;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by ASUS on 08-Jun-17
@@ -13,6 +15,7 @@ import org.apache.log4j.Logger;
 public abstract class BaseDaoImpl {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);
+
 
     void closeResources(ResultSet rs, Statement st, Connection conn){
         try {
@@ -55,6 +58,8 @@ public abstract class BaseDaoImpl {
     void closeResources(Statement st){
         closeResources(st, null);
     }
+
+
 
     private DataSource dataSource = null;
     protected JdbcTemplate jdbcTemplate = null;

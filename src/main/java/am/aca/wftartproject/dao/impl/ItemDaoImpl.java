@@ -24,16 +24,18 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
-     * @see ItemDao#addItem(Long, Item)
      * @param artistID
      * @param item
+     * @see ItemDao#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
         Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement(
+            ps = conn.prepareStatement(
                     "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, item.getTitle());
@@ -44,85 +46,227 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setBoolean(6, item.isStatus());
             ps.setString(7, item.getItemType().getType());
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 item.setId(rs.getLong(1));
             }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(rs, ps, conn);
         }
     }
 
 
     /**
-     * @see ItemDao#findItem(Long)
      * @param id
      * @return
+     * @see ItemDao#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
         Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         Item item = new Item();
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?");
+            ps = conn.prepareStatement("SELECT * FROM item WHERE id = ?");
             ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
-                item.setId(rs.getLong("id"))
-                        .setTitle(rs.getString("title"))
-                        .setDescription(rs.getString("description"))
-                        .setPhotoURL(rs.getString("photo_url"))
-                        .setPrice(rs.getDouble("price"))
-                        .setStatus(rs.getBoolean("status"))
-                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                getItemFromResultSet(item, rs);
+//                item.setId(rs.getLong("id"))
+//                        .setTitle(rs.getString("title"))
+//                        .setDescription(rs.getString("description"))
+//                        .setPhotoURL(rs.getString("photo_url"))
+//                        .setPrice(rs.getDouble("price"))
+//                        .setStatus(rs.getBoolean("status"))
+//                        .setItemType(ItemType.valueOf(rs.getString("type")));
             }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
         } catch (SQLException e) {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(rs, ps, conn);
         }
         return item;
     }
 
 
     /**
-     * @see ItemDao#updateItem(Long, Item)
+     * @param limit
+     * @return
+     * @see ItemDao#getRecentlyAddedItems(int)
+     */
+    @Override
+    public List<Item> getRecentlyAddedItems(int limit) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?");
+            ps.setInt(1, limit);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                getItemFromResultSet(item, rs);
+//                item.setId(rs.getLong("id"))
+//                        .setTitle(rs.getString("title"))
+//                        .setDescription(rs.getString("description"))
+//                        .setPrice(rs.getDouble("price"))
+//                        .setPhotoURL(rs.getString("photo_url"))
+//                        .setStatus(rs.getBoolean("status"))
+//                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
+            }
+        } catch (SQLException e) {
+            String error = "Failed to get RecentlyAddedItems: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(rs, ps, conn);
+        }
+        return itemList;
+    }
+
+
+    /**
+     * @param title
+     * @return
+     * @see ItemDao#getItemsByTitle(String)
+     */
+    @Override
+    public List<Item> getItemsByTitle(String title) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("SELECT * FROM item WHERE title=?");
+            ps.setString(1, title);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                getItemFromResultSet(item, rs);
+//                item.setId(rs.getLong("id"))
+//                        .setTitle(rs.getString("title"))
+//                        .setDescription(rs.getString("description"))
+//                        .setPrice(rs.getDouble("price"))
+//                        .setPhotoURL(rs.getString("photo_url"))
+//                        .setStatus(rs.getBoolean("status"))
+//                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
+            }
+        } catch (SQLException e) {
+            String error = "Failed to get ItemsByTitle: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(rs, ps, conn);
+        }
+        return itemList;
+    }
+
+
+    /**
+     * @param itemType
+     * @return
+     * @see ItemDao#getItemsByType(String)
+     */
+    @Override
+    public List<Item> getItemsByType(String itemType) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("SELECT * FROM item WHERE item_type =?");
+            ps.setString(1, itemType);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                getItemFromResultSet(item, rs);
+//                item.setId(rs.getLong("id"))
+//                        .setTitle(rs.getString("title"))
+//                        .setDescription(rs.getString("description"))
+//                        .setPrice(rs.getDouble("price"))
+//                        .setPhotoURL(rs.getString("photo_url"))
+//                        .setStatus(rs.getBoolean("status"))
+//                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
+            }
+        } catch (SQLException e) {
+            String error = "Failed to get ItemsByType: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(rs, ps, conn);
+        }
+        return itemList;
+    }
+
+
+    /**
+     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
+     * @param minPrice
+     * @param maxPrice
+     * @return
+     */
+    @Override
+    public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Item item = new Item();
+        List<Item> itemList = new ArrayList<>();
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("SELECT * FROM item WHERE status=0 AND price between ? AND ? ");
+            ps.setDouble(1, minPrice);
+            ps.setDouble(2, maxPrice);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                getItemFromResultSet(item, rs);
+//                item.setId(rs.getLong("id"))
+//                        .setTitle(rs.getString("title"))
+//                        .setDescription(rs.getString("description"))
+//                        .setPrice(rs.getDouble("price"))
+//                        .setPhotoURL(rs.getString("photo_url"))
+//                        .setStatus(rs.getBoolean("status"))
+//                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
+            }
+        } catch (SQLException e) {
+            String error = "Failed to get ItemsByType: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(rs, ps, conn);
+        }
+        return itemList;
+    }
+
+
+    /**
      * @param id
      * @param item
+     * @see ItemDao#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
         Connection conn = null;
+        PreparedStatement ps = null;
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement(
+            ps = conn.prepareStatement(
                     "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?");
             ps.setString(1, item.getTitle());
             ps.setString(2, item.getDescription());
@@ -130,191 +274,47 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setString(4, item.getItemType().getType());
             ps.setLong(5, id);
             ps.executeUpdate();
-
-//            ps.close();
-            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to update Item:  %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(ps, conn);
         }
     }
 
 
     /**
-     * @see ItemDao#deleteItem(Long)
      * @param id
+     * @see ItemDao#deleteItem(Long)
      */
     @Override
     public void deleteItem(Long id) {
         Connection conn = null;
+        PreparedStatement ps = null;
         try {
             conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
+            ps = conn.prepareStatement("DELETE FROM item WHERE id=?");
             ps.setLong(1, id);
             ps.executeUpdate();
-//            ps.close();
-            closeResources(ps);
         } catch (SQLException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
+            closeResources(ps, conn);
         }
     }
 
 
-    /**
-     * @see ItemDao#getRecentlyAddedItems(int)
-     * @param limit
-     * @return
-     */
-    @Override
-    public List<Item> getRecentlyAddedItems(int limit) {
-        Connection conn = null;
-        Item item = new Item();
-        List<Item> itemList = new ArrayList<>();
-        try {
-            conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?");
-            ps.setInt(1, limit);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                item.setId(rs.getLong("id"))
-                        .setTitle(rs.getString("title"))
-                        .setDescription(rs.getString("description"))
-                        .setPrice(rs.getDouble("price"))
-                        .setPhotoURL(rs.getString("photo_url"))
-                        .setStatus(rs.getBoolean("status"))
-                        .setItemType(ItemType.valueOf(rs.getString("type")));
-                itemList.add(item);
-            }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
-        } catch (SQLException e) {
-            String error = "Failed to get RecentlyAddedItems: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
-        }
-        return itemList;
-    }
 
-
-    /**
-     * @see ItemDao#getItemsByTitle(String)
-     * @param title
-     * @return
-     */
-    @Override
-    public List<Item> getItemsByTitle(String title) {
-        Connection conn = null;
-        Item item = new Item();
-        List<Item> itemList = new ArrayList<>();
-        try {
-            conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM item WHERE title=?");
-            ps.setString(1, title);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                item.setId(rs.getLong("id"))
-                        .setTitle(rs.getString("title"))
-                        .setDescription(rs.getString("description"))
-                        .setPrice(rs.getDouble("price"))
-                        .setPhotoURL(rs.getString("photo_url"))
-                        .setStatus(rs.getBoolean("status"))
-                        .setItemType(ItemType.valueOf(rs.getString("type")));
-                itemList.add(item);
-            }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
-        } catch (SQLException e) {
-            String error = "Failed to get ItemsByTitle: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
-        }
-        return itemList;
-    }
-
-
-    /**
-     * @see ItemDao#getItemsByType(String)
-     * @param itemType
-     * @return
-     */
-    @Override
-    public List<Item> getItemsByType(String itemType) {
-        Connection conn = null;
-        Item item = new Item();
-        List<Item> itemList = new ArrayList<>();
-        try {
-            conn = getDataSource().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM wft.item WHERE item_type =?");
-            ps.setString(1, itemType);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                item.setId(rs.getLong("id"))
-                        .setTitle(rs.getString("title"))
-                        .setDescription(rs.getString("description"))
-                        .setPrice(rs.getDouble("price"))
-                        .setPhotoURL(rs.getString("photo_url"))
-                        .setStatus(rs.getBoolean("status"))
-                        .setItemType(ItemType.valueOf(rs.getString("type")));
-                itemList.add(item);
-            }
-            /*rs.close();
-            ps.close();*/
-            closeResources(rs, ps);
-        } catch (SQLException e) {
-            String error = "Failed to get ItemsByType: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        } finally {
-            /*try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
-            closeResources(conn);
-        }
-        return itemList;
+    private void getItemFromResultSet(Item item, ResultSet rs) throws SQLException {
+        item.setId(rs.getLong("id"))
+                .setTitle(rs.getString("title"))
+                .setDescription(rs.getString("description"))
+                .setPhotoURL(rs.getString("photo_url"))
+                .setPrice(rs.getDouble("price"))
+                .setStatus(rs.getBoolean("status"))
+                .setItemType(ItemType.valueOf(rs.getString("type")));
     }
 }

@@ -25,7 +25,7 @@ import static util.AssertTemplates.assertEqualUsers;
  */
 public class UserDAOIntegrationTest {
 
-    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
     private DataSource conn;
 
     private UserDaoImpl userDao;
@@ -46,10 +46,10 @@ public class UserDAOIntegrationTest {
         //create test user
         testUser = TestObjectTemplate.createTestUser();
 
+        //Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }
-
     }
 
     /**
@@ -72,7 +72,6 @@ public class UserDAOIntegrationTest {
         Long id = testUser.getId();
 
         User dbUser = userDao.findUser(id);
-        System.out.println(dbUser.getId());
 
         assertNotNull(dbUser);
         assertEqualUsers(dbUser, testUser);
@@ -89,7 +88,6 @@ public class UserDAOIntegrationTest {
         userDao.addUser(testUser);
         assertNotNull(testUser);
         assertNull(testUser.getId());
-
     }
 
     /**
@@ -139,7 +137,6 @@ public class UserDAOIntegrationTest {
      */
     @Test
     public void deleteUser_Failure() {
-
         userDao.addUser(testUser);
         assertNotNull(testUser);
         assertFalse(userDao.deleteUser(4546465465465L));
@@ -176,6 +173,8 @@ public class UserDAOIntegrationTest {
 
         //set temp instance refs to null
         testUser = null;
+
+        //Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }

@@ -29,14 +29,14 @@ import static util.AssertTemplates.assertEqualItems;
  */
 public class ItemDaoIntegrationTest {
 
-    private Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+    private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
     private DataSource conn;
 
     private ArtistDaoImpl artistDao;
     private ItemDaoImpl itemDao;
     private Item testItem;
     private Artist testArtist;
-    ArtistSpecializationLkpDao artistSpecialization;
+    private ArtistSpecializationLkpDao artistSpecialization;
 
     public ItemDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }
@@ -44,6 +44,7 @@ public class ItemDaoIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
 
+        //Gets database connection from ConnectionPool
         conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
@@ -62,6 +63,7 @@ public class ItemDaoIntegrationTest {
         //insert test Artist into db, get generated id
         artistDao.addArtist(testArtist);
 
+        //Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }
@@ -84,7 +86,6 @@ public class ItemDaoIntegrationTest {
 
         //check for sameness
         AssertTemplates.assertEqualItems(testItem, item);
-
     }
 
     /**
@@ -105,7 +106,6 @@ public class ItemDaoIntegrationTest {
 
         //check for sameness
         AssertTemplates.assertEqualItems(testItem, item);
-
     }
 
 
@@ -120,19 +120,14 @@ public class ItemDaoIntegrationTest {
 
         //add item into db and get generated id
         itemDao.addItem(testArtist.getId(), testItem);
-        System.out.println(testItem.getId());
         testItem.setTitle("ankap item");
         itemDao.updateItem(testItem.getId(), testItem);
-        System.out.println(itemDao.findItem(testItem.getId()));
 
         //find added item from db
         Item item = itemDao.findItem(testItem.getId());
-        System.out.println(testItem.getTitle());
-        System.out.println(item.getTitle());
 
         //check for sameness
         assertEquals(testItem.getTitle(), item.getTitle());
-
     }
 
     /**
@@ -146,19 +141,14 @@ public class ItemDaoIntegrationTest {
 
         //add item into db and get generated id
         itemDao.addItem(testArtist.getId(), testItem);
-        System.out.println(testItem.getId());
         testItem.setTitle(null);
         itemDao.updateItem(testItem.getId(), testItem);
-        System.out.println(itemDao.findItem(testItem.getId()));
 
         //find added item from db
         Item item = itemDao.findItem(testItem.getId());
-        System.out.println(testItem.getTitle());
-        System.out.println(item.getTitle());
 
         //check for sameness
         assertEquals(testItem.getTitle(), item.getTitle());
-
     }
 
     /**
@@ -236,6 +226,7 @@ public class ItemDaoIntegrationTest {
         testArtist = null;
         testItem = null;
 
+        //Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }

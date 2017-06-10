@@ -26,22 +26,6 @@ public interface ItemDao {
     Item findItem(Long id);
 
     /**
-     * Updates Item price by id
-     *
-     * @param id
-     * @param item
-     */
-    void updateItem(Long id, Item item);
-
-    /**
-     * Deletes Item by id
-     *
-     * @param id
-     */
-    void deleteItem(Long id);
-
-
-    /**
      * Gets recently added items
      *
      * @param limit
@@ -66,4 +50,28 @@ public interface ItemDao {
      */
     List<Item> getItemsByType(String itemType);
 
+
+    /**
+     * Gets all items for the given price range.
+     *
+     * @param minPrice
+     * @param maxPrice
+     * @return
+     */
+    List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
+
+    /**
+     * Updates Item price by id
+     *
+     * @param id
+     * @param item
+     */
+    void updateItem(Long id, Item item);
+
+    /**
+     * Deletes Item by id
+     *
+     * @param id
+     */
+    void deleteItem(Long id);
 }

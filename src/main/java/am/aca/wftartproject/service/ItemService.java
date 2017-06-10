@@ -52,6 +52,16 @@ public interface ItemService {
 
 
     /**
+     * Gets all items for the given price range.
+     *
+     * @param minPrice
+     * @param maxPrice
+     * @return
+     */
+    List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
+
+
+    /**
      * Update Item price by id
      *
      * @param id
