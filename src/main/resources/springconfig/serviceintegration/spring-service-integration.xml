@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--Service layer Spring integration-->
+    <bean id="userService" class="am.aca.wftartproject.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDAO"/>
+    </bean>
+
+    <bean id="artistService" class="am.aca.wftartproject.service.impl.ArtistServiceImpl">
+        <property name="artistDao" ref="artistDAO"/>
+    </bean>
+
+    <bean id="itemService" class="am.aca.wftartproject.service.impl.ItemServiceImpl">
+        <property name="itemDao" ref="itemDAO"/>
+    </bean>
+
+    <bean id="shoppingCardService" class="am.aca.wftartproject.service.impl.ShoppingCardServiceImpl">
+        <property name="shoppingCardDao" ref="shoppingCardDAO"/>
+    </bean>
+
+    <bean id="purchaseHistoryService" class="am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl">
+        <property name="purchaseHistoryDao" ref="purchaseHistoryDAO"/>
+    </bean>
+
+    <bean id="artistSpecializationService" class="am.aca.wftartproject.service.impl.ArtistSpecializationServiceImpl">
+        <property name="lkpDao" ref="artistSpecialization"/>
+    </bean>
+
+</beans>

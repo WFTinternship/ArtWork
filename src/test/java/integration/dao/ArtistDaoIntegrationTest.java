@@ -29,7 +29,7 @@ public class ArtistDaoIntegrationTest {
     private Artist testArtist;
 
     private ArtistDao artistDao;
-    private ArtistSpecializationLkpDao artistSpecialization ;
+    private ArtistSpecializationLkpDao artistSpecialization;
 
     public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }

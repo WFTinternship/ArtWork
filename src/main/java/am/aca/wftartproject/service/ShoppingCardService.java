@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public interface ShoppingCardService {
 
     /**
-     * Adds shoppingCard to the database.
+     * Adds shoppingCard to the springconfig.database.
      *
      * @param userId
      * @param shoppingCard
@@ -18,7 +18,7 @@ public interface ShoppingCardService {
     void addShoppingCard(Long userId, ShoppingCard shoppingCard);
 
     /**
-     * Gets shoppingCard from database.
+     * Gets shoppingCard from springconfig.database.
      *
      * @param id
      * @return
@@ -26,7 +26,7 @@ public interface ShoppingCardService {
     ShoppingCard getShoppingCard(Long id);
 
     /**
-     * Updates shoppingCard in database.
+     * Updates shoppingCard in springconfig.database.
      *
      * @param id
      * @param shoppingCard

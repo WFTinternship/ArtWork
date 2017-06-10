@@ -31,7 +31,7 @@ public class ItemDaoIntegrationTest {
     private ItemDaoImpl itemDao;
     private Item testItem;
     private Artist testArtist;
-    ArtistSpecializationLkpDao artistSpecialization ;
+    ArtistSpecializationLkpDao artistSpecialization;
 
     public ItemDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }

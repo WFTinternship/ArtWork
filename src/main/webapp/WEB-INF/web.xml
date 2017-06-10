@@ -5,17 +5,28 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
     <servlet>
-        <servlet-name>Servlet Mapping</servlet-name>
-        <servlet-class>am.aca.wftartproject.controller.ArtServlet</servlet-class>
+        <servlet-name>ShopServlet</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.ShopServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Servlet Mapping</servlet-name>
-        <url-pattern>/homepage</url-pattern>
+        <servlet-name>ShopServlet</servlet-name>
+        <url-pattern>/shop</url-pattern>
     </servlet-mapping>
-    
+
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.HomeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+
+
     <welcome-file-list>
-        <welcome-file>/WEB-INF/views/hello.jsp</welcome-file>
+        <welcome-file>/WEB-INF/views/shop.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>

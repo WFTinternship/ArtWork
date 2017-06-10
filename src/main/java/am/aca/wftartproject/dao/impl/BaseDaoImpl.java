@@ -1,5 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import javax.sql.DataSource;
 import java.sql.*;
 
@@ -55,6 +57,7 @@ public abstract class BaseDaoImpl {
     }
 
     private DataSource dataSource = null;
+    protected JdbcTemplate jdbcTemplate = null;
 
     public DataSource getDataSource() {
         return dataSource;
@@ -63,4 +66,12 @@ public abstract class BaseDaoImpl {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+//    public JdbcTemplate getJdbcTemplate() {
+//        return jdbcTemplate;
+//    }
+//
+//    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+//        this.jdbcTemplate = jdbcTemplate;
+//    }
 }

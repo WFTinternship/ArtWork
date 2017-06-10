@@ -10,7 +10,7 @@ import java.util.List;
 public interface PurchaseHistoryService {
 
     /**
-     * Adds purchased item to the database.
+     * Adds purchased item to the springconfig.database.
      *
      * @param purchaseHistory
      */

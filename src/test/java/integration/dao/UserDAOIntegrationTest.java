@@ -1,4 +1,5 @@
 package integration.dao;
+
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
@@ -28,8 +29,7 @@ public class UserDAOIntegrationTest {
     }
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException
-    {
+    public void setUp() throws SQLException, ClassNotFoundException {
         //create db connection
         DataSource conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)

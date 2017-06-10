@@ -11,7 +11,7 @@ public interface PurchaseHistoryDao {
 
 
     /**
-     * Adds purchased item to the database.
+     * Adds purchased item to the springconfig.database.
      *
      * @param purchaseHistory
      */

@@ -10,14 +10,14 @@ import java.sql.SQLException;
 public interface ArtistService {
 
     /**
-     * Adds artist into the database
+     * Adds artist into the springconfig.database
      *
      * @param artist
      */
     void addArtist(Artist artist) throws SQLException;
 
     /**
-     * Finds artist from database by id
+     * Finds artist from springconfig.database by id
      *
      * @param id
      * @return
@@ -25,7 +25,7 @@ public interface ArtistService {
     Artist findArtist(Long id);
 
     /**
-     * Finds artist from database by email
+     * Finds artist from springconfig.database by email
      *
      * @param email
      * @return
@@ -33,7 +33,7 @@ public interface ArtistService {
     Artist findArtist(String email);
 
     /**
-     * Updates artist info in database
+     * Updates artist info in springconfig.database
      *
      * @param id
      * @param artist
@@ -41,7 +41,7 @@ public interface ArtistService {
     void updateArtist(Long id, Artist artist);
 
     /**
-     * Deletes artist from database
+     * Deletes artist from springconfig.database
      *
      * @param id
      */

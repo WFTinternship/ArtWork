@@ -33,7 +33,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     private User testUser;
     private Item testItem;
     private PurchaseHistory purchaseHistory;
-    ArtistSpecializationLkpDao artistSpecialization ;
+    ArtistSpecializationLkpDao artistSpecialization;
 
     public PurchaseHistoryDaoIntegrationTest() throws SQLException, ClassNotFoundException, SQLException {
     }
@@ -191,20 +191,19 @@ public class PurchaseHistoryDaoIntegrationTest {
     public void tearDown() {
         //delete inserted test users,artists and items  from db
 
-        if (purchaseHistory.getUserId() != null){
+        if (purchaseHistory.getUserId() != null) {
             purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId());
         }
 
 
-        if (testItem.getId() != null){
+        if (testItem.getId() != null) {
             itemDao.deleteItem(testItem.getId());
         }
 
 
-        if (testUser.getId() != null){
+        if (testUser.getId() != null) {
             userDao.deleteUser(testUser.getId());
         }
-
 
 
         //set temp objects ref  to null
