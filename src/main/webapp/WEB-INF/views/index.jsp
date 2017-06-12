@@ -82,7 +82,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            	
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="current_page_item menu-item-simple-parent"><a href="index<%--.jsp--%>">Home <span class="fa fa-home"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -92,7 +92,7 @@
                         <a class="dt-menu-expand">+</a>                    
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="about.html">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
@@ -105,7 +105,7 @@
                     <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
                             <li><a href="shop-detail.jsp">Shop Detail</a></li>
-                            <li><a href="shop-cart.html">Cart Page</a></li>
+                            <li><a href="shop-cart.jsp">Cart Page</a></li>
                             <li><a href="shop-checkout.html">Checkout Page</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
@@ -119,7 +119,7 @@
                         <a class="dt-menu-expand">+</a>                    
                     </li>--%>
                     <li class="menu-item-simple-parent">
-                        <a href="contact.html">contact<span class="fa fa-map-marker"></span></a>
+                        <a href="/contact">Contact<span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
                         <a href="<%--progressbar.html--%>">Registration <span class="fa fa-paint-brush"></span></a>

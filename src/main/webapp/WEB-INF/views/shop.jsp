@@ -7,6 +7,7 @@
 
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
+<c:set var="recentlyAddedItems" value='<%=request.getAttribute("recentlyAddedItems")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -75,7 +76,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="index.jsp">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -86,7 +87,7 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/about.html">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="../../resources/gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
@@ -113,7 +114,7 @@
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="contact">Contact <span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
                         <a href="../../resources/progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>
@@ -156,12 +157,12 @@
                 	<div class="sorting-products"><!-- sorting-products Starts Here -->
                     	<div class="dt-sc-one-fifth column first">
                             <div class="categories">
-                                <h5>Categories</h5>
+                                <h5>Artist Specialization</h5>
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
-                                        <option value="-1" selected>Choose your category</option>
+                                        <option value="-1" selected>Choose artist specialization</option>
                                         <c:forEach items="${artistSpecTypes}" var="element">
-                                            <option value="${element.id}" class="fa fa-fire-extinguisher">${element.type}</option>
+                                            <option value="${element.id}" class="fa fa-eyedropper">${element.type}</option>
                                         </c:forEach>
                                         <%--<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>--%>
                                         <%--<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>--%>
@@ -196,9 +197,9 @@
                                 <h5>Art Type</h5>
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
-                                        <option value="-1" selected>Choose your type</option>
+                                        <option value="-1" selected>Choose art type</option>
                                         <c:forEach items="${itemTypes}" var="element">
-                                            <option value="${element.typeId}" class="fa fa-fire-extinguisher">${element.type}</option>
+                                            <option value="${element.typeId}" class="fa fa-flask">${element.type}</option>
                                         </c:forEach>
                                         <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
 										<%--<option value="2" class="fa fa-paint-brush">Oil Painting</option>--%>
@@ -238,261 +239,266 @@
                         <%--</div>                                               --%>
                     </div><!-- sorting-products Ends Here -->
                     <ul class="products isotope">
+                        <c:forEach items="${recentlyAddedItems}" var="itemElement">
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
+                                <a href="shop-detail"><div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
+                                    <a href="shop-cart" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
                                     <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
                                     <p>You don't take a photograph, Just make it</p>
                                 </div> <!-- **product-title - Ends** -->
                             </div> <!-- **product-container - Ends** --> 
                             <!-- **product-details - Starts** --> 
                             <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $25 </span> 
+                                <h5> <a href="shop-detail"> ${itemElement.title} </a> </h5>
+                                <span class="amount"> $${itemElement.price} </span>
                             </div> <!-- **product-details - Ends** --> 
                         </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Every child is an artist. The problem is to remain an artist once we grow up!!</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $15 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-						<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Art enables us to find ourselves</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $20 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-						<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Art is a poem without words</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $35 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Creativity takes courage</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $15 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Art is a lie that makes us to realize truth</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $10 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Nature is not only all that is visible to the eye.. Its the soul!!</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $30 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Everything has its beauty, but not everyone sees it!</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $25 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>A great artist is always before his time or behind it.</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $20 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Life is the art of drawing without an eraser</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $40 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Every artist dips his brush in his own soul, and paints his own nature into his pictures!!</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $20 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->                                                                                                                                                                        
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>It's not what you look at that matters, it's what you see</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $35 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>A painting is never finished - it simply stops in interesting places</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $10 </span> 
-                            </div> <!-- **product-details - Ends** --> 
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Art is the stored honey of the human soul.</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $45 </span>
-                            </div> <!-- **product-details - Ends** -->
-                        </li><!-- **product-wrapper - Ends** -->
-                        <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
-                            <!-- **product-container - Starts** -->   
-                            <div class="product-container">
-                                <a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>
-                                <!-- **product-title - Starts** -->
-                                <div class="product-title"> 
-                                    <a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                    <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                    <p>Great things are done by a series of small things brought together</p>
-                                </div> <!-- **product-title - Ends** -->
-                            </div> <!-- **product-container - Ends** --> 
-                            <!-- **product-details - Starts** --> 
-                            <div class="product-details"> 
-                                <h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>
-                                <span class="amount"> $15 </span>
-                            </div> <!-- **product-details - Ends** -->
-                        </li><!-- **product-wrapper - Ends** -->                        
+                        </c:forEach>
+
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="shop-cart.jsp" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Every child is an artist. The problem is to remain an artist once we grow up!!</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="shop-detail.jsp"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $15 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+
+
+						<%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="shop-cart.jsp" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Art enables us to find ourselves</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="shop-detail.jsp"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $20 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+						<%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="shop-cart.jsp" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Art is a poem without words</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $35 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Creativity takes courage</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $15 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Art is a lie that makes us to realize truth</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $10 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Nature is not only all that is visible to the eye.. Its the soul!!</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $30 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Everything has its beauty, but not everyone sees it!</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $25 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>A great artist is always before his time or behind it.</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $20 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Life is the art of drawing without an eraser</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $40 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Every artist dips his brush in his own soul, and paints his own nature into his pictures!!</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $20 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->                                                                                                                                                                        --%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>It's not what you look at that matters, it's what you see</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $35 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>A painting is never finished - it simply stops in interesting places</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $10 </span> --%>
+                            <%--</div> <!-- **product-details - Ends** --> --%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Art is the stored honey of the human soul.</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $45 </span>--%>
+                            <%--</div> <!-- **product-details - Ends** -->--%>
+                        <%--</li><!-- **product-wrapper - Ends** -->--%>
+                        <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
+                            <%--<!-- **product-container - Starts** -->   --%>
+                            <%--<div class="product-container">--%>
+                                <%--<a href="../../resources/shop-detail.html"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                                <%--<!-- **product-title - Starts** -->--%>
+                                <%--<div class="product-title"> --%>
+                                    <%--<a href="../../resources/shop-cart.html" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                    <%--<a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>--%>
+                                    <%--<p>Great things are done by a series of small things brought together</p>--%>
+                                <%--</div> <!-- **product-title - Ends** -->--%>
+                            <%--</div> <!-- **product-container - Ends** --> --%>
+                            <%--<!-- **product-details - Starts** --> --%>
+                            <%--<div class="product-details"> --%>
+                                <%--<h5> <a href="../../resources/shop-detail.html"> Ellents Style Grade </a> </h5>--%>
+                                <%--<span class="amount"> $15 </span>--%>
+                            <%--</div> <!-- **product-details - Ends** -->--%>
+                        <%--</li><!-- **product-wrapper - Ends** -->                        --%>
                     </ul>
                     <div class="container">
                         <div class="dt-sc-post-pagination">
