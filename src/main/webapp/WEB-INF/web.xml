@@ -48,6 +48,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>SignUp</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.SignUpServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SignUp</servlet-name>
+        <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ItemDetail</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.ItemDetailServlet</servlet-class>
     </servlet>
@@ -57,7 +67,6 @@
         <url-pattern>/shop-detail</url-pattern>
     </servlet-mapping>
 
-<!--
     <servlet>
         <servlet-name>ContactServlet</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.ContactServlet</servlet-class>
