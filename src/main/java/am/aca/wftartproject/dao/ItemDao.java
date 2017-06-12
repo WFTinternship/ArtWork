@@ -60,6 +60,18 @@ public interface ItemDao {
      */
     List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
 
+
+    /**
+     * Gets artist items for the given limit.
+     *
+     * @param artistId
+     * @param itemId
+     * @param limit
+     * @return
+     */
+    List<Item> getArtistItems(Long artistId, Long itemId, Long limit);
+
+
     /**
      * Updates Item price by id
      *

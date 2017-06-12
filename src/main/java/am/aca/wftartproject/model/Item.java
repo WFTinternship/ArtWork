@@ -12,8 +12,11 @@ public class Item {
     private String description;
     private String photoURL;
     private Double price;
+    private Long artistId;
     private Boolean status;
     private ItemType itemType;
+
+
 
     public Long getId() {
         return id;
@@ -55,8 +58,17 @@ public class Item {
         return price;
     }
 
-    public Item setPrice(double price) {
+    public Item setPrice(Double price) {
         this.price = price;
+        return this;
+    }
+
+    public Long getArtistId() {
+        return artistId;
+    }
+
+    public Item setArtistId(Long artistID) {
+        this.artistId = artistID;
         return this;
     }
 
@@ -64,7 +76,7 @@ public class Item {
         return status;
     }
 
-    public Item setStatus(boolean status) {
+    public Item setStatus(Boolean status) {
         this.status = status;
         return this;
     }
@@ -82,11 +94,12 @@ public class Item {
 
     }
 
-    public Item(String title, String description, String photoURL, double price, boolean status, ItemType itemType) {
+    public Item(String title, String description, String photoURL, Double price, Long artistId, Boolean status, ItemType itemType) {
         this.title = title;
         this.description = description;
         this.photoURL = photoURL;
         this.price = price;
+        this.artistId = artistId;
         this.status = status;
         this.itemType = itemType;
     }
@@ -100,6 +113,7 @@ public class Item {
                 ", description='" + description + '\'' +
                 ", photoURL=" + photoURL +
                 ", price=" + price +
+                ", artistId" + artistId +
                 ", status=" + status +
                 ", itemType=" + itemType +
                 '}';
@@ -110,7 +124,13 @@ public class Item {
                 id > 0 &&
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL) &&
+                artistId != null &&
+                artistId > 0 &&
                 price != 0 &&
                 itemType != null;
     }
+
+
+
+
 }

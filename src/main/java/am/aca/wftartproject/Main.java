@@ -1,6 +1,10 @@
 package am.aca.wftartproject;
 
-import am.aca.wftartproject.model.ArtistSpecialization;
+import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.impl.ItemServiceImpl;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.SQLException;
 
@@ -10,15 +14,18 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
-//        ItemService itemService = context.getBean("itemService",ItemServiceImpl.class);
-//        System.out.println(itemService);
+        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
+        ItemService itemService = context.getBean("itemService",ItemServiceImpl.class);
+        for(Item element:itemService.getRecentlyAddedItems(20)){
+            System.out.println(element.toString());
 
-
-        ArtistSpecialization[] art = ArtistSpecialization.values();
-        for(ArtistSpecialization artElement:art){
-            System.out.println(artElement.getType());
         }
+
+
+//        ArtistSpecialization[] art = ArtistSpecialization.values();
+//        for(ArtistSpecialization artElement:art){
+//            System.out.println(artElement.getType());
+//        }
 
     }
 }

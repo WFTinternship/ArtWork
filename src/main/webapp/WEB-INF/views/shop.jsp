@@ -209,6 +209,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class = "dt-sc-one-fifth column">
+                            <div class="categories">
+                                <h5>Search</h5>
+                                <div class="submit">
+                                    <a class="shop-dropdown" href="/shop"> <span> <h4>Click Here!</h4> </span> </a>
+                                    <%--<button  type="button">Click Here!</button>--%>
+                                </div>
+                            </div>
+                        </div>
                     	<%--<div class="dt-sc-one-fifth column">--%>
                             <%--<div class="categories">--%>
                                 <%--<h5>Size &amp; Shape</h5>--%>
@@ -243,10 +252,10 @@
                         <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                             <!-- **product-container - Starts** -->   
                             <div class="product-container">
-                                <a href="shop-detail"><div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
+                                <a href="/shop-detail/${itemElement.id}"><div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
                                 <!-- **product-title - Starts** -->
                                 <div class="product-title"> 
-                                    <a href="shop-cart" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
+                                    <a href="/shop-cart" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
                                     <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
                                     <p>You don't take a photograph, Just make it</p>
                                 </div> <!-- **product-title - Ends** -->

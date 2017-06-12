@@ -175,6 +175,29 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @param artistId
+     * @param limit
+     * @return
+     * @see ItemService#getArtistItems(Long, Long, Long)
+     */
+    @Override
+    public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
+        if (artistId == null || artistId < 0 || itemId == null || itemId < 0 || limit == null || limit < 0) {
+            LOGGER.error(String.format("artistId or limit is invalid: %s , %s", artistId, limit));
+            throw new ServiceException("Invalid artistId or limit");
+        }
+
+        try {
+            return itemDao.getArtistItems(artistId, itemId, limit);
+        } catch (DAOException e) {
+            String error = "Failed to get items for the given artistId: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
+
+
+    /**
      * @param id
      * @param item
      * @see ItemService#updateItem(Long, Item)

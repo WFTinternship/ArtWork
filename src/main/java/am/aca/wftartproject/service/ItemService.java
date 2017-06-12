@@ -60,6 +60,14 @@ public interface ItemService {
      */
     List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
 
+    /**
+     * Gets artist items for the given limit.
+     * @param artistId
+     * @param itemId
+     * @param limit
+     * @return
+     */
+    List<Item> getArtistItems(Long artistId, Long itemId, Long limit);
 
     /**
      * Update Item price by id

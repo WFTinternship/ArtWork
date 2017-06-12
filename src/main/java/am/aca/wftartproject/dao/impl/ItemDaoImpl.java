@@ -107,7 +107,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Item item = new Item();
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
@@ -115,6 +114,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setInt(1, limit);
             rs = ps.executeQuery();
             while (rs.next()) {
+                Item item = new Item();
                 getItemFromResultSet(item, rs);
 //                item.setId(rs.getLong("id"))
 //                        .setTitle(rs.getString("title"))
@@ -146,7 +146,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Item item = new Item();
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
@@ -154,6 +153,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setString(1, title);
             rs = ps.executeQuery();
             while (rs.next()) {
+                Item item = new Item();
                 getItemFromResultSet(item, rs);
 //                item.setId(rs.getLong("id"))
 //                        .setTitle(rs.getString("title"))
@@ -185,7 +185,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Item item = new Item();
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
@@ -193,6 +192,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setString(1, itemType);
             rs = ps.executeQuery();
             while (rs.next()) {
+                Item item = new Item();
                 getItemFromResultSet(item, rs);
 //                item.setId(rs.getLong("id"))
 //                        .setTitle(rs.getString("title"))
@@ -215,17 +215,16 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
-     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      * @param minPrice
      * @param maxPrice
      * @return
+     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Item item = new Item();
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
@@ -234,6 +233,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setDouble(2, maxPrice);
             rs = ps.executeQuery();
             while (rs.next()) {
+                Item item = new Item();
                 getItemFromResultSet(item, rs);
 //                item.setId(rs.getLong("id"))
 //                        .setTitle(rs.getString("title"))
@@ -245,7 +245,48 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 itemList.add(item);
             }
         } catch (SQLException e) {
-            String error = "Failed to get ItemsByType: %s";
+            String error = "Failed to get items by the given price range: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(rs, ps, conn);
+        }
+        return itemList;
+    }
+
+    /**
+     * @param artistId
+     * @param limit
+     * @return
+     * @see ItemDao#getArtistItems(Long, Long, Long)
+     */
+    @Override
+    public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Item> itemList = new ArrayList<>();
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("SELECT * FROM item WHERE artist_id=? and id!=? LIMIT ?");
+            ps.setLong(1, artistId);
+            ps.setLong(2,itemId);
+            ps.setLong(3, limit);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                getItemFromResultSet(item, rs);
+//                item.setId(rs.getLong("id"))
+//                        .setTitle(rs.getString("title"))
+//                        .setDescription(rs.getString("description"))
+//                        .setPrice(rs.getDouble("price"))
+//                        .setPhotoURL(rs.getString("photo_url"))
+//                        .setStatus(rs.getBoolean("status"))
+//                        .setItemType(ItemType.valueOf(rs.getString("type")));
+                itemList.add(item);
+            }
+        } catch (SQLException e) {
+            String error = "Failed to get items for the given artistId: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {
@@ -307,13 +348,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     }
 
 
-
     private void getItemFromResultSet(Item item, ResultSet rs) throws SQLException {
         item.setId(rs.getLong("id"))
                 .setTitle(rs.getString("title"))
                 .setDescription(rs.getString("description"))
                 .setPhotoURL(rs.getString("photo_url"))
                 .setPrice(rs.getDouble("price"))
+                .setArtistId(rs.getLong("artist_id"))
                 .setStatus(rs.getBoolean("status"))
                 .setItemType(ItemType.valueOf(rs.getString("type")));
     }

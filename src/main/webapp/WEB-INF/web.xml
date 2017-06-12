@@ -56,8 +56,12 @@
         <servlet-name>ItemDetail</servlet-name>
         <url-pattern>/shop-detail</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ItemDetail</servlet-name>
+        <url-pattern>/shop-detail/*</url-pattern>
+    </servlet-mapping>
 
-<!--
+
     <servlet>
         <servlet-name>ContactServlet</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.ContactServlet</servlet-class>
