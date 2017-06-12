@@ -68,7 +68,7 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="index.jsp"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
                     
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -94,7 +94,7 @@
                     <li class="menu-item-simple-parent">
                         <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
+                    <li class="menu-item-simple-parent"><a href="gallery.tml">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
                             <li><a href="gallery-detail.html">Gallery detail</a></li>
                             <li><a href="gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
@@ -129,8 +129,8 @@
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
                             <li><a href="columns.html"> columns </a></li>--%>
-                            <li><a href="">Log in </a> </li>
-                            <li><a href="">Sign up </a> </li>
+                            <li><a href="/login">Log in </a> </li>
+                            <li><a href="/signup">Sign up </a> </li>
                         </ul>   
                         <a class="dt-menu-expand">+</a>                        
                     </li>                                         
