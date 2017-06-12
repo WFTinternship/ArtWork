@@ -46,6 +46,14 @@
 	
 	<!-- Modernizr -->
 	<script src="../../resources/js/modernizr.js"></script>
+
+    <%--fancyBox--%>
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
+
+
 </head>
 
 <body>
@@ -74,7 +82,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            	
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="current_page_item menu-item-simple-parent"><a href="index.jsp">Home <span class="fa fa-home"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="index<%--.jsp--%>">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -94,7 +102,7 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
                     </li>
-                    <li class="menu-item-simple-parent"><a href="shop.jsp">Shop <span class="fa fa-cart-plus"></span></a>
+                    <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
                             <li><a href="shop-detail.jsp">Shop Detail</a></li>
                             <li><a href="shop-cart.html">Cart Page</a></li>
@@ -102,25 +110,27 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
                     </li>
-                    <li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
+                    <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
                         <ul class="sub-menu">
                             <li><a href="blog-detail.html">Blog detail</a></li>
                             <li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>
                             <li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
-                    </li>
+                    </li>--%>
                     <li class="menu-item-simple-parent">
                         <a href="contact.html">contact<span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
-                        <a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>
+                        <a href="<%--progressbar.html--%>">Registration <span class="fa fa-paint-brush"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="progressbar.html"> Progress-bar </a></li>
+                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>
                             <li><a href="buttons.html"> Buttons Page </a></li>
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
-                            <li><a href="columns.html"> columns </a></li>
+                            <li><a href="columns.html"> columns </a></li>--%>
+                            <li><a href="">Log in </a> </li>
+                            <li><a href="">Sign up </a> </li>
                         </ul>   
                         <a class="dt-menu-expand">+</a>                        
                     </li>                                         
@@ -153,8 +163,9 @@
                     	<div class="portfolio-grid">
                             <div class="dt-sc-portfolio-container isotope"> <!-- **dt-sc-portfolio-container Starts Here** -->
                                 <div class="portfolio nature still-life dt-sc-one-fourth">
-                                    <figure>
-                                        <img src="http://placehold.it/500x800&text=Portfolio+Image1" alt="" title="">
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Alice_Lin.jpg"><img src="../../resources/images/product/Alice_Lin.jpg"></a>
+                                    <%--<figure>
+                                    <img src="../../resources/images/product/Alice_Lin.jpg&lt;%&ndash;http://placehold.it/500x800&text=Portfolio+Image1&ndash;%&gt;" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
@@ -166,11 +177,12 @@
                                                 </div>
                                             </div>
                                         </figcaption>
-                                    </figure>
+                                    </figure>--%>
                                 </div>
                                 <div class="portfolio nature people street dt-sc-one-fourth">
-                                    <figure>
-                                        <img src="http://placehold.it/1250x1160&text=Portfolio+Image2" alt="" title="">
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Andy_Westface.jpg"><img src="../../resources/images/product/Andy_Westface.jpg"></a>
+                                    <%--<figure>
+                                        <img src="../../resources/images/product/Andy_Westface.jpg&lt;%&ndash;http://placehold.it/1250x1160&text=Portfolio+Image2&ndash;%&gt;" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
@@ -182,11 +194,12 @@
                                                 </div>
                                             </div>
                                         </figcaption>
-                                   </figure>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio street landscapes still-life dt-sc-one-fourth">
-                                    <figure>
-                                        <img src="http://placehold.it/1300x900&text=Portfolio+Image3" alt="" title="">
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Artem_RHADS_Chebokha.jpg"><img src="../../resources/images/product/Artem_RHADS_Chebokha.jpg"></a>
+                                    <%--<figure>
+                                        <img src="../../resources/images/product/Artem_RHADS_Chebokha.jpg&lt;%&ndash;http://placehold.it/1300x900&text=Portfolio+Image3&ndash;%&gt;" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
@@ -197,12 +210,13 @@
                                                     <p>the swagger of a cowboy</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio nature still-life dt-sc-one-fourth">
-                                    <figure>
-                                        <img src="http://placehold.it/700x600&text=Portfolio+Image4" alt="" title="">
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Claude_Monet.jpg"><img src="../../resources/images/product/Claude_Monet.jpg"></a>
+                                    <%--<figure>
+                                        <img src="../../resources/images/product/Claude_Monet.jpg&lt;%&ndash;http://placehold.it/700x600&text=Portfolio+Image4&ndash;%&gt;" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
@@ -213,12 +227,13 @@
                                                     <p>Live Free, Ride Hard!!</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio people still-life dt-sc-one-fourth">
-                                    <figure>
-                                        <img src="http://placehold.it/1600x1300&text=Portfolio+Image5" alt="" title="">
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Elia_Colombo.jpg"><img src="../../resources/images/product/Elia_Colombo.jpg"></a>
+                                    <%--<figure>
+                                        <img src="../../resources/images/product/Elia_Colombo.jpg&lt;%&ndash;http://placehold.it/1600x1300&text=Portfolio+Image5&ndash;%&gt;" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
@@ -229,12 +244,13 @@
                                                     <p>Saddle your horse</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio people still-life dt-sc-one-fourth">
-                                    <figure>
-                                        <img src="http://placehold.it/1200x1500&text=Portfolio+Image6" alt="" title="">
+                                    <a data-fancybox="gallery" href="../../resources/images/product/James_E._Tennison.jpg"><img src="../../resources/images/product/James_E._Tennison.jpg"></a>
+                                    <%--<figure>
+                                        <img src="../../resources/images/product/James_E._Tennison.jpg&lt;%&ndash;http://placehold.it/1200x1500&text=Portfolio+Image6&ndash;%&gt;" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
@@ -245,11 +261,12 @@
                                                     <p>No reason to ride a horse</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio people nature still-life street dt-sc-one-fourth">
-                                    <figure>
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Julia_Razumova.jpg"><img src="../../resources/images/product/Julia_Razumova.jpg"></a>
+                                    <%--<figure>
                                         <img src="http://placehold.it/1500x2000&text=Portfolio+Image7" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
@@ -261,11 +278,12 @@
                                                     <p>Make Way</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio nature people street still-life dt-sc-one-fourth">
-                                    <figure>
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Jean_Pierre_Arboleda.jpg"><img src="../../resources/images/product/Jean_Pierre_Arboleda.jpg"></a>
+                                    <%--<figure>
                                         <img src="http://placehold.it/1600x1100&text=Portfolio+Image8" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
@@ -277,11 +295,12 @@
                                                     <p>Cowboys are born, ain't made!</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                                 <div class="portfolio street nature people still-life dt-sc-one-fourth">
-                                    <figure>
+                                    <a data-fancybox="gallery" href="../../resources/images/product/Joey_Guidone.jpg"><img src="../../resources/images/product/Joey_Guidone.jpg"></a>
+                                    <%--<figure>
                                         <img src="http://placehold.it/650x450&text=Portfolio+Image9" alt="" title="">
                                         <figcaption>
                                             <div class="portfolio-detail">
@@ -293,8 +312,8 @@
                                                     <p>Hard to Settle!!</p>
                                                 </div>
                                             </div>
-                                        </figcaption>                                        
-                                   </figure>
+                                        </figcaption>
+                                   </figure>--%>
                                 </div>
                             </div><!-- **dt-sc-portfolio-container Ends Here** -->
                         </div>
