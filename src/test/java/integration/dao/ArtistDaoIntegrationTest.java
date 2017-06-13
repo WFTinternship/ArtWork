@@ -40,7 +40,7 @@ public class ArtistDaoIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
 
-        //create db connection,artistDaoImplementation and artist for testing
+        // create db connection,artistDaoImplementation and artist for testing
         conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
@@ -53,7 +53,7 @@ public class ArtistDaoIntegrationTest {
         artistDao = new ArtistDaoImpl(conn);
         testArtist = TestObjectTemplate.createTestArtist();
 
-        //Prints busy connections quantity
+        // Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }
