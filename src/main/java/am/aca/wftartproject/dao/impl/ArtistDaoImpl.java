@@ -23,8 +23,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
-     * @param artist
      * @see ArtistDao#addArtist(Artist)
+     * @param artist
      */
     @Override
     public void addArtist(Artist artist) {
@@ -34,7 +34,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             conn = getDataSource().getConnection();
 
-            //Start Transaction
+            // start Transaction
             conn.setAutoCommit(false);
 
             ps = conn.prepareStatement(
@@ -75,9 +75,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     }
 
     /**
+     * @see ArtistDao#findArtist(Long)
      * @param id
      * @return
-     * @see ArtistDao#findArtist(Long)
      */
     @Override
     public Artist findArtist(Long id) {
@@ -99,7 +99,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //                        .setEmail(rs.getString("email"))
 //                        .setPassword(rs.getString("password"));
             } else {
-                return null;
+                LOGGER.error(String.format("Failed to get user by this id: %s", id));
+                throw new DAOException("Failed to get user by this id!");
             }
             closeResources(rs, ps);
 
@@ -111,6 +112,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             if (rs.next()) {
                 artist.setArtistPhoto(rs.getBytes("photo"))
                         .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
+            }
+            else {
+                LOGGER.error(String.format("Failed to get artist by this id: %s", id));
+                throw new DAOException("Failed to get artist by this id!");
             }
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
@@ -124,9 +129,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
+     * @see ArtistDao#findArtist(String)
      * @param email
      * @return
-     * @see ArtistDao#findArtist(String)
      */
     @Override
     public Artist findArtist(String email) {
@@ -148,7 +153,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //                        .setEmail(rs.getString("email"))
 //                        .setPassword(rs.getString("password"));
             } else {
-                return null;
+                LOGGER.error(String.format("Failed to get user by this email: %s", email));
+                throw new DAOException("Failed to get user by this email!");
             }
             closeResources(rs, ps);
 
@@ -160,6 +166,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             if (rs.next()) {
                 artist.setArtistPhoto(rs.getBytes("photo"))
                         .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
+            }
+            else {
+                LOGGER.error(String.format("Failed to get artist by this email: %s", email));
+                throw new DAOException("Failed to get artist by this email!");
             }
         } catch (SQLException e) {
             String error = "Failed to get Artist: %s";
@@ -173,9 +183,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
+     * @see ArtistDao#updateArtist(Long, Artist)
      * @param id
      * @param artist
-     * @see ArtistDao#updateArtist(Long, Artist)
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
@@ -184,7 +194,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             conn = getDataSource().getConnection();
 
-            //Start Transaction
+            // start Transaction
             conn.setAutoCommit(false);
 
             ps = conn.prepareStatement(
@@ -223,8 +233,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
-     * @param id
      * @see ArtistDao#deleteArtist(Long)
+     * @param id
      */
     @Override
     public Boolean deleteArtist(Long id) {
@@ -234,7 +244,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             conn = getDataSource().getConnection();
 
-            //Start Transaction
+            // start Transaction
             conn.setAutoCommit(false);
             ps = conn.prepareStatement("DELETE FROM artist WHERE user_id=?");
             ps.setLong(1, id);

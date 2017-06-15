@@ -40,7 +40,7 @@ public class TestObjectTemplate {
                 .setItemType(ItemType.PAINTING)
                 .setPhotoURL("test")
                 .setPrice(getRandomNumber() + 1.1)
-                .setStatus(true);
+                .setStatus(false);
         return item;
     }
 

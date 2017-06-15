@@ -46,10 +46,11 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     /**
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      * @param id
      * @return
-     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      */
+    //TODO ask about exception
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
         Connection conn = null;
@@ -77,9 +78,9 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     /**
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      * @param specialization
      * @return
-     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {

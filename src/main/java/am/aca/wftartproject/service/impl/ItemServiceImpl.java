@@ -32,13 +32,12 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#addItem(Long, Item)
      * @param artistID
      * @param item
-     * @see ItemService#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
-        //TODO ask Arthur if I check artistId validation here or in DAO layer
 
         if (artistID == null || artistID < 0) {
             LOGGER.error(String.format("ArtistId is invalid: %s", artistID));
@@ -60,9 +59,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#findItem(Long)
      * @param id
      * @return
-     * @see ItemService#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
@@ -82,9 +81,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getRecentlyAddedItems(int)
      * @param limit
      * @return
-     * @see ItemService#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
@@ -105,9 +104,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getItemsByTitle(String)
      * @param title
      * @return
-     * @see ItemService#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
@@ -128,9 +127,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getItemsByType(String)
      * @param itemType
      * @return
-     * @see ItemService#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
@@ -151,10 +150,10 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      * @param minPrice
      * @param maxPrice
      * @return
-     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
@@ -175,10 +174,10 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#getArtistItems(Long, Long, Long)
      * @param artistId
      * @param limit
      * @return
-     * @see ItemService#getArtistItems(Long, Long, Long)
      */
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
@@ -198,9 +197,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
+     * @see ItemService#updateItem(Long, Item)
      * @param id
      * @param item
-     * @see ItemService#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
@@ -224,8 +223,8 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param id
      * @see ItemService#deleteItem(Long)
+     * @param id
      */
     @Override
     public void deleteItem(Long id) {

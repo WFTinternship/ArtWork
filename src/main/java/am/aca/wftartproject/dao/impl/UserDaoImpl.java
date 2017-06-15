@@ -20,8 +20,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     /**
-     * @param user
      * @see UserDao#addUser(User)
+     * @param user
      */
     @Override
     public void addUser(User user) {
@@ -54,9 +54,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
+     * @see UserDao#findUser(Long)
      * @param id
      * @return
-     * @see UserDao#findUser(Long)
      */
     @Override
     public User findUser(Long id) {
@@ -78,7 +78,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //                        .setEmail(rs.getString("email"))
 //                        .setPassword(rs.getString("password"));
             } else {
-                return null;
+                LOGGER.error(String.format("Failed to get user by this id: %s", id));
+                throw new DAOException("Failed to get user by this id!");
             }
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
@@ -92,9 +93,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
+     * @see UserDao#findUser(String)
      * @param email
      * @return
-     * @see UserDao#findUser(String)
      */
     @Override
     public User findUser(String email) {
@@ -116,7 +117,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //                        .setEmail(rs.getString("email"))
 //                        .setPassword(rs.getString("password"));
             } else {
-                return null;
+                LOGGER.error(String.format("Failed to get user by this email: %s", email));
+                throw new DAOException("Failed to get user by this email!");
             }
         } catch (SQLException e) {
             String error = "Failed to get User: %s";
@@ -130,9 +132,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
+     * @see UserDao#updateUser(Long, User)
      * @param id
      * @param user
-     * @see UserDao#updateUser(Long, User)
      */
     @Override
     public Boolean updateUser(Long id, User user) {
@@ -163,8 +165,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
-     * @param id
      * @see UserDao#deleteUser(Long)
+     * @param id
      */
     @Override
     public Boolean deleteUser(Long id) {

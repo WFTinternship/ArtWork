@@ -24,9 +24,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#addItem(Long, Item)
      * @param artistID
      * @param item
-     * @see ItemDao#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
@@ -61,9 +61,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#findItem(Long)
      * @param id
      * @return
-     * @see ItemDao#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
@@ -86,6 +86,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //                        .setStatus(rs.getBoolean("status"))
 //                        .setItemType(ItemType.valueOf(rs.getString("type")));
             }
+            else {
+                LOGGER.error(String.format("Failed to get item by this id: %s", id));
+                throw new DAOException("Failed to get item by this id!");
+            }
         } catch (SQLException e) {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -98,9 +102,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getRecentlyAddedItems(int)
      * @param limit
      * @return
-     * @see ItemDao#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
@@ -137,9 +141,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getItemsByTitle(String)
      * @param title
      * @return
-     * @see ItemDao#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
@@ -176,9 +180,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getItemsByType(String)
      * @param itemType
      * @return
-     * @see ItemDao#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
@@ -188,7 +192,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
-            ps = conn.prepareStatement("SELECT * FROM item WHERE item_type =?");
+            ps = conn.prepareStatement("SELECT * FROM item WHERE type =?");
             ps.setString(1, itemType);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -215,10 +219,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      * @param minPrice
      * @param maxPrice
      * @return
-     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
@@ -255,10 +259,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     }
 
     /**
+     * @see ItemDao#getArtistItems(Long, Long, Long)
      * @param artistId
      * @param limit
      * @return
-     * @see ItemDao#getArtistItems(Long, Long, Long)
      */
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
@@ -297,9 +301,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#updateItem(Long, Item)
      * @param id
      * @param item
-     * @see ItemDao#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
@@ -326,8 +330,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
-     * @param id
      * @see ItemDao#deleteItem(Long)
+     * @param id
      */
     @Override
     public void deleteItem(Long id) {

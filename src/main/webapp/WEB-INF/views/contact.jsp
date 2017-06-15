@@ -76,7 +76,7 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="about">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
@@ -94,25 +94,27 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
                     </li>
-                    <li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
+                    <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
                         <ul class="sub-menu">
                             <li><a href="blog-detail.html">Blog detail</a></li>
                             <li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>
                             <li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
-                    </li>
+                    </li>--%>
                     <li class="current_page_item  menu-item-simple-parent">
                         <a href="/contact">Contact <span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
-                        <a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>
+                        <a href="progressbar.html">Registration<%--shortcodes--%> <span class="fa fa-paint-brush"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="progressbar.html"> Progress-bar </a></li>
+                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>
                             <li><a href="buttons.html"> Buttons Page </a></li>
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
-                            <li><a href="columns.html"> columns </a></li>
+                            <li><a href="columns.html"> columns </a></li>--%>
+                            <li><a href="/login">Log In </a> </li>
+                            <li><a href="/signup">Sign Up </a> </li>
                         </ul>    
                         <a class="dt-menu-expand">+</a>                        
                     </li>                                         

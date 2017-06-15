@@ -8,14 +8,14 @@ import am.aca.wftartproject.model.User;
 public interface UserService {
 
     /**
-     * Add User to the springconfig.database
+     * Adds User to the springconfig.database
      *
      * @param user
      */
     void addUser(User user);
 
     /**
-     * Find User with the following id.
+     * Finds User with the following id.
      *
      * @param id
      * @return
@@ -24,7 +24,7 @@ public interface UserService {
 
 
     /**
-     * Find User with the following email.
+     * Finds User with the following email.
      *
      * @param email
      * @return
@@ -32,7 +32,7 @@ public interface UserService {
     User findUser(String email);
 
     /**
-     * Update user info
+     * Updates user info
      *
      * @param id
      * @param user
@@ -40,7 +40,7 @@ public interface UserService {
     void updateUser(Long id, User user);
 
     /**
-     * Delete user with the following id.
+     * Deletes user with the following id.
      *
      * @param id
      */
