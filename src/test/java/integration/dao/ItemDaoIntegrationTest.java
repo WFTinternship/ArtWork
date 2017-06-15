@@ -176,7 +176,7 @@ public class ItemDaoIntegrationTest {
     /**
      * @see ItemDao#deleteItem(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteItem_Failure() {
 
         //add item into db

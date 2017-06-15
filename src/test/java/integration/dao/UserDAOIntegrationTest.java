@@ -26,7 +26,7 @@ import static util.AssertTemplates.assertEqualUsers;
 public class UserDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
-    private DataSource conn;
+    private DataSource dataSource;
 
     private UserDaoImpl userDao;
     private User testUser;
@@ -37,20 +37,40 @@ public class UserDAOIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
 
-        //create db connection
-        conn = new ConnectionFactory()
+        // Create db connection
+        dataSource = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
-        userDao = new UserDaoImpl(conn);
+
+        userDao = new UserDaoImpl(dataSource);
 
         //create test user
         testUser = TestObjectTemplate.createTestUser();
 
         //Prints busy connections quantity
-        if (conn instanceof ComboPooledDataSource) {
-            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
+        if (dataSource instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
         }
     }
+
+
+    @After
+    public void tearDown() throws SQLException {
+
+        //delete inserted test users from db
+        if (testUser.getId() != null)
+            userDao.deleteUser(testUser.getId());
+
+        //set temp instance refs to null
+        testUser = null;
+
+        //Prints busy connections quantity
+        if (dataSource instanceof ComboPooledDataSource) {
+            LOGGER.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+        }
+    }
+
+
 
     /**
      * @see UserDao#addUser(User)
@@ -135,7 +155,7 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#deleteUser(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteUser_Failure() {
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -156,27 +176,10 @@ public class UserDAOIntegrationTest {
     /**
      * @see UserDao#findUser(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void findUser_Failure() {
         userDao.addUser(testUser);
         User findResult = userDao.findUser(-7L);
         assertNull(findResult);
-    }
-
-
-    @After
-    public void tearDown() throws SQLException {
-
-        //delete inserted test users from db
-        if (testUser.getId() != null)
-            userDao.deleteUser(testUser.getId());
-
-        //set temp instance refs to null
-        testUser = null;
-
-        //Prints busy connections quantity
-        if (conn instanceof ComboPooledDataSource) {
-            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
-        }
     }
 }

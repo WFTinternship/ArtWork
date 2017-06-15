@@ -165,7 +165,7 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#deleteArtist(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteArtist_Failure() {
 
         //add artist into db
@@ -195,7 +195,7 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#findArtist(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void findArtist_Failure() {
         artistDao.addArtist(testArtist);
 
