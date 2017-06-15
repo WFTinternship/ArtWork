@@ -164,13 +164,8 @@ public class ItemDaoIntegrationTest {
         assertNotNull(itemDao.findItem(testItem.getId()));
 
         //delete item from db
-        itemDao.deleteItem(testItem.getId());
-
-        //get deleted item from db
-        Item deletedItem = itemDao.findItem(testItem.getId());
-
-        //check for null
-        assertNull(deletedItem.getId());
+        assertTrue(itemDao.deleteItem(testItem.getId()));
+        testItem.setId(null);
     }
 
     /**

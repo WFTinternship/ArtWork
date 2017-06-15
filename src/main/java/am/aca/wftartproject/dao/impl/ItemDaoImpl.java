@@ -578,14 +578,17 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#deleteItem(Long)
      */
     @Override
-    public void deleteItem(Long id) {
+    public Boolean deleteItem(Long id) {
 
+        Boolean status =false;
         try {
             jdbcTemplate = new JdbcTemplate(getDataSource());
             String query = "DELETE FROM item WHERE id=?";
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete Item");
+            }else{
+                status = true;
             }
 
         } catch (DataAccessException e) {
@@ -593,6 +596,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
+        return status;
 
         //region <Version with Simple JDBC>
 

@@ -10,10 +10,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by ASUS on 27-May-17
@@ -33,7 +35,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      * @see ArtistDao#addArtist(Artist)
      */
     @Override
-    @Transactional("transactionManager")
     public void addArtist(Artist artist) {
 
         try {
@@ -127,7 +128,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      * @see ArtistDao#findArtist(Long)
      */
     @Override
-    @Transactional
     public Artist findArtist(Long id) {
 
         Artist artist;
@@ -161,7 +161,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
         return artist;
 
-        //region <Version with simple JDBC>
+        //region <Version with Simple JDBC>
 
 //            Connection conn = null;
 //            PreparedStatement ps = null;
@@ -213,7 +213,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      * @see ArtistDao#findArtist(String)
      */
     @Override
-    @Transactional("transactionManager")
     public Artist findArtist(String email) {
 
         Artist artist;
@@ -298,7 +297,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      * @see ArtistDao#updateArtist(Long, Artist)
      */
     @Override
-    @Transactional("transactionManager")
     public void updateArtist(Long id, Artist artist) {
         try {
             jdbcTemplate = new JdbcTemplate(getDataSource());
@@ -374,7 +372,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
-    @Transactional("transactionManager")
     public Boolean deleteArtist(Long id) {
         try {
             jdbcTemplate = new JdbcTemplate(getDataSource());

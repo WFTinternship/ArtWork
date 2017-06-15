@@ -156,9 +156,7 @@ public class ArtistDaoIntegrationTest {
         //delete artist from db by id
         assertTrue(artistDao.deleteArtist(testArtist.getId()));
 
-        //check isDeleted
-        Artist deleted = artistDao.findArtist(testArtist.getId());
-        assertNull(deleted);
+        // explicitly setting id null
         testArtist.setId(null);
     }
 

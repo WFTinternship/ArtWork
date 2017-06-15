@@ -44,6 +44,8 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to add PurchaseHistory");
+            }else{
+                purchaseHistory.setPurchaseDate(timestamp);
             }
 
         } catch (DataAccessException e) {
@@ -95,10 +97,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             jdbcTemplate = new JdbcTemplate(getDataSource());
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
 
-            purchaseHistory = jdbcTemplate.queryForObject(query, new Object[]{userId, itemId}, (rs, rowNum) -> {
+            purchaseHistory = jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> {
                 PurchaseHistory tempPurchaseHistory1 = new PurchaseHistory();
-                tempPurchaseHistory1.setItemId(rs.getLong("itemId"))
-                        .setUserId(rs.getLong("userId"))
+                tempPurchaseHistory1.setItemId(rs.getLong("item_id"))
+                        .setUserId(rs.getLong("user_id"))
                         .setPurchaseDate(rs.getTimestamp("purchase_date"));
                 return tempPurchaseHistory1;
             });
