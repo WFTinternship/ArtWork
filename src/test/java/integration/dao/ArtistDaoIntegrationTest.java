@@ -40,7 +40,7 @@ public class ArtistDaoIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
 
-        //create db connection,artistDaoImplementation and artist for testing
+        // create db connection,artistDaoImplementation and artist for testing
         conn = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
@@ -53,7 +53,7 @@ public class ArtistDaoIntegrationTest {
         artistDao = new ArtistDaoImpl(conn);
         testArtist = TestObjectTemplate.createTestArtist();
 
-        //Prints busy connections quantity
+        // Prints busy connections quantity
         if (conn instanceof ComboPooledDataSource) {
             LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
         }
@@ -156,16 +156,14 @@ public class ArtistDaoIntegrationTest {
         //delete artist from db by id
         assertTrue(artistDao.deleteArtist(testArtist.getId()));
 
-        //check isDeleted
-        Artist deleted = artistDao.findArtist(testArtist.getId());
-        assertNull(deleted);
+        // explicitly setting id null
         testArtist.setId(null);
     }
 
     /**
      * @see ArtistDao#deleteArtist(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteArtist_Failure() {
 
         //add artist into db
@@ -195,7 +193,7 @@ public class ArtistDaoIntegrationTest {
     /**
      * @see ArtistDao#findArtist(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void findArtist_Failure() {
         artistDao.addArtist(testArtist);
 

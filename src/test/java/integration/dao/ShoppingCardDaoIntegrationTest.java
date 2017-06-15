@@ -101,7 +101,7 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#getShoppingCard(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void getShoppingCard_Failure() {
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
@@ -128,7 +128,7 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void updateShoppingCard_Failure() {
 
         assertNotNull(testUser.getId());
@@ -157,7 +157,7 @@ public class ShoppingCardDaoIntegrationTest {
     /**
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteShoppingCard_Failure() {
 
         // check all components for null and check delete result for true

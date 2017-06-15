@@ -8,6 +8,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author surik
@@ -32,6 +33,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#addArtistSpecialization()
      */
     @Override
+    @Transactional("transactionManager")
     public void addArtistSpecialization() {
         try {
             lkpDao.addArtistSpecialization();
@@ -49,6 +51,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @return
      */
     @Override
+    @Transactional("transactionManager")
     public ArtistSpecialization getArtistSpecialization(int id) {
         try {
             return lkpDao.getArtistSpecialization(id);
@@ -66,6 +69,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @return
      */
     @Override
+    @Transactional("transactionManager")
     public ArtistSpecialization getArtistSpecialization(String specialization) {
         try {
             return lkpDao.getArtistSpecialization(specialization);
@@ -81,6 +85,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#deleteArtistSpecialization()
      */
     @Override
+    @Transactional("transactionManager")
     public void deleteArtistSpecialization() {
         try {
             lkpDao.deleteArtistSpecialization();

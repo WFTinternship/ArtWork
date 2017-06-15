@@ -130,7 +130,7 @@ public class PurchaseHistoryDaoIntegrationTest {
     /**
      * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void getPurchase_Failure() {
 
         purchaseHistoryDao.addPurchase(purchaseHistory);
@@ -154,7 +154,7 @@ public class PurchaseHistoryDaoIntegrationTest {
         purchaseHistory.setUserId(null);
     }
 
-    @Test
+    @Test(expected = DAOException.class)
     public void deletePurchaseHistory_Failure() {
 
         //check for null purchaseHistory;
