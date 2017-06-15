@@ -122,13 +122,14 @@
                         <a href="/contact">Contact<span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
-                        <a href="<%--progressbar.html--%>">Registration <span class="fa fa-paint-brush"></span></a>
+                        <a href="<%--progressbar.html--%>">Account <span class="fa fa-paint-brush"></span></a>
                         <ul class="sub-menu">
                             <%--<li><a href="progressbar.html"> Progress-bar </a></li>
                             <li><a href="buttons.html"> Buttons Page </a></li>
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
                             <li><a href="columns.html"> columns </a></li>--%>
+                            <li><a href="/account">My Account </a> </li>
                             <li><a href="/login">Log in </a> </li>
                             <li><a href="/signup">Sign up </a> </li>
                         </ul>   
