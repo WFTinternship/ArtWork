@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
+import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
@@ -25,7 +26,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
     public ItemDaoImpl(DataSource dataSource) {
-        setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -38,7 +39,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public void addItem(Long artistID, Item item) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             String query = "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)";
@@ -111,13 +112,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         Item item;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM item WHERE id = ?";
 
             item = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-                Item tempItem = new Item();
-                getItemFromResultSet(tempItem, rs);
-                return tempItem;
+               return new ItemMapper().mapRow(rs,rowNum);
             });
         } catch (DataAccessException e) {
             String error = "Failed to get Item: %s";
@@ -170,32 +169,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = new ArrayList<>();
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+
             String query = "SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?";
+            itemList = this.jdbcTemplate.query(query, new Object[]{limit}, new ItemMapper());
 
-            List<Map<String, Object>> itemRows = jdbcTemplate.queryForList(query, limit);
-
-            for (Map<String, Object> itemRow : itemRows) {
-                Item item = new Item();
-                getItemFromResultSet(item, itemRow);
-//                item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
-//                        .setTitle(String.valueOf(itemRow.get("title")))
-//                        .setDescription(String.valueOf(itemRow.get("description")))
-//                        .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
-//                        .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
-//                        .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
-//                        .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-//                        .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
-                itemList.add(item);
-            }
-        } catch (DataAccessException e) {
-            String error = "Failed to get RecentlyAddedItems: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-        return itemList;
-
-        //region <Version with Simple JDBC>
+            //region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -227,7 +205,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return itemList;
 
-        //endregion
+            //endregion
+        }
+        catch (DataAccessException e) {
+            String error = "Failed to get ItemsByTitle: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        }
+        return itemList;
     }
 
 
@@ -241,24 +226,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = new ArrayList<>();
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM item WHERE title=?";
 
-            List<Map<String, Object>> itemRows = jdbcTemplate.queryForList(query, title);
+            itemList = this.jdbcTemplate.query(query, new Object[]{title}, new ItemMapper());
 
-            for (Map<String, Object> itemRow : itemRows) {
-                Item item = new Item();
-                getItemFromResultSet(item, itemRow);
-//                item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
-//                        .setTitle(String.valueOf(itemRow.get("title")))
-//                        .setDescription(String.valueOf(itemRow.get("description")))
-//                        .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
-//                        .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
-//                        .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
-//                        .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-//                        .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
-                itemList.add(item);
-            }
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -313,24 +285,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = new ArrayList<>();
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM item WHERE type =?";
 
-            List<Map<String, Object>> itemRows = jdbcTemplate.queryForList(query, itemType);
+            itemList = this.jdbcTemplate.query(query, new Object[]{itemType}, new ItemMapper());
 
-            for (Map<String, Object> itemRow : itemRows) {
-                Item item = new Item();
-                getItemFromResultSet(item, itemRow);
-//                item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
-//                        .setTitle(String.valueOf(itemRow.get("title")))
-//                        .setDescription(String.valueOf(itemRow.get("description")))
-//                        .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
-//                        .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
-//                        .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
-//                        .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-//                        .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
-                itemList.add(item);
-            }
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -385,24 +344,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = new ArrayList<>();
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM item WHERE status=0 AND price BETWEEN ? AND ?";
 
-            List<Map<String, Object>> itemRows = jdbcTemplate.queryForList(query, minPrice, maxPrice);
+            itemList = this.jdbcTemplate.query(query, new Object[]{minPrice,maxPrice}, new ItemMapper());
 
-            for (Map<String, Object> itemRow : itemRows) {
-                Item item = new Item();
-                getItemFromResultSet(item, itemRow);
-//                item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
-//                        .setTitle(String.valueOf(itemRow.get("title")))
-//                        .setDescription(String.valueOf(itemRow.get("description")))
-//                        .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
-//                        .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
-//                        .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
-//                        .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-//                        .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
-                itemList.add(item);
-            }
         } catch (DataAccessException e) {
             String error = "Failed to get items by the given price range: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -457,24 +403,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = new ArrayList<>();
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM item WHERE artist_id=? AND id!=? LIMIT ?";
 
-            List<Map<String, Object>> itemRows = jdbcTemplate.queryForList(query, artistId, itemId, limit);
+            itemList = this.jdbcTemplate.query(query, new Object[]{artistId,itemId,limit}, new ItemMapper());
 
-            for (Map<String, Object> itemRow : itemRows) {
-                Item item = new Item();
-                getItemFromResultSet(item, itemRow);
-//                item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
-//                        .setTitle(String.valueOf(itemRow.get("title")))
-//                        .setDescription(String.valueOf(itemRow.get("description")))
-//                        .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
-//                        .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
-//                        .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
-//                        .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-//                        .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
-                itemList.add(item);
-            }
         } catch (DataAccessException e) {
             String error = "Failed to get items for the given artistId: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -529,7 +462,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public void updateItem(Long id, Item item) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?";
             Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(), id};
 
@@ -579,7 +512,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         Boolean status = false;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "DELETE FROM item WHERE id=?";
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
@@ -615,26 +548,4 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         //endregion
     }
 
-
-    private void getItemFromResultSet(Item item, ResultSet rs) throws SQLException {
-        item.setId(rs.getLong("id"))
-                .setTitle(rs.getString("title"))
-                .setDescription(rs.getString("description"))
-                .setPhotoURL(rs.getString("photo_url"))
-                .setPrice(rs.getDouble("price"))
-                .setArtistId(rs.getLong("artist_id"))
-                .setStatus(rs.getBoolean("status"))
-                .setItemType(ItemType.valueOf(rs.getString("type")));
-    }
-
-    private void getItemFromResultSet(Item item, Map<String, Object> itemRow) {
-        item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
-                .setTitle(String.valueOf(itemRow.get("title")))
-                .setDescription(String.valueOf(itemRow.get("description")))
-                .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
-                .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
-                .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
-                .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-                .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
-    }
 }

@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
-        ItemService itemService = context.getBean("itemService",ItemServiceImpl.class);
+        ItemService itemService = (ItemService)context.getBean("itemService");
         for(Item element:itemService.getRecentlyAddedItems(20)){
             System.out.println(element.toString());
 

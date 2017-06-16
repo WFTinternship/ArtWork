@@ -113,7 +113,7 @@ public class Item {
                 ", description='" + description + '\'' +
                 ", photoURL=" + photoURL +
                 ", price=" + price +
-                ", artistId" + artistId +
+                ", artistId =" + artistId +
                 ", status=" + status +
                 ", itemType=" + itemType +
                 '}';

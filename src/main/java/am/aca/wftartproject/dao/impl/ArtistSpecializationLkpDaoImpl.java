@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
+import am.aca.wftartproject.dao.rowmappers.ArtistSpecializationlkpMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
@@ -17,7 +18,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
 
     public ArtistSpecializationLkpDaoImpl(DataSource dataSource) {
-        setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -27,7 +28,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     @Override
     public void addArtistSpecialization() {
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
 
             String query = "INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(?,?)";
             int rowsAffected = 0;
@@ -78,12 +79,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
         ArtistSpecialization artistSpecialization;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM artist_specialization_lkp WHERE id = ?";
             artistSpecialization = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-                ArtistSpecialization tempArtSpec;
-                tempArtSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
-                return tempArtSpec;
+                return new ArtistSpecializationlkpMapper().mapRow(rs,rowNum);
             });
             if (artistSpecialization == null) {
                 throw new DAOException("Failed to get specialization");
@@ -135,12 +134,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
         ArtistSpecialization artistSpecialization;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM artist_specialization_lkp WHERE spec_type = ?";
             artistSpecialization = jdbcTemplate.queryForObject(query, new Object[]{specialization}, (rs, rowNum) -> {
-                ArtistSpecialization tempArtSpec;
-                tempArtSpec = ArtistSpecialization.valueOf(rs.getString("spec_type"));
-                return tempArtSpec;
+                return new ArtistSpecializationlkpMapper().mapRow(rs,rowNum);
             });
             if (artistSpecialization == null) {
                 throw new DAOException("Failed to get specialization");
@@ -187,7 +184,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     public void deleteArtistSpecialization() {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "DELETE FROM artist_specialization_lkp";
 
             int rowsAffected = jdbcTemplate.update(query);

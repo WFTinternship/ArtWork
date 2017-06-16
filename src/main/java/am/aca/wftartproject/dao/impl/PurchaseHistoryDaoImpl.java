@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
@@ -22,7 +23,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
 
     public PurchaseHistoryDaoImpl(DataSource dataSource) {
-        setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -35,7 +36,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)";
             Calendar cal = Calendar.getInstance();
             Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
@@ -94,15 +95,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         PurchaseHistory purchaseHistory;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
 
             purchaseHistory = jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> {
-                PurchaseHistory tempPurchaseHistory1 = new PurchaseHistory();
-                tempPurchaseHistory1.setItemId(rs.getLong("item_id"))
-                        .setUserId(rs.getLong("user_id"))
-                        .setPurchaseDate(rs.getTimestamp("purchase_date"));
-                return tempPurchaseHistory1;
+               return new PurchaseHistoryMapper().mapRow(rs,rowNum);
             });
             if (purchaseHistory == null) {
                 throw new DAOException("Failed to get PurchaseHistory");
@@ -157,18 +154,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "SELECT * FROM purchase_history WHERE user_id = ?";
 
-            List<Map<String, Object>> phRows = jdbcTemplate.queryForList(query, userId);
+            purchaseHistoryList = this.jdbcTemplate.query(query, new Object[]{userId}, new PurchaseHistoryMapper());
 
-            for (Map<String, Object> phRow : phRows) {
-                PurchaseHistory purchaseHistory = new PurchaseHistory();
-                purchaseHistory.setUserId(Long.parseLong(String.valueOf(phRow.get("user_id"))))
-                        .setItemId(Long.parseLong(String.valueOf(phRow.get("item_id"))))
-                        .setPurchaseDate(Timestamp.valueOf(String.valueOf(phRow.get("purchase_date"))));
-                purchaseHistoryList.add(purchaseHistory);
-            }
         } catch (DataAccessException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -218,7 +208,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     public Boolean deletePurchase(Long userId, Long itemId) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "DELETE FROM purchase_history WHERE user_id=? AND item_id = ?";
 
             int rowsAffected = jdbcTemplate.update(query, userId, itemId);
