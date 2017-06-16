@@ -222,7 +222,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see PurchaseHistoryDao#deletePurchase(Long, Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deletePurchaseHistory_Failure() {
 
         // check for null purchaseHistory;

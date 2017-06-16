@@ -184,7 +184,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getRecentlyAddedItems(int)
      */
-    @Test
+    @Test// ConcurrentModificationException
     public void getRecentlyAddedItems_Success(){
         // add items into DB
 
@@ -214,7 +214,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getItemsByTitle(String)
      */
-    @Test
+    @Test // ConcurrentModificationException
     public void getItemsByTitleNotEmptyList(){
 
         // add item into DB
@@ -240,7 +240,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getItemsByType(String)
      */
-    @Test
+    @Test// ConcurrentModificationException
     public void getItemsByTypeNotEmptyList(){
 
         // add item into DB
@@ -266,7 +266,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
-    @Test
+    @Test// ConcurrentModificationException
     public void getItemsForGivenPriceRangeNotEmptyList(){
 
         // add item into DB
@@ -291,7 +291,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getArtistItems(Long, Long, Long)
      */
-    @Test
+    @Test// ConcurrentModificationException
     public void getArtistItemsNotEmptyList(){
 
         // add testArtist's 2 items into DB
@@ -361,7 +361,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#deleteItem(Long)
      */
 
-    @Test(expected = DAOException.class)
+    @Test
     public void deleteItem_Success() {
 
         // add item into db
@@ -371,19 +371,14 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         assertNotNull(itemDao.findItem(testItem.getId()));
 
         // delete item from db
-        itemDao.deleteItem(testItem.getId());
-
-        // get deleted item from db
-        Item deletedItem = itemDao.findItem(testItem.getId());
-
-        // check for null
-        assertNull(deletedItem.getId());
+        assertTrue(itemDao.deleteItem(testItem.getId()));
+        testItem.setId(null);
     }
 
     /**
      * @see ItemDao#deleteItem(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteItem_Failure() {
 
         // add item into db

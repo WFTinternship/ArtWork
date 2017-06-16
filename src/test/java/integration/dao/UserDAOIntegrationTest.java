@@ -46,6 +46,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
         dataSource = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
+
         userDao = new UserDaoImpl(dataSource);
 
         // create test user
@@ -53,7 +54,8 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
+            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+        }
     }
 
     /**
@@ -238,7 +240,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see UserDao#deleteUser(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteUser_Failure() {
 
         // add user into DB and check it fro not null
@@ -248,6 +250,5 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
         // try to delete user with non-existent id
         assertFalse(userDao.deleteUser(4546465465465L));
     }
-
     //endregion
 }

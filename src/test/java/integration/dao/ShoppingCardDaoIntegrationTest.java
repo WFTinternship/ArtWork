@@ -187,7 +187,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void updateShoppingCard_Failure() {
 
         // check testUser for not null and add shoppingCard into DB
@@ -221,7 +221,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteShoppingCard_Failure() {
 
         // check all components for null and check delete result for true

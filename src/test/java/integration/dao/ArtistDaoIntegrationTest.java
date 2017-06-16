@@ -176,7 +176,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         Artist findArtist = artistDao.findArtist(testArtist.getEmail());
 
         // check for equals
-        AssertTemplates.assertEqualArtists(testArtist, findArtist);
+        AssertTemplates.assertEqualArtists(findArtist, testArtist);
     }
 
     /**
@@ -233,7 +233,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ArtistDao#deleteArtist(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void deleteArtist_Success() {
 
         // add artist into db
@@ -242,16 +242,14 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         // delete artist from db by id
         assertTrue(artistDao.deleteArtist(testArtist.getId()));
 
-        // check isDeleted
-        /*Artist deleted = */artistDao.findArtist(testArtist.getId());
-        /*assertNull(deleted);
-        testArtist.setId(null);*/
+        // explicitly setting id null
+        testArtist.setId(null);
     }
 
     /**
      * @see ArtistDao#deleteArtist(Long)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void deleteArtist_Failure() {
 
         // add artist into db

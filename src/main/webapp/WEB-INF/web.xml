@@ -58,6 +58,36 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>My Account</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.AccountServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>My Account</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Edit Profile</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.EditProfileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Edit Profile</servlet-name>
+        <url-pattern>/edit-profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Purchase History</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.PurchaseHistoryServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Purchase History</servlet-name>
+        <url-pattern>/purchase-history</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ItemDetail</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.ItemDetailServlet</servlet-class>
     </servlet>
@@ -93,8 +123,8 @@
     </servlet-mapping>
 
 
-    <!--<welcome-file-list>-->
-        <!--<welcome-file>/WEB-INF/views/index.jsp</welcome-file>-->
-    <!--</welcome-file-list>-->
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>

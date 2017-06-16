@@ -26,7 +26,6 @@ public class ConnectionPool implements DatabaseConnection {
 
 
     private DataSource getDBConnection(String dbUrl) throws SQLException {
-
         cpds.setJdbcUrl(propertyHelper.getProperties().getProperty(dbUrl));
         cpds.setUser(propertyHelper.getProperties().getProperty("jdbcUserName"));
         cpds.setPassword(propertyHelper.getProperties().getProperty("jdbcPassword"));
