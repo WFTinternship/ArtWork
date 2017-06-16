@@ -8,10 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 
 public class ArtistMapper implements RowMapper<Artist> {
+
 
     public Artist mapRow(ResultSet rs, int rowNum) throws SQLException {
         Artist artist = new Artist();
@@ -25,9 +26,9 @@ public class ArtistMapper implements RowMapper<Artist> {
     }
 
     public Artist mapRowSecond(ResultSet rs, int rowNum) throws SQLException {
-        Artist tempArtist1 = new Artist();
-        tempArtist1.setArtistPhoto(rs.getBytes("photo"))
+        Artist artist = new Artist();
+        artist.setArtistPhoto(rs.getBytes("photo"))
                 .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
-        return tempArtist1;
+        return artist;
     }
 }

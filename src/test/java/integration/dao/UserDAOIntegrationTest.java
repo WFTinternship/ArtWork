@@ -14,7 +14,6 @@ import org.junit.Test;
 import util.AssertTemplates;
 import util.TestObjectTemplate;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static junit.framework.Assert.assertNotSame;
@@ -54,7 +53,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+            LOGGER.info(String.format("Number of busy connections Start: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
         }
     }
 
@@ -74,7 +73,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
+            LOGGER.info(String.format("Number of busy connections End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
     }
 
     //region(TEST_CASE)

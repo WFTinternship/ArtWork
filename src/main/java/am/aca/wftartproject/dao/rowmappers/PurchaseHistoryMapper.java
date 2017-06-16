@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 public class PurchaseHistoryMapper implements RowMapper<PurchaseHistory>{
     @Override
-    public PurchaseHistory mapRow(ResultSet resultSet, int i) throws SQLException {
+    public PurchaseHistory mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         PurchaseHistory purchasehistory = new PurchaseHistory();
         purchasehistory.setItemId(resultSet.getLong("item_id"))
                 .setUserId(resultSet.getLong("user_id"))

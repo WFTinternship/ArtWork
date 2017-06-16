@@ -10,10 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ASUS on 27-May-17
@@ -26,7 +24,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     /**
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      * @param purchaseHistory
@@ -34,9 +31,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
 
-
         try {
-            
             String query = "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)";
             Calendar cal = Calendar.getInstance();
             Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
@@ -45,10 +40,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to add PurchaseHistory");
-            }else{
+            } else {
                 purchaseHistory.setPurchaseDate(timestamp);
             }
-
         } catch (DataAccessException e) {
             purchaseHistory.setUserId(null);
             String error = "Failed to add PurchaseHistory: %s";
@@ -56,7 +50,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             throw new DAOException(String.format(error, e.getMessage()));
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -81,7 +75,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 //            closeResources(ps, conn);
 //        }
 
-        //endregion
+//        endregion
     }
 
     /**
@@ -95,12 +89,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         PurchaseHistory purchaseHistory;
         try {
-            
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
 
-            purchaseHistory = jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> {
-               return new PurchaseHistoryMapper().mapRow(rs,rowNum);
-            });
+            purchaseHistory = jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
             if (purchaseHistory == null) {
                 throw new DAOException("Failed to get PurchaseHistory");
             }
@@ -111,7 +102,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         }
         return purchaseHistory;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -140,7 +131,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 //        }
 //        return purchaseHistory;
 
-        //endregion
+//        endregion
     }
 
 
@@ -152,13 +143,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
 
-        List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
+        List<PurchaseHistory> purchaseHistoryList;
         try {
-            
             String query = "SELECT * FROM purchase_history WHERE user_id = ?";
 
             purchaseHistoryList = this.jdbcTemplate.query(query, new Object[]{userId}, new PurchaseHistoryMapper());
-
         } catch (DataAccessException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -166,7 +155,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         }
         return purchaseHistoryList;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -194,7 +183,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 //        }
 //        return purchaseHistoryList;
 
-        //endregion
+//        endregion
     }
 
 
@@ -207,20 +196,22 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public Boolean deletePurchase(Long userId, Long itemId) {
 
+        Boolean status = false;
         try {
-            
             String query = "DELETE FROM purchase_history WHERE user_id=? AND item_id = ?";
 
             int rowsAffected = jdbcTemplate.update(query, userId, itemId);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete PurchaseHistory");
+            }else{
+                status = true;
             }
         } catch (DataAccessException e) {
             String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return true;
+        return status;
 
         //region <Version with Simple JDBC>
 
@@ -245,6 +236,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 //        }
 //        return success;
 
-        //endregion
+//        endregion
     }
 }

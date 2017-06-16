@@ -1,15 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+
+<c:set var="itemDetail" value='<%=request.getAttribute("itemDetail")%>'/>
+<c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>'/>
+<c:set var="artistInfo" value='<%=request.getAttribute("artistInfo")%>'/>
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
+
+
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]> <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
 <!--[if IE 9 ]> <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!-->
 <html lang="en-gb" class="no-js"> <!--<![endif]-->
-
-
-<c:set var="itemDetail" value='<%=request.getAttribute("itemDetail")%>'/>
-<c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>'/>
-<c:set var="artistInfo" value='<%=request.getAttribute("artistInfo")%>'/>
 
 
 <head>
@@ -98,36 +106,61 @@
                     </li>
                     <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span
                             class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li class="current_page_item"><a href="shop-detail.jsp">Shop Detail</a></li>
-                            <li><a href="shop-cart.jsp">Cart Page</a></li>
-                            <li><a href="shop-checkout.html">Checkout Page</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li class="current_page_item"><a href="shop-detail.jsp">Shop Detail</a></li>--%>
+                            <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
+                            <%--<li><a href="shop-checkout.html">Checkout Page</a></li>--%>
+                        <%--</ul>--%>
+                        <%--<a class="dt-menu-expand">+</a>--%>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="blog.html">Blog <span
-                            class="fa fa-pencil-square-o"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="blog-detail.html">Blog detail</a></li>
-                            <li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>
-                            <li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
+                    <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span--%>
+                            <%--class="fa fa-pencil-square-o"></span></a>--%>
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li><a href="blog-detail.html">Blog detail</a></li>--%>
+                            <%--<li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>--%>
+                            <%--<li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>--%>
+                        <%--</ul>--%>
+                        <%--<a class="dt-menu-expand">+</a>--%>
+                    <%--</li>--%>
                     <li class="menu-item-simple-parent">
                         <a href="/contact">Contact <span class="fa fa-map-marker"></span></a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>
+                        <a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
+                                class="fa fa-paint-brush"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="progressbar.html"> Progress-bar </a></li>
-                            <li><a href="buttons.html"> Buttons Page </a></li>
-                            <li><a href="tabs.html"> tabs-accordions </a></li>
-                            <li><a href="typography.html"> typography </a></li>
-                            <li><a href="columns.html"> columns </a></li>
+                            <%--<li><a href="../../resources/progressbar.html"> Progress-bar </a></li>
+                            <li><a href="../../resources/buttons.html"> Buttons Page </a></li>
+                            <li><a href="../../resources/tabs.html"> tabs-accordions </a></li>
+                            <li><a href="../../resources/typography.html"> typography </a></li>
+                            <li><a href="../../resources/columns.html"> columns </a></li>--%>
+                            <li><a href="/account">My Account </a></li>
+                            <c:choose>
+                                <c:when test="${user==null}">
+                                    <li><a href="/login">Log in </a></li>
+                                    <li><a href="/signup">Sign up </a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="/logout">Log out </a></li>
+                                </c:otherwise>
+                            </c:choose>
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
+                    <%--<li class="menu-item-simple-parent">--%>
+                        <%--<a href="/contact">Contact <span class="fa fa-map-marker"></span></a>--%>
+                    <%--</li>--%>
+                    <%--<li class="menu-item-simple-parent">--%>
+                        <%--<a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>--%>
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>--%>
+                            <%--<li><a href="buttons.html"> Buttons Page </a></li>--%>
+                            <%--<li><a href="tabs.html"> tabs-accordions </a></li>--%>
+                            <%--<li><a href="typography.html"> typography </a></li>--%>
+                            <%--<li><a href="columns.html"> columns </a></li>--%>
+                        <%--</ul>--%>
+                        <%--<a class="dt-menu-expand">+</a>--%>
+                    <%--</li>--%>
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->
         </div><!-- **header-wrapper Ends** -->
@@ -248,25 +281,25 @@
                         </div>
                         <div class="dt-sc-two-fifth column">
                             <!-- Author Detail Starts Here -->
-                            <div class="post-author-details">
-                                <div class="entry-author-image">
-                                    <img src="http://placehold.it/100x100&text=Thumb" alt="" title=""/>
-                                </div>
-                                <div class="author-title">
-                                    <h5><a href="#">James Dean</a></h5>
-                                    <span>Garland, TX - United States</span>
-                                    <div class="woocommerce-product-rating">
-                                        <div title="Rated 4.40 out of 5" class="star-rating"><span
-                                                style="width:85%"></span></div>
-                                        <a href="#">( 4 customer reviews )</a>
-                                    </div>
-                                </div>
-                                <div class="author-desc">
-                                    <p>Remaining art are essentially unchanged. It was popularised in the 1960s with a
-                                        release of Latest sheets containing passages, and more recently with desktop
-                                        publishing software.</p>
-                                </div>
-                            </div>
+                            <%--<div class="post-author-details">--%>
+                                <%--<div class="entry-author-image">--%>
+                                    <%--<img src="http://placehold.it/100x100&text=Thumb" alt="" title=""/>--%>
+                                <%--</div>--%>
+                                <%--<div class="author-title">--%>
+                                    <%--<h5><a href="#">James Dean</a></h5>--%>
+                                    <%--<span>Garland, TX - United States</span>--%>
+                                    <%--<div class="woocommerce-product-rating">--%>
+                                        <%--<div title="Rated 4.40 out of 5" class="star-rating"><span--%>
+                                                <%--style="width:85%"></span></div>--%>
+                                        <%--<a href="#">( 4 customer reviews )</a>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="author-desc">--%>
+                                    <%--<p>Remaining art are essentially unchanged. It was popularised in the 1960s with a--%>
+                                        <%--release of Latest sheets containing passages, and more recently with desktop--%>
+                                        <%--publishing software.</p>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <!-- Author Detail Ends Here -->
                             <%--<ul class="cart-thumb-categories"><!-- cart-thumb-categories starts Here -->--%>
                             <%--<li>--%>
@@ -344,7 +377,7 @@
                                         <p><span>Uploaded :</span>Nov 9th, 2014 </p>
                                     </li>
                                     <li>
-                                        <p><span>Price :</span><i class="fa fa-eye"></i>  $${itemDetail.getPrice()}</p>
+                                        <p><span>Price :</span> $${itemDetail.getPrice()}</p>
                                     </li>
                                     <%--<li>--%>
                                     <%--<p><span>Colors :</span><a href="#" class="yellow"></a><a href="#" class="green"></a><a href="#" class="orange"></a><a href="#" class="red"></a></p>--%>

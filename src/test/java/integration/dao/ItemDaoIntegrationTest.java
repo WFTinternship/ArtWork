@@ -35,7 +35,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     private ItemDaoImpl itemDao;
     private Item testItem, tempItem;
     private Artist testArtist;
-    private ArtistSpecializationLkpDao artistSpecialization;
 
     public ItemDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }
@@ -54,7 +53,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
-        artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
@@ -72,7 +71,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+            LOGGER.info(String.format("Number of busy connections Start: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
         }
     }
 
@@ -100,7 +99,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+            LOGGER.info(String.format("Number of busy connections End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
         }
     }
 

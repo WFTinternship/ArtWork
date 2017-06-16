@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import util.TestObjectTemplate;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static junit.framework.TestCase.*;
@@ -32,13 +31,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private UserDao userDao;
     private ItemDao itemDao;
-    private ArtistDao artistDao;
     private PurchaseHistoryDao purchaseHistoryDao;
-    private Artist testArtist;
     private User testUser;
     private Item testItem;
     private PurchaseHistory purchaseHistory;
-    private ArtistSpecializationLkpDao artistSpecialization;
 
     public PurchaseHistoryDaoIntegrationTest() throws ClassNotFoundException, SQLException {
     }
@@ -56,20 +52,21 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
-        artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
+        ArtistDao artistDao = new ArtistDaoImpl(dataSource);
+        Artist testArtist = TestObjectTemplate.createTestArtist();
+
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
         userDao = new UserDaoImpl(dataSource);
         itemDao = new ItemDaoImpl(dataSource);
-        artistDao = new ArtistDaoImpl(dataSource);
         purchaseHistoryDao = new PurchaseHistoryDaoImpl(dataSource);
 
         // create test Item,User, purchaseHistory and set them into db
         testItem = TestObjectTemplate.createTestItem();
         purchaseHistory = new PurchaseHistory();
         testUser = TestObjectTemplate.createTestUser();
-        testArtist = TestObjectTemplate.createTestArtist();
         userDao.addUser(testUser);
         testArtist.setId(testUser.getId());
         artistDao.addArtist(testArtist);
@@ -80,7 +77,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+            LOGGER.info(String.format("Number of busy connections Start: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
         }
     }
 
@@ -109,7 +106,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
+            LOGGER.info(String.format("Number of busy connectionsc End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
     }
 
     //region(TEST_CASE)

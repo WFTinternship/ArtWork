@@ -27,9 +27,8 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
      */
     @Override
     public void addArtistSpecialization() {
-        try {
-            
 
+        try {
             String query = "INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(?,?)";
             int rowsAffected = 0;
             for (ArtistSpecialization artSpecElement : ArtistSpecialization.values()) {
@@ -45,7 +44,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -64,7 +63,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 //        } finally {
 //            closeResources(ps, conn);
 //        }
-        //endregion
+//        endregion
     }
 
 
@@ -79,11 +78,8 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
         ArtistSpecialization artistSpecialization;
         try {
-            
             String query = "SELECT * FROM artist_specialization_lkp WHERE id = ?";
-            artistSpecialization = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-                return new ArtistSpecializationlkpMapper().mapRow(rs,rowNum);
-            });
+            artistSpecialization = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs,rowNum));
             if (artistSpecialization == null) {
                 throw new DAOException("Failed to get specialization");
             }
@@ -95,7 +91,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
         return artistSpecialization;
 
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -119,7 +115,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 //        }
 //        return tempArtSpec;
 
-        //endregion
+//        endregion
 
     }
 
@@ -134,11 +130,8 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
         ArtistSpecialization artistSpecialization;
         try {
-            
             String query = "SELECT * FROM artist_specialization_lkp WHERE spec_type = ?";
-            artistSpecialization = jdbcTemplate.queryForObject(query, new Object[]{specialization}, (rs, rowNum) -> {
-                return new ArtistSpecializationlkpMapper().mapRow(rs,rowNum);
-            });
+            artistSpecialization = jdbcTemplate.queryForObject(query, new Object[]{specialization}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs,rowNum));
             if (artistSpecialization == null) {
                 throw new DAOException("Failed to get specialization");
             }
@@ -149,7 +142,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
         }
         return artistSpecialization;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -173,7 +166,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 //        }
 //        return tempArtSpec;
 
-        //endregion
+//        endregion
     }
 
 
@@ -184,7 +177,6 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     public void deleteArtistSpecialization() {
 
         try {
-            
             String query = "DELETE FROM artist_specialization_lkp";
 
             int rowsAffected = jdbcTemplate.update(query);
@@ -197,7 +189,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        Statement st = null;
@@ -213,6 +205,6 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 //            closeResources(st, conn);
 //        }
 
-        //endregion
+//        endregion
     }
 }

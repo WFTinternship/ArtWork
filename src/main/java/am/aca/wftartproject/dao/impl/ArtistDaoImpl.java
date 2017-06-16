@@ -36,7 +36,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public void addArtist(Artist artist) {
 
         try {
-
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query1 = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
 
@@ -70,7 +69,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(String.format(error, e.getMessage()));
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -116,7 +115,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //        } finally {
 //            closeResources(rs, ps, conn);
 //        }
-        //endregion
+
+
+//        endregion
 
     }
 
@@ -131,11 +132,13 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         Artist artist;
         try {
             String query1 = "SELECT * FROM user WHERE id=?";
-            artist = jdbcTemplate.queryForObject(query1, new Object[]{id}, (rs, rowNum) -> new ArtistMapper().mapRow(rs,rowNum));
+            artist = jdbcTemplate.queryForObject(query1, new Object[]{id},
+                    (rs, rowNum) -> new ArtistMapper().mapRow(rs,rowNum));
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
-            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs,rowNum));
+            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()},
+                    (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs,rowNum));
 
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
@@ -147,7 +150,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
         return artist;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //            Connection conn = null;
 //            PreparedStatement ps = null;
@@ -189,7 +192,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //            }
 //            return artist;
 
-        //endregion
+//        endregion
     }
 
 
@@ -293,7 +296,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(error, e);
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -336,7 +339,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //            closeResources(ps, conn);
 //        }
 
-        //endregion
+//        endregion
     }
 
 
@@ -346,6 +349,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Boolean deleteArtist(Long id) {
+
+        Boolean status;
         try {
             String query1 = "DELETE FROM artist WHERE user_id=?";
             int rowsAffected = jdbcTemplate.update(query1, id);
@@ -357,6 +362,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             rowsAffected = jdbcTemplate.update(query2, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete Artist");
+            } else {
+                status = true;
             }
 
         } catch (DataAccessException e) {
@@ -364,10 +371,11 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return true;
+        return status;
 
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
+
 //        Connection conn = null;
 //        PreparedStatement ps = null;
 //        Boolean success = false;
@@ -407,7 +415,17 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //        }
 //        return success;
 
-        //endregion
+//        endregion
     }
+
+
+//    private void getArtistFromResultSet(Artist artist, ResultSet rs) throws SQLException {
+//        artist.setId(rs.getLong("id"))
+//                .setFirstName(rs.getString("firstname"))
+//                .setLastName(rs.getString("lastname"))
+//                .setAge(rs.getInt("age"))
+//                .setEmail(rs.getString("email"))
+//                .setPassword(rs.getString("password"));
+//    }
 
 }

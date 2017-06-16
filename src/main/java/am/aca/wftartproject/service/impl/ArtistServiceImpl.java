@@ -6,12 +6,14 @@ import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by surik on 6/3/17
  */
+@Transactional
 public class ArtistServiceImpl implements ArtistService {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
