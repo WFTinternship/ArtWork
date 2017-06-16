@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
+import am.aca.wftartproject.dao.rowmappers.UserMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
@@ -21,7 +22,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl(DataSource dataSource) {
-        setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     /**
@@ -34,7 +35,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             String query = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
 
             PreparedStatementCreator psc = con -> {
                 PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -96,12 +97,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         User user;
         try {
             String query = "SELECT * FROM user WHERE id = ?";
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
 
             user = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-                User tempUser = new User();
-                getUserFromResultSet(tempUser, rs);
-                return tempUser;
+             return new UserMapper().mapRow(rs,rowNum);
             });
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
@@ -152,11 +151,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         User user;
         try {
             String query = "SELECT * FROM user WHERE email = ?";
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             user = jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> {
-                User tempUser = new User();
-                getUserFromResultSet(tempUser, rs);
-                return tempUser;
+                return new UserMapper().mapRow(rs,rowNum);
             });
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
@@ -207,7 +204,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         try {
             String query = "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?";
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             Object[] args = new Object[]{user.getFirstName(), user.getLastName(), user.getAge(), user.getPassword(), id};
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
@@ -255,7 +252,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         try {
             String query = "DELETE FROM user WHERE id =?";
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete User");
@@ -289,12 +286,4 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
 
-    private void getUserFromResultSet(User user, ResultSet rs) throws SQLException {
-        user.setId(rs.getLong("id"))
-                .setFirstName(rs.getString("firstname"))
-                .setLastName(rs.getString("lastname"))
-                .setAge(rs.getInt("age"))
-                .setEmail(rs.getString("email"))
-                .setPassword(rs.getString("password"));
-    }
 }

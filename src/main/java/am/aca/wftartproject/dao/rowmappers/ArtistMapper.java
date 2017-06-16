@@ -1,7 +1,33 @@
 package am.aca.wftartproject.dao.rowmappers;
 
+import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.model.ArtistSpecialization;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * Created by Armen on 6/16/2017.
  */
-public class ArtistMapper {
+
+public class ArtistMapper implements RowMapper<Artist> {
+
+    public Artist mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Artist artist = new Artist();
+        artist.setId(rs.getLong("id"))
+                .setFirstName(rs.getString("firstname"))
+                .setLastName(rs.getString("lastname"))
+                .setAge(rs.getInt("age"))
+                .setEmail(rs.getString("email"))
+                .setPassword(rs.getString("password"));
+        return artist;
+    }
+
+    public Artist mapRowSecond(ResultSet rs, int rowNum) throws SQLException {
+        Artist tempArtist1 = new Artist();
+        tempArtist1.setArtistPhoto(rs.getBytes("photo"))
+                .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
+        return tempArtist1;
+    }
 }

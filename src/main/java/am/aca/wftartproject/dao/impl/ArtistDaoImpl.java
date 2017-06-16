@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
+import am.aca.wftartproject.dao.rowmappers.ArtistMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
@@ -26,7 +27,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
 
     public ArtistDaoImpl(DataSource dataSource) {
-        setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -38,7 +39,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public void addArtist(Artist artist) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query1 = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
 
@@ -132,23 +133,16 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
         Artist artist;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
 
             String query1 = "SELECT * FROM user WHERE id=?";
             artist = jdbcTemplate.queryForObject(query1, new Object[]{id}, (rs, rowNum) -> {
-                Artist tempArtist = new Artist();
-                getArtistFromResultSet(tempArtist, rs);
-                return tempArtist;
+             return new ArtistMapper().mapRow(rs,rowNum);
             });
-
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
             Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> {
-                Artist tempArtist1 = new Artist();
-                tempArtist1.setArtistPhoto(rs.getBytes("photo"))
-                        .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
-                return tempArtist1;
+             return new ArtistMapper().mapRowSecond(rs,rowNum);
             });
 
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
@@ -217,23 +211,16 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
         Artist artist;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
-
             String query1 = "SELECT * FROM user WHERE id=?";
             artist = jdbcTemplate.queryForObject(query1, new Object[]{email}, (rs, rowNum) -> {
-                Artist tempArtist = new Artist();
-                getArtistFromResultSet(tempArtist, rs);
-                return tempArtist;
+                return new ArtistMapper().mapRow(rs,rowNum);
             });
 
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
             Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> {
-                Artist tempArtist1 = new Artist();
-                tempArtist1.setArtistPhoto(rs.getBytes("photo"))
-                        .setSpecialization(ArtistSpecialization.valueOf(rs.getString("spec_type")));
-                return tempArtist1;
+                return new ArtistMapper().mapRowSecond(rs,rowNum);
             });
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
@@ -299,8 +286,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     @Override
     public void updateArtist(Long id, Artist artist) {
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
-
             String query1 = "UPDATE user SET firstname=?, lastname=?, age=?, password=? WHERE id = ?";
             Object[] args = new Object[]{artist.getFirstName(), artist.getLastName(), artist.getAge(), artist.getPassword(), id};
             int rowsAffected = jdbcTemplate.update(query1, args);
@@ -374,8 +359,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     @Override
     public Boolean deleteArtist(Long id) {
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
-
             String query1 = "DELETE FROM artist WHERE user_id=?";
             int rowsAffected = jdbcTemplate.update(query1, id);
             if (rowsAffected <= 0) {
@@ -437,17 +420,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //        return success;
 
         //endregion
-    }
-
-
-
-    private void getArtistFromResultSet(Artist artist, ResultSet rs) throws SQLException {
-        artist.setId(rs.getLong("id"))
-                .setFirstName(rs.getString("firstname"))
-                .setLastName(rs.getString("lastname"))
-                .setAge(rs.getInt("age"))
-                .setEmail(rs.getString("email"))
-                .setPassword(rs.getString("password"));
     }
 
 }

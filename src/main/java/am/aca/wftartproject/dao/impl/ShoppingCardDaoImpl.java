@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
+import am.aca.wftartproject.dao.rowmappers.ShoppingCardMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
@@ -21,7 +22,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
     public ShoppingCardDaoImpl(DataSource dataSource) {
-        setDataSource(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -34,7 +35,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query = "INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)";
 
@@ -98,14 +99,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
         ShoppingCard shoppingCard;
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+
             String query = "SELECT * FROM shopping_card WHERE id=?";
 
             shoppingCard = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-                ShoppingCard tempShoppingCard = new ShoppingCard();
-                tempShoppingCard.setId(rs.getLong("id"))
-                        .setBalance(rs.getDouble("balance"));
-                return tempShoppingCard;
+                return new ShoppingCardMapper().mapRow(rs,rowNum);
             });
             return shoppingCard;
 
@@ -153,7 +151,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "UPDATE shopping_card SET balance=? WHERE id = ?";
 
             int rowsAffected = jdbcTemplate.update(query, shoppingCard.getBalance(), id);
@@ -202,7 +200,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public Boolean deleteShoppingCard(Long id) {
 
         try {
-            jdbcTemplate = new JdbcTemplate(getDataSource());
+            
             String query = "DELETE FROM shopping_card WHERE id=?";
 
             int rowsAffected = jdbcTemplate.update(query, id);
