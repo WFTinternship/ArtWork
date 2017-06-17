@@ -83,6 +83,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
+
         if (userId == null || userId < 0){
             LOGGER.error(String.format("userId is invalid: %s", userId));
             throw new ServiceException("Invalid userId");

@@ -81,20 +81,14 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="../../resources/index.html">Home <span class="fa fa-home"></span></a>
-                        <ul class="sub-menu">
-                        	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
+                    <li class="menu-item-simple-parent"><a href="index.html">Home <span class="fa fa-home"></span></a>
+
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/about.html">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="about.html">About us <span class="fa fa-user-secret"></span></a>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="../../resources/gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
+                    <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
                             <li><a href="../../resources/gallery-detail.html">Gallery detail</a></li>
                             <li><a href="../../resources/gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
@@ -149,6 +143,8 @@
                                         <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
                                         <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
                                         <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
                                     </ul>
                                 </div>
                             </div>

@@ -63,11 +63,10 @@ public interface ItemService {
     /**
      * Gets artist items for the given limit.
      * @param artistId
-     * @param itemId
      * @param limit
      * @return
      */
-    List<Item> getArtistItems(Long artistId, Long itemId, Long limit);
+    List<Item> getArtistItems(Long artistId, Long limit);
 
     /**
      * Update Item price by id

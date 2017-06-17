@@ -1,5 +1,7 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.model.ArtistSpecialization;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +15,7 @@ import java.io.IOException;
 public class EditProfileServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/edit-profile.jsp");
         dispatcher.forward(request, response);
 

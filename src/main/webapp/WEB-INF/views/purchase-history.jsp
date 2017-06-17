@@ -6,7 +6,8 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-
+<c:set var="purchaseHistoryService" value='<%=request.getAttribute("purchaseHistoryService")%>' />
+<c:set var="itemService" value='<%=request.getAttribute("itemService")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -150,6 +151,8 @@
                                         <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
                                         <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
                                         <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -157,83 +160,44 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <!-- top heading -->
-                                    <h2>Order History</h2>
+                                    <h2>Purchase History</h2>
                                     <div class="table-responsive a-table">
                                         <!-- account purchase table -->
                                         <table class="table table-striped">
+
                                             <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Date</th>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
-                                                    <th>Status</th>
-                                                </tr>
+                                            <tr>
+                                                <th>User ID</th>
+                                                <th>Item ID</th>
+                                                <th>Date</th>
+                                                <th>Item</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>4923</td>
-                                                    <td>25-01-15</td>
-                                                    <td>HTC Smart Phone</td>
-                                                    <td>$530</td>
-                                                    <td>Completed <i class="fa fa-check green"></i></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>6443</td>
-                                                    <td>15-01-15</td>
-                                                    <td>Kitchen Oven</td>
-                                                    <td>$330</td>
-                                                    <td>Shipped</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5283</td>
-                                                    <td>14-02-15</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Completed <i class="fa fa-check green"></i></td>
-                                                </tr> 
-                                                <tr>
-                                                    <td>5283</td>
-                                                    <td>14-02-15</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Completed <i class="fa fa-check green"></i></td>
-                                                </tr> 
-                                                <tr>
-                                                    <td>5283</td>
-                                                    <td>14-02-15</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Shipped</td>
-                                                </tr> 
-                                                <tr>
-                                                    <td>5283</td>
-                                                    <td>14-02-15</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Processing</td>
-                                                </tr> 
-                                                <tr>
-                                                    <td>5283</td>
-                                                    <td>14-02-15</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Completed <i class="fa fa-check green"></i></td>
-                                                </tr> 
-                                                <tr>
-                                                    <td>5283</td>
-                                                    <td>14-02-15</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Shipped</td>
-                                                </tr>               
-                                                <tr>
-                                                    <td>4923</td>
-                                                    <td>25-03-15</td>
-                                                    <td>HTC Smart Phone</td>
-                                                    <td>$530</td>
-                                                    <td>Completed <i class="fa fa-check green"></i></td>
-                                                </tr>                                
+
+                                            <tr>
+                                                <c:forEach items="${purchaseHistoryService}" var="element">
+                                                    <td>${element.userId}</td>
+                                                    <td>${element.itemId}</td>
+                                                    <td>${element.purchaseDate}</td>
+                                                    <td><!-- **product-container - Starts** -->
+                                                        <div class="product-container">
+                                                            <a href="/shop-detail/${itemService[0].id}"><div class="product-thumb"> <img src="${itemService[0].photoURL}" alt="image"/> </div> </a>
+                                                            <!-- **product-title - Starts** -->
+                                                            <div class="product-title">
+                                                                <a href="/shop-cart" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
+                                                                <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
+                                                                <p>You don't take a photograph, Just make it</p>
+                                                            </div> <!-- **product-title - Ends** -->
+                                                        </div> <!-- **product-container - Ends** -->
+                                                        <!-- **product-details - Starts** -->
+                                                        <div class="product-details">
+                                                            <h5> <a href="shop-detail"> ${itemService[0].title} </a> </h5>
+                                                            <span class="amount"> $${itemService[0].price} </span>
+                                                        </div> <!-- **product-details - Ends** --> </td>
+                                                </c:forEach>
+
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>

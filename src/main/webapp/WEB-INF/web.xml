@@ -122,6 +122,26 @@
         <url-pattern>/about</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>MyArtWorks</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.MyWorksServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MyArtWorks</servlet-name>
+        <url-pattern>/my-works</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddItem</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.AddItemsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddItem</servlet-name>
+        <url-pattern>/additem</url-pattern>
+    </servlet-mapping>
+
 
     <welcome-file-list>
         <welcome-file>/WEB-INF/views/index.jsp</welcome-file>

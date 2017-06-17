@@ -399,17 +399,17 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @param artistId
      * @param limit
      * @return
-     * @see ItemDao#getArtistItems(Long, Long, Long)
+     * @see ItemDao#getArtistItems(Long, Long)
      */
     @Override
-    public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
+    public List<Item> getArtistItems(Long artistId, Long limit) {
 
         List<Item> itemList = new ArrayList<>();
         try {
             
-            String query = "SELECT * FROM item WHERE artist_id=? AND id!=? LIMIT ?";
+            String query = "SELECT * FROM item WHERE artist_id=?";
 
-            itemList = this.jdbcTemplate.query(query, new Object[]{artistId,itemId,limit}, new ItemMapper());
+            itemList = this.jdbcTemplate.query(query, new Object[]{artistId}, new ItemMapper());
 
         } catch (DataAccessException e) {
             String error = "Failed to get items for the given artistId: %s";

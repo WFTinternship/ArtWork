@@ -150,6 +150,8 @@
 										<li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
 										<li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
 										<li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+										<li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+										<li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
 									</ul>
 								</div>
 							</div>
@@ -165,12 +167,16 @@
 												<!-- edit personal details -->
 												<form role="form">
 													<div class="form-group">
-														<label for="exampleInput1">Name</label>
+														<label for="exampleInput1">First Name</label>
 														<input type="text" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
 													</div>
 													<div class="form-group">
-														<label for="exampleInput2">Email</label>
-														<input type="email" class="form-control" id="exampleInput2" placeholder="brennan@example.com">
+														<label for="exampleInput111">Last Name</label>
+														<input type="text" class="form-control" id="exampleInput111" placeholder="Brennan Doe">
+													</div>
+													<div class="form-group">
+														<label for="exampleInput4">Age</label>
+														<input type="text" class="form-control" id="exampleInput4" placeholder="26">
 													</div>
 
 													<div class="form-group">
@@ -181,34 +187,19 @@
 														<label for="exampleInput77">Choose Image</label>
 														<form action="UploadServlet" method="post"
 															  enctype="multipart/form-data">
-															<input type="file" name="file" size="50" />
+															<input type="file" id="exampleInput77" name="file" size="50" />
 														</form>
-														<input type="submit" class="btn btn-warning"  id="exampleInput77" value="Upload File" />
 													</div>
+													<div class="form-group">
+														<select class="shop-dropdown">
+															<option value="-1" selected>Choose artist specialization</option>
+															<c:forEach items="${artistSpecTypes}" var="element">
+																<option value="${element.id}" class="fa fa-eyedropper">${element.type}</option>
+															</c:forEach>
 
-													<div class="form-group">
-														<label for="exampleInput4">Address</label>
-														<textarea class="form-control" id="exampleInput4" rows="2">#98/5 New Avenue Street, Near New Banglow
-														</textarea>
-													</div>
-													<div class="form-group">
-														<label for="exampleInput5">Country</label>
-														<select class="form-control" id="exampleInput5">
-															<option>India</option>
-															<option>Sri Lanka</option>
-															<option>Nepal</option>
-															<option>United Kingdom</option>
-															<option>Other</option>
 														</select>
 													</div>
-													<div class="form-group">
-														<label for="exampleInput6">City</label>
-														<input type="text" class="form-control" id="exampleInput6" placeholder="New Delhi">
-													</div>
-													<div class="form-group">
-														<label for="exampleInput7">State</label>
-														<input type="text" class="form-control" id="exampleInput7" placeholder="Delhi">
-													</div>
+
 													<button type="submit" class="btn btn-warning">Update Personal Details</button>
 												</form>
 											</div>
@@ -216,7 +207,7 @@
 												<!-- username details -->
 												<form role="form">
 													<div class="form-group">
-														<label for="exampleInput21">User Name / Login Id</label>
+														<label for="exampleInput21">User Name / Email</label>
 														<input type="text" class="form-control" id="exampleInput21" placeholder="Brennan Doe">
 													</div>
 													<button type="submit" class="btn btn-warning">Update Username</button>

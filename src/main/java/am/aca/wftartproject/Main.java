@@ -22,6 +22,7 @@ public class Main {
         }
 
 
+
 //        ArtistSpecialization[] art = ArtistSpecialization.values();
 //        for(ArtistSpecialization artElement:art){
 //            System.out.println(artElement.getType());

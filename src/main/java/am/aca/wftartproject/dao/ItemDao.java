@@ -65,11 +65,10 @@ public interface ItemDao {
      * Gets artist items for the given limit.
      *
      * @param artistId
-     * @param itemId
      * @param limit
      * @return
      */
-    List<Item> getArtistItems(Long artistId, Long itemId, Long limit);
+    List<Item> getArtistItems(Long artistId, Long limit);
 
 
     /**

@@ -38,7 +38,7 @@ public class TestObjectTemplate {
         item.setTitle("test_item")
                 .setDescription("test item")
                 .setItemType(ItemType.PAINTING)
-                .setPhotoURL("test")
+                .setPhotoURL("../../resources/images/product/images (1).jpg")
                 .setPrice(getRandomNumber() + 1.1)
                 .setStatus(true);
         return item;
