@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User findUser(String email) {
-        if (!isEmptyString(email)) {
+        if (isEmptyString(email)) {
             LOGGER.error(String.format("email is invalid: %s", email));
             throw new ServiceException("Invalid email");
         }

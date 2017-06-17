@@ -79,13 +79,15 @@ public abstract class AbstractUser {
     }
 
     public boolean isValidUser() {
-        return  id != null &&
-                id > 0 &&
+        return
+//                id != null &&
+//                id > 0 &&
                 !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password) &&
-                shoppingCard.isValidShoppingCard();
+                !isEmptyString(password);
+//                &&
+//                shoppingCard.isValidShoppingCard();
     }
 }

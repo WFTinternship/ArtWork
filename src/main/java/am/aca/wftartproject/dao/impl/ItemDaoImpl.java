@@ -4,7 +4,6 @@ import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.model.ItemType;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,10 +12,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ASUS on 27-May-17
@@ -31,17 +29,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#addItem(Long, Item)
      * @param artistID
      * @param item
-     * @see ItemDao#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
 
         try {
-            
             KeyHolder keyHolder = new GeneratedKeyHolder();
-
             String query = "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)";
 
             PreparedStatementCreator psc = con -> {
@@ -103,21 +99,18 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
+     * @see ItemDao#findItem(Long)
      * @param id
      * @return
-     * @see ItemDao#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
 
         Item item;
         try {
-            
             String query = "SELECT * FROM item WHERE id = ?";
 
-            item = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-               return new ItemMapper().mapRow(rs,rowNum);
-            });
+            item = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ItemMapper().mapRow(rs, rowNum));
             if (item == null) {
                 throw new DAOException("Failed to get Item");
             }
@@ -128,7 +121,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
         return item;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -158,25 +151,32 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return item;
 
-        //endregion
+//        endregion
     }
 
 
     /**
+     * @see ItemDao#getRecentlyAddedItems(int)
      * @param limit
      * @return
-     * @see ItemDao#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
 
-        List<Item> itemList = new ArrayList<>();
+        List<Item> itemList;
         try {
-
             String query = "SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?";
             itemList = this.jdbcTemplate.query(query, new Object[]{limit}, new ItemMapper());
 
-            //region <Version with Simple JDBC>
+        } catch (DataAccessException e) {
+            String error = "Failed to get ItemsByTitle: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        }
+        return itemList;
+
+
+//            region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -208,32 +208,24 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return itemList;
 
-            //endregion
-        }
-        catch (DataAccessException e) {
-            String error = "Failed to get ItemsByTitle: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-        return itemList;
+//            endregion
+
     }
 
 
     /**
+     * @see ItemDao#getItemsByTitle(String)
      * @param title
      * @return
-     * @see ItemDao#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
 
-        List<Item> itemList = new ArrayList<>();
+        List<Item> itemList;
         try {
-            
             String query = "SELECT * FROM item WHERE title=?";
 
             itemList = this.jdbcTemplate.query(query, new Object[]{title}, new ItemMapper());
-
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -242,7 +234,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return itemList;
 
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -274,25 +266,23 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return itemList;
 
-        //endregion
+//        endregion
     }
 
 
     /**
+     * @see ItemDao#getItemsByType(String)
      * @param itemType
      * @return
-     * @see ItemDao#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
 
-        List<Item> itemList = new ArrayList<>();
+        List<Item> itemList;
         try {
-            
-            String query = "SELECT * FROM item WHERE item_type =?";
+            String query = "SELECT * FROM item WHERE type =?";
 
             itemList = this.jdbcTemplate.query(query, new Object[]{itemType}, new ItemMapper());
-
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -300,7 +290,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
         return itemList;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -332,26 +322,24 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return itemList;
 
-        //endregion
+//        endregion
     }
 
 
     /**
+     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      * @param minPrice
      * @param maxPrice
      * @return
-     * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
 
-        List<Item> itemList = new ArrayList<>();
+        List<Item> itemList;
         try {
-            
             String query = "SELECT * FROM item WHERE status=0 AND price BETWEEN ? AND ?";
 
-            itemList = this.jdbcTemplate.query(query, new Object[]{minPrice,maxPrice}, new ItemMapper());
-
+            itemList = this.jdbcTemplate.query(query, new Object[]{minPrice, maxPrice}, new ItemMapper());
         } catch (DataAccessException e) {
             String error = "Failed to get items by the given price range: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -359,7 +347,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
         return itemList;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -392,25 +380,23 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return itemList;
 
-        //endregion
+//        endregion
     }
 
     /**
+     * @see ItemDao#getArtistItems(Long, Long, Long)
      * @param artistId
      * @param limit
      * @return
-     * @see ItemDao#getArtistItems(Long, Long)
      */
     @Override
-    public List<Item> getArtistItems(Long artistId, Long limit) {
+    public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
 
-        List<Item> itemList = new ArrayList<>();
+        List<Item> itemList;
         try {
-            
-            String query = "SELECT * FROM item WHERE artist_id=?";
+            String query = "SELECT * FROM item WHERE artist_id=? AND id!=? LIMIT ?";
 
-            itemList = this.jdbcTemplate.query(query, new Object[]{artistId}, new ItemMapper());
-
+            itemList = this.jdbcTemplate.query(query, new Object[]{artistId, itemId, limit}, new ItemMapper());
         } catch (DataAccessException e) {
             String error = "Failed to get items for the given artistId: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -418,7 +404,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
         return itemList;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -452,20 +438,19 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        }
 //        return itemList;
 
-        //endregion
+//        endregion
     }
 
 
     /**
+     * @see ItemDao#updateItem(Long, Item)
      * @param id
      * @param item
-     * @see ItemDao#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
 
         try {
-            
             String query = "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?";
             Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(), id};
 
@@ -473,14 +458,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to update Item");
             }
-
         } catch (DataAccessException e) {
             String error = "Failed to update Item:  %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -502,28 +486,27 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //            closeResources(ps, conn);
 //        }
 
-        //endregion
+//        endregion
     }
 
 
     /**
-     * @param id
      * @see ItemDao#deleteItem(Long)
+     * @param id
      */
     @Override
     public Boolean deleteItem(Long id) {
 
-        Boolean status =false;
+        Boolean status;
         try {
-            
             String query = "DELETE FROM item WHERE id=?";
+
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete Item");
-            }else{
+            } else {
                 status = true;
             }
-
         } catch (DataAccessException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -551,4 +534,26 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         //endregion
     }
 
+
+//    private void getItemFromResultSet(Item item, ResultSet rs) throws SQLException {
+//        item.setId(rs.getLong("id"))
+//                .setTitle(rs.getString("title"))
+//                .setDescription(rs.getString("description"))
+//                .setPhotoURL(rs.getString("photo_url"))
+//                .setPrice(rs.getDouble("price"))
+//                .setArtistId(rs.getLong("artist_id"))
+//                .setStatus(rs.getBoolean("status"))
+//                .setItemType(ItemType.valueOf(rs.getString("type")));
+//    }
+//
+//    private void getItemFromResultSet(Item item, Map<String, Object> itemRow) {
+//        item.setId(Long.parseLong(String.valueOf(itemRow.get("id"))))
+//                .setTitle(String.valueOf(itemRow.get("title")))
+//                .setDescription(String.valueOf(itemRow.get("description")))
+//                .setPhotoURL(String.valueOf(itemRow.get("photo_url")))
+//                .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
+//                .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
+//                .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
+//                .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
+//    }
 }

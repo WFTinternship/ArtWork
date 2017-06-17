@@ -15,8 +15,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import util.TestObjectTemplate;
-
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static junit.framework.TestCase.*;
@@ -25,10 +23,9 @@ import static util.AssertTemplates.assertEqualShoppingCards;
 /**
  * Created by Armen on 6/2/2017
  */
-public class ShoppingCardDaoIntegrationTest {
+public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
-    private DataSource conn;
 
     private UserDao userDao;
     private ShoppingCardDao shoppingCardDao;
@@ -38,27 +35,57 @@ public class ShoppingCardDaoIntegrationTest {
     public ShoppingCardDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }
 
+    /**
+     * Creates connection, user and shoppingCard for tests
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        //create db connection
-        conn = new ConnectionFactory()
+
+        // create db connection
+        dataSource = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
-        userDao = new UserDaoImpl(conn);
-        shoppingCardDao = new ShoppingCardDaoImpl(conn);
+        userDao = new UserDaoImpl(dataSource);
+        shoppingCardDao = new ShoppingCardDaoImpl(dataSource);
 
-        //create test user and shoppingCard, add user into db
+        // create test user and shoppingCard, add user into db
         testUser = TestObjectTemplate.createTestUser();
         userDao.addUser(testUser);
         testShoppingCard = new ShoppingCard();
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
 
-        //Prints busy connections quantity
-        if (conn instanceof ComboPooledDataSource) {
-            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
-        }
+        // print busy connections quantity
+        if (dataSource instanceof ComboPooledDataSource) {
+            LOGGER.info(String.format("Number of busy connections Start: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
     }
+
+    /**
+     * Deletes all users and shoppingCards created during the tests
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    @After
+    public void tearDown() throws SQLException, ClassNotFoundException {
+
+        // delete inserted test users,shoppingCards from db
+        if (testShoppingCard.getId() != null)
+            shoppingCardDao.deleteShoppingCard(testShoppingCard.getId());
+        if (testUser.getId() != null)
+            userDao.deleteUser(testUser.getId());
+
+        // set temp instance refs to null
+        testShoppingCard = null;
+        testUser = null;
+
+        // print busy connections quantity
+        if (dataSource instanceof ComboPooledDataSource) {
+            LOGGER.info(String.format("Number of busy connections End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
+    }
+
+    //region(TEST_CASE)
 
     /**
      * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
@@ -66,10 +93,17 @@ public class ShoppingCardDaoIntegrationTest {
     @Test
     public void addShoppingCard_Success() {
 
+        // check testUser id and testShoppingCard for null
         assertNotNull(testUser.getId());
         assertNotNull(testShoppingCard);
+
+        // set testShoppingCard object into DB
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // get shoppingCard from DB
         ShoppingCard added = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
+
+        // check for equals
         assertEqualShoppingCards(added, testShoppingCard);
     }
 
@@ -79,8 +113,11 @@ public class ShoppingCardDaoIntegrationTest {
     @Test(expected = DAOException.class)
     public void addShoppingCard_Failure() {
 
+        // check testUser id and testShoppingCard for null
         assertNotNull(testUser.getId());
         assertNotNull(testShoppingCard);
+
+        // try to add shoppingCard with out of range id
         shoppingCardDao.addShoppingCard(124561515415313L, testShoppingCard);
     }
 
@@ -90,11 +127,20 @@ public class ShoppingCardDaoIntegrationTest {
     @Test
     public void getShoppingCard_Success() {
 
+        // check testUser id for null
         assertNotNull(testUser.getId());
+
+        // set testShoppingCard object into DB
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // check testShoppingCard object and testShoppingCard id for null
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
+
+        // get shoppingCard from DB
         ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
+
+        // check for equals
         assertEqualShoppingCards(shoppingCard, testShoppingCard);
     }
 
@@ -103,7 +149,11 @@ public class ShoppingCardDaoIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void getShoppingCard_Failure() {
+
+        // check testUser id for null
         assertNotNull(testUser.getId());
+
+
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard.getId());
         shoppingCardDao.getShoppingCard(1515131651654151351L);
@@ -115,12 +165,19 @@ public class ShoppingCardDaoIntegrationTest {
     @Test
     public void updateShoppingCard_Success() {
 
+        // check testUser for not null and add shoppingCard into DB
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // check shoppingCard for not null
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
+
+        // try to update shoppingCard
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
         shoppingCardDao.updateShoppingCard(testShoppingCard.getId(), testShoppingCard);
+
+        // find and get updated shoppingCard from DB and check its sameness with testShoppingCard
         ShoppingCard updatedShoppingCard = shoppingCardDao.getShoppingCard(testShoppingCard.getId());
         assertEquals(updatedShoppingCard.getBalance(), testShoppingCard.getBalance());
     }
@@ -131,10 +188,15 @@ public class ShoppingCardDaoIntegrationTest {
     @Test(expected = DAOException.class)
     public void updateShoppingCard_Failure() {
 
+        // check testUser for not null and add shoppingCard into DB
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // check shoppingCard for not null
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
+
+        // try to update shoppingCard
         testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
         assertFalse(shoppingCardDao.updateShoppingCard(1516516516351635163L, testShoppingCard));
     }
@@ -168,22 +230,5 @@ public class ShoppingCardDaoIntegrationTest {
         assertFalse(shoppingCardDao.deleteShoppingCard(4154541654564654656L));
     }
 
-    @After
-    public void tearDown() throws SQLException, ClassNotFoundException {
-
-        //delete inserted test users,shoppingCards from db
-        if (testShoppingCard.getId() != null)
-            shoppingCardDao.deleteShoppingCard(testShoppingCard.getId());
-        if (testUser.getId() != null)
-            userDao.deleteUser(testUser.getId());
-
-        //set temp instance refs to null
-        testShoppingCard = null;
-        testUser = null;
-
-        //Prints busy connections quantity
-        if (conn instanceof ComboPooledDataSource) {
-            LOGGER.info(((ComboPooledDataSource) conn).getNumBusyConnections());
-        }
-    }
+    //endregion
 }

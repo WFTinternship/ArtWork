@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 public class ShoppingCardMapper implements RowMapper<ShoppingCard> {
 
     @Override
-    public ShoppingCard mapRow(ResultSet resultSet, int i) throws SQLException {
+    public ShoppingCard mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         ShoppingCard tempShoppingCard = new ShoppingCard();
         tempShoppingCard.setId(resultSet.getLong("id"))
                 .setBalance(resultSet.getDouble("balance"));

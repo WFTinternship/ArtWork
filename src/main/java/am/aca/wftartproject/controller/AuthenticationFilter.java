@@ -28,15 +28,16 @@ public class AuthenticationFilter implements Filter {
 
         String uri = req.getRequestURI();
 
-//        String userInfo = req.getRemoteUser();
-        this.context.log("Requested Resource::"+uri);
+        this.context.log("Requested Resource::" + uri);
 
         HttpSession session = req.getSession(false);
 
-        if(session == null && !(uri.endsWith("html") || uri.endsWith("LoginServlet"))){
+        if (session == null && !(uri.endsWith("/index"))) {
             this.context.log("Unauthorized access request");
-            res.sendRedirect("index");
-        }else{
+            res.sendRedirect("/index");
+        } else if (session != null && session.getAttribute("user") == null && uri.endsWith("/account")) {
+            res.sendRedirect("/login");
+        } else {
             // pass the request along the filter chain
             chain.doFilter(request, response);
         }

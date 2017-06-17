@@ -8,10 +8,10 @@ DELETE FROM user;
 DELETE FROM artist_specialization_lkp;
 
 
-INSERT INTO artist_specialization_lsp(id,spec_type) VALUES(1,'PAINTER');
-INSERT INTO artist_specialization_lsp(id,spec_type) VALUES(2,'SCULPTOR');
-INSERT INTO artist_specialization_lsp(id,spec_type) VALUES(3,'PHOTOGRAPHER');
-INSERT INTO artist_specialization_lsp(id,spec_type) VALUES(4,'OTHER');
+INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(1,'PAINTER');
+INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(2,'SCULPTOR');
+INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(3,'PHOTOGRAPHER');
+INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(4,'OTHER');
 
 
 INSERT INTO user(firstname,lastname,age,email,password) VALUES ('Adolf','Hitler',25,'adolf.hitler@gmail.com','hiHitler');

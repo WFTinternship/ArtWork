@@ -27,15 +27,14 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
+     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      * @param userId
      * @param shoppingCard
-     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
 
         try {
-            
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query = "INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)";
 
@@ -90,30 +89,26 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
+     * @see ShoppingCardDao#getShoppingCard(Long)
      * @param id
      * @return
-     * @see ShoppingCardDao#getShoppingCard(Long)
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
 
         ShoppingCard shoppingCard;
         try {
-
             String query = "SELECT * FROM shopping_card WHERE id=?";
 
-            shoppingCard = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-                return new ShoppingCardMapper().mapRow(rs,rowNum);
-            });
-            return shoppingCard;
-
+            shoppingCard = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs,rowNum));
         } catch (DataAccessException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
+        return shoppingCard;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -143,30 +138,31 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
+     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      * @param id
      * @param shoppingCard
-     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Override
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
 
+        Boolean status;
         try {
-            
             String query = "UPDATE shopping_card SET balance=? WHERE id = ?";
 
             int rowsAffected = jdbcTemplate.update(query, shoppingCard.getBalance(), id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to update ShoppingCard");
+            }else{
+                status = true;
             }
-
         } catch (DataAccessException e) {
             String error = "Failed to update ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return true;
+        return status;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -193,29 +189,30 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @param id
      * @see ShoppingCardDao#deleteShoppingCard(Long)
+     * @param id
      */
     @Override
     public Boolean deleteShoppingCard(Long id) {
 
+        Boolean status;
         try {
-            
             String query = "DELETE FROM shopping_card WHERE id=?";
 
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete ShoppingCard");
+            }else{
+                status = true;
             }
-
         } catch (DataAccessException e) {
             String error = "Failed to delete ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return true;
+        return status;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;

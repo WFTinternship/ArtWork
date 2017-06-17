@@ -34,7 +34,7 @@ public class ItemDetailServlet extends HttpServlet {
         Item itemById = itemService.findItem(itemId);
 
         req.setAttribute("itemDetail",itemById);
-        req.setAttribute("artistItems",itemService.getArtistItems(itemById.getArtistId(),6L));
+        req.setAttribute("artistItems",itemService.getArtistItems(itemById.getArtistId(),itemId,6L));
         req.setAttribute("artistInfo",artistService.findArtist(itemById.getArtistId()));
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/shop-detail.jsp");

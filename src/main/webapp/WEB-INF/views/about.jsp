@@ -1,3 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
+
+
+
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -90,12 +102,12 @@
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="shop-detail.jsp">Shop Detail</a></li>
-                            <li><a href="shop-cart.jsp">Cart Page</a></li>
-                            <li><a href="shop-checkout.html">Checkout Page</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li><a href="shop-detail.jsp">Shop Detail</a></li>--%>
+                            <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
+                            <%--<li><a href="shop-checkout.html">Checkout Page</a></li>--%>
+                        <%--</ul>--%>
+                        <%--<a class="dt-menu-expand">+</a>                    --%>
                     </li>
                     <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
                         <ul class="sub-menu">
@@ -116,9 +128,16 @@
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
                             <li><a href="columns.html"> columns </a></li>--%>
-                            <li><a href="/login">My Account </a> </li>
-                            <li><a href="/login">Log in </a> </li>
-                            <li><a href="/signup">Sign up </a> </li>
+                                <li><a href="/account">My Account </a> </li>
+                                <c:choose>
+                                    <c:when test="${user==null}">
+                                        <li><a href="/login">Log in  </a> </li>
+                                        <li><a href="/signup">Sign up </a> </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li><a href="/logout">Log out  </a> </li>
+                                    </c:otherwise>
+                                </c:choose>
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>                                         

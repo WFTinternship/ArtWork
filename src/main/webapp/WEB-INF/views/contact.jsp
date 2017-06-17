@@ -1,3 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
+
+
+
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -76,7 +88,7 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="about">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
@@ -87,35 +99,56 @@
                         <a class="dt-menu-expand">+</a>                                            
                     </li>
                     <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="shop-detail">Shop Detail</a></li>
-                            <li><a href="shop-cart">Cart Page</a></li>
-                            <li><a href="shop-checkout.html">Checkout Page</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li><a href="shop-detail">Shop Detail</a></li>--%>
+                            <%--<li><a href="shop-cart">Cart Page</a></li>--%>
+                            <%--<li><a href="shop-checkout.html">Checkout Page</a></li>--%>
+                        <%--</ul>--%>
+                        <%--<a class="dt-menu-expand">+</a>                    --%>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="blog-detail.html">Blog detail</a></li>
-                            <li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>
-                            <li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
-                    </li>
+                    <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>--%>
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li><a href="blog-detail.html">Blog detail</a></li>--%>
+                            <%--<li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>--%>
+                            <%--<li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>--%>
+                        <%--</ul>--%>
+                        <%--<a class="dt-menu-expand">+</a>                    --%>
+                    <%--</li>--%>
                     <li class="current_page_item  menu-item-simple-parent">
                         <a href="/contact">Contact <span class="fa fa-map-marker"></span></a>
                     </li>
-					<li class="menu-item-simple-parent">
-                        <a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>
+					<%--<li class="menu-item-simple-parent">--%>
+                        <%--<a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>--%>
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>--%>
+                            <%--<li><a href="buttons.html"> Buttons Page </a></li>--%>
+                            <%--<li><a href="tabs.html"> tabs-accordions </a></li>--%>
+                            <%--<li><a href="typography.html"> typography </a></li>--%>
+                            <%--<li><a href="columns.html"> columns </a></li>--%>
+                        <%--</ul>    --%>
+                        <%--<a class="dt-menu-expand">+</a>                        --%>
+                    <%--</li>                                         --%>
+                    <li class="menu-item-simple-parent">
+                        <a href="<%--progressbar.html--%>">Account <span class="fa fa-paint-brush"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="progressbar.html"> Progress-bar </a></li>
+                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>
                             <li><a href="buttons.html"> Buttons Page </a></li>
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
-                            <li><a href="columns.html"> columns </a></li>
-                        </ul>    
-                        <a class="dt-menu-expand">+</a>                        
-                    </li>                                         
+                            <li><a href="columns.html"> columns </a></li>--%>
+                            <li><a href="/account">My Account </a> </li>
+                            <c:choose>
+                                <c:when test="${user==null}">
+                                    <li><a href="/login">Log in  </a> </li>
+                                    <li><a href="/signup">Sign up </a> </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="/logout">Log out  </a> </li>
+                                </c:otherwise>
+                            </c:choose>
+                        </ul>
+                        <a class="dt-menu-expand">+</a>
+                    </li>
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->            
         </div><!-- **header-wrapper Ends** -->        

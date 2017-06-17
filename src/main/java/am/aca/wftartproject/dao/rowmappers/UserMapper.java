@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 public class UserMapper implements RowMapper<User> {
     @Override
-    public User mapRow(ResultSet rs, int rownum) throws SQLException {
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
         user.setId(rs.getLong("id"))
                 .setFirstName(rs.getString("firstname"))

@@ -4,7 +4,6 @@ import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.rowmappers.ArtistMapper;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,8 +13,6 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -32,14 +29,13 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
-     * @param artist
      * @see ArtistDao#addArtist(Artist)
+     * @param artist
      */
     @Override
     public void addArtist(Artist artist) {
 
         try {
-
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query1 = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
 
@@ -73,7 +69,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(String.format(error, e.getMessage()));
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -119,31 +115,30 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //        } finally {
 //            closeResources(rs, ps, conn);
 //        }
-        //endregion
+
+
+//        endregion
 
     }
 
     /**
+     * @see ArtistDao#findArtist(Long)
      * @param id
      * @return
-     * @see ArtistDao#findArtist(Long)
      */
     @Override
     public Artist findArtist(Long id) {
 
         Artist artist;
         try {
-
             String query1 = "SELECT * FROM user WHERE id=?";
-            artist = jdbcTemplate.queryForObject(query1, new Object[]{id}, (rs, rowNum) -> {
-             return new ArtistMapper().mapRow(rs,rowNum);
-            });
+            artist = jdbcTemplate.queryForObject(query1, new Object[]{id},
+                    (rs, rowNum) -> new ArtistMapper().mapRow(rs,rowNum));
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
-            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> {
-             return new ArtistMapper().mapRowSecond(rs,rowNum);
-            });
+            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()},
+                    (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs,rowNum));
 
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
@@ -155,7 +150,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
         return artist;
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //            Connection conn = null;
 //            PreparedStatement ps = null;
@@ -197,31 +192,27 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //            }
 //            return artist;
 
-        //endregion
+//        endregion
     }
 
 
     /**
+     * @see ArtistDao#findArtist(String)
      * @param email
      * @return
-     * @see ArtistDao#findArtist(String)
      */
     @Override
     public Artist findArtist(String email) {
 
         Artist artist;
         try {
-            String query1 = "SELECT * FROM user WHERE id=?";
-            artist = jdbcTemplate.queryForObject(query1, new Object[]{email}, (rs, rowNum) -> {
-                return new ArtistMapper().mapRow(rs,rowNum);
-            });
+            String query1 = "SELECT * FROM user WHERE email=?";
+            artist = jdbcTemplate.queryForObject(query1, new Object[]{email}, (rs, rowNum) -> new ArtistMapper().mapRow(rs,rowNum));
 
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
-            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> {
-                return new ArtistMapper().mapRowSecond(rs,rowNum);
-            });
+            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs,rowNum));
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
 
@@ -279,9 +270,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
 
     /**
+     * @see ArtistDao#updateArtist(Long, Artist)
      * @param id
      * @param artist
-     * @see ArtistDao#updateArtist(Long, Artist)
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
@@ -305,7 +296,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             throw new DAOException(error, e);
         }
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -348,16 +339,18 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //            closeResources(ps, conn);
 //        }
 
-        //endregion
+//        endregion
     }
 
 
     /**
-     * @param id
      * @see ArtistDao#deleteArtist(Long)
+     * @param id
      */
     @Override
     public Boolean deleteArtist(Long id) {
+
+        Boolean status;
         try {
             String query1 = "DELETE FROM artist WHERE user_id=?";
             int rowsAffected = jdbcTemplate.update(query1, id);
@@ -369,6 +362,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             rowsAffected = jdbcTemplate.update(query2, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete Artist");
+            } else {
+                status = true;
             }
 
         } catch (DataAccessException e) {
@@ -376,10 +371,11 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return true;
+        return status;
 
 
-        //region <Version with Simple JDBC>
+//        region <Version with Simple JDBC>
+
 //        Connection conn = null;
 //        PreparedStatement ps = null;
 //        Boolean success = false;
@@ -419,7 +415,17 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 //        }
 //        return success;
 
-        //endregion
+//        endregion
     }
+
+
+//    private void getArtistFromResultSet(Artist artist, ResultSet rs) throws SQLException {
+//        artist.setId(rs.getLong("id"))
+//                .setFirstName(rs.getString("firstname"))
+//                .setLastName(rs.getString("lastname"))
+//                .setAge(rs.getInt("age"))
+//                .setEmail(rs.getString("email"))
+//                .setPassword(rs.getString("password"));
+//    }
 
 }

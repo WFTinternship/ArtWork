@@ -10,7 +10,7 @@ import java.util.List;
 public interface ItemService {
 
     /**
-     * Add Item info for appropriate artist
+     * Adds Item info for appropriate artist
      *
      * @param artistID
      * @param item
@@ -18,7 +18,7 @@ public interface ItemService {
     void addItem(Long artistID, Item item);
 
     /**
-     * Find Item by id
+     * Finds Item by id
      *
      * @param id
      * @return
@@ -26,7 +26,7 @@ public interface ItemService {
     Item findItem(Long id);
 
     /**
-     * Get recently added items
+     * Gets recently added items
      *
      * @param limit
      * @return
@@ -35,7 +35,7 @@ public interface ItemService {
 
 
     /**
-     * Get all items with the following title.
+     * Gets all items with the following title.
      *
      * @param title
      * @return
@@ -43,7 +43,7 @@ public interface ItemService {
     List<Item> getItemsByTitle(String title);
 
     /**
-     * Get all items with the following type.
+     * Gets all items with the following type.
      *
      * @param itemType
      * @return
@@ -63,13 +63,14 @@ public interface ItemService {
     /**
      * Gets artist items for the given limit.
      * @param artistId
+     * @param itemId
      * @param limit
      * @return
      */
-    List<Item> getArtistItems(Long artistId, Long limit);
+    List<Item> getArtistItems(Long artistId,Long itemId, Long limit);
 
     /**
-     * Update Item price by id
+     * Updates Item price by id
      *
      * @param id
      * @param item
@@ -77,7 +78,7 @@ public interface ItemService {
     void updateItem(Long id, Item item);
 
     /**
-     * Delete Item by id
+     * Deletes Item by id
      *
      * @param id
      */

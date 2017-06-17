@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 public class ItemMapper implements RowMapper<Item> {
 
     @Override
-    public Item mapRow(ResultSet resultSet, int rownumber) throws SQLException {
+    public Item mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Item item = new Item();
         item.setId(resultSet.getLong("id"))
                 .setTitle(resultSet.getString("title"))

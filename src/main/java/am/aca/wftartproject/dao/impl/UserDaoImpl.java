@@ -26,8 +26,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     /**
-     * @param user
      * @see UserDao#addUser(User)
+     * @param user
      */
     @Override
     public void addUser(User user) {
@@ -35,7 +35,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             String query = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            
 
             PreparedStatementCreator psc = con -> {
                 PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -88,20 +87,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
+     * @see UserDao#findUser(Long)
      * @param id
      * @return
-     * @see UserDao#findUser(Long)
      */
     @Override
     public User findUser(Long id) {
         User user;
         try {
             String query = "SELECT * FROM user WHERE id = ?";
-            
 
-            user = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> {
-             return new UserMapper().mapRow(rs,rowNum);
-            });
+            user = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -141,9 +137,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
+     * @see UserDao#findUser(String)
      * @param email
      * @return
-     * @see UserDao#findUser(String)
      */
     @Override
     public User findUser(String email) {
@@ -151,10 +147,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         User user;
         try {
             String query = "SELECT * FROM user WHERE email = ?";
-            
-            user = jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> {
-                return new UserMapper().mapRow(rs,rowNum);
-            });
+
+            user = jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -195,27 +189,29 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
+     * @see UserDao#updateUser(Long, User)
      * @param id
      * @param user
-     * @see UserDao#updateUser(Long, User)
      */
     @Override
     public Boolean updateUser(Long id, User user) {
-
+        Boolean status = false;
         try {
             String query = "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?";
-            
+
             Object[] args = new Object[]{user.getFirstName(), user.getLastName(), user.getAge(), user.getPassword(), id};
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to update User");
+            } else {
+                status = true;
             }
         } catch (DataAccessException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return true;
+        return status;
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -244,15 +240,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     /**
-     * @param id
      * @see UserDao#deleteUser(Long)
+     * @param id
      */
     @Override
     public Boolean deleteUser(Long id) {
 
         try {
             String query = "DELETE FROM user WHERE id =?";
-            
+
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete User");
@@ -284,6 +280,5 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //        }
 //        return success;
     }
-
 
 }
