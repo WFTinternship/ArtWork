@@ -178,7 +178,7 @@
                                 <h5>Artist Specialization</h5>
                                 <div class="selection-box">
                                     <select class="shop-dropdown">
-                                        <option value="-1" selected>Choose artist specialization</option>
+                                        <option value="-1" selected>Choose artist spec.</option>
                                         <c:forEach items="${artistSpecTypes}" var="element">
                                             <option value="${element.id}"
                                                     class="fa fa-eyedropper">${element.type}</option>
@@ -193,20 +193,6 @@
                                         <%--<option value="2" class="fa fa-camera-retro">Photogenic Art</option>--%>
                                         <%--<option value="3" class="fa fa-pencil">Sketches</option>--%>
                                         <%--<option value="4" class="fa fa-eyedropper">Dropper Painting</option>--%>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dt-sc-one-fifth column">
-                            <div class="categories">
-                                <h5>Sort By</h5>
-                                <div class="selection-box">
-                                    <select class="shop-dropdown">
-                                        <option value="-1" selected>Sort by</option>
-                                        <option value="1" class="fa fa-mortar-board">Popular Artist</option>
-                                        <option value="2" class="fa fa-money">Best Seller</option>
-                                        <option value="3" class="fa fa-thumb-tack">Featured Art</option>
-                                        <option value="4" class="fa fa-child">New Artist</option>
                                     </select>
                                 </div>
                             </div>
@@ -229,12 +215,22 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="dt-sc-one-fifth column">
                             <div class="categories">
-                                <h5>Search</h5>
-                                <div class="submit">
-                                    <a class="shop-dropdown" href="/shop"> <span> <h4>Click Here!</h4> </span> </a>
-                                    <%--<button  type="button">Click Here!</button>--%>
+                                <h5>Sort By</h5>
+                                <div class="selection-box">
+                                    <select class="shop-dropdown">
+                                        <option value="-1" selected>Sort by</option>
+                                        <option value="1" class="fa fa-mortar-board">Price</option>
+                                        <option value="2" class="fa fa-mortar-board">Title</option>
+                                        <option value="3" class="fa fa-mortar-board">Available Items</option>
+                                        <option value="4" class="fa fa-mortar-board">Sold Items</option>
+                                        <%--<option value="1" class="fa fa-mortar-board">Popular Artist</option>--%>
+                                        <%--<option value="2" class="fa fa-money">Best Seller</option>--%>
+                                        <%--<option value="3" class="fa fa-thumb-tack">Featured Art</option>--%>
+                                        <%--<option value="4" class="fa fa-child">New Artist</option>--%>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -283,6 +279,11 @@
                                         <a href="#" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>
                                             Options </a>
                                         <p>You don't take a photograph, Just make it</p>
+
+                                        <%--<c:if test="${itemElement.isStatus()==true}">--%>
+                                            <%--<p><h1><div style="text-align: center;">SOLD</div></h1></p>--%>
+                                        <%--</c:if>--%>
+
                                     </div> <!-- **product-title - Ends** -->
                                 </div> <!-- **product-container - Ends** -->
                                 <!-- **product-details - Starts** -->

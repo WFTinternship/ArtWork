@@ -1,5 +1,6 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistSpecializationServiceImpl;
@@ -9,9 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -29,18 +28,22 @@ public class HomeServlet extends HttpServlet {
             artistSpecialization.addArtistSpecialization();
         }
 
-//        User user = null;
-//        Cookie[] cookies = request.getCookies();
-//        if(cookies != null) {
-//            String userEmail = cookies[0].getValue();
-//            String userPassword = cookies[1].getValue();
-//            user = userService.findUser(userPassword);
-//        }
-//
-//        if(user != null){
-//            HttpSession session = request.getSession();
-//            session.setAttribute("user",user);
-//        }
+
+        Cookie[] cookies = request.getCookies();
+        String userEmailFromCookie = null;
+        if(cookies != null) {
+            for(Cookie ckElement: cookies){
+                if(ckElement.getName().equals("userEmail")){
+                    userEmailFromCookie = ckElement.getValue();
+                }
+            }
+        }
+
+        if(userEmailFromCookie!=null){
+            User user = userService.findUser(userEmailFromCookie);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user",user);
+        }
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
         dispatcher.forward(request, response);
