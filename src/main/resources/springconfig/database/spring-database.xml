@@ -9,7 +9,7 @@
 
     <!--DataSource configuration-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <!--<property name="driverClass" value="${jdbcDriver}"/>-->
+        <property name="driverClass" value="${jdbcDriver}"/>
         <property name="jdbcUrl" value="${jdbcUrl}"/>
         <property name="user" value="${jdbcUserName}"/>
         <property name="password" value="${jdbcPassword}"/>

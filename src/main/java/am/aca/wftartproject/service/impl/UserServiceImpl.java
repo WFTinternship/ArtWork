@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
 
 /**
  * Created by surik on 6/3/17
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void addUser(User user) {
-        if (user == null || !user.isValidUser()) {
+        if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
             String error = "Invalid user";
             LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
             throw new InvalidEntryException(error);

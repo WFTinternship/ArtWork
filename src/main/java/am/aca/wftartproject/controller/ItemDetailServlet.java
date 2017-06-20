@@ -19,8 +19,8 @@ import java.io.IOException;
  */
 public class ItemDetailServlet extends HttpServlet {
 
-    private ItemService itemService = SpringBean.getBean("itemService",ItemServiceImpl.class);
-    private ArtistService artistService = SpringBean.getBean("artistService",ArtistServiceImpl.class);
+    private ItemService itemService = SpringBean.getBeanFromSpring("itemService",ItemServiceImpl.class);
+    private ArtistService artistService = SpringBean.getBeanFromSpring("artistService",ArtistServiceImpl.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -18,8 +18,8 @@ public class HomeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ArtistSpecializationService artistSpecialization = SpringBean.getBean("artistSpecializationService", ArtistSpecializationServiceImpl.class);
-        UserService userService = SpringBean.getBean("userService", UserServiceImpl.class);
+        ArtistSpecializationService artistSpecialization = SpringBean.getBeanFromSpring("artistSpecializationService", ArtistSpecializationServiceImpl.class);
+        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();

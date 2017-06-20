@@ -10,9 +10,8 @@ public class SpringBean {
 
     private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
 
-    public static <T> T getBean(String name, Class<T> requiredType) {
-        T artistService = applicationContext.getBean(name, requiredType);
-        return artistService;
+    public static <T> T getBeanFromSpring(String name, Class<T> requiredType) {
+        return applicationContext.getBean(name, requiredType);
     }
 
 }

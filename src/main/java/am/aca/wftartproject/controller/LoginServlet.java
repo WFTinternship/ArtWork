@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
 
-    private UserService userService = SpringBean.getBean("userService",UserServiceImpl.class);
+    private UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

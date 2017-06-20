@@ -23,7 +23,7 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        UserService userService = SpringBean.getBean("userService", UserServiceImpl.class);
+        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
 
         User userFromRequest = new User();
         userFromRequest.setFirstName(request.getParameter("firstName"))
