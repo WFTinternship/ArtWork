@@ -1,3 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
+<c:set var="errorMessage" value='<%=request.getAttribute("errorMessage")%>'/>
+
+
 <!doctype html>
 <html lang="en" class="no-js">
 
@@ -16,6 +27,9 @@
 </head>
 <body>
 <header class="cd-main-header">
+    <c:if test="${errorMessage!=null}">
+        <h2>${errorMessage}</h2>
+    </c:if>
     <h1>Log In</h1>
 </header>
 <!--

@@ -2,10 +2,11 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -87,20 +88,18 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
 
-        PurchaseHistory purchaseHistory;
         try {
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
+            return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
 
-            purchaseHistory = jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
-            if (purchaseHistory == null) {
-                throw new DAOException("Failed to get PurchaseHistory");
-            }
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return purchaseHistory;
+
 
 //        region <Version with Simple JDBC>
 
@@ -146,8 +145,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         List<PurchaseHistory> purchaseHistoryList;
         try {
             String query = "SELECT * FROM purchase_history WHERE user_id = ?";
-
             purchaseHistoryList = this.jdbcTemplate.query(query, new Object[]{userId}, new PurchaseHistoryMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));

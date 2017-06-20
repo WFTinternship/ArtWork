@@ -1,12 +1,11 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.exception.ServiceException;
+import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import am.aca.wftartproject.util.SpringBean;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,8 +23,7 @@ public class AccountServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
-        ArtistService artistService = applicationContext.getBean("artistService", ArtistServiceImpl.class);
+        ArtistService artistService = SpringBean.getBean("artistService",ArtistServiceImpl.class);
 
         HttpSession session = request.getSession();
 
@@ -34,12 +32,13 @@ public class AccountServlet extends HttpServlet {
         try {
             if (session.getAttribute("user") != null) {
                 user = (User) session.getAttribute("user");
+                System.out.println(user.getId());
                 artist = artistService.findArtist(user.getId());
                 if (artist != null) {
                     request.setAttribute("user", artist);
                 }
             } else {
-                throw new RuntimeException("Incorrect program logic");
+                throw new RuntimeException("Incorrect logic");
             }
         } catch (ServiceException e) {
             String errorMessage = String.format("There is problem with artist info retrieving: %s", e.getMessage());
@@ -48,8 +47,8 @@ public class AccountServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/account.jsp");
         dispatcher.forward(request, response);
-
     }
+
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {

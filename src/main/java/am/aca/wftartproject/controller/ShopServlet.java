@@ -4,8 +4,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.model.ItemType;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import am.aca.wftartproject.util.SpringBean;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,10 +18,7 @@ import java.io.IOException;
  */
 public class ShopServlet extends HttpServlet {
 
-
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
-    ItemService itemService = ctx.getBean("itemService",ItemServiceImpl.class);
-
+    private ItemService itemService = SpringBean.getBean("itemService",ItemServiceImpl.class);
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

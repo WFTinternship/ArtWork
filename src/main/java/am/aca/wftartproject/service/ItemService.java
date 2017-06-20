@@ -84,5 +84,11 @@ public interface ItemService {
      */
     void deleteItem(Long id);
 
+    /**
+     * Makes buying processes.
+     * @param item
+     * @param buyerId
+     */
+    void itemBuying(Item item, Long buyerId);
 
 }

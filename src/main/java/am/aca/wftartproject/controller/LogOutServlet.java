@@ -19,7 +19,6 @@ public class LogOutServlet extends HttpServlet {
             session.setAttribute("user",null);
             session.invalidate();
         }
-
         response.sendRedirect("/index");
     }
 }

@@ -4,7 +4,7 @@ import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;

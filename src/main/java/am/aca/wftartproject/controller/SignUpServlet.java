@@ -1,17 +1,12 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import am.aca.wftartproject.util.SpringBean;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -21,14 +16,14 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        request.getRequestDispatcher("/WEB-INF/views/signUp.html")
+        request.getRequestDispatcher("/WEB-INF/views/signUp.jsp")
                 .forward(request, response);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        UserService userService = SpringBean.getBean("userService", UserServiceImpl.class);
 
         User userFromRequest = new User();
         userFromRequest.setFirstName(request.getParameter("firstName"))
@@ -37,12 +32,9 @@ public class SignUpServlet extends HttpServlet {
                 .setEmail(request.getParameter("email"))
                 .setPassword(request.getParameter("password"));
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
-        UserService userService = applicationContext.getBean("userService", UserServiceImpl.class);
-
         try {
             userService.addUser(userFromRequest);
-        }catch (ServiceException e){
+        }catch (RuntimeException e){
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage",errorMessage);
             request.getRequestDispatcher("/signup")
@@ -53,6 +45,9 @@ public class SignUpServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setAttribute("user", userFromRequest);
 
+        Cookie userEmail = new Cookie("userEmail", userFromRequest.getEmail());
+        userEmail.setMaxAge(3600);             // 60 minutes
+        response.addCookie(userEmail);
 
         try {
             response.setContentType("html/text");
@@ -60,8 +55,5 @@ public class SignUpServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
 }

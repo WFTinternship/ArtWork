@@ -2,7 +2,7 @@ package integration.dao;
 
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.*;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;

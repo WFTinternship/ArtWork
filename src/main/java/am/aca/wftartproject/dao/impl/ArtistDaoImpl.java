@@ -2,10 +2,11 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.rowmappers.ArtistMapper;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -54,7 +55,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             } else {
                 throw new DAOException("Failed to add Artist");
             }
-
 
             String query2 = "INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)";
             Object[] args = new Object[]{artist.getSpecialization().getId(), artist.getArtistPhoto(), artist.getId()};
@@ -133,16 +133,18 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             String query1 = "SELECT * FROM user WHERE id=?";
             artist = jdbcTemplate.queryForObject(query1, new Object[]{id},
-                    (rs, rowNum) -> new ArtistMapper().mapRow(rs,rowNum));
+                    (rs, rowNum) -> new ArtistMapper().mapRow(rs, rowNum));
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
-                    "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
-            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()},
-                    (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs,rowNum));
+                    "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE ar.user_id=?";
+            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{id},
+                    (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs, rowNum));
 
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
 
+        }catch (EmptyResultDataAccessException e){
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -216,6 +218,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
 
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

@@ -1,11 +1,14 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.exception.ServiceException;
+import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.service.InvalidEntryException;
+import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.service.ItemService;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,12 +17,13 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by surik on 6/1/17
  */
-
+@Transactional
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
     private ItemDao itemDao;
+    private PurchaseHistoryDao purchaseHistoryDao;
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
@@ -40,12 +44,12 @@ public class ItemServiceImpl implements ItemService {
     public void addItem(Long artistID, Item item) {
 
         if (artistID == null || artistID < 0) {
-            LOGGER.error(String.format("ArtistId is invalid: %s", artistID));
-            throw new ServiceException("Invalid artistId");
+            LOGGER.error(String.format("ArtistId is not valid: %s", artistID));
+            throw new InvalidEntryException("Invalid artistId");
         }
         if (item == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is invalid: %s", item));
-            throw new ServiceException("Invalid item");
+            LOGGER.error(String.format("Item is not valid: %s", item));
+            throw new InvalidEntryException("Invalid item");
         }
 
         try {
@@ -66,8 +70,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item findItem(Long id) {
         if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is invalid: %s", id));
-            throw new ServiceException("Invalid Id");
+            LOGGER.error(String.format("Id is not valid: %s", id));
+            throw new InvalidEntryException("Invalid Id");
         }
 
         try {
@@ -89,8 +93,8 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getRecentlyAddedItems(int limit) {
 
         if (limit <= 0) {
-            LOGGER.error(String.format("limit is invalid: %s", limit));
-            throw new ServiceException("Invalid limit");
+            LOGGER.error(String.format("limit is not valid: %s", limit));
+            throw new InvalidEntryException("Invalid limit");
         }
 
         try {
@@ -112,8 +116,8 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getItemsByTitle(String title) {
 
         if (!isEmptyString(title)) {
-            LOGGER.error(String.format("title is invalid: %s", title));
-            throw new ServiceException("Invalid title");
+            LOGGER.error(String.format("title is not valid: %s", title));
+            throw new InvalidEntryException("Invalid title");
         }
 
         try {
@@ -135,8 +139,8 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getItemsByType(String itemType) {
 
         if (!isEmptyString(itemType)) {
-            LOGGER.error(String.format("itemType is invalid: %s", itemType));
-            throw new ServiceException("Invalid itemType");
+            LOGGER.error(String.format("itemType is not valid: %s", itemType));
+            throw new InvalidEntryException("Invalid itemType");
         }
 
         try {
@@ -159,8 +163,8 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
 
         if (minPrice == null || minPrice < 0 || maxPrice == null || maxPrice < 0) {
-            LOGGER.error(String.format("price is invalid: %s , %s", minPrice, maxPrice));
-            throw new ServiceException("Invalid price");
+            LOGGER.error(String.format("price is not valid: %s , %s", minPrice, maxPrice));
+            throw new InvalidEntryException("Invalid price");
         }
 
         try {
@@ -182,8 +186,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
         if (artistId == null || artistId < 0 || itemId == null || itemId < 0 || limit == null || limit < 0) {
-            LOGGER.error(String.format("artistId or limit is invalid: %s , %s", artistId, limit));
-            throw new ServiceException("Invalid artistId or limit");
+            LOGGER.error(String.format("artistId or limit is not valid: %s , %s", artistId, limit));
+            throw new InvalidEntryException("Invalid artistId or limit");
         }
 
         try {
@@ -204,12 +208,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void updateItem(Long id, Item item) {
         if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is invalid: %s", id));
-            throw new ServiceException("Invalid Id");
+            LOGGER.error(String.format("Id is not valid: %s", id));
+            throw new InvalidEntryException("Invalid Id");
         }
         if (item == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is invalid: %s", item));
-            throw new ServiceException("Invalid item");
+            LOGGER.error(String.format("Item is not valid: %s", item));
+            throw new InvalidEntryException("Invalid item");
         }
 
         try {
@@ -229,8 +233,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteItem(Long id) {
         if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is invalid: %s", id));
-            throw new ServiceException("Invalid Id");
+            LOGGER.error(String.format("Id is not valid: %s", id));
+            throw new InvalidEntryException("Invalid Id");
         }
 
         try {
@@ -240,5 +244,15 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
+    }
+
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     * @param item
+     * @param buyerId
+     */
+    public void itemBuying(Item item, Long buyerId){
+
     }
 }
