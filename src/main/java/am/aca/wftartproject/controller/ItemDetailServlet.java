@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by ASUS on 11-Jun-17
  */
-public class ItemDetailServlet extends HttpServlet {
+public class  ItemDetailServlet extends HttpServlet {
 
     private ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
     private ItemService itemService = (ItemService) ctx.getBean("itemService");

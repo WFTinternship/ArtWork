@@ -47,6 +47,7 @@ public class LoginServlet extends HttpServlet {
 
         if (userFromDB != null) {
             HttpSession session = request.getSession(true);
+
             session.setAttribute("user", userFromDB);
 
             //setting session and cookie validity

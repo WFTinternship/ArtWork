@@ -1,6 +1,7 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
+import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.DAOException;
 import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.Item;
@@ -19,7 +20,7 @@ public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
-    private ItemDao itemDao;
+    private ItemDao itemDao ;
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
@@ -43,10 +44,10 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format("ArtistId is invalid: %s", artistID));
             throw new ServiceException("Invalid artistId");
         }
-        if (item == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is invalid: %s", item));
-            throw new ServiceException("Invalid item");
-        }
+//        if (item == null || !item.isValidItem()) {
+//            LOGGER.error(String.format("Item is invalid: %s", item));
+//            throw new ServiceException("Invalid item");
+//        }
 
         try {
             itemDao.addItem(artistID, item);

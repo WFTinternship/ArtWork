@@ -1,11 +1,13 @@
 package am.aca.wftartproject;
 
+import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.nio.file.Files;
 import java.sql.SQLException;
 
 /**
@@ -15,11 +17,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
-        ItemService itemService = (ItemService)context.getBean("itemService");
-        for(Item element:itemService.getRecentlyAddedItems(20)){
-            System.out.println(element.toString());
-
-        }
+        ItemDaoImpl = new ItemDaoImpl();
+        System.out.println(service.getArtistItems(129L,5L,65L));
 
 
 

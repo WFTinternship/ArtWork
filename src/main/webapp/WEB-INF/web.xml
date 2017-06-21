@@ -25,6 +25,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.FileUploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.HomeServlet</servlet-class>
     </servlet>

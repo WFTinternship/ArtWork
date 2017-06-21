@@ -4,6 +4,7 @@ import am.aca.wftartproject.exception.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -26,17 +27,21 @@ public class AccountServlet extends HttpServlet {
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
         ArtistService artistService = applicationContext.getBean("artistService", ArtistServiceImpl.class);
+        UserService userService = (UserService) applicationContext.getBean("userService");
 
         HttpSession session = request.getSession();
 
         User user;
+        User finduser;
         Artist artist;
+        Artist findArtist;
+
         try {
-            if (session.getAttribute("user") != null) {
-                user = (User) session.getAttribute("user");
-                artist = artistService.findArtist(user.getId());
+            if (session.getAttribute("artist") != null) {
+                artist = (Artist) session.getAttribute("artist");
+                findArtist = artistService.findArtist(artist.getId());
                 if (artist != null) {
-                    request.setAttribute("user", artist);
+                    request.setAttribute("artist", findArtist);
                 }
             } else {
                 throw new RuntimeException("Incorrect program logic");

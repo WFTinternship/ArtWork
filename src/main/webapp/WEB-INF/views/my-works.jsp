@@ -8,7 +8,7 @@
 
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
-<c:set var="recentlyAddedItems" value='<%=request.getAttribute("recentlyAddedItems")%>' />
+<c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -164,7 +164,7 @@
                                     <h2>Your ArtWorks</h2>
 
                                         <ul class="products isotope">
-                                            <c:forEach items="${recentlyAddedItems}" var="itemElement">
+                                            <c:forEach items="${artistItems}" var="itemElement">
                                                 <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->
                                                     <div class="product-container">

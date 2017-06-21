@@ -6,6 +6,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
+<c:set var="artist" value='<%=session.getAttribute("artist")%>' />
 
 
 <!Doctype html>
@@ -158,55 +159,12 @@
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->
-                                        <h3>Brennan Doe</h3>
-                                        <!-- address -->
-                                        <address>#98/5 New Avenue Street,<br>
-                                        Near New Banglow,<br>
-                                        New Delhi - 123545
-                                        </address>
-                                        <!-- phone number -->
+                                        <h3>${artist.firstName}  ${artist.lastName}</h3>
+
                                         <span class="a-phone"><i class="fa fa-phone-square"></i>: +91 123 345 6565</span>
-                                        <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">brennan@example.com</a></span>
+                                        <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">{artist.email}</a></span>
                                     </div>
                                     <div class="clearfix"></div>
-                                    <div class="table-responsive a-table">
-                                        <!-- account purchase table -->
-                                        <table class="table table-striped">
-                                            <caption>My Recent Purchases</caption>
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>25-01-15</td>
-                                                    <td>4923</td>
-                                                    <td>HTC Smart Phone</td>
-                                                    <td>$530</td>
-                                                    <td>Completed</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>15-01-15</td>
-                                                    <td>6443</td>
-                                                    <td>Kitchen Oven</td>
-                                                    <td>$330</td>
-                                                    <td>Shipped</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>14-02-15</td>
-                                                    <td>5283</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Processing</td>
-                                                </tr>                                               
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>

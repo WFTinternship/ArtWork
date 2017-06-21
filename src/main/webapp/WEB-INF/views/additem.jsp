@@ -27,6 +27,11 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <%--<script>submitForms = function(){--%>
+        <%--document.getElementById("form1").submit();--%>
+        <%--document.getElementById("form2").submit();--%>
+    <%--}</script>--%>
+
     <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
 
     <!-- **CSS - stylesheets** -->
@@ -165,41 +170,38 @@
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
                                                 <!-- edit personal details -->
-                                                <div class="form-group">
-                                                    <label for="exampleInput77">Choose Image</label>
-                                                    <form action="UploadServlet" method="post"
-                                                          enctype="multipart/form-data">
-                                                        <input type="file" id="exampleInput77" name="file" size="50" />
-                                                    </form>
-                                                </div>
+                                                <%--<div class="form-group">--%>
+                                                  <%----%>
+                                                <%--</div>--%>
+                                                <form method="post" action="uploadFile" enctype="multipart/form-data" id="form1">
+                                                    Select file to upload:
+                                                    <input type="file" name="uploadFile" />
+                                                    <input type="submit" value="Upload" />
+                                                </form>
 
-                                                <form role="form">
+                                                <form action="/additem" method="post" id="form2">
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
-                                                        <input type="text" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+                                                        <input type="text" name="title" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput2">Description</label>
-                                                        <input type="text" class="form-control" id="exampleInput2" placeholder=" write descritpion ">
+                                                        <input type="text" name="description" class="form-control" id="exampleInput2" placeholder=" write descritpion ">
                                                     </div>
-
-                                                    <select class="shop-dropdown">
+                                                    <label for="exampleInput171">Art Type</label>
+                                                    <select class="shop-dropdown" name="type" id="exampleInput171">
                                                         <option value="-1" selected>Choose art type</option>
                                                         <c:forEach items="${itemTypes}" var="element">
-                                                            <option value="${element.typeId}" class="fa fa-flask">${element.type}</option>
+                                                            <option value="${element.typeId}"   ${element.typeId == selectedDept ? 'selected="selected"' : ''} class="fa fa-flask">${element.type}</option>
                                                         </c:forEach>
-                                                        <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
-                                                        <%--<option value="2" class="fa fa-paint-brush">Oil Painting</option>--%>
-                                                        <%--<option value="2" class="fa fa-scissors">Sculpture</option>--%>
-                                                        <%--<option value="3" class="fa fa-tint">Water Painting</option>--%>
                                                     </select>
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
-                                                        <input type="text" class="form-control" id="exampleInput3" placeholder="100$">
+                                                        <input type="text" name="price" class="form-control" id="exampleInput3" placeholder="100$">
                                                     </div>
-
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>

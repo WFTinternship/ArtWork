@@ -14,8 +14,8 @@ public enum ItemType {
     private final int typeId;
     private final String type;
 
-    ItemType(int itemId, String type) {
-        this.typeId = itemId;
+    ItemType(int typeId, String type) {
+        this.typeId = typeId;
         this.type = type;
     }
 

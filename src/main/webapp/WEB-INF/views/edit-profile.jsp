@@ -165,36 +165,25 @@
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
 												<!-- edit personal details -->
-												<form role="form">
-													<div class="form-group">
+												<form role="form" action="/edit-profile" method="post">
+													<div class="form-group" >
 														<label for="exampleInput1">First Name</label>
-														<input type="text" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+														<input type="text" name="firstname" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput111">Last Name</label>
-														<input type="text" class="form-control" id="exampleInput111" placeholder="Brennan Doe">
+														<input type="text" name="lastname" class="form-control" id="exampleInput111" placeholder="Brennan Doe">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput4">Age</label>
-														<input type="text" class="form-control" id="exampleInput4" placeholder="26">
+														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="26">
 													</div>
 
 													<div class="form-group">
-														<label for="exampleInput3">Telephone</label>
-														<input type="text" class="form-control" id="exampleInput3" placeholder="+91 123 345 6565">
-													</div>
-													<div class="form-group">
-														<label for="exampleInput77">Choose Image</label>
-														<form action="UploadServlet" method="post"
-															  enctype="multipart/form-data">
-															<input type="file" id="exampleInput77" name="file" size="50" />
-														</form>
-													</div>
-													<div class="form-group">
-														<select class="shop-dropdown">
+														<select class="shop-dropdown" name="specialization">
 															<option value="-1" selected>Choose artist specialization</option>
 															<c:forEach items="${artistSpecTypes}" var="element">
-																<option value="${element.id}" class="fa fa-eyedropper">${element.type}</option>
+																<option value="${element.id}"  ${element.id == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>
 															</c:forEach>
 
 														</select>
@@ -202,19 +191,19 @@
 
 													<button type="submit" class="btn btn-warning">Update Personal Details</button>
 												</form>
+
+												<div class="form-group">
+													<label for="exampleInput77">Choose Image</label>
+													<form action="/uploadFile" method="post"
+														  enctype="multipart/form-data">
+														<input type="file" id="exampleInput77" name="file" size="50" />
+													</form>
+												</div>
 											</div>
 											<div class="col-md-6 col-sm-6">
-												<!-- username details -->
-												<form role="form">
-													<div class="form-group">
-														<label for="exampleInput21">User Name / Email</label>
-														<input type="text" class="form-control" id="exampleInput21" placeholder="Brennan Doe">
-													</div>
-													<button type="submit" class="btn btn-warning">Update Username</button>
-												</form>
 												<hr>
 												<!-- Password details -->
-												<form role="form">
+												<form role="form" >
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
 														<input type="password" class="form-control" id="exampleInput31" placeholder="Old Password">
