@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntryException(error);
         }
 
-
         try {
             userDao.addUser(user);
         } catch (DAOException e) {

@@ -1,9 +1,13 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
+import am.aca.wftartproject.util.SpringBeanType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -16,6 +20,8 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
         request.getRequestDispatcher("/WEB-INF/views/signUp.jsp")
                 .forward(request, response);
     }
@@ -23,17 +29,46 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
+//        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
+//        ArtistService artistService = SpringBean.getBeanFromSpring("artistService", ArtistService.class);
 
-        User userFromRequest = new User();
-        userFromRequest.setFirstName(request.getParameter("firstName"))
-                .setLastName(request.getParameter("lastName"))
-                .setAge(Integer.parseInt(request.getParameter("age")))
-                .setEmail(request.getParameter("email"))
-                .setPassword(request.getParameter("password"));
+
+        UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
+        ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISRSERVICE, ArtistServiceImpl.class);
+
+        User userFromRequest = null;
+        Artist artistFromRequest = null;
+
+        boolean chosenBuyerUser = request.getParameter("artistSpec")==null;
+
+        if(chosenBuyerUser){
+            userFromRequest = new User();
+            userFromRequest.setFirstName(request.getParameter("firstName"))
+                    .setLastName(request.getParameter("lastName"))
+                    .setAge(Integer.parseInt(request.getParameter("age")))
+                    .setEmail(request.getParameter("email"))
+                    .setPassword(request.getParameter("password"));
+        }else{
+            artistFromRequest = new Artist();
+            artistFromRequest.setFirstName(request.getParameter("firstName"))
+                    .setLastName(request.getParameter("lastName"))
+                    .setAge(Integer.parseInt(request.getParameter("age")))
+                    .setEmail(request.getParameter("email"))
+                    .setPassword(request.getParameter("password"));
+
+            //Photo download should be configured
+//            artistFromRequest.setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
+//                    .setArtistPhoto(request.getParameter("imageUpload"));
+
+        }
+
 
         try {
-            userService.addUser(userFromRequest);
+            if(chosenBuyerUser){
+                userService.addUser(userFromRequest);
+            }else{
+                artistService.addArtist(artistFromRequest);
+            }
         }catch (RuntimeException e){
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage",errorMessage);
@@ -43,9 +78,9 @@ public class SignUpServlet extends HttpServlet {
 
 
         HttpSession session = request.getSession(true);
-        session.setAttribute("user", userFromRequest);
+        session.setAttribute("user", chosenBuyerUser?userFromRequest:artistFromRequest);
 
-        Cookie userEmail = new Cookie("userEmail", userFromRequest.getEmail());
+        Cookie userEmail = new Cookie("userEmail", chosenBuyerUser?userFromRequest.getEmail():artistFromRequest.getEmail());
         userEmail.setMaxAge(3600);             // 60 minutes
         response.addCookie(userEmail);
 

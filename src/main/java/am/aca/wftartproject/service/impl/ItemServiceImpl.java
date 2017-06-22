@@ -199,6 +199,28 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    /**
+     * @see ItemService#getFilteredAndSortedItems(String, Integer[], String)
+     * @param itemType
+     * @param price
+     * @param sortingType
+     * @return
+     */
+    public List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType){
+        if (itemType == null) {
+            LOGGER.error(String.format("artistId or limit is not valid: %s , %s", itemType));
+            throw new InvalidEntryException("Invalid artistId or limit");
+        }
+
+        try {
+            return itemDao.getFilteredAndSortedItems(itemType,price,sortingType);
+        } catch (DAOException e) {
+            String error = "Failed to get items for the given criteria: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
+
 
     /**
      * @see ItemService#updateItem(Long, Item)

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
+import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
 
 /**
  * Created by surik on 6/3/17
@@ -33,16 +34,16 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @see ArtistService#addArtist(Artist)
      * @param artist
+     * @see ArtistService#addArtist(Artist)
      */
     @Override
     public void addArtist(Artist artist) {
-        if (artist == null || !artist.isValidArtist()) {
+        if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
             LOGGER.error(String.format("Artist is not valid: %s", artist));
             throw new InvalidEntryException("Invalid artist");
         }
-        if(artistDao.findArtist(artist.getEmail())!=null){
+        if (artistDao.findArtist(artist.getEmail()) != null) {
             String error = "User has already exists";
             LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
             throw new DuplicateEntryException(error);
@@ -59,9 +60,9 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @see ArtistService#findArtist(Long)
      * @param id
      * @return
+     * @see ArtistService#findArtist(Long)
      */
     @Override
     public Artist findArtist(Long id) {
@@ -81,9 +82,9 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @see ArtistService#findArtist(String)
      * @param email
      * @return
+     * @see ArtistService#findArtist(String)
      */
     @Override
     public Artist findArtist(String email) {
@@ -103,9 +104,9 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @see ArtistService#updateArtist(Long, Artist)
      * @param id
      * @param artist
+     * @see ArtistService#updateArtist(Long, Artist)
      */
     @Override
     public void updateArtist(Long id, Artist artist) {
@@ -129,8 +130,8 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @see ArtistService#deleteArtist(Long)
      * @param id
+     * @see ArtistService#deleteArtist(Long)
      */
     @Override
     public void deleteArtist(Long id) {

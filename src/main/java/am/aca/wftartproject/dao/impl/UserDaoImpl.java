@@ -57,7 +57,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         }
 
-//        region Version with Simple JDBC
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -112,7 +112,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         }
 
-//        region Version with Simple JDBC
+//        region <Version with Simple JDBC>
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;

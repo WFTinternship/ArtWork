@@ -6,7 +6,7 @@ import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
+import am.aca.wftartproject.util.SpringBeanType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +19,12 @@ import java.io.IOException;
  */
 public class ItemDetailServlet extends HttpServlet {
 
-    private ItemService itemService = SpringBean.getBeanFromSpring("itemService",ItemServiceImpl.class);
-    private ArtistService artistService = SpringBean.getBeanFromSpring("artistService",ArtistServiceImpl.class);
+//    private ItemService itemService = SpringBean.getBeanFromSpring("itemService",ItemServiceImpl.class);
+//    private ArtistService artistService = SpringBean.getBeanFromSpring("artistService",ArtistServiceImpl.class);
+
+
+    private ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE, ItemServiceImpl.class);
+    private ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISRSERVICE, ArtistServiceImpl.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
