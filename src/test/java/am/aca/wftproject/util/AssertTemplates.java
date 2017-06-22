@@ -1,4 +1,4 @@
-package util;
+package am.aca.wftproject.util;
 
 import am.aca.wftartproject.model.*;
 

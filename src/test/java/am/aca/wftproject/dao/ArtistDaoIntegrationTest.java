@@ -1,4 +1,4 @@
-package integration.dao;
+package am.aca.wftproject.dao;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import util.AssertTemplates;
-import util.TestObjectTemplate;
+import am.aca.wftproject.util.AssertTemplates;
+import am.aca.wftproject.util.TestObjectTemplate;
 
 import java.sql.SQLException;
 
@@ -24,6 +24,8 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 6/1/2017
  */
+
+
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -152,7 +154,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ArtistDao#findArtist(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findArtist_Failure() {
         // add artist into DB
         artistDao.addArtist(testArtist);
@@ -161,7 +163,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         Artist findArtist = artistDao.findArtist(-8L);
 
         // check artist for null
-        assertNull(findArtist.getId());
+        assertNull(findArtist);
     }
 
     /**
@@ -182,7 +184,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ArtistDao#findArtist(String)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findArtistByEmail_Failure(){
         // add artist into DB
         artistDao.addArtist(testArtist);
@@ -191,7 +193,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         Artist findArtist = artistDao.findArtist("jdpioahdpi8ua");
 
         // check for null
-        assertNull(findArtist.getId());
+        assertNull(findArtist);
     }
 
     /**

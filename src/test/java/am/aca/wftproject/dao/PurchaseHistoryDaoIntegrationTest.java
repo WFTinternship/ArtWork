@@ -1,4 +1,4 @@
-package integration.dao;
+package am.aca.wftproject.dao;
 
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.*;
@@ -14,18 +14,18 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import util.TestObjectTemplate;
+import am.aca.wftproject.util.TestObjectTemplate;
 
 import java.sql.SQLException;
 
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualPurchaseHistory;
+import static am.aca.wftproject.util.AssertTemplates.assertEqualPurchaseHistory;
 
 
 /**
  * Created by Armen on 6/2/2017
  */
-public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
+public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
@@ -162,7 +162,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void getPurchaseHistory_Failure() {
 
         // add purchaseHistory into Db

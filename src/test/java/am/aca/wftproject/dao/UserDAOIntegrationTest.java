@@ -1,4 +1,4 @@
-package integration.dao;
+package am.aca.wftproject.dao;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
@@ -11,19 +11,19 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import util.AssertTemplates;
-import util.TestObjectTemplate;
+import am.aca.wftproject.util.AssertTemplates;
+import am.aca.wftproject.util.TestObjectTemplate;
 
 import java.sql.SQLException;
 
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualUsers;
+import static am.aca.wftproject.util.AssertTemplates.assertEqualUsers;
 
 /**
  * Created by Armen on 5/30/2017
  */
-public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
+public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
@@ -160,7 +160,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see UserDao#findUser(String)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findUserByEmail_Failure(){
         // add user into DB
         userDao.addUser(testUser);

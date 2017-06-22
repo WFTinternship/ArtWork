@@ -102,9 +102,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             String query = "SELECT * FROM user WHERE id = ?";
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
-
-        } catch (EmptyResultDataAccessException e) {
-            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));

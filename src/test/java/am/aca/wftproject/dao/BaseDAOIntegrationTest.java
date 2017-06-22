@@ -1,5 +1,6 @@
-package integration.dao;
+package am.aca.wftproject.dao;
 
+import am.aca.wftproject.BaseTest;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
@@ -7,7 +8,7 @@ import javax.sql.DataSource;
 /**
  * @author surik
  */
-abstract class BaseDAOIntegrationTest {
+public abstract class BaseDAOIntegrationTest extends BaseTest {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDAOIntegrationTest.class);
 

@@ -1,4 +1,4 @@
-package integration.dao;
+package am.aca.wftproject.dao;
 
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.dao.ItemDao;
@@ -15,19 +15,19 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import util.AssertTemplates;
-import util.TestObjectTemplate;
+import am.aca.wftproject.util.AssertTemplates;
+import am.aca.wftproject.util.TestObjectTemplate;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualItems;
+import static am.aca.wftproject.util.AssertTemplates.assertEqualItems;
 
 /**
  * Created by Armen on 6/1/2017
  */
-public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
+public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
@@ -165,7 +165,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#findItem(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findItem_Failure(){
 
         // add item into DB
@@ -175,7 +175,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         Item foundItem = itemDao.findItem(135984984651L);
 
         // check foundItem for null
-        assertNull(foundItem.getId());
+        assertNull(foundItem);
 
     }
 
