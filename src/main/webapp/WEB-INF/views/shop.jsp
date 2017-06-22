@@ -173,14 +173,15 @@
                 </div>
                 <div class="fullwidth-section shop-grid"><!-- Full-width section Starts Here -->
                     <div class="sorting-products"><!-- sorting-products Starts Here -->
+                        <form action="/shop" method="post">
                         <div class="dt-sc-one-fifth column first">
                             <div class="categories">
                                 <h5>Artist Specialization</h5>
                                 <div class="selection-box">
-                                    <select class="shop-dropdown">
+                                    <select name="artSpec" class="shop-dropdown">
                                         <option value="-1" selected>Choose artist spec.</option>
                                         <c:forEach items="${artistSpecTypes}" var="element">
-                                            <option value="${element.id}"
+                                            <option value="${element.type}"
                                                     class="fa fa-eyedropper">${element.type}</option>
                                         </c:forEach>
                                         <%--<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>--%>
@@ -201,10 +202,10 @@
                             <div class="categories">
                                 <h5>Art Type</h5>
                                 <div class="selection-box">
-                                    <select class="shop-dropdown">
+                                    <select name="itemType" class="shop-dropdown">
                                         <option value="-1" selected>Choose art type</option>
                                         <c:forEach items="${itemTypes}" var="element">
-                                            <option value="${element.typeId}"
+                                            <option value="${element.type}"
                                                     class="fa fa-flask">${element.type}</option>
                                         </c:forEach>
                                         <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
@@ -220,7 +221,7 @@
                             <div class="categories">
                                 <h5>Sort By</h5>
                                 <div class="selection-box">
-                                    <select class="shop-dropdown">
+                                    <select name="sortType" class="shop-dropdown">
                                         <option value="-1" selected>Sort by</option>
                                         <option value="1" class="fa fa-mortar-board">Price</option>
                                         <option value="2" class="fa fa-mortar-board">Title</option>
@@ -234,6 +235,8 @@
                                 </div>
                             </div>
                         </div>
+                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Search</button>
+                        </form>
                         <%--<div class="dt-sc-one-fifth column">--%>
                         <%--<div class="categories">--%>
                         <%--<h5>Size &amp; Shape</h5>--%>

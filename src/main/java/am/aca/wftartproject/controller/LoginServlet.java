@@ -3,7 +3,7 @@ package am.aca.wftartproject.controller;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
+import am.aca.wftartproject.util.SpringBeanType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -14,7 +14,8 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
 
-    private UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
+//    private UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
+    private UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE,UserServiceImpl.class);
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

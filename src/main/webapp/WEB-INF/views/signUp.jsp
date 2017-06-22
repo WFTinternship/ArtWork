@@ -1,3 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
+
+
+
 <!doctype html>
 <html lang="en" class="no-js">
 
@@ -128,42 +139,46 @@
 
 				<div class="half-width">
 					<label for="artistName">FirstName</label>
-					<input type="text" id="artistName" name="artistName">
+					<input type="text" id="artistName" name="firstName">
 				</div>
 
 				<div class="half-width">
 					<label for="artistLastName">LastName</label>
-					<input type="text" id="artistLastName" name="artistLastName">
+					<input type="text" id="artistLastName" name="lastName">
 				</div>
 
 				<div class="half-width">
 					<label for="artistAge">Age</label>
-					<input type="text" id="artistAge" name="artistAge">
+					<input type="text" id="artistAge" name="age">
 				</div>
 
 				<div class="half-width">
 					<label for="artistEmail">Email</label>
-					<input type="email" id="artistEmail" name="artistEmail">
+					<input type="email" id="artistEmail" name="email">
 				</div>
 
 				<div class="half-width">
 					<label for="artistPassword">Password</label>
-					<input type="password" id="artistPassword" name="artistPassword">
+					<input type="password" id="artistPassword" name="password">
 				</div>
 
 				<div class="half-width">
 					<label for="artistPasswordRepeat">Repeat Password</label>
-					<input type="password" id="artistPasswordRepeat" name="artistPasswordRepeat">
+					<input type="password" id="artistPasswordRepeat" name="passwordRepeat">
 				</div>
 
 				<div class="half-width">
 					<label for="artistSpec">Specialization</label>
 					<br/>
-					<select id="artistSpec">
-						<option value="PAINTER">PAINTER</option>
-						<option value="SCULPTOR">SCULPTOR</option>
-						<option value="PHOTOGRAPHER">PHOTOGRAPHER</option>
-						<option value="OTHER">OTHER</option>
+					<select name="artistSpec" id="artistSpec">
+						<c:forEach items="${artistSpecTypes}" var="element">
+							<option value="${element.type}">${element.type}</option>
+						</c:forEach>
+
+						<%--<option value="PAINTER">PAINTER</option>--%>
+						<%--<option value="SCULPTOR">SCULPTOR</option>--%>
+						<%--<option value="PHOTOGRAPHER">PHOTOGRAPHER</option>--%>
+						<%--<option value="OTHER">OTHER</option>--%>
 					</select>
 				</div>
 				<br/>

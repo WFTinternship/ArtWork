@@ -5,7 +5,7 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
+import am.aca.wftartproject.util.SpringBeanType;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,7 +23,9 @@ public class AccountServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ArtistService artistService = SpringBean.getBeanFromSpring("artistService",ArtistServiceImpl.class);
+//        ArtistService artistService = SpringBean.getBeanFromSpring("artistService",ArtistServiceImpl.class);
+
+        ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISRSERVICE, ArtistServiceImpl.class);
 
         HttpSession session = request.getSession();
 

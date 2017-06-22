@@ -31,10 +31,10 @@ public enum ArtistSpecialization {
         return ArtistSpecialization.valueOf(type).getId();
     }
 
-    @Override
-    public String toString() {
-        return this.id + " " + this.type;
-    }
+//    @Override
+//    public String toString() {
+//        return this.id + " " + this.type;
+//    }
 
 
 }

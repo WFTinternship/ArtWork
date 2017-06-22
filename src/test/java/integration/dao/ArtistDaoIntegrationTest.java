@@ -27,6 +27,7 @@ import static junit.framework.TestCase.*;
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+
     private Artist testArtist;
     private ArtistDao artistDao;
 
