@@ -1,6 +1,7 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.exception.ServiceException;
+import am.aca.wftartproject.exception.service.ServiceException;
+import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.model.User;

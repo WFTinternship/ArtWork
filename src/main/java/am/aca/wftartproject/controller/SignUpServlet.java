@@ -68,8 +68,6 @@ public class SignUpServlet extends HttpServlet {
                 request.setAttribute("errorMessage",errorMessage);
                 request.getRequestDispatcher("/signup")
                         .forward(request,response);
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
             HttpSession session = request.getSession(true);
             session.setAttribute("user", artistFromRequest);
