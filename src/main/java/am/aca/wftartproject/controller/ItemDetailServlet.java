@@ -24,7 +24,7 @@ public class ItemDetailServlet extends HttpServlet {
 
 
     private ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE, ItemServiceImpl.class);
-    private ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISRSERVICE, ArtistServiceImpl.class);
+    private ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

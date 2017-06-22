@@ -275,6 +275,6 @@ public class ItemServiceImpl implements ItemService {
      * @param buyerId
      */
     public void itemBuying(Item item, Long buyerId){
-
+//TODO
     }
 }

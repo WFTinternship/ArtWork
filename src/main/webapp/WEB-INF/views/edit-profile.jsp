@@ -67,7 +67,7 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="../../resources/index.html"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
                     
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -81,7 +81,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="../../resources/index.html">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -92,26 +92,26 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/about.html">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="../../resources/gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
+                    <li class="menu-item-simple-parent"><a href="#">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="../../resources/gallery-detail.html">Gallery detail</a></li>
-                            <li><a href="../../resources/gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
-                            <li><a href="../../resources/gallery-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>
+                            <li><a href="#">Gallery detail</a></li>
+                            <li><a href="#">Gallery-detail-left-sidebar</a></li>
+                            <li><a href="#">Gallery-detail-right-sidebar</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="../../resources/shop.html">Shop <span class="fa fa-cart-plus"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
                             <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
-                            <li><a href="../../resources/shop-cart.html">Cart Page</a></li>
-                            <li><a href="../../resources/shop-checkout.html">Checkout Page</a></li>
+                            <li><a href="#">Cart Page</a></li>
+                            <li><a href="#">Checkout Page</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="/contact">contact <span class="fa fa-map-marker"></span></a>
                     </li>
 
                 </ul> <!-- Menu Ends -->
@@ -123,7 +123,7 @@
                     <h2>Product <span>Detail</span></h2>
                     <div class="user-summary">
                     	<div class="account-links">
-                        	<a href="account">My Account</a>
+                        	<a href="/account">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
@@ -150,6 +150,8 @@
 										<li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
 										<li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
 										<li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+										<li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+										<li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
 									</ul>
 								</div>
 							</div>
@@ -163,67 +165,44 @@
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
 												<!-- edit personal details -->
-												<form role="form">
-													<div class="form-group">
-														<label for="exampleInput1">Name</label>
-														<input type="text" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+												<form role="form" action="/edit-profile" method="post">
+													<div class="form-group" >
+														<label for="exampleInput1">First Name</label>
+														<input type="text" name="firstname" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
 													</div>
 													<div class="form-group">
-														<label for="exampleInput2">Email</label>
-														<input type="email" class="form-control" id="exampleInput2" placeholder="brennan@example.com">
-													</div>
-
-													<div class="form-group">
-														<label for="exampleInput3">Telephone</label>
-														<input type="text" class="form-control" id="exampleInput3" placeholder="+91 123 345 6565">
+														<label for="exampleInput111">Last Name</label>
+														<input type="text" name="lastname" class="form-control" id="exampleInput111" placeholder="Brennan Doe">
 													</div>
 													<div class="form-group">
-														<label for="exampleInput77">Choose Image</label>
-														<form action="UploadServlet" method="post"
-															  enctype="multipart/form-data">
-															<input type="file" name="file" size="50" />
-														</form>
-														<input type="submit" class="btn btn-warning"  id="exampleInput77" value="Upload File" />
+														<label for="exampleInput4">Age</label>
+														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="26">
 													</div>
 
-													<div class="form-group">
-														<label for="exampleInput4">Address</label>
-														<textarea class="form-control" id="exampleInput4" rows="2">#98/5 New Avenue Street, Near New Banglow
-														</textarea>
-													</div>
-													<div class="form-group">
-														<label for="exampleInput5">Country</label>
-														<select class="form-control" id="exampleInput5">
-															<option>India</option>
-															<option>Sri Lanka</option>
-															<option>Nepal</option>
-															<option>United Kingdom</option>
-															<option>Other</option>
-														</select>
-													</div>
-													<div class="form-group">
-														<label for="exampleInput6">City</label>
-														<input type="text" class="form-control" id="exampleInput6" placeholder="New Delhi">
-													</div>
-													<div class="form-group">
-														<label for="exampleInput7">State</label>
-														<input type="text" class="form-control" id="exampleInput7" placeholder="Delhi">
-													</div>
+													<%--<div class="form-group">--%>
+														<%--<select class="shop-dropdown" name="specialization">--%>
+															<%--<option value="-1" selected>Choose artist specialization</option>--%>
+															<%--<c:forEach items="${artistSpecTypes}" var="element">--%>
+																<%--<option value="${element.id}"  ${element.id == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>--%>
+															<%--</c:forEach>--%>
+
+														<%--</select>--%>
+													<%--</div>--%>
+
 													<button type="submit" class="btn btn-warning">Update Personal Details</button>
 												</form>
 											</div>
 											<div class="col-md-6 col-sm-6">
-												<!-- username details -->
-												<form role="form">
-													<div class="form-group">
-														<label for="exampleInput21">User Name / Login Id</label>
-														<input type="text" class="form-control" id="exampleInput21" placeholder="Brennan Doe">
-													</div>
-													<button type="submit" class="btn btn-warning">Update Username</button>
-												</form>
-												<hr>
+												<div class="form-group">
+													<form action="/uploadFile" method="post" enctype="multipart/form-data">
+														<label for="imageUpload">Choose Avatar</label>
+														<input type="file" id="imageUpload" name="file" size="50" />
+														<img src="" id="imagePreview" alt="" width="200px"/><br/>
+														<button type="submit" class="btn btn-warning">Upload</button>
+													</form>
+												</div>
 												<!-- Password details -->
-												<form role="form">
+												<form role="form" >
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
 														<input type="password" class="form-control" id="exampleInput31" placeholder="Old Password">
@@ -272,8 +251,28 @@
         </div><!-- Main Ends Here-->
 	</div>
 </div><!-- **Wrapper Ends** -->
-    
-<!-- **jQuery** -->  
+
+<!-- **jQuery** -->
+
+	<script src="../../resources/js/jquery-2.1.4.js"></script>
+	<script src="../../resources/js/signUp-velocity.min.js"></script>
+	<script src="../../resources/js/signUp-main-min.js"></script> <!-- Resource jQuery -->
+	<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-48014931-1', 'codyhouse.co');
+        ga('send', 'pageview');
+
+        jQuery(document).ready(function($){
+            $('.close-carbon-adv').on('click', function(event){
+                event.preventDefault();
+                $('#carbonads-container').hide();
+            });
+        });
+	</script>
 	<script src="../../resources/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="../../resources/js/jquery.isotope.min.js"></script>

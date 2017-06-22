@@ -67,7 +67,7 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="../../resources/index.html"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
                     
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -81,20 +81,14 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="../../resources/index.html">Home <span class="fa fa-home"></span></a>
-                        <ul class="sub-menu">
-                        	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
+                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
+
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/about.html">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="../../resources/gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
+                    <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
                             <li><a href="../../resources/gallery-detail.html">Gallery detail</a></li>
                             <li><a href="../../resources/gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
@@ -102,7 +96,7 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="../../resources/shop.html">Shop <span class="fa fa-cart-plus"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
                             <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
                             <li><a href="../../resources/shop-cart.html">Cart Page</a></li>
@@ -111,7 +105,7 @@
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="/contact">contact <span class="fa fa-map-marker"></span></a>
                     </li>
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->            
@@ -149,6 +143,8 @@
                                         <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
                                         <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
                                         <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -162,55 +158,12 @@
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->
-                                        <h3>Brennan Doe</h3>
-                                        <!-- address -->
-                                        <address>#98/5 New Avenue Street,<br>
-                                        Near New Banglow,<br>
-                                        New Delhi - 123545
-                                        </address>
-                                        <!-- phone number -->
+                                        <h3>${user.firstName}  ${user.lastName}</h3>
+
                                         <span class="a-phone"><i class="fa fa-phone-square"></i>: +91 123 345 6565</span>
-                                        <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">brennan@example.com</a></span>
+                                        <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">${user.email}</a></span>
                                     </div>
                                     <div class="clearfix"></div>
-                                    <div class="table-responsive a-table">
-                                        <!-- account purchase table -->
-                                        <table class="table table-striped">
-                                            <caption>My Recent Purchases</caption>
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>25-01-15</td>
-                                                    <td>4923</td>
-                                                    <td>HTC Smart Phone</td>
-                                                    <td>$530</td>
-                                                    <td>Completed</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>15-01-15</td>
-                                                    <td>6443</td>
-                                                    <td>Kitchen Oven</td>
-                                                    <td>$330</td>
-                                                    <td>Shipped</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>14-02-15</td>
-                                                    <td>5283</td>
-                                                    <td>Study Table</td>
-                                                    <td>$230</td>
-                                                    <td>Processing</td>
-                                                </tr>                                               
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>

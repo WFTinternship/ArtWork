@@ -93,6 +93,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get purchase item by userId and itemId: %s %s", userId, itemId));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get PurchaseHistory: %s";
@@ -148,6 +149,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             purchaseHistoryList = this.jdbcTemplate.query(query, new Object[]{userId}, new PurchaseHistoryMapper());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get purchase history by userId: %s", userId));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get PurchaseHistory: %s";

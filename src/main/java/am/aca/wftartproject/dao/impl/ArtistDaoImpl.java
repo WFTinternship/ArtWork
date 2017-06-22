@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -19,7 +20,7 @@ import java.sql.Statement;
 /**
  * Created by ASUS on 27-May-17
  */
-
+@Service
 public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
@@ -57,7 +58,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             }
 
             String query2 = "INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)";
-            Object[] args = new Object[]{artist.getSpecialization().getId(), artist.getArtistPhoto(), artist.getId()};
+            Object[] args = new Object[]{artist.getSpecialization().getSpecId(), artist.getArtistPhoto(), artist.getId()};
 
             rowsAffected = jdbcTemplate.update(query2, args);
             if (rowsAffected <= 0) {
@@ -144,6 +145,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                     .setSpecialization(tempArtist.getSpecialization());
 
         }catch (EmptyResultDataAccessException e){
+            LOGGER.warn(String.format("No artist found by id: %s", id));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get Artist: %s";
@@ -219,6 +221,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
                     .setSpecialization(tempArtist.getSpecialization());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("No artist found by email: %s", email));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get Artist: %s";

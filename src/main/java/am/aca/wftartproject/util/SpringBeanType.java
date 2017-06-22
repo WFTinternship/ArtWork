@@ -5,7 +5,7 @@ package am.aca.wftartproject.util;
  */
 public enum SpringBeanType {
     USERSERVICE("userService"),
-    ARTISRSERVICE("artistService"),
+    ARTISTSERVICE("artistService"),
     ITEMSERVICE("itemService"),
     SHOPPINGCARDSERVICE("shoppingCardService"),
     PURCHUSEHISTORYSERVICE("purchaseHistoryService"),

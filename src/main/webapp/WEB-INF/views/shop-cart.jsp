@@ -1,3 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -17,25 +26,25 @@
 	    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
     
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />    
+    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
     
     <!-- **CSS - stylesheets** -->
-	<link id="default-css" rel="stylesheet" href="style.css" type="text/css" media="all" />
+	<link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all" />
 	
     <!-- **Additional - stylesheets** -->
-    <link href="css/animations.css" rel="stylesheet" type="text/css" media="all" />
-	<link id="shortcodes-css" href="css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
-    <link id="skin-css" href="skins/red/style.css" rel="stylesheet" media="all" />
-    <link href="css/isotope.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="css/prettyPhoto.css" rel="stylesheet" type="text/css" />
-    <link href="css/pace.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="css/responsive.css" type="text/css" media="all"/>
-	<script src="js/modernizr.js"></script> <!-- Modernizr -->                 
+    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all" />
+	<link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
+    <link id="skin-css" href="../../resources/skins/red/style.css" rel="stylesheet" media="all" />
+    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="../../resources/css/responsive.css" type="text/css" media="all"/>
+	<script src="../../resources/js/modernizr.js"></script> <!-- Modernizr -->
     
-	<link id="light-dark-css" href="dark/dark.css" rel="stylesheet" media="all" />    
+	<link id="light-dark-css" href="../../resources/dark/dark.css" rel="stylesheet" media="all" />
 
     <!-- **Font Awesome** -->
-	<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+	<link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css" />
     
 </head>
 
@@ -51,7 +60,7 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="index.jsp"><img alt="Logo" src="images/logo.png"></a>
+                    <a class="logo" href="index.jsp"><img alt="Logo" src="../../resources/images/logo.png"></a>
                     
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -65,7 +74,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="index.jsp">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -76,7 +85,7 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="about.jsp">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
@@ -86,33 +95,43 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="shop.jsp">Shop <span class="fa fa-cart-plus"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="shop-detail.jsp">Shop Detail</a></li>
-                            <li class="current_page_item"><a href="shop-cart.jsp">Cart Page</a></li>
+                            <li><a href="/shop-detail">Shop Detail</a></li>
+                            <li class="current_page_item"><a href="/shop-cart">Cart Page</a></li>
                             <li><a href="shop-checkout.html">Checkout Page</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
+                    <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
                         <ul class="sub-menu">
                             <li><a href="blog-detail.html">Blog detail</a></li>
                             <li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>
                             <li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>
                         </ul>
                         <a class="dt-menu-expand">+</a>
-                    </li>
+                    </li>--%>
                     <li class="menu-item-simple-parent">
-                        <a href="contact.jsp">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="/contact">contact <span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
-                        <a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>
+                        <a href="<%--progressbar.html--%>">Account <span class="fa fa-paint-brush"></span></a>
                         <ul class="sub-menu">
-                            <li><a href="progressbar.html"> Progress-bar </a></li>
+                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>
                             <li><a href="buttons.html"> Buttons Page </a></li>
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
-                            <li><a href="columns.html"> columns </a></li>
+                            <li><a href="columns.html"> columns </a></li>--%>
+                            <li><a href="/account">My Account </a></li>
+                            <c:choose>
+                                <c:when test="${user==null}">
+                                    <li><a href="/login">Log in </a></li>
+                                    <li><a href="/signup">Sign up </a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="/logout">Log out </a></li>
+                                </c:otherwise>
+                            </c:choose>
                         </ul>    
                         <a class="dt-menu-expand">+</a>
                     </li>                                         
@@ -125,7 +144,7 @@
                     <h2>Shop <span>Cart</span></h2>
                     <div class="user-summary">
                     	<div class="account-links">
-                        	<a href="#">My Account</a>
+                        	<a href="/account">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
@@ -154,12 +173,12 @@
                                     <tr class = "cart_table_item">
                                         <!-- The thumbnail -->
                                         <td class="product-thumbnail">
-                                            <a href="shop-detail.jsp"><img src="http://placehold.it/75x75&text=Thumb+1" class="attachment-shop_thumbnail wp-post-image" alt="T_7_front" /></a>
+                                            <a href="/shop-detail"><img src="http://placehold.it/75x75&text=Thumb+1" class="attachment-shop_thumbnail wp-post-image" alt="T_7_front" /></a>
                                         </td>
             
                                         <!-- Product Name -->
                                         <td class="product-name">
-                                            <h6><a href="shop-detail.jsp">Secret To Creativity</a></h6>
+                                            <h6><a href="/shop-detail">Secret To Creativity</a></h6>
                                         </td>
             
                                         <!-- Product price -->
@@ -225,18 +244,18 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <input type="submit" class="button" name="update_cart" value="Update Cart">
+                            <%--<input type="submit" class="button" name="update_cart" value="Update Cart">--%>
                             <input type="submit" class="button" name="continue" value="Continue Shopping">                          
                         </form>
                         <div class="cart-collaterals">
-                            <div class="coupon">
+                            <%--<div class="coupon">
                             	<h3>Coupon</h3>
                                 <form action="#" method="post">
                                     <label for="coupon_code">Enter Coupon Code</label> 
                                     <input name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Enter Code" />
                                     <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
                                 </form>                                
-                            </div>
+                            </div>--%>
                             <div class="cart_totals">
                             	<h3>Cart Totals</h3>
                                 <table>
@@ -244,7 +263,7 @@
                                     
                                         <tr class="cart-subtotal">
                                             <th>Cart Subtotal</th>
-                                            <td><span class="amount"><i class="fa fa-gbp"></i> 150</span></span></td>
+                                            <td><span class="amount"><i class="fa fa-gbp"></i> 150</span></td>
                                         </tr>
                                         
                                         <tr class="shipping">
@@ -254,7 +273,7 @@
                                         
                                         <tr class="total">
                                             <th>Order Price Total</th>
-                                            <td><strong><span class="amount"><i class="fa fa-gbp"></i> 150</span></span></strong></td>
+                                            <td><strong><span class="amount"><i class="fa fa-gbp"></i> 150</span></strong></td>
                                         </tr>
                                     
                                     </tbody>
@@ -291,11 +310,11 @@
 </div><!-- **Wrapper Ends** -->
     
 <!-- **jQuery** -->  
-	<script src="js/jquery-1.11.2.min.js" type="text/javascript"></script>
+	<script src="../../resources/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 
-	<script src="js/jsplugins.js" type="text/javascript"></script>
+	<script src="../../resources/js/jsplugins.js" type="text/javascript"></script>
     
-	<script src="js/custom.js"></script>
+	<script src="../../resources/js/custom.js"></script>
         
 </body>
 </html>

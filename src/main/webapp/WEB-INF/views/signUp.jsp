@@ -185,7 +185,7 @@
 				<div class="half-width">
 					<input type="file" name="imageUpload" id="imageUpload" class="hide"/>
 					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
-					<img src="" id="imagePreview" alt="Preview Image" width="200px"/>
+					<img src="" id="imagePreview" alt="" width="200px"/>
 				</div>
 
 			</fieldset>
