@@ -17,9 +17,6 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
-        ItemDaoImpl = new ItemDaoImpl();
-        System.out.println(service.getArtistItems(129L,5L,65L));
-
 
 
 //        ArtistSpecialization[] art = ArtistSpecialization.values();

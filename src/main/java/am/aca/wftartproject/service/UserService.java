@@ -46,4 +46,12 @@ public interface UserService {
      */
     void deleteUser(Long id);
 
+    /**
+     * Authenticates user info.
+     * @param email
+     * @param password
+     * @return
+     */
+    User login(String email, String password);
+
 }

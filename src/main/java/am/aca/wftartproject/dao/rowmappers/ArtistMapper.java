@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class ArtistMapper implements RowMapper<Artist> {
 
-
+    @Override
     public Artist mapRow(ResultSet rs, int rowNum) throws SQLException {
         Artist artist = new Artist();
         artist.setId(rs.getLong("id"))
@@ -24,6 +24,7 @@ public class ArtistMapper implements RowMapper<Artist> {
                 .setPassword(rs.getString("password"));
         return artist;
     }
+
 
     public Artist mapRowSecond(ResultSet rs, int rowNum) throws SQLException {
         Artist artist = new Artist();

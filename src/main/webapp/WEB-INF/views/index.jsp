@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>--%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -569,23 +569,23 @@
 </div><!-- **Wrapper Ends** -->
 	
 <!-- **jQuery** -->  
-	<script src="../../resources/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 
-    <script src="../../resources/js/jquery.inview.js" type="text/javascript"></script>
-    <script src="../../resources/js/jquery.viewport.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.inview.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.viewport.js" type="text/javascript"></script>
     
-    <script type="text/javascript" src="../../resources/js/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.isotope.min.js"></script>
     
-	<script src="../../resources/js/jsplugins.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/jsplugins.js" type="text/javascript"></script>
     
-	<script src="../../resources/js/jquery.prettyPhoto.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.prettyPhoto.js" type="text/javascript"></script>
     
-	<script src="../../resources/js/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.validate.min.js" type="text/javascript"></script>
     
-    <script src="../../resources/js/jquery.tipTip.minified.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.tipTip.minified.js" type="text/javascript"></script>
     
-    <script type="text/javascript" src="../../resources/js/jquery.bxslider.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.bxslider.min.js"></script>
     
-	<script src="../../resources/js/custom.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 </body>
 </html>

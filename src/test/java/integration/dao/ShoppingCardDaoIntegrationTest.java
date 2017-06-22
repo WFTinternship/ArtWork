@@ -4,7 +4,7 @@ import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;

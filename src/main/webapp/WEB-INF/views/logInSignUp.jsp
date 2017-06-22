@@ -5,7 +5,7 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<c:set var="user" value='<%=request.getAttribute("user")%>'/>
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
 <c:set var="errorMessage" value='<%=request.getAttribute("errorMessage")%>'/>
 
 
@@ -70,12 +70,12 @@
                     </label>
                     <input name="password" type="password" required autocomplete="off"/>
                 </div>
-                <div class="field-wrap">
-                    <label>
-                        Re-type Password<span class="req"></span>
-                    </label>
-                    <input name="password2" type="password" required autocomplete="off"/>
-                </div>
+                <%--<div class="field-wrap">--%>
+                    <%--<label>--%>
+                        <%--Re-type Password<span class="req"></span>--%>
+                    <%--</label>--%>
+                    <%--<input name="password2" type="password" required autocomplete="off"/>--%>
+                <%--</div>--%>
                 <button type="submit" class="button button-block">Get Started</button>
             </form>
         </div>

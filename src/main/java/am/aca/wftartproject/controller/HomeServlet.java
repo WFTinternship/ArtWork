@@ -1,14 +1,15 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ArtistSpecializationServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import am.aca.wftartproject.util.SpringBean;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -20,14 +21,13 @@ public class HomeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ApplicationContext  applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
-        ArtistSpecializationService artistSpecialization = applicationContext.getBean("artistSpecializationService", ArtistSpecializationServiceImpl.class);
-        UserService userService = applicationContext.getBean("userService", UserServiceImpl.class);
+        ArtistSpecializationService artistSpecialization = SpringBean.getBeanFromSpring("artistSpecializationService", ArtistSpecializationServiceImpl.class);
+        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
+        ArtistService artistService = SpringBean.getBeanFromSpring("artistService", ArtistServiceImpl.class);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
-
 
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
@@ -40,12 +40,21 @@ public class HomeServlet extends HttpServlet {
         }
 
         if(userEmailFromCookie!=null){
-            User user = userService.findUser(userEmailFromCookie);
-            HttpSession session = request.getSession(true);
-            session.setAttribute("user",user);
+            if(artistService.findArtist(userEmailFromCookie) != null) {
+                Artist artist = artistService.findArtist(userEmailFromCookie);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("artist", artist);
+            }
+            else {
+                if(userService.findUser(userEmailFromCookie) != null){
+                    User user = userService.findUser(userEmailFromCookie);
+                    HttpSession session = request.getSession(true);
+                    session.setAttribute("user", user);
+                }
+            }
         }
 
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/index.jsp")
+                .forward(request, response);
     }
 }

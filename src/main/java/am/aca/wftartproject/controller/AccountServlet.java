@@ -11,10 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -35,16 +32,51 @@ public class AccountServlet extends HttpServlet {
         User finduser;
         Artist artist;
         Artist findArtist;
+        Cookie[] cookies = request.getCookies();
+        String userEmailFromCookie = null;
 
         try {
-            if (session.getAttribute("artist") != null) {
-                artist = (Artist) session.getAttribute("artist");
-                findArtist = artistService.findArtist(artist.getId());
-                if (artist != null) {
-                    request.setAttribute("artist", findArtist);
+            if (session.getAttribute("user") != null ) {
+                if (session.getAttribute("user").getClass().isInstance(User.class)) {
+                    user = (User) session.getAttribute("user");
+                    finduser = userService.findUser(user.getId());
+                    if (user != null) {
+                        request.setAttribute("user", finduser);
+                    } else {
+                        throw new RuntimeException("Incorrect program logic");
+                    }
+                } else if (session.getAttribute("user").getClass().isInstance(Artist.class)) {
+                    artist = (Artist) session.getAttribute("user");
+                    findArtist = artistService.findArtist(artist.getId());
+                    if (artist != null) {
+                        request.setAttribute("user", findArtist);
+                    } else {
+                        throw new RuntimeException("Incorrect program logic");
+                    }
                 }
-            } else {
-                throw new RuntimeException("Incorrect program logic");
+            }
+            else {
+                if(cookies != null) {
+                    for(Cookie ckElement: cookies){
+                        if(ckElement.getName().equals("userEmail")){
+                            userEmailFromCookie = ckElement.getValue();
+                        }
+                    }
+                    if(userEmailFromCookie!=null){
+                        if(artistService.findArtist(userEmailFromCookie) != null) {
+                            Artist artistFromCookies = artistService.findArtist(userEmailFromCookie);
+                            HttpSession sessionForArtist = request.getSession(true);
+                            session.setAttribute("user", artistFromCookies);
+                        }
+                        else {
+                            if(userService.findUser(userEmailFromCookie) != null){
+                                User userFromCookies = userService.findUser(userEmailFromCookie);
+                                HttpSession sessionForUser = request.getSession(true);
+                                session.setAttribute("user", userFromCookies);
+                            }
+                        }
+                    }
+                }
             }
         } catch (ServiceException e) {
             String errorMessage = String.format("There is problem with artist info retrieving: %s", e.getMessage());

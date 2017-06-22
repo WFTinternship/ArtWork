@@ -14,7 +14,6 @@
     </filter-mapping>
 
 
-
     <servlet>
         <servlet-name>ShopServlet</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.ShopServlet</servlet-class>
@@ -42,6 +41,7 @@
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
+
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -79,6 +79,11 @@
         <servlet-name>My Account</servlet-name>
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>My Account</servlet-name>
+        <url-pattern>/account/*</url-pattern>
+    </servlet-mapping>
+
 
     <servlet>
         <servlet-name>Edit Profile</servlet-name>

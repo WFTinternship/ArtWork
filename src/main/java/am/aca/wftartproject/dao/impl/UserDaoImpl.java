@@ -2,10 +2,11 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.rowmappers.UserMapper;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -26,8 +27,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     /**
-     * @see UserDao#addUser(User)
      * @param user
+     * @see UserDao#addUser(User)
      */
     @Override
     public void addUser(User user) {
@@ -56,6 +57,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         }
 
+//        region Version with Simple JDBC
+
 //        Connection conn = null;
 //        PreparedStatement ps = null;
 //        ResultSet rs = null;
@@ -83,27 +86,32 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //            closeResources(rs, ps, conn);
 //        }
 
+//        endregion
+
     }
 
 
     /**
-     * @see UserDao#findUser(Long)
      * @param id
      * @return
+     * @see UserDao#findUser(Long)
      */
     @Override
     public User findUser(Long id) {
-        User user;
+
         try {
             String query = "SELECT * FROM user WHERE id = ?";
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
 
-            user = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return user;
+
+//        region Version with Simple JDBC
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -133,29 +141,32 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //            closeResources(rs, ps, conn);
 //        }
 //        return user;
+
+//        endregion
     }
 
 
     /**
-     * @see UserDao#findUser(String)
      * @param email
      * @return
+     * @see UserDao#findUser(String)
      */
     @Override
     public User findUser(String email) {
-
-        User user;
         try {
             String query = "SELECT * FROM user WHERE email = ?";
+            return jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
 
-            user = jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return user;
 
+
+//        region Version with Simple JDBC
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -185,17 +196,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //            closeResources(rs, ps, conn);
 //        }
 //        return user;
+
+
+//        endregion
+
     }
 
 
     /**
-     * @see UserDao#updateUser(Long, User)
      * @param id
      * @param user
+     * @see UserDao#updateUser(Long, User)
      */
     @Override
     public Boolean updateUser(Long id, User user) {
-        Boolean status = false;
+        Boolean status;
         try {
             String query = "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?";
 
@@ -212,6 +227,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         }
         return status;
+
+
+//        region Version with Simple JDBC
+
 
 //        Connection conn = null;
 //        PreparedStatement ps = null;
@@ -236,12 +255,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //            closeResources(ps, conn);
 //        }
 //        return success;
+
+
+//        endregion
+
     }
 
 
     /**
-     * @see UserDao#deleteUser(Long)
      * @param id
+     * @see UserDao#deleteUser(Long)
      */
     @Override
     public Boolean deleteUser(Long id) {
@@ -261,6 +284,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return true;
 
 
+//        region Version with Simple JDBC
+
 //        Connection conn = null;
 //        PreparedStatement ps = null;
 //        Boolean success = false;
@@ -279,6 +304,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 //            closeResources(ps, conn);
 //        }
 //        return success;
-    }
 
+//        endregion
+
+
+    }
 }

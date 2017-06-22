@@ -2,8 +2,8 @@ package am.aca.wftartproject.service.impl;
 
 
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
-import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.exception.ServiceException;
+import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author surik
  */
+@Transactional(readOnly = true)
 public class ArtistSpecializationServiceImpl implements ArtistSpecializationService {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistService.class);
@@ -33,7 +34,6 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#addArtistSpecialization()
      */
     @Override
-    @Transactional("transactionManager")
     public void addArtistSpecialization() {
         try {
             lkpDao.addArtistSpecialization();
@@ -51,7 +51,6 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @return
      */
     @Override
-    @Transactional("transactionManager")
     public ArtistSpecialization getArtistSpecialization(int id) {
         try {
             return lkpDao.getArtistSpecialization(id);
@@ -69,7 +68,6 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @return
      */
     @Override
-    @Transactional("transactionManager")
     public ArtistSpecialization getArtistSpecialization(String specialization) {
         try {
             return lkpDao.getArtistSpecialization(specialization);
@@ -85,7 +83,6 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#deleteArtistSpecialization()
      */
     @Override
-    @Transactional("transactionManager")
     public void deleteArtistSpecialization() {
         try {
             lkpDao.deleteArtistSpecialization();

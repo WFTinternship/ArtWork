@@ -53,6 +53,12 @@
     <!-- **Font Awesome** -->
     <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
 
+    <%--fancybox--%>
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
+
 </head>
 
 <body>
@@ -189,7 +195,7 @@
                     <div class="cart-wrapper"><!-- *cart-wrapper starts here** -->
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
-                                <a href="#">
+                                <a data-fancybox="gallery" href="${itemDetail.getPhotoURL()}">
                                     <img src="${itemDetail.getPhotoURL()}" alt="" title="Acrylic">
                                 </a>
                             </div>

@@ -104,6 +104,7 @@ public class FileUploadServlet extends HttpServlet {
         }
         // redirects client to message page
         request.getSession().setAttribute("photourl",filePath);
-        response.sendRedirect("/additem");
+        request.getRequestDispatcher("/edit-profile")
+                .forward(request, response);
     }
 }

@@ -2,10 +2,11 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.rowmappers.ItemMapper;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -106,20 +107,18 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public Item findItem(Long id) {
 
-        Item item;
         try {
-            String query = "SELECT * FROM item WHERE id = ?";
 
-            item = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ItemMapper().mapRow(rs, rowNum));
-            if (item == null) {
-                throw new DAOException("Failed to get Item");
-            }
+            String query = "SELECT * FROM item WHERE id = ?";
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ItemMapper().mapRow(rs, rowNum));
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return item;
 
 //        region <Version with Simple JDBC>
 
@@ -168,6 +167,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String query = "SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?";
             itemList = this.jdbcTemplate.query(query, new Object[]{limit}, new ItemMapper());
 
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -224,8 +225,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE title=?";
-
             itemList = this.jdbcTemplate.query(query, new Object[]{title}, new ItemMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByTitle: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -281,8 +284,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE type =?";
-
             itemList = this.jdbcTemplate.query(query, new Object[]{itemType}, new ItemMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByType: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -338,8 +343,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE status=0 AND price BETWEEN ? AND ?";
-
             itemList = this.jdbcTemplate.query(query, new Object[]{minPrice, maxPrice}, new ItemMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get items by the given price range: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -395,8 +402,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE artist_id=? AND id!=? LIMIT ?";
-
             itemList = this.jdbcTemplate.query(query, new Object[]{artistId, itemId, limit}, new ItemMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get items for the given artistId: %s";
             LOGGER.error(String.format(error, e.getMessage()));

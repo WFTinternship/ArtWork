@@ -30,12 +30,15 @@ public class AuthenticationFilter implements Filter {
 
         this.context.log("Requested Resource::" + uri);
 
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession(true);
 
-        if (session == null && !(uri.endsWith("/index"))) {
+//        if (session == null && !uri.endsWith("index")) {
+//            this.context.log("Unauthorized access request");
+//            res.sendRedirect("/index");
+//        } else
+
+        if (session.getAttribute("user") == null && uri.endsWith("account")) {
             this.context.log("Unauthorized access request");
-            res.sendRedirect("/index");
-        } else if (session != null && session.getAttribute("artist") == null && uri.endsWith("/account")) {
             res.sendRedirect("/login");
         } else {
             // pass the request along the filter chain

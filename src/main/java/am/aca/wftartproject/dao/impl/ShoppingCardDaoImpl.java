@@ -2,10 +2,11 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.rowmappers.ShoppingCardMapper;
-import am.aca.wftartproject.exception.DAOException;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -96,17 +97,17 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     @Override
     public ShoppingCard getShoppingCard(Long id) {
 
-        ShoppingCard shoppingCard;
         try {
             String query = "SELECT * FROM shopping_card WHERE id=?";
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs,rowNum));
 
-            shoppingCard = jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs,rowNum));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-        return shoppingCard;
 
 //        region <Version with Simple JDBC>
 

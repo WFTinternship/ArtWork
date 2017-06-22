@@ -6,7 +6,6 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
-<c:set var="artist" value='<%=session.getAttribute("artist")%>' />
 
 
 <!Doctype html>
@@ -159,10 +158,10 @@
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->
-                                        <h3>${artist.firstName}  ${artist.lastName}</h3>
+                                        <h3>${user.firstName}  ${user.lastName}</h3>
 
                                         <span class="a-phone"><i class="fa fa-phone-square"></i>: +91 123 345 6565</span>
-                                        <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">{artist.email}</a></span>
+                                        <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">${user.email}</a></span>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

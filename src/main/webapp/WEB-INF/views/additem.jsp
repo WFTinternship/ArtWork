@@ -164,7 +164,7 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <!-- top heading -->
-                                    <h2>Edit Profile</h2>
+                                    <h2>Add ArtWork</h2>
                                     <!-- profile edit form -->
                                     <div class="edit-form">
                                         <div class="row">

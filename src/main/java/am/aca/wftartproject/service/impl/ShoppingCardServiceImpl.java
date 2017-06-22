@@ -1,17 +1,20 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.exception.ServiceException;
+import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.service.InvalidEntryException;
+import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 
 /**
  * Created by ASUS on 03-Jun-17
  */
+@Transactional(readOnly = true)
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
@@ -36,12 +39,12 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
         if (userId == null || userId < 0){
-            LOGGER.error(String.format("userId is invalid: %s", userId));
-            throw new ServiceException("Invalid userId");
+            LOGGER.error(String.format("UserId is not valid: %s", userId));
+            throw new InvalidEntryException("Invalid userId");
         }
         if (!shoppingCard.isValidShoppingCard()){
-            LOGGER.error(String.format("Shopping card is invalid: %s", shoppingCard));
-            throw new ServiceException("Invalid shoppingCard");
+            LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
+            throw new InvalidEntryException("Invalid shoppingCard");
         }
         try {
             shoppingCardDao.addShoppingCard(userId, shoppingCard);
@@ -61,8 +64,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     @Override
     public ShoppingCard getShoppingCard(Long id) {
         if (id == null || id < 0){
-            LOGGER.error(String.format("Id is invalid: %s", id));
-            throw new ServiceException("Invalid id");
+            LOGGER.error(String.format("Id is not valid: %s", id));
+            throw new InvalidEntryException("Invalid id");
         }
         try {
             return shoppingCardDao.getShoppingCard(id);
@@ -82,12 +85,12 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     @Override
     public void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException {
         if (id == null || id < 0){
-            LOGGER.error(String.format("Id is invalid: %s", id));
-            throw new ServiceException("Invalid id");
+            LOGGER.error(String.format("Id is not valid: %s", id));
+            throw new InvalidEntryException("Invalid id");
         }
         if (!shoppingCard.isValidShoppingCard()){
-            LOGGER.error(String.format("Shopping card is invalid: %s", shoppingCard));
-            throw new ServiceException("Invalid shoppingCard");
+            LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
+            throw new InvalidEntryException("Invalid shoppingCard");
         }
         try {
             shoppingCardDao.updateShoppingCard(id, shoppingCard);
@@ -106,8 +109,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     @Override
     public void deleteShoppingCard(Long id) {
         if (id == null || id < 0){
-            LOGGER.error(String.format("Id is invalid: %s", id));
-            throw new ServiceException("Invalid id");
+            LOGGER.error(String.format("Id is not valid: %s", id));
+            throw new InvalidEntryException("Invalid id");
         }
         try {
             shoppingCardDao.deleteShoppingCard(id);

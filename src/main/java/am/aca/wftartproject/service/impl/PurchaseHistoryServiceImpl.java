@@ -1,17 +1,20 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.exception.DAOException;
-import am.aca.wftartproject.exception.ServiceException;
+import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.service.InvalidEntryException;
+import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * Created by surik on 6/1/17
  */
+@Transactional
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
@@ -35,8 +38,8 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
-            LOGGER.error(String.format("purchaseHistory is invalid: %s", purchaseHistory));
-            throw new ServiceException("Invalid purchaseHistory");
+            LOGGER.error(String.format("PurchaseHistory is not valid: %s", purchaseHistory));
+            throw new InvalidEntryException("Invalid purchaseHistory");
         }
 
         try {
@@ -58,12 +61,12 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
         if (userId == null || userId < 0){
-            LOGGER.error(String.format("userId is invalid: %s", userId));
-            throw new ServiceException("Invalid userId");
+            LOGGER.error(String.format("UserId is not valid: %s", userId));
+            throw new InvalidEntryException("Invalid userId");
         }
         if (itemId == null || itemId < 0) {
-            LOGGER.error(String.format("itemId is invalid: %s", itemId));
-            throw new ServiceException("Invalid itemId");
+            LOGGER.error(String.format("ItemId is not valid: %s", itemId));
+            throw new InvalidEntryException("Invalid itemId");
         }
 
         try {
@@ -85,8 +88,8 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     public List<PurchaseHistory> getPurchase(Long userId) {
 
         if (userId == null || userId < 0){
-            LOGGER.error(String.format("userId is invalid: %s", userId));
-            throw new ServiceException("Invalid userId");
+            LOGGER.error(String.format("UserId is not valid: %s", userId));
+            throw new InvalidEntryException("Invalid userId");
         }
 
         try {
@@ -107,12 +110,12 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     @Override
     public void deletePurchase(Long userId, Long itemId) {
         if (userId == null || userId < 0){
-            LOGGER.error(String.format("userId is invalid: %s", userId));
-            throw new ServiceException("Invalid userId");
+            LOGGER.error(String.format("UserId is not valid: %s", userId));
+            throw new InvalidEntryException("Invalid userId");
         }
         if (itemId == null || itemId < 0) {
-            LOGGER.error(String.format("itemId is invalid: %s", itemId));
-            throw new ServiceException("Invalid itemId");
+            LOGGER.error(String.format("itemId is not valid: %s", itemId));
+            throw new InvalidEntryException("Invalid itemId");
         }
 
         try {
