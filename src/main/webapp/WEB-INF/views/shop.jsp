@@ -9,6 +9,7 @@
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
 <c:set var="recentlyAddedItems" value='<%=request.getAttribute("recentlyAddedItems")%>'/>
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
+<c:set var="artist" value='<%=session.getAttribute("artist")%>'/>
 
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -134,7 +135,7 @@
                             <li><a href="../../resources/columns.html"> columns </a></li>--%>
                             <li><a href="/account">My Account </a></li>
                             <c:choose>
-                                <c:when test="${user==null}">
+                                <c:when test="${artist==null}">
                                     <li><a href="/login">Log in </a></li>
                                     <li><a href="/signup">Sign up </a></li>
                                 </c:when>

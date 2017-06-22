@@ -1,4 +1,4 @@
-package dao.integration;
+package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.*;

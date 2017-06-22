@@ -58,7 +58,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             }
 
             String query2 = "INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)";
-            Object[] args = new Object[]{artist.getSpecialization().getId(), artist.getArtistPhoto(), artist.getId()};
+            Object[] args = new Object[]{artist.getSpecialization().getSpecId(), artist.getArtistPhoto(), artist.getId()};
 
             rowsAffected = jdbcTemplate.update(query2, args);
             if (rowsAffected <= 0) {

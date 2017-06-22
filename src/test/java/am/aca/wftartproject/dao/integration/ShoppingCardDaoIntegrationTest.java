@@ -1,4 +1,4 @@
-package dao.integration;
+package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;

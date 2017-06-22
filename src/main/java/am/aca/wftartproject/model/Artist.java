@@ -66,7 +66,6 @@ public class Artist extends AbstractUser {
     }
 
     public boolean isValidArtist() {
-        return super.isValidUser() &&
-                specialization != null;
+        return super.isValidUser() ;
     }
 }

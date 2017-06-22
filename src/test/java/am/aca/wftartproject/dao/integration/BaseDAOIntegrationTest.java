@@ -1,4 +1,4 @@
-package dao.integration;
+package am.aca.wftartproject.dao.integration;
 
 import org.apache.log4j.Logger;
 

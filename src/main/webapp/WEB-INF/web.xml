@@ -30,6 +30,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.FileUploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.HomeServlet</servlet-class>
     </servlet>
@@ -132,9 +142,30 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>MyArtWorks</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.MyWorksServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MyArtWorks</servlet-name>
+        <url-pattern>/my-works</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddItem</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.AddItemsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddItem</servlet-name>
+        <url-pattern>/additem</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ShopCart</servlet-name>
         <servlet-class>am.aca.wftartproject.controller.ShopCartServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>ShopCart</servlet-name>
         <url-pattern>/shop-cart</url-pattern>

@@ -1,4 +1,4 @@
-package dao.integration;
+package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
@@ -28,8 +28,7 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 6/1/2017
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
-        "classpath:springconfig/database/spring-database.xml"})
+@ContextConfiguration(locations= {"classpath:spring-root.xml"})
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
