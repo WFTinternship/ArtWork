@@ -125,5 +125,14 @@
         <url-pattern>/about</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ShopCart</servlet-name>
+        <servlet-class>am.aca.wftartproject.controller.ShopCartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShopCart</servlet-name>
+        <url-pattern>/shop-cart</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

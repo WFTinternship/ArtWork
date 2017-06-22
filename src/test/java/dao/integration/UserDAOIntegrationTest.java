@@ -1,4 +1,4 @@
-package integration.dao;
+package dao.integration;
 
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
@@ -11,6 +11,10 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import util.AssertTemplates;
 import util.TestObjectTemplate;
 
@@ -23,10 +27,14 @@ import static util.AssertTemplates.assertEqualUsers;
 /**
  * Created by Armen on 5/30/2017
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
+        "classpath:springconfig/database/spring-database.xml"})
 public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
+    @Autowired
     private UserDaoImpl userDao;
     private User testUser;
 
@@ -45,8 +53,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
         dataSource = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
-
-        userDao = new UserDaoImpl(dataSource);
 
         // create test user
         testUser = TestObjectTemplate.createTestUser();
@@ -135,7 +141,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see UserDao#findUser(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findUser_Failure() {
         userDao.addUser(testUser);
         User findResult = userDao.findUser(-7L);
@@ -160,7 +166,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see UserDao#findUser(String)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findUserByEmail_Failure(){
         // add user into DB
         userDao.addUser(testUser);

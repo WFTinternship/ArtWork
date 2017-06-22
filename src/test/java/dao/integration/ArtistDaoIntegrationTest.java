@@ -1,8 +1,7 @@
-package integration.dao;
+package dao.integration;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
-import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
@@ -14,6 +13,10 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import util.AssertTemplates;
 import util.TestObjectTemplate;
 
@@ -24,10 +27,16 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 6/1/2017
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
+        "classpath:springconfig/database/spring-database.xml"})
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
+
     private Artist testArtist;
+
+    @Autowired
     private ArtistDao artistDao;
 
     public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
@@ -51,7 +60,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
-        artistDao = new ArtistDaoImpl(dataSource);
         testArtist = TestObjectTemplate.createTestArtist();
 
         // print busy connections quantity
@@ -151,7 +159,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ArtistDao#findArtist(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findArtist_Failure() {
         // add artist into DB
         artistDao.addArtist(testArtist);
@@ -160,7 +168,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         Artist findArtist = artistDao.findArtist(-8L);
 
         // check artist for null
-        assertNull(findArtist.getId());
+        assertNull(findArtist);
     }
 
     /**
@@ -181,7 +189,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ArtistDao#findArtist(String)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findArtistByEmail_Failure(){
         // add artist into DB
         artistDao.addArtist(testArtist);
@@ -190,7 +198,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         Artist findArtist = artistDao.findArtist("jdpioahdpi8ua");
 
         // check for null
-        assertNull(findArtist.getId());
+        assertNull(findArtist);
     }
 
     /**

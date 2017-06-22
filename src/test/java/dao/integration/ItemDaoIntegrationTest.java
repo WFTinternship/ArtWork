@@ -1,4 +1,4 @@
-package integration.dao;
+package dao.integration;
 
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.dao.ItemDao;
@@ -15,6 +15,10 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import util.AssertTemplates;
 import util.TestObjectTemplate;
 
@@ -27,11 +31,16 @@ import static util.AssertTemplates.assertEqualItems;
 /**
  * Created by Armen on 6/1/2017
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
+        "classpath:springconfig/database/spring-database.xml"})
 public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
+    @Autowired
     private ArtistDaoImpl artistDao;
+    @Autowired
     private ItemDaoImpl itemDao;
     private Item testItem, tempItem;
     private Artist testArtist;
@@ -58,8 +67,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
-        artistDao = new ArtistDaoImpl(dataSource);
-        itemDao = new ItemDaoImpl(dataSource);
 
         // create test artist and user
         testArtist = TestObjectTemplate.createTestArtist();
@@ -165,7 +172,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#findItem(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void findItem_Failure(){
 
         // add item into DB
@@ -175,7 +182,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         Item foundItem = itemDao.findItem(135984984651L);
 
         // check foundItem for null
-        assertNull(foundItem.getId());
+        assertNull(foundItem);
 
     }
 

@@ -1,4 +1,4 @@
-package integration.dao;
+package dao.integration;
 
 import org.apache.log4j.Logger;
 

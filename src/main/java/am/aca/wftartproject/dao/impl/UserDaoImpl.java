@@ -104,6 +104,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to find user by id: %s", id));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";
@@ -158,6 +159,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to find user by email: %s", email));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get User: %s";

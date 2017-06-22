@@ -102,6 +102,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs,rowNum));
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get shopping card by id: %s", id));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ShoppingCard: %s";

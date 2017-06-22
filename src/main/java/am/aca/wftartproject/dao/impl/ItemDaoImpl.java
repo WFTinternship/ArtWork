@@ -113,6 +113,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ItemMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to find item by id: %s", id));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get Item: %s";
@@ -168,6 +169,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             itemList = this.jdbcTemplate.query(query, new Object[]{limit}, new ItemMapper());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn("Failed to find recently added items: %s");
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByTitle: %s";
@@ -228,6 +230,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             itemList = this.jdbcTemplate.query(query, new Object[]{title}, new ItemMapper());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get items by title: %s", title));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByTitle: %s";
@@ -287,6 +290,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             itemList = this.jdbcTemplate.query(query, new Object[]{itemType}, new ItemMapper());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get items by type: %s", itemType));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ItemsByType: %s";
@@ -346,6 +350,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             itemList = this.jdbcTemplate.query(query, new Object[]{minPrice, maxPrice}, new ItemMapper());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get items for given price range: %s %s", minPrice, maxPrice));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get items by the given price range: %s";
@@ -405,6 +410,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             itemList = this.jdbcTemplate.query(query, new Object[]{artistId, itemId, limit}, new ItemMapper());
 
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get artist items: %s", artistId));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get items for the given artistId: %s";

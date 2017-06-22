@@ -1,9 +1,7 @@
-package integration.dao;
+package dao.integration;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
-import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
@@ -14,6 +12,10 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import util.TestObjectTemplate;
 import java.sql.SQLException;
 
@@ -23,11 +25,16 @@ import static util.AssertTemplates.assertEqualShoppingCards;
 /**
  * Created by Armen on 6/2/2017
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
+        "classpath:springconfig/database/spring-database.xml"})
 public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
+    @Autowired
     private UserDao userDao;
+    @Autowired
     private ShoppingCardDao shoppingCardDao;
     private User testUser;
     private ShoppingCard testShoppingCard;
@@ -47,9 +54,6 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         dataSource = new ConnectionFactory()
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
-
-        userDao = new UserDaoImpl(dataSource);
-        shoppingCardDao = new ShoppingCardDaoImpl(dataSource);
 
         // create test user and shoppingCard, add user into db
         testUser = TestObjectTemplate.createTestUser();
@@ -147,7 +151,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ShoppingCardDao#getShoppingCard(Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void getShoppingCard_Failure() {
 
         // check testUser id for null

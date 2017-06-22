@@ -1,4 +1,4 @@
-package integration.dao;
+package dao.integration;
 
 import am.aca.wftartproject.dao.*;
 import am.aca.wftartproject.dao.impl.*;
@@ -14,6 +14,10 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import util.TestObjectTemplate;
 
 import java.sql.SQLException;
@@ -25,12 +29,20 @@ import static util.AssertTemplates.assertEqualPurchaseHistory;
 /**
  * Created by Armen on 6/2/2017
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
+        "classpath:springconfig/database/spring-database.xml"})
 public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
+    @Autowired
     private UserDao userDao;
+    @Autowired
+    private ArtistDao artistDao;
+    @Autowired
     private ItemDao itemDao;
+    @Autowired
     private PurchaseHistoryDao purchaseHistoryDao;
     private User testUser;
     private Item testItem;
@@ -52,16 +64,12 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
                 .getConnection(ConnectionModel.POOL)
                 .getTestDBConnection();
 
-        ArtistDao artistDao = new ArtistDaoImpl(dataSource);
         Artist testArtist = TestObjectTemplate.createTestArtist();
 
         ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
-        userDao = new UserDaoImpl(dataSource);
-        itemDao = new ItemDaoImpl(dataSource);
-        purchaseHistoryDao = new PurchaseHistoryDaoImpl(dataSource);
 
         // create test Item,User, purchaseHistory and set them into db
         testItem = TestObjectTemplate.createTestItem();
@@ -106,7 +114,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connectionsc End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
+            LOGGER.info(String.format("Number of busy connections End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
     }
 
     //region(TEST_CASE)
@@ -162,7 +170,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void getPurchaseHistory_Failure() {
 
         // add purchaseHistory into Db
