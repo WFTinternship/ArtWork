@@ -1,5 +1,7 @@
 package am.aca.wftartproject.model;
 
+import java.sql.Timestamp;
+
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
@@ -15,6 +17,7 @@ public class Item {
     private Long artistId;
     private Boolean status;
     private ItemType itemType;
+    private Timestamp additionDate;
 
 
 
@@ -90,11 +93,20 @@ public class Item {
         return this;
     }
 
+    public Timestamp getAdditionDate() {
+        return additionDate;
+    }
+
+    public Item setAdditionDate(Timestamp additionDate) {
+        this.additionDate = additionDate;
+        return this;
+    }
+
     public Item() {
 
     }
 
-    public Item(String title, String description, String photoURL, Double price, Long artistId, Boolean status, ItemType itemType) {
+    public Item(String title, String description, String photoURL, Double price, Long artistId, Boolean status, ItemType itemType, Timestamp additionDate) {
         this.title = title;
         this.description = description;
         this.photoURL = photoURL;
@@ -102,6 +114,7 @@ public class Item {
         this.artistId = artistId;
         this.status = status;
         this.itemType = itemType;
+        this.additionDate = additionDate;
     }
 
 
@@ -116,6 +129,7 @@ public class Item {
                 ", artistId =" + artistId +
                 ", status=" + status +
                 ", itemType=" + itemType +
+                ", additionDate=" + additionDate +
                 '}';
     }
 
@@ -127,7 +141,9 @@ public class Item {
                 artistId != null &&
                 artistId > 0 &&
                 price != 0 &&
-                itemType != null;
+                itemType != null &&
+                additionDate != null;
+
     }
 
 

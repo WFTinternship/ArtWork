@@ -22,7 +22,8 @@ public class ItemMapper implements RowMapper<Item> {
                 .setPrice(resultSet.getDouble("price"))
                 .setArtistId(resultSet.getLong("artist_id"))
                 .setStatus(resultSet.getBoolean("status"))
-                .setItemType(ItemType.valueOf(resultSet.getString("type")));
+                .setItemType(ItemType.valueOf(resultSet.getString("type")))
+                .setAdditionDate(resultSet.getTimestamp("addition_date"));
         return item;
     }
 }

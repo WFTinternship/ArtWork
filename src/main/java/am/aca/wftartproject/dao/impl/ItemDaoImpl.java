@@ -37,9 +37,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public void addItem(Long artistID, Item item) {
 
+//        Calendar cal = Calendar.getInstance();
+//        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+
         try {
+            item.setAdditionDate(getCurrentDateTime());
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            String query = "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)";
+            String query = "INSERT INTO item(title, description, price, artist_id, photo_url, status, type, addition_date) VALUES (?,?,?,?,?,?,?,?)";
 
             PreparedStatementCreator psc = con -> {
                 PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -50,6 +54,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setString(5, item.getPhotoURL());
                 ps.setBoolean(6, item.isStatus());
                 ps.setString(7, item.getItemType().getType());
+                ps.setTimestamp(8, item.getAdditionDate());
                 return ps;
             };
 
@@ -70,10 +75,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        Connection conn = null;
 //        PreparedStatement ps = null;
 //        ResultSet rs = null;
+//        Calendar cal = Calendar.getInstance();
+//        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+
 //        try {
+//            item.setAdditionDate(getCurrentDateTime());
 //            conn = getDataSource().getConnection();
 //            ps = conn.prepareStatement(
-//                    "INSERT INTO item(title, description, price, artist_id, photo_url, status, type) VALUES (?,?,?,?,?,?,?)",
+//                    "INSERT INTO item(title, description, price, artist_id, photo_url, status, type, addition_date) VALUES (?,?,?,?,?,?,?,?)",
 //                    Statement.RETURN_GENERATED_KEYS);
 //            ps.setString(1, item.getTitle());
 //            ps.setString(2, item.getDescription());
@@ -82,6 +91,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //            ps.setString(5, item.getPhotoURL());
 //            ps.setBoolean(6, item.isStatus());
 //            ps.setString(7, item.getItemType().getType());
+//            ps.setString(8, item.getAdditionDate());
 //            ps.executeUpdate();
 //            rs = ps.getGeneratedKeys();
 //            if (rs.next()) {
@@ -108,7 +118,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public Item findItem(Long id) {
 
         try {
-
             String query = "SELECT * FROM item WHERE id = ?";
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ItemMapper().mapRow(rs, rowNum));
 
@@ -140,7 +149,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 ////                        .setPhotoURL(rs.getString("photo_url"))
 ////                        .setPrice(rs.getDouble("price"))
 ////                        .setStatus(rs.getBoolean("status"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type")));
+////                        .setItemType(ItemType.valueOf(rs.getString("type"))
+////                        .setAdditionDate(rs.getTimestamp("addition_date"));
 //            }
 //        } catch (SQLException e) {
 //            String error = "Failed to get Item: %s";
@@ -199,7 +209,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 ////                        .setPrice(rs.getDouble("price"))
 ////                        .setPhotoURL(rs.getString("photo_url"))
 ////                        .setStatus(rs.getBoolean("status"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type")));
+////                        .setItemType(ItemType.valueOf(rs.getString("type"))
+////                        .setAdditionDate(rs.getTimestamp("addition_date"));
 //                itemList.add(item);
 //            }
 //        } catch (SQLException e) {
@@ -260,7 +271,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 ////                        .setPrice(rs.getDouble("price"))
 ////                        .setPhotoURL(rs.getString("photo_url"))
 ////                        .setStatus(rs.getBoolean("status"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type")));
+////                        .setItemType(ItemType.valueOf(rs.getString("type"))
+////                        .setAdditionDate(rs.getTimestamp("addition_date"));
 //                itemList.add(item);
 //            }
 //        } catch (SQLException e) {
@@ -319,7 +331,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 ////                        .setPrice(rs.getDouble("price"))
 ////                        .setPhotoURL(rs.getString("photo_url"))
 ////                        .setStatus(rs.getBoolean("status"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type")));
+////                        .setItemType(ItemType.valueOf(rs.getString("type"))
+////                        .setAdditionDate(rs.getTimestamp("addition_date"));
 //                itemList.add(item);
 //            }
 //        } catch (SQLException e) {
@@ -380,7 +393,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 ////                        .setPrice(rs.getDouble("price"))
 ////                        .setPhotoURL(rs.getString("photo_url"))
 ////                        .setStatus(rs.getBoolean("status"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type")));
+////                        .setItemType(ItemType.valueOf(rs.getString("type"))
+////                        .setAdditionDate(rs.getTimestamp("addition_date"));
 //                itemList.add(item);
 //            }
 //        } catch (SQLException e) {
@@ -441,7 +455,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 ////                        .setPrice(rs.getDouble("price"))
 ////                        .setPhotoURL(rs.getString("photo_url"))
 ////                        .setStatus(rs.getBoolean("status"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type")));
+////                        .setItemType(ItemType.valueOf(rs.getString("type"))
+////                        .setAdditionDate(rs.getTimestamp("addition_date"));
 //                itemList.add(item);
 //            }
 //        } catch (SQLException e) {
@@ -465,35 +480,37 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#getFilteredAndSortedItems(String, Integer[], String)
      */
     public List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType) {
-        String queryPart1 = "SELECT it.* FROM item it WHERE 1=1";
-        String queryPart2 = " AND it.type = ?";
-        String queryPart3 = " AND it.price BETWEEN ? AND ?";
-        String queryPart4 = " ORDER BY ?";
-        String queryPart5 = " DESC";
 
-        List<Item> itemList;
-        try {
-            itemList = jdbcTemplate.query(
-                    (queryPart1
-                            + (itemType == null ? null : queryPart2)
-                            + (price == null ? null : queryPart3)
-                            + (sortingType == null ? null : queryPart4)
-                            + ("1".equals(sortingType) ? null : queryPart5)),
-                    new Object[]{(itemType),
-                            (price != null ? price[0] : null),
-                            (price != null ? price[1] : null),
-                            (sortingType)},
-                    new ItemMapper()
-            );
 
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get items for the given criteria: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-        return itemList;
+//        String queryPart1 = "SELECT it.* FROM item it WHERE 1=1";
+//        String queryPart2 = " AND it.type = ?";
+//        String queryPart3 = " AND it.price BETWEEN ? AND ?";
+//        String queryPart4 = " ORDER BY ?";
+//        String queryPart5 = " DESC";
+//
+//        List<Item> itemList;
+//        try {
+//            itemList = jdbcTemplate.query(
+//                    (queryPart1
+//                            + (itemType == null ? null : queryPart2)
+//                            + (price == null ? null : queryPart3)
+//                            + (sortingType == null ? null : queryPart4)
+//                            + ("1".equals(sortingType) ? null : queryPart5)),
+//                    new Object[]{(itemType),
+//                            (price != null ? price[0] : null),
+//                            (price != null ? price[1] : null),
+//                            (sortingType)},
+//                    new ItemMapper()
+//            );
+//
+//        } catch (EmptyResultDataAccessException e) {
+//            return null;
+//        } catch (DataAccessException e) {
+//            String error = "Failed to get items for the given criteria: %s";
+//            LOGGER.error(String.format(error, e.getMessage()));
+//            throw new DAOException(error, e);
+//        }
+        return null;
     }
 
 
@@ -598,7 +615,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //                .setPrice(rs.getDouble("price"))
 //                .setArtistId(rs.getLong("artist_id"))
 //                .setStatus(rs.getBoolean("status"))
-//                .setItemType(ItemType.valueOf(rs.getString("type")));
+//                .setItemType(ItemType.valueOf(rs.getString("type"))
+//                .setAdditionDate(rs.getTimestamp("addition_date")));
 //    }
 //
 //    private void getItemFromResultSet(Item item, Map<String, Object> itemRow) {
@@ -609,6 +627,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //                .setPrice(Double.parseDouble(String.valueOf(itemRow.get("price"))))
 //                .setArtistId(Long.parseLong(String.valueOf(itemRow.get("artist_id"))))
 //                .setStatus(Boolean.parseBoolean(String.valueOf(itemRow.get("status"))))
-//                .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type"))));
+//                .setItemType(ItemType.valueOf(String.valueOf(itemRow.get("type")))
+//                .setAdditionDate(rs.getTimestamp("addition_date")));
 //    }
 }

@@ -10,8 +10,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -33,17 +31,22 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     public void addPurchase(PurchaseHistory purchaseHistory) {
 
         try {
-            String query = "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)";
-            Calendar cal = Calendar.getInstance();
-            Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+            purchaseHistory.setPurchaseDate(getCurrentDateTime());
 
-            Object[] args = new Object[]{purchaseHistory.getUserId(), purchaseHistory.getItemId(), timestamp};
+            String query = "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)";
+//            Calendar cal = Calendar.getInstance();
+//            Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+
+            Object[] args = new Object[]{purchaseHistory.getUserId(), purchaseHistory.getItemId(), purchaseHistory.getPurchaseDate()};
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to add PurchaseHistory");
-            } else {
-                purchaseHistory.setPurchaseDate(timestamp);
             }
+
+//            else {
+//                purchaseHistory.setPurchaseDate(getCurrentDateTime());
+//            }
+
         } catch (DataAccessException e) {
             purchaseHistory.setUserId(null);
             String error = "Failed to add PurchaseHistory: %s";
@@ -61,11 +64,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 //                    "INSERT INTO purchase_history(userId, itemId, purchase_date) VALUES (?,?,?)");
 //            ps.setLong(1, purchaseHistory.getUserId());
 //            ps.setLong(2, purchaseHistory.getItemId());
-//            Calendar cal = Calendar.getInstance();
-//            Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-//            ps.setTimestamp(3, timestamp);
+////            Calendar cal = Calendar.getInstance();
+////            Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+//            ps.setTimestamp(3, getCurrentDateTime());
 //            if (ps.executeUpdate() > 0) {
-//                purchaseHistory.setPurchaseDate(timestamp);
+//                purchaseHistory.setPurchaseDate(getCurrentDateTime());
 //            }
 //        } catch (SQLException e) {
 //            purchaseHistory.setUserId(null);
@@ -90,7 +93,8 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         try {
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
-            return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId}, (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId},
+                    (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn(String.format("Failed to get purchase item by userId and itemId: %s %s", userId, itemId));

@@ -1,12 +1,13 @@
 package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.*;
-import am.aca.wftartproject.dao.impl.*;
+import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.util.TestObjectTemplate;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -18,12 +19,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import util.TestObjectTemplate;
 
 import java.sql.SQLException;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualPurchaseHistory;
+
 
 
 /**

@@ -8,10 +8,10 @@ import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import am.aca.wftartproject.util.SpringBeanType;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author surik
@@ -39,16 +39,16 @@ public class SignUpServlet extends HttpServlet {
         User userFromRequest = null;
         Artist artistFromRequest = null;
 
-        boolean chosenBuyerUser = request.getParameter("artistSpec")==null;
+        boolean chosenBuyerUser = request.getParameter("artistSpec") == null;
 
-        if(chosenBuyerUser){
+        if (chosenBuyerUser) {
             userFromRequest = new User();
             userFromRequest.setFirstName(request.getParameter("firstName"))
                     .setLastName(request.getParameter("lastName"))
                     .setAge(Integer.parseInt(request.getParameter("age")))
                     .setEmail(request.getParameter("email"))
                     .setPassword(request.getParameter("password"));
-        }else{
+        } else {
             artistFromRequest = new Artist();
             artistFromRequest.setFirstName(request.getParameter("firstName"))
                     .setLastName(request.getParameter("lastName"))
@@ -63,23 +63,23 @@ public class SignUpServlet extends HttpServlet {
         }
 
 
-            try {
-            if(chosenBuyerUser){
+        try {
+            if (chosenBuyerUser) {
                 userService.addUser(userFromRequest);
-            }else{
+            } else {
                 artistService.addArtist(artistFromRequest);
             }
-            }catch (RuntimeException e){
-                String errorMessage = "The entered info is not correct";
-                request.setAttribute("errorMessage",errorMessage);
-                request.getRequestDispatcher("/signup")
-                        .forward(request,response);
-            }
-            HttpSession session = request.getSession(true);
-        session.setAttribute("user", chosenBuyerUser?userFromRequest:artistFromRequest);
-        Cookie userEmail = new Cookie("userEmail", chosenBuyerUser?userFromRequest.getEmail():artistFromRequest.getEmail());
-            userEmail.setMaxAge(3600);             // 60 minutes
-            response.addCookie(userEmail);
+        } catch (RuntimeException e) {
+            String errorMessage = "The entered info is not correct";
+            request.setAttribute("errorMessage", errorMessage);
+            request.getRequestDispatcher("/signup")
+                    .forward(request, response);
+        }
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", chosenBuyerUser ? userFromRequest : artistFromRequest);
+        Cookie userEmail = new Cookie("userEmail", chosenBuyerUser ? userFromRequest.getEmail() : artistFromRequest.getEmail());
+        userEmail.setMaxAge(3600);             // 60 minutes
+        response.addCookie(userEmail);
       /*
         }
         else {

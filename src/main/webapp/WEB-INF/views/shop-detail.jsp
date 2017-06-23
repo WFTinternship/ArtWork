@@ -380,7 +380,7 @@
                                         <p><span>Description :</span>${itemDetail.getDescription()}</p>
                                     </li>
                                     <li>
-                                        <p><span>Uploaded :</span>Nov 9th, 2014 </p>
+                                        <p><span>Uploaded :</span>${itemDetail.getAdditionDate()}</p>
                                     </li>
                                     <li>
                                         <p><span>Price :</span> $${itemDetail.getPrice()}</p>

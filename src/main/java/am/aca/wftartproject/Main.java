@@ -1,14 +1,7 @@
 package am.aca.wftartproject;
 
-import am.aca.wftartproject.dao.impl.ItemDaoImpl;
-import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by ASUS on 24-May-17
@@ -16,8 +9,16 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
+//        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
+//        ItemService itemService = (ItemService)context.getBean("itemService");
+//        for(Item element:itemService.getRecentlyAddedItems(20)){
+//            System.out.println(element.toString());
+//
+//        }
 
+
+        int num = ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
+        System.out.println(num);
 
 //        ArtistSpecialization[] art = ArtistSpecialization.values();
 //        for(ArtistSpecialization artElement:art){

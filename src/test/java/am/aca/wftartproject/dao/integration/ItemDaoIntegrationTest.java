@@ -8,6 +8,7 @@ import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.util.TestObjectTemplate;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -19,14 +20,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import util.AssertTemplates;
-import util.TestObjectTemplate;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualItems;
+
 
 /**
  * Created by Armen on 6/1/2017
@@ -128,7 +128,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         Item item = itemDao.findItem(testItem.getId());
 
         // check for sameness
-        AssertTemplates.assertEqualItems(testItem, item);
+        assertEqualItems(testItem, item);
     }
 
 
@@ -149,7 +149,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         Item item = itemDao.findItem(testItem.getId());
 
         // check for sameness
-        AssertTemplates.assertEqualItems(testItem, item);
+        assertEqualItems(testItem, item);
     }
 
     /**

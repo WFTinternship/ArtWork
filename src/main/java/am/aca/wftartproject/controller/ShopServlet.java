@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class ShopServlet extends HttpServlet {
 
-//    private ItemService itemService = SpringBean.getBeanFromSpring("itemService",ItemServiceImpl.class);
-    private ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE,ItemServiceImpl.class);
+    //    private ItemService itemService = SpringBean.getBeanFromSpring("itemService",ItemServiceImpl.class);
+    private ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE, ItemServiceImpl.class);
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,26 +30,28 @@ public class ShopServlet extends HttpServlet {
 
         request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
         request.setAttribute("itemTypes", ItemType.values());
-        request.setAttribute("recentlyAddedItems",itemService.getRecentlyAddedItems(20));
+        request.setAttribute("itemList", itemService.getRecentlyAddedItems(20));
 
         dispatcher.forward(request, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws  ServletException, IOException{
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ArtistSpecialization artistSpecialization = ArtistSpecialization.valueOf(request.getParameter("artSpec"));
-        System.out.println(artistSpecialization.toString());
-        ItemType itemType = ItemType.valueOf(request.getParameter("itemType"));
-        System.out.println(itemType.toString());
-        String sortType = request.getParameter("sortType");
-        System.out.println(sortType);
+        String itemTypeStr = request.getParameter("itemType");
+        List<Item> itemList;
+        try {
+            if (itemTypeStr != null) {
+                itemList = itemService.getItemsByType(itemTypeStr);
+            } else {
+                itemList = itemService.getRecentlyAddedItems(20);
+            }
+            request.setAttribute("itemList", itemList);
+            request.setAttribute("itemTypes", ItemType.values());
+            request.getRequestDispatcher("/WEB-INF/views/shop.jsp").forward(request, response);
 
-        List<Item> itemList = itemService.getFilteredAndSortedItems(itemType.toString(),null,null);
-        request.setAttribute("recentlyAddedItems",itemList);
-
-        request.getRequestDispatcher("/WEB-INF/views/shop.jsp").forward(request,response);
-
-
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
 }

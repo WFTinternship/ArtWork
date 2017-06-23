@@ -7,7 +7,7 @@
 
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
-<c:set var="recentlyAddedItems" value='<%=request.getAttribute("recentlyAddedItems")%>'/>
+<c:set var="itemList" value='<%=request.getAttribute("itemList")%>'/>
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
 <c:set var="artist" value='<%=session.getAttribute("artist")%>'/>
 
@@ -175,30 +175,30 @@
                 <div class="fullwidth-section shop-grid"><!-- Full-width section Starts Here -->
                     <div class="sorting-products"><!-- sorting-products Starts Here -->
                         <form action="/shop" method="post">
-                        <div class="dt-sc-one-fifth column first">
-                            <div class="categories">
-                                <h5>Artist Specialization</h5>
-                                <div class="selection-box">
-                                    <select name="artSpec" class="shop-dropdown">
-                                        <option value="-1" selected>Choose artist spec.</option>
-                                        <c:forEach items="${artistSpecTypes}" var="element">
-                                            <option value="${element.type}"
-                                                    class="fa fa-eyedropper">${element.type}</option>
-                                        </c:forEach>
-                                        <%--<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>--%>
-                                        <%--<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>--%>
-                                        <%--<option value="3" class="fa fa-pencil">${itemTypes[2].getType()}</option>--%>
-                                        <%--<option value="4" class="fa fa-eyedropper">${itemTypes[3].getType()}</option>--%>
+                        <%--<div class="dt-sc-one-fifth column first">--%>
+                            <%--<div class="categories">--%>
+                                <%--<h5>Artist Specialization</h5>--%>
+                                <%--<div class="selection-box">--%>
+                                    <%--<select name="artSpec" class="shop-dropdown">--%>
+                                        <%--<option value="-1" selected>Choose artist spec.</option>--%>
+                                        <%--<c:forEach items="${artistSpecTypes}" var="element">--%>
+                                            <%--<option value="${element.type}"--%>
+                                                    <%--class="fa fa-eyedropper">${element.type}</option>--%>
+                                        <%--</c:forEach>--%>
+                                        <%--&lt;%&ndash;<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<option value="3" class="fa fa-pencil">${itemTypes[2].getType()}</option>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<option value="4" class="fa fa-eyedropper">${itemTypes[3].getType()}</option>&ndash;%&gt;--%>
 
 
-                                        <%--<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>--%>
-                                        <%--<option value="2" class="fa fa-camera-retro">Photogenic Art</option>--%>
-                                        <%--<option value="3" class="fa fa-pencil">Sketches</option>--%>
-                                        <%--<option value="4" class="fa fa-eyedropper">Dropper Painting</option>--%>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                                        <%--&lt;%&ndash;<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<option value="2" class="fa fa-camera-retro">Photogenic Art</option>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<option value="3" class="fa fa-pencil">Sketches</option>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<option value="4" class="fa fa-eyedropper">Dropper Painting</option>&ndash;%&gt;--%>
+                                    <%--</select>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="dt-sc-one-fifth column">
                             <div class="categories">
                                 <h5>Art Type</h5>
@@ -268,7 +268,7 @@
                         <%--</div>                                               --%>
                     </div><!-- sorting-products Ends Here -->
                     <ul class="products isotope">
-                        <c:forEach items="${recentlyAddedItems}" var="itemElement">
+                        <c:forEach items="${itemList}" var="itemElement">
                             <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                                 <!-- **product-container - Starts** -->
                                 <div class="product-container">

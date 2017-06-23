@@ -7,12 +7,12 @@ import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
+import am.aca.wftartproject.util.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import util.TestObjectTemplate;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;

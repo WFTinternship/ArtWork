@@ -4,10 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Calendar;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by ASUS on 08-Jun-17
@@ -60,9 +59,18 @@ public abstract class BaseDaoImpl {
     }
 
 
+    Timestamp getCurrentDateTime(){
+        Calendar cal = Calendar.getInstance();
+        return new Timestamp(cal.getTimeInMillis());
+    }
+
+    double getRandomBalance(){
+        return ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
+    }
+
 
     private DataSource dataSource = null;
-    protected JdbcTemplate jdbcTemplate = null;
+    JdbcTemplate jdbcTemplate = null;
 
     public DataSource getDataSource() {
         return dataSource;

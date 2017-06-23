@@ -2,6 +2,7 @@ package am.aca.wftartproject.dao.rowmappers;
 
 
 import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.model.ShoppingCardType;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -16,7 +17,8 @@ public class ShoppingCardMapper implements RowMapper<ShoppingCard> {
     public ShoppingCard mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         ShoppingCard tempShoppingCard = new ShoppingCard();
         tempShoppingCard.setId(resultSet.getLong("id"))
-                .setBalance(resultSet.getDouble("balance"));
+                .setBalance(resultSet.getDouble("balance"))
+                .setShoppingCardType(ShoppingCardType.valueOf(resultSet.getString("type")));
         return tempShoppingCard;
     }
 }

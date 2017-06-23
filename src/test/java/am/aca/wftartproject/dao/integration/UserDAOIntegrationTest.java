@@ -4,6 +4,8 @@ import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.util.AssertTemplates;
+import am.aca.wftartproject.util.TestObjectTemplate;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -15,14 +17,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import util.AssertTemplates;
-import util.TestObjectTemplate;
 
 import java.sql.SQLException;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualUsers;
+
 
 /**
  * Created by Armen on 5/30/2017

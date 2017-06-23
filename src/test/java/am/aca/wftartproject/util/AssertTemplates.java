@@ -1,8 +1,9 @@
-package am.aca.wftproject.util;
+package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Armen on 5/30/2017
@@ -33,16 +34,18 @@ public class AssertTemplates {
         assertEquals(expectedItem.getTitle(), actualItem.getTitle());
         assertEquals(expectedItem.getPhotoURL(), actualItem.getPhotoURL());
         assertEquals(expectedItem.getPrice(), actualItem.getPrice());
+        assertEquals(expectedItem.getAdditionDate().getTime() / 100000, actualItem.getAdditionDate().getTime() / 100000);
     }
 
     public static void assertEqualShoppingCards(ShoppingCard expectedShoppingCard, ShoppingCard actualShoppingCard) {
         assertEquals(expectedShoppingCard.getId(), actualShoppingCard.getId());
         assertEquals(expectedShoppingCard.getBalance(), actualShoppingCard.getBalance(), 0.0001);
+        assertEquals(expectedShoppingCard.getShoppingCardType(),actualShoppingCard.getShoppingCardType());
     }
 
     public static void assertEqualPurchaseHistory(PurchaseHistory expectedPurchaseHistory, PurchaseHistory actualPurchaseHistory) {
         assertEquals(expectedPurchaseHistory.getItemId(), actualPurchaseHistory.getItemId());
         assertEquals(expectedPurchaseHistory.getUserId(), actualPurchaseHistory.getUserId());
-        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 10000, actualPurchaseHistory.getPurchaseDate().getTime() / 10000);
+        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 100000, actualPurchaseHistory.getPurchaseDate().getTime() / 100000);
     }
 }

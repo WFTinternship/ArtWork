@@ -115,7 +115,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getItemsByTitle(String title) {
 
-        if (!isEmptyString(title)) {
+        if (isEmptyString(title)) {
             LOGGER.error(String.format("title is not valid: %s", title));
             throw new InvalidEntryException("Invalid title");
         }
@@ -138,7 +138,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getItemsByType(String itemType) {
 
-        if (!isEmptyString(itemType)) {
+        if (isEmptyString(itemType)) {
             LOGGER.error(String.format("itemType is not valid: %s", itemType));
             throw new InvalidEntryException("Invalid itemType");
         }

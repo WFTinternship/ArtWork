@@ -4,7 +4,9 @@ import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.model.ShoppingCardType;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.util.TestObjectTemplate;
 import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
 import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -16,11 +18,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import util.TestObjectTemplate;
+
 import java.sql.SQLException;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static junit.framework.TestCase.*;
-import static util.AssertTemplates.assertEqualShoppingCards;
+
 
 /**
  * Created by Armen on 6/2/2017
@@ -59,7 +62,8 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         testUser = TestObjectTemplate.createTestUser();
         userDao.addUser(testUser);
         testShoppingCard = new ShoppingCard();
-        testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
+//        testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
+        testShoppingCard.setShoppingCardType(ShoppingCardType.PAYPAL);
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {

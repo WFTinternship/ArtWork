@@ -36,13 +36,16 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
 
         try {
+            shoppingCard.setBalance(getRandomBalance());
+
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            String query = "INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)";
+            String query = "INSERT INTO shopping_card(balance, buyer_id, type) VALUES (?,?,?)";
 
             PreparedStatementCreator psc = con -> {
                 PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setDouble(1, shoppingCard.getBalance());
                 ps.setLong(2, userId);
+                ps.setString(3,shoppingCard.getShoppingCardType().getType());
                 return ps;
             };
 
@@ -65,13 +68,16 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //        PreparedStatement ps = null;
 //        ResultSet rs = null;
 //        try {
+//            shoppingCard.setBalance(getRandomBalance());
+
 //            conn = getDataSource().getConnection();
 //            ps = conn.prepareStatement(
-//                    "INSERT INTO shopping_card(balance, buyer_id) VALUES (?,?)",
+//                    "INSERT INTO shopping_card(balance, buyer_id, type) VALUES (?,?,?)",
 //                    Statement.RETURN_GENERATED_KEYS);
 //
 //            ps.setDouble(1, shoppingCard.getBalance());
 //            ps.setLong(2, userId);
+//            ps.setString(3,shoppingCard.getShoppingCardType().getType());
 //            ps.executeUpdate();
 //            rs = ps.getGeneratedKeys();
 //            if (rs.next()) {
@@ -124,7 +130,8 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //            rs = ps.executeQuery();
 //            if (rs.next()) {
 //                shoppingCard.setId(rs.getLong("id"))
-//                        .setBalance(rs.getDouble("balance"));
+//                        .setBalance(rs.getDouble("balance"))
+//                        .setShoppingCardType(ShoppingCardType.valueOf(resultSet.getString("type")));;
 //            }
 //        } catch (SQLException e) {
 //            String error = "Failed to get ShoppingCard: %s";
@@ -149,9 +156,9 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
         Boolean status;
         try {
-            String query = "UPDATE shopping_card SET balance=? WHERE id = ?";
+            String query = "UPDATE shopping_card SET balance=?, type=? WHERE id = ?";
 
-            int rowsAffected = jdbcTemplate.update(query, shoppingCard.getBalance(), id);
+            int rowsAffected = jdbcTemplate.update(query, shoppingCard.getBalance(), shoppingCard.getShoppingCardType().getType(), id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to update ShoppingCard");
             }else{
@@ -171,9 +178,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //        Boolean success = false;
 //        try {
 //            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("UPDATE shopping_card SET balance=? WHERE id = ?");
+//            ps = conn.prepareStatement("UPDATE shopping_card SET balance=?, type=? WHERE id = ?");
 //            ps.setDouble(1, shoppingCard.getBalance());
 //            ps.setLong(2, id);
+//            ps.setString(3, shoppingCard.getShoppingCardType().getType());
 //            if (ps.executeUpdate() > 0) {
 //                success = true;
 //            }
