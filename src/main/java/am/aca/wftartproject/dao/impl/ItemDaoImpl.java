@@ -52,7 +52,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setDouble(3, item.getPrice());
                 ps.setLong(4, artistID);
                 ps.setString(5, item.getPhotoURL());
-                ps.setBoolean(6, item.isStatus());
+                ps.setBoolean(6, item.getStatus());
                 ps.setString(7, item.getItemType().getType());
                 ps.setTimestamp(8, item.getAdditionDate());
                 return ps;
@@ -89,7 +89,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //            ps.setDouble(3, item.getPrice());
 //            ps.setLong(4, artistID);
 //            ps.setString(5, item.getPhotoURL());
-//            ps.setBoolean(6, item.isStatus());
+//            ps.setBoolean(6, item.getStatus());
 //            ps.setString(7, item.getItemType().getType());
 //            ps.setString(8, item.getAdditionDate());
 //            ps.executeUpdate();

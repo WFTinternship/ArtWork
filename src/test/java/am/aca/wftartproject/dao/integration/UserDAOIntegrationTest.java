@@ -60,7 +60,8 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections Start: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+            LOGGER.info(String.format("Number of busy connections Start: %s",
+                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
         }
     }
 
@@ -80,7 +81,9 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
         // print busy connections quantity
         if (dataSource instanceof ComboPooledDataSource) {
-            LOGGER.info(String.format("Number of busy connections End: %s", ((ComboPooledDataSource) dataSource).getNumBusyConnections()));        }
+            LOGGER.info(String.format("Number of busy connections End: %s",
+                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+        }
     }
 
     //region(TEST_CASE)
