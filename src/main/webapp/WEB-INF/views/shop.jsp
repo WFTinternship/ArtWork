@@ -37,6 +37,7 @@
     <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all"/>
 
     <!-- **Additional - stylesheets** -->
+    <link href="../../resources/css/button.css" rel="stylesheet" type="text/css" media="all"/>
     <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all"/>
     <link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
     <link id="skin-css" href="../../resources/skins/red/style.css" rel="stylesheet" media="all"/>
@@ -113,7 +114,7 @@
                         <%--</ul>--%>
                         <%--<a class="dt-menu-expand">+</a>--%>
                     </li>
-                    <<%--li class="menu-item-simple-parent"><a href="../../resources/blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
+                    <%--li class="menu-item-simple-parent"><a href="../../resources/blog.html">Blog <span class="fa fa-pencil-square-o"></span></a>
                         <ul class="sub-menu">
                             <li><a href="../../resources/blog-detail.html">Blog detail</a></li>
                             <li><a href="../../resources/blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>
@@ -236,7 +237,13 @@
                                 </div>
                             </div>
                         </div>
-                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Search</button>
+                            <div class="dt-sc-one-fifth column">
+                                <h5>Search</h5>
+                                <div class="container">
+                                    <button type="submit" class="button">Click Here!</button>
+                                </div>
+                            <%--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Search</button>--%>
+                            </div>
                         </form>
                         <%--<div class="dt-sc-one-fifth column">--%>
                         <%--<div class="categories">--%>
@@ -278,15 +285,15 @@
                                     </a>
                                     <!-- **product-title - Starts** -->
                                     <div class="product-title">
+
+                                        <c:if test="${itemElement.status==true}">
+                                            <p><h1><div style="text-align: center;">SOLD</div></h1></p>
+                                        </c:if>
+
                                         <a href="/shop-cart" class="type1 dt-sc-button"> <span
                                                 class="fa fa-shopping-cart"></span> Add to Cart </a>
                                         <a href="#" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>
                                             Options </a>
-                                        <p>You don't take a photograph, Just make it</p>
-
-                                        <%--<c:if test="${itemElement.isStatus()==true}">--%>
-                                            <%--<p><h1><div style="text-align: center;">SOLD</div></h1></p>--%>
-                                        <%--</c:if>--%>
 
                                     </div> <!-- **product-title - Ends** -->
                                 </div> <!-- **product-container - Ends** -->

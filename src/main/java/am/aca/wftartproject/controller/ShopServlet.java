@@ -39,13 +39,18 @@ public class ShopServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String itemTypeStr = request.getParameter("itemType");
-        List<Item> itemList;
+        String sortingType = request.getParameter("sortType");
+
+        List<Item> itemList = itemService.getRecentlyAddedItems(20);
         try {
-            if (itemTypeStr != null) {
+            if (!"-1".equals(itemTypeStr)) {
                 itemList = itemService.getItemsByType(itemTypeStr);
-            } else {
-                itemList = itemService.getRecentlyAddedItems(20);
             }
+
+            if(!"-1".equals(sortingType)){
+                itemList = ItemComparator.getSortedItemList(sortingType,itemList);
+            }
+
             request.setAttribute("itemList", itemList);
             request.setAttribute("itemTypes", ItemType.values());
             request.getRequestDispatcher("/WEB-INF/views/shop.jsp").forward(request, response);
