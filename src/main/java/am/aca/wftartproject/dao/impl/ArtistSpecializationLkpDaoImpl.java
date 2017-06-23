@@ -73,7 +73,6 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
      * @param id
      * @return
      */
-    //TODO ask about exception
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
 

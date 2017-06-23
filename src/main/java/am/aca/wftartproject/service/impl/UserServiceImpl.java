@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User findUser(String email) {
-        if (isEmptyString(email)) {
+        if (isEmptyString(email) || !isValidEmailAddressForm(email)) {
             LOGGER.error(String.format("Email is not valid: %s", email));
             throw new InvalidEntryException("Invalid email");
         }
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("The username or password is not valid");
             }
         } catch (DAOException e) {
-            String error = "Failed to delete User: %s";
+            String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         } catch (RuntimeException e) {
