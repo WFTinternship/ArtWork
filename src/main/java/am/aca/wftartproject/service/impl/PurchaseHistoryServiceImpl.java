@@ -119,7 +119,9 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
         }
 
         try {
-            purchaseHistoryDao.deletePurchase(userId, itemId);
+            if (!purchaseHistoryDao.deletePurchase(userId, itemId)){
+                throw new DAOException("Failed to delete purchase history");
+            }
         }catch (DAOException e) {
             String error = "Failed to delete purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));

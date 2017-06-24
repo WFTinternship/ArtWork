@@ -59,12 +59,6 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-
-        // create db connection
-        dataSource = new ConnectionFactory()
-                .getConnection(ConnectionModel.POOL)
-                .getTestDBConnection();
-
         Artist testArtist = TestObjectTemplate.createTestArtist();
 
         ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);

@@ -10,7 +10,6 @@ import java.util.Random;
  * Created by Armen on 5/30/2017
  */
 public class TestObjectTemplate {
-
     public static Artist createTestArtist() {
         Artist testArtist = new Artist();
         testArtist.setArtistPhoto(new byte[10])
@@ -36,10 +35,6 @@ public class TestObjectTemplate {
 
     //title, description, photo_url, price, artist_id, status, item_type
     public static Item createTestItem() {
-
-        Calendar cal = Calendar.getInstance();
-        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-
         Item item = new Item();
         item.setTitle("test_item")
                 .setDescription("test item")
@@ -47,12 +42,36 @@ public class TestObjectTemplate {
                 .setPhotoURL("../../resources/images/product/images (1).jpg")
                 .setPrice(getRandomNumber() + 1.1)
                 .setStatus(false)
-                .setAdditionDate(timestamp);
+                .setAdditionDate(getTimestamp());
         return item;
+    }
+
+    public static ShoppingCard createTestShoppingCard() {
+        ShoppingCard shoppingCard = new ShoppingCard();
+
+        shoppingCard.setBalance(getRandomNumber() + 100)
+        .setShoppingCardType(ShoppingCardType.PAYPAL);
+
+        return shoppingCard;
+    }
+
+    public static PurchaseHistory createTestPurchaseHistory() {
+        PurchaseHistory purchaseHistory = new PurchaseHistory();
+
+        purchaseHistory.setItemId(getRandomNumber() + 1L)
+                .setUserId(getRandomNumber() + 1L)
+                .setPurchaseDate(getTimestamp());
+
+        return purchaseHistory;
     }
 
     public static int getRandomNumber() {
         Random rand = new Random();
         return rand.nextInt(100000) + 1;
+    }
+
+    public static Timestamp getTimestamp() {
+        Calendar cal = Calendar.getInstance();
+        return new Timestamp(cal.getTimeInMillis());
     }
 }

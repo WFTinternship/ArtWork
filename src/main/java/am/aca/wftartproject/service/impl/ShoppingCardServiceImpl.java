@@ -42,7 +42,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             LOGGER.error(String.format("UserId is not valid: %s", userId));
             throw new InvalidEntryException("Invalid userId");
         }
-        if (!shoppingCard.isValidShoppingCard()){
+        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid shoppingCard");
         }
@@ -83,17 +83,19 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param shoppingCard
      */
     @Override
-    public void updateShoppingCard(Long id, ShoppingCard shoppingCard) throws SQLException {
+    public void updateShoppingCard(Long id, ShoppingCard shoppingCard) {
         if (id == null || id < 0){
             LOGGER.error(String.format("Id is not valid: %s", id));
             throw new InvalidEntryException("Invalid id");
         }
-        if (!shoppingCard.isValidShoppingCard()){
+        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid shoppingCard");
         }
         try {
-            shoppingCardDao.updateShoppingCard(id, shoppingCard);
+            if (!shoppingCardDao.updateShoppingCard(id, shoppingCard)) {
+                throw new DAOException("Failed update shopping card");
+            }
         }catch (DAOException e){
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -113,7 +115,9 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             throw new InvalidEntryException("Invalid id");
         }
         try {
-            shoppingCardDao.deleteShoppingCard(id);
+            if (!shoppingCardDao.deleteShoppingCard(id)){
+                throw new DAOException("Failed to delete shopping card");
+            }
         }catch (DAOException e){
             String error = "Failed to delete ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));

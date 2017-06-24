@@ -1,4 +1,4 @@
-package am.aca.wftartproject.service;
+package am.aca.wftartproject.service.unit;
 
 import am.aca.wftartproject.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
@@ -7,6 +7,7 @@ import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
