@@ -1,5 +1,7 @@
 package am.aca.wftartproject;
 
+import am.aca.wftartproject.model.ArtistSpecialization;
+
 import java.sql.SQLException;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,7 +14,8 @@ public class Main {
 //        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
 //        ItemService itemService = (ItemService)context.getBean("itemService");
 //        for(Item element:itemService.getRecentlyAddedItems(20)){
-//            System.out.println(element.toString());
+            ArtistSpecialization artistSpecialization = ArtistSpecialization.valueOf("SCULPTOR");
+          System.out.println(artistSpecialization);
 //
 //        }
 

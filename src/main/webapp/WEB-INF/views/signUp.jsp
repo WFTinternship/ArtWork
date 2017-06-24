@@ -72,10 +72,10 @@
 			<!-- content will be loaded using jQuery - according to the selected plan -->
 		</div>
 
-		<div class="cd-more-info">
-			<h3>Need help?</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-		</div>
+		<%--<div class="cd-more-info">--%>
+			<%--<h3>Need help?</h3>--%>
+			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
+		<%--</div>--%>
 		
 		<form action="/signup" method="post">
 			<fieldset>
@@ -128,12 +128,12 @@
 			<!-- content will be loaded using jQuery - according to the selected plan -->
 		</div>
 
-		<div class="cd-more-info">
-			<h3>Need help?</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-		</div>
+		<%--<div class="cd-more-info">--%>
+			<%--<h3>Need help?</h3>--%>
+			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
+		<%--</div>--%>
 
-		<form action="/signup" method="post">
+		<form action="/signup" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>Account Info</legend>
 
@@ -171,19 +171,16 @@
 					<label for="artistSpec">Specialization</label>
 					<br/>
 					<select name="artistSpec" id="artistSpec">
+						<option value="-1" selected>Choose Specialization</option>
 						<c:forEach items="${artistSpecTypes}" var="element">
-							<option value="${element.type}">${element.type}</option>
+							<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''}>${element.type}</option>
 						</c:forEach>
 
-						<%--<option value="PAINTER">PAINTER</option>--%>
-						<%--<option value="SCULPTOR">SCULPTOR</option>--%>
-						<%--<option value="PHOTOGRAPHER">PHOTOGRAPHER</option>--%>
-						<%--<option value="OTHER">OTHER</option>--%>
 					</select>
 				</div>
 				<br/>
 				<div class="half-width">
-					<input type="file" name="imageUpload" id="imageUpload" class="hide"/>
+					<input type="file" name="image" id="imageUpload" class="hide"/>
 					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
 					<img src="" id="imagePreview" alt="" width="200px"/>
 				</div>
