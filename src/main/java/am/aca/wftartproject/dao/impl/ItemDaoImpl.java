@@ -473,48 +473,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     /**
-     * @param itemType
-     * @param price
-     * @param sortingType
-     * @return
-     * @see ItemDao#getFilteredAndSortedItems(String, Integer[], String)
-     */
-    public List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType) {
-
-
-//        String queryPart1 = "SELECT it.* FROM item it WHERE 1=1";
-//        String queryPart2 = " AND it.type = ?";
-//        String queryPart3 = " AND it.price BETWEEN ? AND ?";
-//        String queryPart4 = " ORDER BY ?";
-//        String queryPart5 = " DESC";
-//
-//        List<Item> itemList;
-//        try {
-//            itemList = jdbcTemplate.query(
-//                    (queryPart1
-//                            + (itemType == null ? null : queryPart2)
-//                            + (price == null ? null : queryPart3)
-//                            + (sortingType == null ? null : queryPart4)
-//                            + ("1".equals(sortingType) ? null : queryPart5)),
-//                    new Object[]{(itemType),
-//                            (price != null ? price[0] : null),
-//                            (price != null ? price[1] : null),
-//                            (sortingType)},
-//                    new ItemMapper()
-//            );
-//
-//        } catch (EmptyResultDataAccessException e) {
-//            return null;
-//        } catch (DataAccessException e) {
-//            String error = "Failed to get items for the given criteria: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        }
-        return null;
-    }
-
-
-    /**
      * @param id
      * @param item
      * @see ItemDao#updateItem(Long, Item)

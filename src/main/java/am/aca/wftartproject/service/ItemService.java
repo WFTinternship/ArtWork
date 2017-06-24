@@ -17,6 +17,7 @@ public interface ItemService {
      */
     void addItem(Long artistID, Item item);
 
+
     /**
      * Finds Item by id
      *
@@ -24,6 +25,7 @@ public interface ItemService {
      * @return
      */
     Item findItem(Long id);
+
 
     /**
      * Gets recently added items
@@ -41,6 +43,7 @@ public interface ItemService {
      * @return
      */
     List<Item> getItemsByTitle(String title);
+
 
     /**
      * Gets all items with the following type.
@@ -60,6 +63,7 @@ public interface ItemService {
      */
     List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
 
+
     /**
      * Gets artist items for the given limit.
      * @param artistId
@@ -71,22 +75,13 @@ public interface ItemService {
 
 
     /**
-     * Filters and sorts items by the given criteria.
-     * @param itemType
-     * @param price
-     * @param sortingType
-     * @return
-     */
-    List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType);
-
-
-    /**
      * Updates Item price by id
      *
      * @param id
      * @param item
      */
     void updateItem(Long id, Item item);
+
 
     /**
      * Deletes Item by id

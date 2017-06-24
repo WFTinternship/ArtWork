@@ -186,7 +186,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
         if (artistId == null || artistId < 0 || itemId == null || itemId < 0 || limit == null || limit < 0) {
-            LOGGER.error(String.format("artistId or limit is not valid: %s , %s", artistId, limit));
+            LOGGER.error(String.format("artistId or itemId or limit is not valid: %s , %s, %s", artistId, itemId, limit));
             throw new InvalidEntryException("Invalid artistId or limit");
         }
 
@@ -194,28 +194,6 @@ public class ItemServiceImpl implements ItemService {
             return itemDao.getArtistItems(artistId, itemId, limit);
         } catch (DAOException e) {
             String error = "Failed to get items for the given artistId: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
-        }
-    }
-
-    /**
-     * @see ItemService#getFilteredAndSortedItems(String, Integer[], String)
-     * @param itemType
-     * @param price
-     * @param sortingType
-     * @return
-     */
-    public List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType){
-        if (itemType == null) {
-            LOGGER.error(String.format("artistId or limit is not valid: %s , %s", itemType));
-            throw new InvalidEntryException("Invalid artistId or limit");
-        }
-
-        try {
-            return itemDao.getFilteredAndSortedItems(itemType,price,sortingType);
-        } catch (DAOException e) {
-            String error = "Failed to get items for the given criteria: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }

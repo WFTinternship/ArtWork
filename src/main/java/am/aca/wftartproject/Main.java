@@ -62,6 +62,5 @@ public class Main {
         for(Item option:itemList){
             System.out.println("option.getId() + option.toString() = " + option.getId() + option.toString());
         }
-
     }
 }

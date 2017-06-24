@@ -17,6 +17,7 @@ public interface ItemDao {
      */
     void addItem(Long artistID, Item item);
 
+
     /**
      * Finds Item by id
      *
@@ -25,6 +26,7 @@ public interface ItemDao {
      */
     Item findItem(Long id);
 
+
     /**
      * Gets recently added items
      *
@@ -32,6 +34,7 @@ public interface ItemDao {
      * @return
      */
     List<Item> getRecentlyAddedItems(int limit);
+
 
     /**
      * Gets all items with the following title.
@@ -73,21 +76,13 @@ public interface ItemDao {
 
 
     /**
-     * Filters and sorts items by the given criteria.
-     * @param itemType
-     * @param price
-     * @param sortingType
-     * @return
-     */
-    List<Item> getFilteredAndSortedItems(String itemType, Integer[] price , String sortingType);
-
-    /**
      * Updates Item price by id
      *
      * @param id
      * @param item
      */
     void updateItem(Long id, Item item);
+
 
     /**
      * Deletes Item by id
