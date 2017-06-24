@@ -122,7 +122,9 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            userDao.updateUser(id, user);
+            if (!userDao.updateUser(id, user)) {
+                throw new DAOException("Failed to update user");
+            }
         } catch (DAOException e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -143,7 +145,9 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            userDao.deleteUser(id);
+            if (!userDao.deleteUser(id)) {
+                throw new DAOException("Failed to delete user");
+            }
         } catch (DAOException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -169,7 +173,7 @@ public class UserServiceImpl implements UserService {
             if (user != null && user.getPassword().equals(password)) {
                 return user;
             } else {
-                throw new RuntimeException("The username or password is not valid");
+                throw new RuntimeException("The username or password is not correct");
             }
         } catch (DAOException e) {
             String error = "Failed to find User: %s";

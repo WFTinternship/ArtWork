@@ -2,6 +2,8 @@ package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -47,6 +49,25 @@ public class TestObjectTemplate {
                 .setStatus(false);
 //                .setAdditionDate(timestamp);
         return item;
+    }
+
+    public static ShoppingCard createTestShoppingCard() {
+        ShoppingCard shoppingCard = new ShoppingCard();
+
+        shoppingCard.setBalance(getRandomNumber() + 100)
+        .setShoppingCardType(ShoppingCardType.PAYPAL);
+
+        return shoppingCard;
+    }
+
+    public static PurchaseHistory createTestPurchaseHistory() {
+        PurchaseHistory purchaseHistory = new PurchaseHistory();
+
+        purchaseHistory.setItemId(getRandomNumber() + 1L)
+                .setUserId(getRandomNumber() + 1L)
+                .setPurchaseDate(new Timestamp(1L));
+
+        return purchaseHistory;
     }
 
     public static int getRandomNumber() {

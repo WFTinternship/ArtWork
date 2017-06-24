@@ -49,12 +49,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-
-        // create db connection
-        dataSource = new ConnectionFactory()
-                .getConnection(ConnectionModel.POOL)
-                .getTestDBConnection();
-
         // create test user
         testUser = TestObjectTemplate.createTestUser();
 

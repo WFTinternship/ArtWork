@@ -48,12 +48,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-
-        // create db connection,artistDaoImplementation and artist for testing
-        dataSource = new ConnectionFactory()
-                .getConnection(ConnectionModel.POOL)
-                .getTestDBConnection();
-
+        // create artistSpecialization
         ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
