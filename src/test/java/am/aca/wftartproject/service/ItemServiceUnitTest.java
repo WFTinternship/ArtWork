@@ -19,9 +19,7 @@ import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by ASUS on 24-Jun-17
@@ -147,7 +145,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         // Setup mock
         doNothing().when(itemDaoMock).addItem(id,testItem);
 
-
         // Test method
         itemService.addItem(id,testItem);
 
@@ -220,5 +217,46 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         assertEqualItems(testItem,itemService.findItem(id));
 
     }
+
+    /**
+     * @see ItemService#getRecentlyAddedItems(int)
+     */
+    @Test
+    public void getRecentlyAddedItems_limitIsNegative(){
+
+        // Create test limit
+        int testLimit = -20;
+
+        // Test method
+        try{
+            itemService.getRecentlyAddedItems(testLimit);
+            fail();
+        }catch (Exception ex){
+            assertTrue(ex instanceof InvalidEntryException);
+        }
+    }
+
+
+    /**
+     * @see ItemService#getRecentlyAddedItems(int)
+     */
+    @Test(expected = ServiceException.class)
+    public void getRecentlyAddedItems_getFail(){
+
+        // Create test limit
+        int testLimit = 20;
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).getRecentlyAddedItems(anyInt());
+
+        // Test method
+        itemService.getRecentlyAddedItems(testLimit);
+
+    }
+
+
+
+
+
 
 }
