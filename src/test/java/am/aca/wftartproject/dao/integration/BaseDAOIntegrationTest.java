@@ -11,7 +11,7 @@ abstract class BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDAOIntegrationTest.class);
 
-    DataSource dataSource = null;
+    DataSource dataSource;
 
     DataSource getDataSource() {
         return dataSource;

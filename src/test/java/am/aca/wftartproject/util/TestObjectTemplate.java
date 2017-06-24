@@ -2,6 +2,8 @@ package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -35,8 +37,8 @@ public class TestObjectTemplate {
     //title, description, photo_url, price, artist_id, status, item_type
     public static Item createTestItem() {
 
-//        Calendar cal = Calendar.getInstance();
-//        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+        Calendar cal = Calendar.getInstance();
+        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
 
         Item item = new Item();
         item.setTitle("test_item")
@@ -44,8 +46,8 @@ public class TestObjectTemplate {
                 .setItemType(ItemType.PAINTING)
                 .setPhotoURL("../../resources/images/product/images (1).jpg")
                 .setPrice(getRandomNumber() + 1.1)
-                .setStatus(false);
-//                .setAdditionDate(timestamp);
+                .setStatus(false)
+                .setAdditionDate(timestamp);
         return item;
     }
 
