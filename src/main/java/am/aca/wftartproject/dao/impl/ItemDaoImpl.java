@@ -481,8 +481,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public void updateItem(Long id, Item item) {
 
         try {
-            String query = "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?";
-            Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(), id};
+            String query = "UPDATE item SET title=?, description=?, price=?, type=?, status=? WHERE id=?";
+            Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(), item.getStatus(), item.getId()};
 
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
@@ -501,12 +501,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 //        try {
 //            conn = getDataSource().getConnection();
 //            ps = conn.prepareStatement(
-//                    "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?");
+//                    "UPDATE item SET title=?, description=?, price=?, type=?, status=? WHERE id=?");
 //            ps.setString(1, item.getTitle());
 //            ps.setString(2, item.getDescription());
 //            ps.setDouble(3, item.getPrice());
 //            ps.setString(4, item.getItemType().getType());
-//            ps.setLong(5, id);
+//            ps.setBoolean(5, item.getStatus());
+//            ps.setLong(6, item.getId());
 //            ps.executeUpdate();
 //        } catch (SQLException e) {
 //            String error = "Failed to update Item:  %s";

@@ -51,14 +51,14 @@ public class Main {
         System.out.println();
 
 
-        Collections.sort(itemList, ItemComparator.getComparator(ItemComparator.AVAILIBILITY_SORT));
+        Collections.sort(itemList, ItemComparator.getComparator(ItemComparator.AVAILABILITY_SORT));
         for(Item option:itemList){
             System.out.println("option.getId() + option.toString() = " + option.getId() + option.toString());
         }
         System.out.println();
 
 
-        Collections.sort(itemList, ItemComparator.descending(ItemComparator.getComparator(ItemComparator.AVAILIBILITY_SORT)));
+        Collections.sort(itemList, ItemComparator.descending(ItemComparator.getComparator(ItemComparator.AVAILABILITY_SORT)));
         for(Item option:itemList){
             System.out.println("option.getId() + option.toString() = " + option.getId() + option.toString());
         }

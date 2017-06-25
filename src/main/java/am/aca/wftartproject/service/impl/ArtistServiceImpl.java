@@ -8,6 +8,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -16,7 +17,8 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
-@Transactional
+@Service
+@Transactional(readOnly = true)
 public class ArtistServiceImpl implements ArtistService {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
@@ -26,11 +28,6 @@ public class ArtistServiceImpl implements ArtistService {
     public void setArtistDao(ArtistDao artistDao) {
         this.artistDao = artistDao;
     }
-
-//        public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        artistDao = new ArtistDaoImpl(conn);
-//    }
 
 
     /**

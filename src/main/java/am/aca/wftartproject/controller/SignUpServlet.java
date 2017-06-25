@@ -1,8 +1,6 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.ArtistSpecialization;
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
@@ -29,14 +27,11 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-//        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
-//        ArtistService artistService = SpringBean.getBeanFromSpring("artistService", ArtistService.class);
-
-
         UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
         ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
 
         User userFromRequest = null;
+        ShoppingCard shoppingCard = null;
         Artist artistFromRequest = null;
 
         boolean chosenBuyerUser = request.getParameter("artistSpec") == null;
@@ -47,7 +42,8 @@ public class SignUpServlet extends HttpServlet {
                     .setLastName(request.getParameter("lastName"))
                     .setAge(Integer.parseInt(request.getParameter("age")))
                     .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password"));
+                    .setPassword(request.getParameter("password"))
+                    .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
         } else {
             artistFromRequest = new Artist();
             artistFromRequest.setFirstName(request.getParameter("firstName"))

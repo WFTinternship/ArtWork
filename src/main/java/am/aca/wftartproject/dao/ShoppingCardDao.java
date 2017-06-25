@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.ShoppingCard;
 public interface ShoppingCardDao {
 
     /**
-     * Adds shoppingCard to the springconfig.database.
+     * Adds shoppingCard to the database.
      *
      * @param userId
      * @param shoppingCard
@@ -16,7 +16,7 @@ public interface ShoppingCardDao {
     void addShoppingCard(Long userId, ShoppingCard shoppingCard);
 
     /**
-     * Gets shoppingCard from springconfig.database.
+     * Gets shoppingCard from database.
      *
      * @param id
      * @return
@@ -24,12 +24,23 @@ public interface ShoppingCardDao {
     ShoppingCard getShoppingCard(Long id);
 
     /**
-     * Updates shoppingCard in springconfig.database.
+     * Updates shoppingCard in database.
      *
      * @param id
      * @param shoppingCard
      */
     Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard);
+
+
+    /**
+     * Debits balance for item buying
+     *
+     * @param buyerId
+     * @param itemPrice
+     * @return
+     */
+    Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice);
+
 
     /**
      * Deletes shoppingCard by id.

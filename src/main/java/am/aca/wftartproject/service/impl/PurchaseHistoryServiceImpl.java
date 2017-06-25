@@ -7,6 +7,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 /**
  * Created by surik on 6/1/17
  */
-@Transactional
+@Service
+@Transactional(readOnly = true)
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
@@ -24,11 +26,6 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
         this.purchaseHistoryDao = purchaseHistoryDao;
     }
-
-//        public PurchaseHistoryServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        purchaseHistoryDao= new PurchaseHistoryDaoImpl(conn);
-//    }
 
 
     /**

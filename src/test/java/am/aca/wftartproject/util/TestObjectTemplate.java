@@ -70,7 +70,7 @@ public class TestObjectTemplate {
         return rand.nextInt(100000) + 1;
     }
 
-    public static Timestamp getTimestamp() {
+    private static Timestamp getTimestamp() {
         Calendar cal = Calendar.getInstance();
         return new Timestamp(cal.getTimeInMillis());
     }

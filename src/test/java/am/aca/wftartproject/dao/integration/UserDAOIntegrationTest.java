@@ -6,17 +6,12 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.AssertTemplates;
 import am.aca.wftartproject.util.TestObjectTemplate;
-import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
-import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
 
@@ -28,9 +23,6 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 5/30/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
-        "classpath:springconfig/database/spring-database.xml"})
 public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);

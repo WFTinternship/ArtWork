@@ -3,6 +3,7 @@ package am.aca.wftartproject.dao.impl;
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.rowmappers.ShoppingCardMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -28,9 +29,9 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      * @param userId
      * @param shoppingCard
+     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
@@ -45,7 +46,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
                 PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setDouble(1, shoppingCard.getBalance());
                 ps.setLong(2, userId);
-                ps.setString(3,shoppingCard.getShoppingCardType().getType());
+                ps.setString(3, shoppingCard.getShoppingCardType().getType());
                 return ps;
             };
 
@@ -96,16 +97,16 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#getShoppingCard(Long)
      * @param id
      * @return
+     * @see ShoppingCardDao#getShoppingCard(Long)
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
 
         try {
             String query = "SELECT * FROM shopping_card WHERE id=?";
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs,rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn(String.format("Failed to get shopping card by id: %s", id));
@@ -147,9 +148,9 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      * @param id
      * @param shoppingCard
+     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Override
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
@@ -161,7 +162,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             int rowsAffected = jdbcTemplate.update(query, shoppingCard.getBalance(), shoppingCard.getShoppingCardType().getType(), id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to update ShoppingCard");
-            }else{
+            } else {
                 status = true;
             }
         } catch (DataAccessException e) {
@@ -197,10 +198,33 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         //endregion
     }
 
+    /**
+     * @param itemPrice
+     * @param buyerId
+     * @return
+     * @see ShoppingCardDao#debitBalanceForItemBuying(Long, Double)
+     */
+    @Override
+    public Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
+
+        Boolean isEnoughBalance;
+        ShoppingCard shoppingCard = getShoppingCard(buyerId);
+
+        if (shoppingCard.getBalance() >= itemPrice) {
+            shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
+            updateShoppingCard(buyerId, shoppingCard);
+            isEnoughBalance = true;
+        } else {
+            throw new NotEnoughMoneyException("Not enough money on the account.");
+        }
+
+        return isEnoughBalance;
+    }
+
 
     /**
-     * @see ShoppingCardDao#deleteShoppingCard(Long)
      * @param id
+     * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Override
     public Boolean deleteShoppingCard(Long id) {
@@ -212,7 +236,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete ShoppingCard");
-            }else{
+            } else {
                 status = true;
             }
         } catch (DataAccessException e) {

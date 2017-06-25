@@ -40,8 +40,7 @@ public class ShoppingCard {
     public ShoppingCard() {
     }
 
-    public ShoppingCard(double balance, ShoppingCardType shoppingCardType) {
-        this.balance = balance;
+    public ShoppingCard(ShoppingCardType shoppingCardType) {
         this.shoppingCardType = shoppingCardType;
     }
 

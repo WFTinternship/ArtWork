@@ -1,7 +1,10 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import am.aca.wftartproject.util.SpringBeanType;
 
@@ -14,8 +17,9 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
 
-//    private UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
-    private UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE,UserServiceImpl.class);
+    //    private UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
+    private UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
+    private ShoppingCardService shoppingCardService = CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardServiceImpl.class);
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,15 +35,17 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
-            if(userFromDB != null) {
+            if (userFromDB != null) {
                 HttpSession session = request.getSession(true);
+                ShoppingCard shoppingCardFromDB = shoppingCardService.getShoppingCard(userFromDB.getId());
+                userFromDB.setShoppingCard(shoppingCardFromDB);
                 session.setAttribute("user", userFromDB);
 
                 Cookie userEmail = new Cookie("userEmail", userFromDB.getEmail());
                 userEmail.setMaxAge(3600);    // 60 minutes
                 response.addCookie(userEmail);
                 response.sendRedirect("/index");
-            }else{
+            } else {
                 throw new RuntimeException();
             }
         } catch (RuntimeException e) {

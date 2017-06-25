@@ -6,10 +6,11 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemDetail" value='<%=request.getAttribute("itemDetail")%>'/>
+<c:set var="itemDetail" value='<%=session.getAttribute("itemDetail")%>'/>
 <c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>'/>
 <c:set var="artistInfo" value='<%=request.getAttribute("artistInfo")%>'/>
-<c:set var="user" value='<%=session.getAttribute("user")%>' />
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
+
 
 
 <!Doctype html>
@@ -56,7 +57,7 @@
     <%--fancybox--%>
     <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
 
 </head>
@@ -73,7 +74,8 @@
         <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
             <div id="header" class="header">
                 <div class="container menu-container">
-                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo"
+                                                                                         src="../../resources/images/logo.png"></a>
 
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -87,7 +89,8 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span
+                            class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                             <li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -99,7 +102,8 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="${pageContext.request.contextPath}/about">About us <span
+                                class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span
                             class="fa fa-camera-retro"></span></a>
@@ -110,26 +114,28 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span
+                    <li class="current_page_item menu-item-simple-parent"><a
+                            href="${pageContext.request.contextPath}/shop">Shop <span
                             class="fa fa-cart-plus"></span></a>
                         <%--<ul class="sub-menu">--%>
-                            <%--<li class="current_page_item"><a href="shop-detail.jsp">Shop Detail</a></li>--%>
-                            <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
-                            <%--<li><a href="shop-checkout.html">Checkout Page</a></li>--%>
+                        <%--<li class="current_page_item"><a href="item-detail.jsp">Shop Detail</a></li>--%>
+                        <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
+                        <%--<li><a href="shop-checkout.html">Checkout Page</a></li>--%>
                         <%--</ul>--%>
                         <%--<a class="dt-menu-expand">+</a>--%>
                     </li>
                     <%--<li class="menu-item-simple-parent"><a href="blog.html">Blog <span--%>
-                            <%--class="fa fa-pencil-square-o"></span></a>--%>
-                        <%--<ul class="sub-menu">--%>
-                            <%--<li><a href="blog-detail.html">Blog detail</a></li>--%>
-                            <%--<li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>--%>
-                            <%--<li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>--%>
-                        <%--</ul>--%>
-                        <%--<a class="dt-menu-expand">+</a>--%>
+                    <%--class="fa fa-pencil-square-o"></span></a>--%>
+                    <%--<ul class="sub-menu">--%>
+                    <%--<li><a href="blog-detail.html">Blog detail</a></li>--%>
+                    <%--<li><a href="blog-detail-with-lhs.html">Blog-detail-left-sidebar</a></li>--%>
+                    <%--<li><a href="blog-detail-with-rhs.html">Blog-detail-right-sidebar</a></li>--%>
+                    <%--</ul>--%>
+                    <%--<a class="dt-menu-expand">+</a>--%>
                     <%--</li>--%>
                     <li class="menu-item-simple-parent">
-                        <a href="/contact">Contact <span class="fa fa-map-marker"></span></a>
+                        <a href="${pageContext.request.contextPath}/contact">Contact <span
+                                class="fa fa-map-marker"></span></a>
                     </li>
                     <li class="menu-item-simple-parent">
                         <a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
@@ -140,32 +146,32 @@
                             <li><a href="../../resources/tabs.html"> tabs-accordions </a></li>
                             <li><a href="../../resources/typography.html"> typography </a></li>
                             <li><a href="../../resources/columns.html"> columns </a></li>--%>
-                            <li><a href="/account">My Account </a></li>
+                            <li><a href="${pageContext.request.contextPath}/account">My Account </a></li>
                             <c:choose>
                                 <c:when test="${user==null}">
-                                    <li><a href="/login">Log in </a></li>
-                                    <li><a href="/signup">Sign up </a></li>
+                                    <li><a href="${pageContext.request.contextPath}/login">Log in </a></li>
+                                    <li><a href="${pageContext.request.contextPath}/signup">Sign up </a></li>
                                 </c:when>
                                 <c:otherwise>
-                                    <li><a href="/logout">Log out </a></li>
+                                    <li><a href="${pageContext.request.contextPath}/logout">Log out </a></li>
                                 </c:otherwise>
                             </c:choose>
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <%--<li class="menu-item-simple-parent">--%>
-                        <%--<a href="/contact">Contact <span class="fa fa-map-marker"></span></a>--%>
+                    <%--<a href="/contact">Contact <span class="fa fa-map-marker"></span></a>--%>
                     <%--</li>--%>
                     <%--<li class="menu-item-simple-parent">--%>
-                        <%--<a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>--%>
-                        <%--<ul class="sub-menu">--%>
-                            <%--<li><a href="progressbar.html"> Progress-bar </a></li>--%>
-                            <%--<li><a href="buttons.html"> Buttons Page </a></li>--%>
-                            <%--<li><a href="tabs.html"> tabs-accordions </a></li>--%>
-                            <%--<li><a href="typography.html"> typography </a></li>--%>
-                            <%--<li><a href="columns.html"> columns </a></li>--%>
-                        <%--</ul>--%>
-                        <%--<a class="dt-menu-expand">+</a>--%>
+                    <%--<a href="progressbar.html">shortcodes <span class="fa fa-paint-brush"></span></a>--%>
+                    <%--<ul class="sub-menu">--%>
+                    <%--<li><a href="progressbar.html"> Progress-bar </a></li>--%>
+                    <%--<li><a href="buttons.html"> Buttons Page </a></li>--%>
+                    <%--<li><a href="tabs.html"> tabs-accordions </a></li>--%>
+                    <%--<li><a href="typography.html"> typography </a></li>--%>
+                    <%--<li><a href="columns.html"> columns </a></li>--%>
+                    <%--</ul>--%>
+                    <%--<a class="dt-menu-expand">+</a>--%>
                     <%--</li>--%>
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->
@@ -195,37 +201,38 @@
                     <div class="cart-wrapper"><!-- *cart-wrapper starts here** -->
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
-                                <a data-fancybox="gallery" href="${itemDetail.getPhotoURL()}">
-                                    <img src="${itemDetail.getPhotoURL()}" alt="" title="Acrylic">
+                                <a data-fancybox="gallery" href="${itemDetail.photoURL}">
+                                    <img src="${itemDetail.photoURL}" alt="" title="Acrylic">
                                 </a>
                             </div>
                             <h5>more from this artist</h5>
                             <ul class="thumblist">
                                 <c:forEach items="${artistItems}" var="itemElement">
                                     <li>
-                                        <a href="/shop-detail/${itemElement.id}" class="product"><img src="${itemElement.photoURL}"
-                                                                         alt="" title=""></a>
+                                        <a href="/shop-detail/${itemElement.id}" class="product"><img
+                                                src="${itemElement.photoURL}"
+                                                alt="" title=""></a>
                                     </li>
                                 </c:forEach>
                                 <%--<li>--%>
-                                    <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                                                     <%--title=""></a>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
+                                <%--title=""></a>--%>
                                 <%--</li>--%>
                                 <%--<li>--%>
-                                    <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                                                     <%--title=""></a>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
+                                <%--title=""></a>--%>
                                 <%--</li>--%>
                                 <%--<li>--%>
-                                    <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                                                     <%--title=""></a>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
+                                <%--title=""></a>--%>
                                 <%--</li>--%>
                                 <%--<li>--%>
-                                    <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                                                     <%--title=""></a>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
+                                <%--title=""></a>--%>
                                 <%--</li>--%>
                                 <%--<li>--%>
-                                    <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                                                     <%--title=""></a>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
+                                <%--title=""></a>--%>
                                 <%--</li>--%>
                             </ul>
                             <%--<div class="commententries"><!-- *commententries starts here** -->--%>
@@ -286,129 +293,138 @@
                             <%--</div><!-- *commententries Ends here** -->--%>
                         </div>
                         <div class="dt-sc-two-fifth column">
-                            <!-- Author Detail Starts Here -->
-                            <%--<div class="post-author-details">--%>
+                            <form action="${pageContext.request.contextPath}/shop-detail" method="post">
+                                <!-- Author Detail Starts Here -->
+                                <%--<div class="post-author-details">--%>
                                 <%--<div class="entry-author-image">--%>
-                                    <%--<img src="http://placehold.it/100x100&text=Thumb" alt="" title=""/>--%>
+                                <%--<img src="http://placehold.it/100x100&text=Thumb" alt="" title=""/>--%>
                                 <%--</div>--%>
                                 <%--<div class="author-title">--%>
-                                    <%--<h5><a href="#">James Dean</a></h5>--%>
-                                    <%--<span>Garland, TX - United States</span>--%>
-                                    <%--<div class="woocommerce-product-rating">--%>
-                                        <%--<div title="Rated 4.40 out of 5" class="star-rating"><span--%>
-                                                <%--style="width:85%"></span></div>--%>
-                                        <%--<a href="#">( 4 customer reviews )</a>--%>
-                                    <%--</div>--%>
+                                <%--<h5><a href="#">James Dean</a></h5>--%>
+                                <%--<span>Garland, TX - United States</span>--%>
+                                <%--<div class="woocommerce-product-rating">--%>
+                                <%--<div title="Rated 4.40 out of 5" class="star-rating"><span--%>
+                                <%--style="width:85%"></span></div>--%>
+                                <%--<a href="#">( 4 customer reviews )</a>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <%--<div class="author-desc">--%>
-                                    <%--<p>Remaining art are essentially unchanged. It was popularised in the 1960s with a--%>
-                                        <%--release of Latest sheets containing passages, and more recently with desktop--%>
-                                        <%--publishing software.</p>--%>
+                                <%--<p>Remaining art are essentially unchanged. It was popularised in the 1960s with a--%>
+                                <%--release of Latest sheets containing passages, and more recently with desktop--%>
+                                <%--publishing software.</p>--%>
                                 <%--</div>--%>
-                            <%--</div>--%>
-                            <!-- Author Detail Ends Here -->
-                            <%--<ul class="cart-thumb-categories"><!-- cart-thumb-categories starts Here -->--%>
-                            <%--<li>--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Canvas Print </a> </h6>--%>
-                            <%--<span> $25 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> photogenic </a> </h6>--%>
-                            <%--<span> $30 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li class="last">--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Oil painting </a> </h6>--%>
-                            <%--<span> $28 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Acrylic Art </a> </h6>--%>
-                            <%--<span> $45 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Sketches </a> </h6>--%>
-                            <%--<span> $15 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li class="last">--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Dropper Art </a> </h6>--%>
-                            <%--<span> $20 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Sculpture </a> </h6>--%>
-                            <%--<span> $55 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                            <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                            <%--<div class="category-details"> --%>
-                            <%--<h6><a href="#"> Water Print </a> </h6>--%>
-                            <%--<span> $10 </span> --%>
-                            <%--</div>                                    --%>
-                            <%--</li>                                                                                                --%>
-                            <%--</ul><!-- cart-thumb-categories Ends Here -->--%>
-                            <div class="project-details">
-                                <ul class="client-details">
-                                    <li>
-                                        <p><span>Title :</span>${itemDetail.getTitle()}</p>
-                                    </li>
-                                    <li>
-                                        <p><span>Artist :</span>${artistInfo.getFirstName()}</p>
-                                    </li>
-                                    <li>
-                                        <p><span>Category :</span>${itemDetail.getItemType()}</p>
-                                    </li>
-                                    <li>
-                                        <p><span>Description :</span>${itemDetail.getDescription()}</p>
-                                    </li>
-                                    <li>
-                                        <p><span>Uploaded :</span>${itemDetail.getAdditionDate()}</p>
-                                    </li>
-                                    <li>
-                                        <p><span>Price :</span> $${itemDetail.getPrice()}</p>
-                                    </li>
-                                    <%--<li>--%>
-                                    <%--<p><span>Colors :</span><a href="#" class="yellow"></a><a href="#" class="green"></a><a href="#" class="orange"></a><a href="#" class="red"></a></p>--%>
-                                    <%--</li>--%>
-                                    <%--<li>--%>
-                                    <%--<p><span>Sales Sheet :</span>PDF</p>--%>
-                                    <%--</li>--%>
-                                    <%--<li>--%>
-                                    <%--<p>--%>
-                                    <%--<span>Tags :</span>--%>
-                                    <%--<div class="tagcloud type3">--%>
-                                    <%--<a href="#">Sketches</a>--%>
-                                    <%--<a href="#">Fashion</a>--%>
-                                    <%--<a href="#">Art</a>--%>
-                                    <%--<a href="#">Rain</a>--%>
-                                    <%--<a href="#">Scupture</a>--%>
-                                    <%--<a href="#">Lonely</a>--%>
-                                    <%--<a href="#">Oil color</a>--%>
-                                    <%--<a href="#">Gallery</a>--%>
-                                    <%--<a href="#">Mordern Art</a>                                                                                                                                                --%>
-                                    <%--</div>--%>
-                                    <%--</p>--%>
-                                    <%--</li>                                                                                                                                                --%>
-                                </ul>
-                            </div>
+                                <%--</div>--%>
+                                <!-- Author Detail Ends Here -->
+                                <%--<ul class="cart-thumb-categories"><!-- cart-thumb-categories starts Here -->--%>
+                                <%--<li>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Canvas Print </a> </h6>--%>
+                                <%--<span> $25 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> photogenic </a> </h6>--%>
+                                <%--<span> $30 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li class="last">--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Oil painting </a> </h6>--%>
+                                <%--<span> $28 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Acrylic Art </a> </h6>--%>
+                                <%--<span> $45 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Sketches </a> </h6>--%>
+                                <%--<span> $15 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li class="last">--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Dropper Art </a> </h6>--%>
+                                <%--<span> $20 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Sculpture </a> </h6>--%>
+                                <%--<span> $55 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
+                                <%--<div class="category-details"> --%>
+                                <%--<h6><a href="#"> Water Print </a> </h6>--%>
+                                <%--<span> $10 </span> --%>
+                                <%--</div>                                    --%>
+                                <%--</li>                                                                                                --%>
+                                <%--</ul><!-- cart-thumb-categories Ends Here -->--%>
+                                <div class="project-details">
+                                    <ul class="client-details">
+                                        <li>
+                                            <p><span>Title :</span>${itemDetail.title}</p>
+                                        </li>
+                                        <li>
+                                            <p><span>Artist :</span>${artistInfo.firstName} ${artistInfo.lastName}</p>
+                                        </li>
+                                        <li>
+                                            <p><span>Category :</span>${itemDetail.itemType}</p>
+                                        </li>
+                                        <li>
+                                            <p><span>Description :</span>${itemDetail.description}</p>
+                                        </li>
+                                        <li>
+                                            <p><span>Uploaded :</span>${itemDetail.additionDate}</p>
+                                        </li>
+                                        <li>
+                                            <p><span>Price :</span> $${itemDetail.price}</p>
+                                        </li>
+                                        <%--<li>--%>
+                                        <%--<p><span>Colors :</span><a href="#" class="yellow"></a><a href="#" class="green"></a><a href="#" class="orange"></a><a href="#" class="red"></a></p>--%>
+                                        <%--</li>--%>
+                                        <%--<li>--%>
+                                        <%--<p><span>Sales Sheet :</span>PDF</p>--%>
+                                        <%--</li>--%>
+                                        <%--<li>--%>
+                                        <%--<p>--%>
+                                        <%--<span>Tags :</span>--%>
+                                        <%--<div class="tagcloud type3">--%>
+                                        <%--<a href="#">Sketches</a>--%>
+                                        <%--<a href="#">Fashion</a>--%>
+                                        <%--<a href="#">Art</a>--%>
+                                        <%--<a href="#">Rain</a>--%>
+                                        <%--<a href="#">Scupture</a>--%>
+                                        <%--<a href="#">Lonely</a>--%>
+                                        <%--<a href="#">Oil color</a>--%>
+                                        <%--<a href="#">Gallery</a>--%>
+                                        <%--<a href="#">Mordern Art</a>                                                                                                                                                --%>
+                                        <%--</div>--%>
+                                        <%--</p>--%>
+                                        <%--</li>                                                                                                                                                --%>
+                                    </ul>
+                                </div>
+                                <c:if test="${itemDetail.status==false}">
+                                    <div class="dt-sc-one-fifth column">
+                                        <div class="container">
+                                            <button type="submit" class="button">Buy Art Work!</button>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </form>
                         </div>
                     </div><!-- *cart-wrapper Ends here** -->
                 </div>

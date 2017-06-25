@@ -30,9 +30,11 @@ public class ShopServlet extends HttpServlet {
 
         request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
         request.setAttribute("itemTypes", ItemType.values());
-        request.setAttribute("itemList", itemService.getRecentlyAddedItems(20));
+        request.setAttribute("itemList", itemService.getRecentlyAddedItems(100));
 
         dispatcher.forward(request, response);
+
+        request.getSession().removeAttribute("msgNotEnoughMoney");
     }
 
     @Override
@@ -41,7 +43,7 @@ public class ShopServlet extends HttpServlet {
         String itemTypeStr = request.getParameter("itemType");
         String sortingType = request.getParameter("sortType");
 
-        List<Item> itemList = itemService.getRecentlyAddedItems(20);
+        List<Item> itemList = itemService.getRecentlyAddedItems(100);
         try {
             if (!"-1".equals(itemTypeStr)) {
                 itemList = itemService.getItemsByType(itemTypeStr);

@@ -1,6 +1,5 @@
 package am.aca.wftartproject.service;
 
-import am.aca.wftartproject.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;

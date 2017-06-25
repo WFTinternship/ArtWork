@@ -20,6 +20,7 @@
         <spring-framework-version>4.3.8.RELEASE</spring-framework-version>
         <mokito-version>1.9.5</mokito-version>
         <spring-test-version>4.0.5.RELEASE</spring-test-version>
+        <spring-mvc-version>4.3.9.RELEASE</spring-mvc-version>
     </properties>
 
 
@@ -107,6 +108,15 @@
             <version>${mokito-version}</version>
             <scope>test</scope>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring-mvc-version}</version>
+        </dependency>
+
     </dependencies>
 
 

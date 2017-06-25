@@ -2,33 +2,29 @@ package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.SQLException;
 
 /**
  * Created by ASUS on 03-Jun-17
  */
+@Service
 @Transactional(readOnly = true)
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
 
-    private ShoppingCardDao shoppingCardDao = null;
+    private ShoppingCardDao shoppingCardDao;
 
     public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
         this.shoppingCardDao = shoppingCardDao;
     }
-
-//    public ShoppingCardServiceImpl() throws PropertyVetoException, SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        shoppingCardDao = new ShoppingCardDaoImpl(conn);
-//    }
 
 
     /**
@@ -97,6 +93,27 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
                 throw new DAOException("Failed update shopping card");
             }
         }catch (DAOException e){
+            String error = "Failed to update ShoppingCard";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
+
+
+    /**
+     * @see ShoppingCardService#debitBalanceForItemBuying(Long, Double)
+     * @param itemPrice
+     * @param buyerId
+     */
+    public void debitBalanceForItemBuying(Long buyerId,Double itemPrice){
+        if(itemPrice== null || itemPrice<0 || buyerId==null||buyerId<0){
+            LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId,itemPrice));
+            throw new InvalidEntryException("Invalid id");
+        }
+
+        try{
+            shoppingCardDao.debitBalanceForItemBuying(buyerId,itemPrice);
+        }catch (NotEnoughMoneyException e){
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));

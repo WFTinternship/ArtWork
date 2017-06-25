@@ -2,12 +2,16 @@ package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.ItemService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,28 +21,29 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by surik on 6/1/17
  */
-@Transactional
+@Service
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
     private ItemDao itemDao;
-    private PurchaseHistoryDao purchaseHistoryDao;
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
     }
 
-//        public ItemServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        itemDao = new ItemDaoImpl(conn);
-//    }
+    @Autowired
+    private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+
+    @Autowired
+    private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
 
     /**
-     * @see ItemService#addItem(Long, Item)
      * @param artistID
      * @param item
+     * @see ItemService#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
@@ -63,9 +68,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#findItem(Long)
      * @param id
      * @return
+     * @see ItemService#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
@@ -85,9 +90,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getRecentlyAddedItems(int)
      * @param limit
      * @return
+     * @see ItemService#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
@@ -108,9 +113,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getItemsByTitle(String)
      * @param title
      * @return
+     * @see ItemService#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
@@ -131,9 +136,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getItemsByType(String)
      * @param itemType
      * @return
+     * @see ItemService#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
@@ -154,10 +159,10 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      * @param minPrice
      * @param maxPrice
      * @return
+     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
@@ -178,10 +183,10 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getArtistItems(Long, Long, Long)
      * @param artistId
      * @param limit
      * @return
+     * @see ItemService#getArtistItems(Long, Long, Long)
      */
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
@@ -201,9 +206,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#updateItem(Long, Item)
      * @param id
      * @param item
+     * @see ItemService#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
@@ -227,8 +232,8 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#deleteItem(Long)
      * @param id
+     * @see ItemService#deleteItem(Long)
      */
     @Override
     public void deleteItem(Long id) {
@@ -248,11 +253,20 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#itemBuying(Item, Long)
      * @param item
      * @param buyerId
+     * @see ItemService#itemBuying(Item, Long)
      */
-    public void itemBuying(Item item, Long buyerId){
-//TODO
+    @Transactional
+    public void itemBuying(Item item, Long buyerId) {
+        // Withdraw money from payment method
+        shoppingCardDao.debitBalanceForItemBuying(buyerId, item.getPrice());
+
+        // Add item to the buyer's purchase history
+        purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId()));
+
+        // Change item status to sold
+        item.setStatus(true);
+        updateItem(item.getArtistId(), item);
     }
 }

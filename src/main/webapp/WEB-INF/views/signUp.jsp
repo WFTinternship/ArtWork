@@ -199,7 +199,7 @@
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 		</div>
 
-		<form action="/signup" method="post">
+		<form action="${pageContext.request.contextPath}/signup" method="post">
 			<fieldset>
 				<legend>Account Info</legend>
 
@@ -254,13 +254,13 @@
 					<div>
 						<ul class="cd-payment-gateways">
 							<li>
-								<input type="radio" name="payment-method" id="paypal1" value="paypal">
+								<input type="radio" name="paymentMethod" id="paypal1" value="paypal">
 								<label for="paypal">Paypal</label>
 							</li>
 
 							<li>
-								<input type="radio" name="payment-method" id="card1" value="card" checked>
-								<label for="card">Card</label>
+								<input type="radio" name="paymentMethod" id="card1" value="card" checked>
+								<label for="card">MasterCard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
 					</div>

@@ -8,11 +8,13 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author surik
  */
+@Service
 @Transactional(readOnly = true)
 public class ArtistSpecializationServiceImpl implements ArtistSpecializationService {
 
@@ -23,11 +25,6 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     public void setLkpDao(ArtistSpecializationLkpDao lkpDao) {
         this.lkpDao = lkpDao;
     }
-
-//        public ArtistSpecializationServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        lkpDao = new ArtistSpecializationLkpDaoImpl(conn);
-//    }
 
 
     /**

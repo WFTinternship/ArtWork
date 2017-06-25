@@ -1,4 +1,4 @@
-package am.aca.wftartproject;
+package am.aca.wftartproject.service;
 
 /**
  * @author surik

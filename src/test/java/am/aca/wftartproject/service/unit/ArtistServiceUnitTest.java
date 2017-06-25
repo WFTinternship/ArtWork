@@ -1,6 +1,6 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.BaseUnitTest;
+import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
@@ -30,7 +30,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
     private Artist testArtist;
 
-
     @InjectMocks
     @Autowired
     private ArtistService artistService;
@@ -54,6 +53,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void addArtist_artistNotValidOrNull() {
+        // Create test artist with null value
         testArtist = null;
 
         // Test method
@@ -64,6 +64,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
+        // Makes testArtist not valid
         testArtist = createTestArtist();
         testArtist.setFirstName(null);
 
@@ -93,11 +94,13 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void addArtist_exists() {
+        // Create test artist
         testArtist = createTestArtist();
 
         Artist fakeDbArtist = new Artist();
 
         doReturn(fakeDbArtist).when(artistDaoMock).findArtist(testArtist.getEmail());
+
         // Try to add user into db
         // Test method
         try {
@@ -114,7 +117,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void addArtist_addFailed() {
-
+        // Create test artist
         testArtist = createTestArtist();
 
         // Setup mocks
@@ -130,7 +133,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void addArtist_addSuccess() {
-
+        // Create test artist
         testArtist = createTestArtist();
 
         // Setup mocks
@@ -145,6 +148,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void findArtist_idNullOrNegative() {
+        // Create test id with null value
         Long id = null;
 
         // Test method
@@ -155,6 +159,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
 
+        // Change id value to negative
         id = -5L;
 
         // Test method
@@ -172,6 +177,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void findArtist_findFailed() {
+        // Create test id
         Long id = 516498484L;
 
         // Setup mocks
@@ -206,7 +212,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void findUserByEmail_emptyString() {
-
         // Create empty string
         String emptyEmail = "";
 
@@ -236,11 +241,10 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void findArtistByEmail_findFailed() {
-
         // Create not empty email
         String email = "email@gmail.com";
 
-        // try to find artist by this email
+        // Try to find artist by this email
         // Setup mocks
         doThrow(DAOException.class).when(artistDaoMock).findArtist(anyString());
 
@@ -253,10 +257,10 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void findArtistByEmail_findSuccess() {
-        // create testArtist
+        // Create testArtist
         testArtist = createTestArtist();
 
-        // save testArtist email for further check
+        // Save testArtist email for further check
         String email = "test@gmail.com";
 
         // Setup mock
@@ -272,7 +276,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void updateArtist_idIsNullOrNegative() {
-
         // Create test id and testArtist
         Long id = null;
         testArtist = createTestArtist();
@@ -303,7 +306,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void updateArtist_artistIsNullOrNotValid() {
-
         // Create test id and testArtist
         Long id = 5L;
         testArtist = null;
@@ -327,7 +329,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
     }
 
 
@@ -336,7 +337,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void updateArtist_updateFail() {
-
         // Create test id and test Artist
         Long id = 5L;
         testArtist = createTestArtist();
@@ -346,15 +346,14 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         // Test method
         artistService.updateArtist(id, testArtist);
-
     }
+
 
     /**
      * @see ArtistServiceImpl#updateArtist(Long, Artist)
      */
     @Test
     public void updateArtist_updateSuccess() {
-
         // Create test id and test artist
         Long id = 5L;
         testArtist = createTestArtist();
@@ -363,7 +362,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         artistService.updateArtist(id, testArtist);
 
         verify(artistDaoMock).updateArtist(id, testArtist);
-
     }
 
     /**
@@ -371,7 +369,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void deleteArtist_idIsNullOrNegative() {
-
         // Create test id with null value
         Long id = null;
 
@@ -401,13 +398,13 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void deleteArtist_deleteFail(){
-
         // Create test id;
         Long id = 5L;
 
         // Setup mock
         doThrow(DAOException.class).when(artistDaoMock).deleteArtist(anyLong());
 
+        // Test method
         artistService.deleteArtist(id);
     }
 
@@ -417,16 +414,14 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void deleteArtist_deleteSuccess(){
-
         // Create test id
         Long id = 5L;
 
         // Test method
         artistService.deleteArtist(id);
 
-        // check invocation
+        // Check invocation
         verify(artistDaoMock).deleteArtist(id);
-
     }
 
 }
