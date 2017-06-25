@@ -1,14 +1,9 @@
 package am.aca.wftartproject;
 
-import am.aca.wftartproject.controller.ItemComparator;
-import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.model.ItemType;
+import am.aca.wftartproject.model.ArtistSpecialization;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by ASUS on 24-May-17
@@ -16,9 +11,19 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
+//        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
+//        ItemService itemService = (ItemService)context.getBean("itemService");
+//        for(Item element:itemService.getRecentlyAddedItems(20)){
+            ArtistSpecialization artistSpecialization = ArtistSpecialization.valueOf("SCULPTOR");
+          System.out.println(artistSpecialization);
+        System.out.println(System.getProperty("java.io.tmpdir"));
 
-//        int num = ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
-//        System.out.println(num);
+//
+//        }
+
+
+        int num = ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
+        System.out.println(num);
 
 //        ArtistSpecialization[] art = ArtistSpecialization.values();
 //        for(ArtistSpecialization artElement:art){

@@ -15,6 +15,11 @@ public class Item {
     private String photoURL;
     private Double price;
     private Long artistId;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
     private Boolean status;
     private ItemType itemType;
     private Timestamp additionDate;
@@ -75,7 +80,7 @@ public class Item {
         return this;
     }
 
-    public Boolean getStatus() {
+    public Boolean isStatus() {
         return status;
     }
 
@@ -134,16 +139,16 @@ public class Item {
     }
 
     public boolean isValidItem() {
-        return
-//                id != null &&
+//        return id != null &&
 //                id > 0 &&
+        return
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL) &&
                 artistId != null &&
                 artistId > 0 &&
                 price != 0 &&
-                itemType != null &&
-                additionDate != null;
+                itemType != null ;
+        //        && additionDate != null;
 
     }
 

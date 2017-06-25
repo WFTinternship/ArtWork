@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author www.codejava.net
  */
+@MultipartConfig
 public class FileUploadServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +66,7 @@ public class FileUploadServlet extends HttpServlet {
 
         // sets maximum size of request (include file + form data)
         upload.setSizeMax(MAX_REQUEST_SIZE);
-        Artist artist = (Artist)request.getSession().getAttribute("artist");
+        Artist artist = (Artist)request.getSession().getAttribute("user");
         // constructs the directory path to store upload file
         // this path is relative to application's directory
         String uploadPath = getServletContext().getRealPath("resources/images/artists" +  artist.getId()

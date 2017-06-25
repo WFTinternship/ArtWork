@@ -10,24 +10,26 @@ import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Armen on 6/9/2017
  */
+@MultipartConfig(maxFileSize = 2177215)
 public class EditProfileServlet extends HttpServlet {
     ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
-    ArtistService artistService = (ArtistService)ctx.getBean("artistService");
+    ArtistService artistService = (ArtistService) ctx.getBean("artistService");
     UserService userService = (UserService) ctx.getBean("userService");
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
@@ -36,36 +38,39 @@ public class EditProfileServlet extends HttpServlet {
 
     }
 
-    public void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException{
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         User user;
         User finduser;
         Artist artist;
         Artist findArtist;
-        if (session.getAttribute("user") != null ) {
-            if (session.getAttribute("user").getClass().isInstance(User.class)) {
+        Part filePart;
+        InputStream inputStream;
+        if (session.getAttribute("user") != null) {
+            if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
                 finduser = userService.findUser(user.getId());
                 request.setAttribute("user", finduser);
                 if (user != null) {
                     response.setContentType("text/html");
-                    if(request.getParameter("firstname" ) != null){
+                    if (request.getParameter("firstname") != null) {
                         finduser.setFirstName(request.getParameter("firstname"));
                     }
-                    if(request.getParameter("lastname" ) != null){
+                    if (request.getParameter("lastname") != null) {
                         finduser.setLastName(request.getParameter("lasstname"));
                     }
-                    if(request.getParameter("age" ) != null){
+                    if (request.getParameter("age") != null) {
                         finduser.setAge(Integer.parseInt(request.getParameter("age")));
                     }
+
                     try {
-                        userService.updateUser(finduser.getId(),finduser);
+                        userService.updateUser(finduser.getId(), finduser);
                         request.getSession().setAttribute("user", finduser);
                         request.setAttribute("user", finduser);
-                    }catch (ServiceException e){
+                    } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
-                        request.setAttribute("errorMessage",errorMessage);
+                        request.setAttribute("errorMessage", errorMessage);
 //            request.getRequestDispatcher("/signup")
 //                    .forward(request,response);
                     }
@@ -74,30 +79,44 @@ public class EditProfileServlet extends HttpServlet {
                 } else {
                     throw new RuntimeException("Incorrect program logic");
                 }
-            } else if (session.getAttribute("user").getClass().isInstance(Artist.class)) {
+            } else if (session.getAttribute("user").getClass() == Artist.class) {
                 artist = (Artist) session.getAttribute("user");
                 findArtist = artistService.findArtist(artist.getId());
                 if (artist != null) {
                     response.setContentType("text/html");
-                    if(request.getParameter("firstname" ) != null){
+                    if (request.getParameter("firstname") != null) {
                         findArtist.setFirstName(request.getParameter("firstname"));
                     }
-                    if(request.getParameter("lastname" ) != null){
-                        findArtist.setLastName(request.getParameter("lasstname"));
+                    if (request.getParameter("lastname") != null) {
+                        findArtist.setLastName(request.getParameter("lastname"));
                     }
-                    if(request.getParameter("age" ) != null){
+                    if (request.getParameter("age") != null) {
                         findArtist.setAge(Integer.parseInt(request.getParameter("age")));
+                    }
+                    if (request.getParameter("specialization") != null) {
+                        findArtist.setSpecialization(ArtistSpecialization.valueOf(request.getParameter("specialization")));
+                    }
+                    if (request.getParameter("oldpassword") != null && request.getParameter("oldpassword").equals(findArtist.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
+                        findArtist.setPassword(request.getParameter("newpassword"));
+                    }
+                    if (request.getPart("image") != null) {
+                        filePart = request.getPart("image");
+                        if (filePart != null) {
+                            inputStream = filePart.getInputStream();
+                            byte[] imageBytes = IOUtils.toByteArray(inputStream);
+                            findArtist.setArtistPhoto(imageBytes);
+                        }
                     }
 //                    if(request.getParameter("specialization" ) != null){
 //                        artist.setSpecialization(ArtistSpecialization.PAINTER);
 //                    }
                     try {
-                        artistService.updateArtist(artist.getId(),findArtist);
+                        artistService.updateArtist(artist.getId(), findArtist);
                         request.getSession().setAttribute("user", findArtist);
                         request.setAttribute("user", findArtist);
-                    }catch (ServiceException e){
+                    } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
-                        request.setAttribute("errorMessage",errorMessage);
+                        request.setAttribute("errorMessage", errorMessage);
 //            request.getRequestDispatcher("/signup")
 //                    .forward(request,response);
                     }

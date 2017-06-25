@@ -220,7 +220,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn(String.format("No artist found by email: %s", email));
-            return null;
+            artist = null;
         } catch (DataAccessException e) {
             String error = "Failed to get Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
