@@ -5,7 +5,7 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<c:set var="artist" value='<%=session.getAttribute("artist")%>' />
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
 
 
 <!Doctype html>
@@ -133,7 +133,7 @@
                             <li><a href="columns.html"> columns </a></li>--%>
                             <li><a href="/account">My Account </a> </li>
                             <c:choose>
-                                <c:when test="${artist==null}">
+                                <c:when test="${user==null}">
                                     <li><a href="/login">Log in  </a> </li>
                                     <li><a href="/signup">Sign up </a> </li>
                                 </c:when>

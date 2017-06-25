@@ -6,7 +6,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -165,7 +165,7 @@
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
 												<!-- edit personal details -->
-												<form role="form" action="/edit-profile" method="post">
+												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group" >
 														<label for="exampleInput1">First Name</label>
 														<input type="text" name="firstname" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
@@ -194,26 +194,26 @@
 											</div>
 											<div class="col-md-6 col-sm-6">
 												<div class="form-group">
-													<form action="/uploadFile" method="post" enctype="multipart/form-data">
+													<form action="/edit-profile" method="post" enctype="multipart/form-data">
 														<label for="imageUpload">Choose Avatar</label>
-														<input type="file" id="imageUpload" name="file" size="50" />
+														<input type="file" id="imageUpload" name="image"  />
 														<img src="" id="imagePreview" alt="" width="200px"/><br/>
-														<button type="submit" class="btn btn-warning">Upload</button>
+														<button type="submit" class="btn btn-warning">Apply</button>
 													</form>
 												</div>
 												<!-- Password details -->
-												<form role="form" >
+												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
-														<input type="password" class="form-control" id="exampleInput31" placeholder="Old Password">
+														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput32">New Password</label>
-														<input type="password" class="form-control" id="exampleInput32" placeholder="New Password">
+														<input type="password" name="newpassword" class="form-control" id="exampleInput32" placeholder="New Password">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput33">Re - Type Password</label>
-														<input type="password" class="form-control" id="exampleInput33" placeholder="New Password">
+														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password">
 													</div>
 													<button type="submit" class="btn btn-warning">Update Password</button>
 												</form>

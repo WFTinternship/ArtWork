@@ -10,20 +10,21 @@ import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Armen on 6/9/2017
  */
+@MultipartConfig(maxFileSize = 2177215)
 public class EditProfileServlet extends HttpServlet {
     ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
     ArtistService artistService = (ArtistService)ctx.getBean("artistService");
@@ -43,8 +44,10 @@ public class EditProfileServlet extends HttpServlet {
         User finduser;
         Artist artist;
         Artist findArtist;
+        Part filePart;
+        InputStream inputStream;
         if (session.getAttribute("user") != null ) {
-            if (session.getAttribute("user").getClass().isInstance(User.class)) {
+            if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
                 finduser = userService.findUser(user.getId());
                 request.setAttribute("user", finduser);
@@ -59,6 +62,7 @@ public class EditProfileServlet extends HttpServlet {
                     if(request.getParameter("age" ) != null){
                         finduser.setAge(Integer.parseInt(request.getParameter("age")));
                     }
+
                     try {
                         userService.updateUser(finduser.getId(),finduser);
                         request.getSession().setAttribute("user", finduser);
@@ -74,7 +78,7 @@ public class EditProfileServlet extends HttpServlet {
                 } else {
                     throw new RuntimeException("Incorrect program logic");
                 }
-            } else if (session.getAttribute("user").getClass().isInstance(Artist.class)) {
+            } else if (session.getAttribute("user").getClass() == Artist.class) {
                 artist = (Artist) session.getAttribute("user");
                 findArtist = artistService.findArtist(artist.getId());
                 if (artist != null) {
@@ -83,10 +87,22 @@ public class EditProfileServlet extends HttpServlet {
                         findArtist.setFirstName(request.getParameter("firstname"));
                     }
                     if(request.getParameter("lastname" ) != null){
-                        findArtist.setLastName(request.getParameter("lasstname"));
+                        findArtist.setLastName(request.getParameter("lastname"));
                     }
                     if(request.getParameter("age" ) != null){
                         findArtist.setAge(Integer.parseInt(request.getParameter("age")));
+                    }
+                    if(request.getParameter("oldpassword" ) != null && request.getParameter("oldpassword" ).equals(findArtist.getPassword()) && request.getParameter("newpassword" )!= null && request.getParameter("retypepassword" ) != null && request.getParameter("newpassword" ).equals(request.getParameter("retypepassword" )) ){
+                        findArtist.setPassword(request.getParameter("newpassword"));
+                    }
+                    if(request.getPart("image") != null) {
+                        filePart = request.getPart("image");
+                        if (filePart != null)
+                        {
+                            inputStream = filePart.getInputStream();
+                            byte[] imageBytes = IOUtils.toByteArray(inputStream);
+                            findArtist.setArtistPhoto(imageBytes);
+                        }
                     }
 //                    if(request.getParameter("specialization" ) != null){
 //                        artist.setSpecialization(ArtistSpecialization.PAINTER);

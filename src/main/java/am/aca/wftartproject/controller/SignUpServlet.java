@@ -66,7 +66,7 @@ public class SignUpServlet extends HttpServlet {
             if (filePart != null) {
                 inputStream = filePart.getInputStream();
                 byte[] imageBytes = IOUtils.toByteArray(inputStream);
-                FileUtils.writeByteArrayToFile(new File("resources/images/tmp/tempfile.jpg"), imageBytes);
+              //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
                 artistFromRequest
                         .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
                         .setArtistPhoto(imageBytes)

@@ -16,6 +16,8 @@ public class Main {
 //        for(Item element:itemService.getRecentlyAddedItems(20)){
             ArtistSpecialization artistSpecialization = ArtistSpecialization.valueOf("SCULPTOR");
           System.out.println(artistSpecialization);
+        System.out.println(System.getProperty("java.io.tmpdir"));
+
 //
 //        }
 

@@ -173,13 +173,13 @@
                                                 <%--<div class="form-group">--%>
                                                   <%----%>
                                                 <%--</div>--%>
-                                                <form method="post" action="uploadFile" enctype="multipart/form-data" id="form1">
-                                                    Select file to upload:
-                                                    <input type="file" name="uploadFile" />
-                                                    <input type="submit" value="Upload" />
-                                                </form>
 
-                                                <form action="/additem" method="post" id="form2">
+                                                <form action="/additem" method="post" id="form2" enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label for="imageUpload">Choose Avatar</label>
+                                                        <input type="file" id="imageUpload" name="image"  />
+                                                        <img src="" id="imagePreview" alt="" width="200px"/><br/>
+                                                    </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
                                                         <input type="text" name="title" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
@@ -201,7 +201,6 @@
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
                                                 </form>
-
                                             </div>
                                         </div>
                                     </div>

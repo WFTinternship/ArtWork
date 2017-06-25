@@ -6,8 +6,6 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
-<c:set var="image" value='<%=session.getAttribute("image")%>' />
-<c:set var="img" value='<%=session.getAttribute("img")%>' />
 
 
 <!Doctype html>
@@ -154,10 +152,9 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <!-- top heading -->
-                                    <h2>My Account</h2>
+                                    <h2>Account Information</h2>
                                     <!-- user image -->
-                                    <img alt="img" src="data:image/jpeg;base64,${image}"/>
-                                    <img alt="img" src="data:image/jpg;base64,${img}"/>
+                                    <img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->

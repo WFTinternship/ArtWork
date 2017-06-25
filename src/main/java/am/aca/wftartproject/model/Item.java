@@ -134,15 +134,16 @@ public class Item {
     }
 
     public boolean isValidItem() {
-        return id != null &&
-                id > 0 &&
+//        return id != null &&
+//                id > 0 &&
+        return
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL) &&
                 artistId != null &&
                 artistId > 0 &&
                 price != 0 &&
-                itemType != null &&
-                additionDate != null;
+                itemType != null ;
+        //        && additionDate != null;
 
     }
 
