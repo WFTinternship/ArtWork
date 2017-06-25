@@ -88,7 +88,7 @@ public class ArtistServiceImpl implements ArtistService {
      */
     @Override
     public Artist findArtist(String email) {
-        if (isEmptyString(email)) {
+        if (isEmptyString(email) || !isValidEmailAddressForm(email)) {
             LOGGER.error(String.format("Email is not valid: %s", email));
             throw new InvalidEntryException("Invalid email");
         }

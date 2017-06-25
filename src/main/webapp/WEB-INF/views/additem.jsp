@@ -192,7 +192,7 @@
                                                     <select class="shop-dropdown" name="type" id="exampleInput171">
                                                         <option value="-1" selected>Choose art type</option>
                                                         <c:forEach items="${itemTypes}" var="element">
-                                                            <option value="${element.typeId}"   ${element.typeId == selectedDept ? 'selected="selected"' : ''} class="fa fa-flask">${element.type}</option>
+                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-flask">${element.type}</option>
                                                         </c:forEach>
                                                     </select>
                                                     <div class="form-group">

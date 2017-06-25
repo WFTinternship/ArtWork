@@ -110,6 +110,72 @@
 					<label for="userPasswordRepeat">Repeat Password</label>
 					<input type="password" id="userPasswordRepeat" name="userPasswordRepeat">
 				</div>
+
+				<fieldset>
+					<legend>Payment Method</legend>
+
+					<div>
+						<ul class="cd-payment-gateways">
+							<li>
+								<input type="radio" name="payment-method" id="paypal" value="paypal">
+								<label for="paypal">Paypal</label>
+							</li>
+
+							<li>
+								<input type="radio" name="payment-method" id="card" value="card" checked>
+								<label for="card">Card</label>
+							</li>
+						</ul> <!-- .cd-payment-gateways -->
+					</div>
+
+					<%--<div class="cd-credit-card">
+						<div>
+							<p class="half-width">
+								<label for="cardNumber">Card Number</label>
+								<input type="text" id="cardNumber" name="cardNumber">
+							</p>
+
+							<p class="half-width">
+								<label>Expiration date</label>
+								<b>
+								<span class="cd-select">
+									<select name="card-expiry-month" id="card-expiry-month">
+										<option value="1">1</option>
+										<option value="1">2</option>
+										<option value="1">3</option>
+										<option value="1">4</option>
+										<option value="1">5</option>
+										<option value="1">6</option>
+										<option value="1">7</option>
+										<option value="1">8</option>
+										<option value="1">9</option>
+										<option value="1">10</option>
+										<option value="1">11</option>
+										<option value="1">12</option>
+									</select>
+								</span>
+
+									<span class="cd-select">
+									<select name="card-expiry-year" id="card-expiry-year">
+										<option value="2015">2015</option>
+										<option value="2015">2016</option>
+										<option value="2015">2017</option>
+										<option value="2015">2018</option>
+										<option value="2015">2019</option>
+										<option value="2015">2020</option>
+									</select>
+								</span>
+								</b>
+							</p>
+
+							<p class="half-width">
+								<label for="cardCvc">Card CVC</label>
+								<input type="text" id="cardCvc" name="cardCvc">
+							</p>
+						</div>
+					</div>--%> <!-- .cd-credit-card -->
+				</fieldset>
+
 			</fieldset>
 
 			<fieldset>
@@ -178,6 +244,24 @@
 
 					</select>
 				</div>
+
+				<fieldset>
+					<legend>Payment Method</legend>
+
+					<div>
+						<ul class="cd-payment-gateways">
+							<li>
+								<input type="radio" name="payment-method" id="paypal1" value="paypal">
+								<label for="paypal">Paypal</label>
+							</li>
+
+							<li>
+								<input type="radio" name="payment-method" id="card1" value="card" checked>
+								<label for="card">Card</label>
+							</li>
+						</ul> <!-- .cd-payment-gateways -->
+					</div>
+				</fieldset>
 				<br/>
 				<div class="half-width">
 					<input type="file" name="image" id="imageUpload" class="hide"/>

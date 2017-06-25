@@ -36,9 +36,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#addItem(Long, Item)
      * @param artistID
      * @param item
+     * @see ItemService#addItem(Long, Item)
      */
     @Override
     public void addItem(Long artistID, Item item) {
@@ -63,9 +63,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#findItem(Long)
      * @param id
      * @return
+     * @see ItemService#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
@@ -85,9 +85,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getRecentlyAddedItems(int)
      * @param limit
      * @return
+     * @see ItemService#getRecentlyAddedItems(int)
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
@@ -108,9 +108,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getItemsByTitle(String)
      * @param title
      * @return
+     * @see ItemService#getItemsByTitle(String)
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
@@ -131,9 +131,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getItemsByType(String)
      * @param itemType
      * @return
+     * @see ItemService#getItemsByType(String)
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
@@ -154,10 +154,10 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      * @param minPrice
      * @param maxPrice
      * @return
+     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
@@ -178,15 +178,15 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#getArtistItems(Long, Long, Long)
      * @param artistId
      * @param limit
      * @return
+     * @see ItemService#getArtistItems(Long, Long, Long)
      */
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
         if (artistId == null || artistId < 0 || itemId == null || itemId < 0 || limit == null || limit < 0) {
-            LOGGER.error(String.format("artistId or limit is not valid: %s , %s", artistId, limit));
+            LOGGER.error(String.format("artistId or itemId or limit is not valid: %s , %s, %s", artistId, itemId, limit));
             throw new InvalidEntryException("Invalid artistId or limit");
         }
 
@@ -199,33 +199,11 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    /**
-     * @see ItemService#getFilteredAndSortedItems(String, Integer[], String)
-     * @param itemType
-     * @param price
-     * @param sortingType
-     * @return
-     */
-    public List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType){
-        if (itemType == null) {
-            LOGGER.error(String.format("artistId or limit is not valid: %s , %s", itemType));
-            throw new InvalidEntryException("Invalid artistId or limit");
-        }
-
-        try {
-            return itemDao.getFilteredAndSortedItems(itemType,price,sortingType);
-        } catch (DAOException e) {
-            String error = "Failed to get items for the given criteria: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
-        }
-    }
-
 
     /**
-     * @see ItemService#updateItem(Long, Item)
      * @param id
      * @param item
+     * @see ItemService#updateItem(Long, Item)
      */
     @Override
     public void updateItem(Long id, Item item) {
@@ -249,8 +227,8 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#deleteItem(Long)
      * @param id
+     * @see ItemService#deleteItem(Long)
      */
     @Override
     public void deleteItem(Long id) {
@@ -270,11 +248,11 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @see ItemService#itemBuying(Item, Long)
      * @param item
      * @param buyerId
+     * @see ItemService#itemBuying(Item, Long)
      */
-    public void itemBuying(Item item, Long buyerId){
+    public void itemBuying(Item item, Long buyerId) {
 //TODO
     }
 }

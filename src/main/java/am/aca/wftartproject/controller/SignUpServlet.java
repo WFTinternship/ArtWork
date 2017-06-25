@@ -51,7 +51,7 @@ public class SignUpServlet extends HttpServlet {
 
         // obtains the upload file part in this multipart request
 
-        boolean chosenBuyerUser = request.getParameter("artistSpec") == null ;
+        boolean chosenBuyerUser = request.getParameter("artistSpec") == null;
 
         if (chosenBuyerUser) {
             userFromRequest = new User();
@@ -66,7 +66,7 @@ public class SignUpServlet extends HttpServlet {
             if (filePart != null) {
                 inputStream = filePart.getInputStream();
                 byte[] imageBytes = IOUtils.toByteArray(inputStream);
-              //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
+                //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
                 artistFromRequest
                         .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
                         .setArtistPhoto(imageBytes)

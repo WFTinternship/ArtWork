@@ -179,15 +179,15 @@
 														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="26">
 													</div>
 
-													<%--<div class="form-group">--%>
-														<%--<select class="shop-dropdown" name="specialization">--%>
-															<%--<option value="-1" selected>Choose artist specialization</option>--%>
-															<%--<c:forEach items="${artistSpecTypes}" var="element">--%>
-																<%--<option value="${element.id}"  ${element.id == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>--%>
-															<%--</c:forEach>--%>
+													<div class="form-group">
+														<select class="shop-dropdown" name="specialization">
+															<option value="-1" selected>Choose artist specialization</option>
+															<c:forEach items="${artistSpecTypes}" var="element">
+																<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>
+															</c:forEach>
 
-														<%--</select>--%>
-													<%--</div>--%>
+														</select>
+													</div>
 
 													<button type="submit" class="btn btn-warning">Update Personal Details</button>
 												</form>

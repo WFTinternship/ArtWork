@@ -160,7 +160,7 @@
                                         <!-- heading -->
                                         <h3>${user.firstName}  ${user.lastName}</h3>
 
-                                        <span class="a-phone"><i class="fa fa-phone-square"></i>: +91 123 345 6565</span>
+                                        <%--<span class="a-phone"><i class="fa fa-phone-square"></i>: </span>--%>
                                         <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">${user.email}</a></span>
                                     </div>
                                     <div class="clearfix"></div>

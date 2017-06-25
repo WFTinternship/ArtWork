@@ -169,7 +169,8 @@
                                                 <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->
                                                     <div class="product-container">
-                                                        <a href="/shop-detail/${itemElement.id}"><div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
+                                                        <a href="/shop-detail/${itemElement.id}">
+                                                            <div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
                                                             <a href="#" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Edit </a>

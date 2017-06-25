@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations= {"classpath:spring-root.xml"})
 public abstract class BaseUnitTest extends BaseTest {
     @Before
-    public void initMocks(){
+    public void mockInit() {
         MockitoAnnotations.initMocks(this);
     }
 }

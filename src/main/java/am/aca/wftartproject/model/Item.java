@@ -15,6 +15,11 @@ public class Item {
     private String photoURL;
     private Double price;
     private Long artistId;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
     private Boolean status;
     private ItemType itemType;
     private Timestamp additionDate;
