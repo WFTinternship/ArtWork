@@ -1,5 +1,7 @@
 package am.aca.wftartproject.model;
 
+import org.springframework.context.annotation.Bean;
+
 /**
  * Created by ASUS on 24-May-17
  */

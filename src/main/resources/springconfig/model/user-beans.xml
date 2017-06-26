@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--Dao layer spring integration-->
+    <bean id="user" class="am.aca.wftartproject.model.User"></bean>
+
+    <bean id="abstractUser" class="am.aca.wftartproject.model.AbstractUser" abstract="true"></bean>
+
+    <bean id="artist" class="am.aca.wftartproject.model.Artist"></bean>
+
+    <bean id="item" class="am.aca.wftartproject.model.Item"></bean>
+
+    <bean id="shoppingCard" class="am.aca.wftartproject.model.ShoppingCard"></bean>
+
+    <bean id="purchaseHistoryD" class="am.aca.wftartproject.model.PurchaseHistory">
+    </bean>
+
+</beans>

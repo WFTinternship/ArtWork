@@ -13,12 +13,15 @@ public abstract class AbstractUser {
     int age;
     String email;
     String password;
+    String repeatPassword;
     ShoppingCard shoppingCard;
 
     public Long getId() {
         return id;
     }
-
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
     public AbstractUser setId(Long id) {
         this.id = id;
         return this;
