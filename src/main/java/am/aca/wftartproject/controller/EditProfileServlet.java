@@ -11,6 +11,7 @@ import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -26,9 +27,10 @@ import java.io.InputStream;
  */
 @MultipartConfig(maxFileSize = 2177215)
 public class EditProfileServlet extends HttpServlet {
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
-    ArtistService artistService = (ArtistService) ctx.getBean("artistService");
-    UserService userService = (UserService) ctx.getBean("userService");
+    @Autowired
+    ArtistService artistService ;
+    @Autowired
+    UserService userService ;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,8 +73,7 @@ public class EditProfileServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
                         request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/signup")
-//                    .forward(request,response);
+
                     }
                     request.setAttribute("user", finduser);
                     request.getSession().setAttribute("user", finduser);
@@ -107,9 +108,7 @@ public class EditProfileServlet extends HttpServlet {
                             findArtist.setArtistPhoto(imageBytes);
                         }
                     }
-//                    if(request.getParameter("specialization" ) != null){
-//                        artist.setSpecialization(ArtistSpecialization.PAINTER);
-//                    }
+
                     try {
                         artistService.updateArtist(artist.getId(), findArtist);
                         request.getSession().setAttribute("user", findArtist);
@@ -117,8 +116,7 @@ public class EditProfileServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
                         request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/signup")
-//                    .forward(request,response);
+
                     }
                 } else {
                     throw new RuntimeException("Incorrect program logic");

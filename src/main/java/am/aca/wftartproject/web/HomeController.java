@@ -9,6 +9,7 @@ import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import am.aca.wftartproject.util.SpringBean;
 import am.aca.wftartproject.util.SpringBeanType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,30 +25,32 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class HomeController {
-    UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
-    ArtistService artistService = SpringBean.getBeanFromSpring("artistService", ArtistServiceImpl.class);
+    @Autowired
+    UserService userService;
+    @Autowired
+    ArtistService artistService;
+    Cookie[] cookies;
 
     @RequestMapping(value = {"/", "index"})
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
 
-        Cookie[] cookies = request.getCookies();
+       cookies = request.getCookies();
         String userEmailFromCookie = null;
-        if(cookies != null) {
-            for(Cookie ckElement: cookies){
-                if(ckElement.getName().equals("userEmail")){
+        if (cookies != null) {
+            for (Cookie ckElement : cookies) {
+                if (ckElement.getName().equals("userEmail")) {
                     userEmailFromCookie = ckElement.getValue();
                 }
             }
         }
 
-        if(userEmailFromCookie!=null){
-            if(artistService.findArtist(userEmailFromCookie) != null) {
+        if (userEmailFromCookie != null) {
+            if (artistService.findArtist(userEmailFromCookie) != null) {
                 Artist artist = artistService.findArtist(userEmailFromCookie);
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", artist);
-            }
-            else {
-                if(userService.findUser(userEmailFromCookie) != null){
+            } else {
+                if (userService.findUser(userEmailFromCookie) != null) {
                     User user = userService.findUser(userEmailFromCookie);
                     HttpSession session = request.getSession(true);
                     session.setAttribute("user", user);

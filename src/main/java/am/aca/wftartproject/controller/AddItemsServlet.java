@@ -82,8 +82,6 @@ public class AddItemsServlet extends HttpServlet {
                 } catch (ServiceException e) {
                     String errorMessage = "The entered info is not correct";
                     request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/signup")
-//                    .forward(request,response);
                 }
 
                 try {

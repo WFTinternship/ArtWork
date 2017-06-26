@@ -138,7 +138,7 @@
                                     <li><a href="/signup">Sign up </a> </li>
                                 </c:when>
                                 <c:otherwise>
-                                    <li><a href="/logout">Log out  </a> </li>
+                                    <li><a href="/logoutProcess">Log out  </a> </li>
                                 </c:otherwise>
                             </c:choose>
                         </ul>   

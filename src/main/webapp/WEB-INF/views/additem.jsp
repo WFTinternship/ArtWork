@@ -176,7 +176,7 @@
 
                                                 <form action="/additem" method="post" id="form2" enctype="multipart/form-data">
                                                     <div class="form-group">
-                                                        <label for="imageUpload">Choose Avatar</label>
+                                                        <label for="imageUpload">Choose Item Image</label>
                                                         <input type="file" id="imageUpload" name="image"  />
                                                         <img src="" id="imagePreview" alt="" width="200px"/><br/>
                                                     </div>

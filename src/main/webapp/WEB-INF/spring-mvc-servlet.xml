@@ -10,20 +10,18 @@
     <import resource="classpath:springconfig/serviceintegration/spring-service-integration.xml"/>
     <import resource="classpath:springconfig/model/user-beans.xml"/>
 
-    <context:component-scan base-package = "am.aca.wftartproject" />
-
-    <bean class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name = "prefix" value = "/WEB-INF/views/" />
-        <property name = "suffix" value = ".jsp" />
-    </bean>
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-
-        <!-- one of the properties available; the maximum file size in bytes -->
-        <property name="maxUploadSize" value="1000000"/>
-
-    </bean>
+    <context:component-scan base-package="am.aca.wftartproject"/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:annotation-driven/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="1000000"/>
+    </bean>
 
 </beans>
