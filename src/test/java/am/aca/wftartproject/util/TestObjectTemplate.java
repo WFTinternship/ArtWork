@@ -10,9 +10,10 @@ import java.util.Random;
  * Created by Armen on 5/30/2017
  */
 public class TestObjectTemplate {
+
     public static Artist createTestArtist() {
         Artist testArtist = new Artist();
-        testArtist.setArtistPhoto(null)
+        testArtist.setArtistPhoto(new byte[]{0})
                 .setSpecialization(ArtistSpecialization.PAINTER)
                 .setAge(26)
                 .setEmail("test" + getRandomNumber() + "@test.com")

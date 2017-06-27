@@ -70,7 +70,7 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
                     
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -84,7 +84,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            	
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="current_page_item menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -104,7 +104,7 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>                    
                     </li>
-                    <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
+                    <li class="menu-item-simple-parent"><a href="${pageContext.request.contextPath}/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <%--<ul class="sub-menu">--%>
                             <%--<li><a href="item-detail.jsp">Shop Detail</a></li>--%>
                             <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
@@ -121,7 +121,7 @@
                         <a class="dt-menu-expand">+</a>                    
                     </li>--%>
                     <li class="menu-item-simple-parent">
-                        <a href="/contact">Contact<span class="fa fa-map-marker"></span></a>
+                        <a href="${pageContext.request.contextPath}/contact">Contact<span class="fa fa-map-marker"></span></a>
                     </li>
 					<li class="menu-item-simple-parent">
                         <a href="<%--progressbar.html--%>">Account <span class="fa fa-paint-brush"></span></a>
@@ -131,14 +131,14 @@
                             <li><a href="tabs.html"> tabs-accordions </a></li>
                             <li><a href="typography.html"> typography </a></li>
                             <li><a href="columns.html"> columns </a></li>--%>
-                            <li><a href="/account">My Account </a> </li>
+                            <li><a href="${pageContext.request.contextPath}/account">My Account </a> </li>
                             <c:choose>
                                 <c:when test="${user==null}">
-                                    <li><a href="/login">Log in  </a> </li>
-                                    <li><a href="/signup">Sign up </a> </li>
+                                    <li><a href="${pageContext.request.contextPath}/login">Log in  </a> </li>
+                                    <li><a href="${pageContext.request.contextPath}/signup">Sign up </a> </li>
                                 </c:when>
                                 <c:otherwise>
-                                    <li><a href="/logout">Log out  </a> </li>
+                                    <li><a href="${pageContext.request.contextPath}/logout">Log out  </a> </li>
                                 </c:otherwise>
                             </c:choose>
                         </ul>   

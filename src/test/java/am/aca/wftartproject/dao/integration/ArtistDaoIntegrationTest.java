@@ -135,15 +135,18 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findArtist_Success() {
+        // Add test artist into database
         artistDao.addArtist(testArtist);
 
-        // find and get artist from db
+        // Find and get artist from db
         Artist findArtist = artistDao.findArtist(testArtist.getId());
 
-        // check for sameness with testArtist
+        System.out.println(testArtist);
+        System.out.println(findArtist);
+        // Check for sameness with testArtist
         AssertTemplates.assertEqualArtists(findArtist, testArtist);
-
     }
+
 
     /**
      * @see ArtistDao#findArtist(Long)

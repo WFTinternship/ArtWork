@@ -13,6 +13,7 @@ import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -47,6 +48,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
     }
 
+    // region <TEST CASES>
 
     /**
      * @see ArtistServiceImpl#addArtist(Artist)
@@ -64,7 +66,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Makes testArtist not valid
+        // Makes testArtist firstName not valid
         testArtist = createTestArtist();
         testArtist.setFirstName(null);
 
@@ -76,6 +78,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
+        // Makes testArtist email not valid
         testArtist = createTestArtist();
         testArtist.setEmail("invalidEmail");
 
@@ -96,9 +99,9 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     public void addArtist_exists() {
         // Create test artist
         testArtist = createTestArtist();
-
         Artist fakeDbArtist = new Artist();
 
+        // Setup mock
         doReturn(fakeDbArtist).when(artistDaoMock).findArtist(testArtist.getEmail());
 
         // Try to add user into db
@@ -193,17 +196,21 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void findArtist_findSuccess() {
-        // Create testUser
-        testArtist = createTestArtist();
+        // Create Argument Capture
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
 
-        //TODO ask about anyLong
+        // Create testUser and test id
+        testArtist = createTestArtist();
         Long id = 5L;
 
         // Setup mocks
-        doReturn(testArtist).when(artistDaoMock).findArtist(anyLong());
+        doReturn(testArtist).when(artistDaoMock).findArtist(argument.capture());
 
         // Test method
         assertEqualArtists(testArtist, artistService.findArtist(id));
+
+        // Check input argument
+        assertEquals(id,argument.getValue());
     }
 
 
@@ -251,6 +258,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Test methods
         artistService.findArtist(email);
     }
+
 
     /**
      * @see ArtistServiceImpl#findArtist(java.lang.String)
@@ -306,7 +314,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void updateArtist_artistIsNullOrNotValid() {
-        // Create test id and testArtist
+        // Create test id and testArtist with null value
         Long id = 5L;
         testArtist = null;
 
@@ -363,6 +371,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         verify(artistDaoMock).updateArtist(id, testArtist);
     }
+
 
     /**
      * @see ArtistServiceImpl#deleteArtist(Long)
@@ -424,4 +433,5 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         verify(artistDaoMock).deleteArtist(id);
     }
 
+    // endregion
 }

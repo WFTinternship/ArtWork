@@ -9,8 +9,6 @@ import java.io.IOException;
 /**
  * Created by ASUS on 10-Jun-17
  */
-
-
 public class AuthenticationFilter implements Filter {
 
     private ServletContext context;
@@ -32,11 +30,6 @@ public class AuthenticationFilter implements Filter {
 
         HttpSession session = req.getSession(true);
 
-//        if (session == null && !uri.endsWith("index")) {
-//            this.context.log("Unauthorized access request");
-//            res.sendRedirect("/index");
-//        } else
-
         if (session.getAttribute("user") == null && uri.endsWith("account")) {
             this.context.log("Unauthorized access request");
             res.sendRedirect("/login");
@@ -45,6 +38,7 @@ public class AuthenticationFilter implements Filter {
             chain.doFilter(request, response);
         }
     }
+
 
     @Override
     public void destroy() {

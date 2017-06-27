@@ -27,10 +27,10 @@
 </head>
 <body>
 <header class="cd-main-header">
-    <c:if test="${errorMessage!=null}">
-        <h2>${errorMessage}</h2>
-    </c:if>
     <h1>Log In</h1>
+    <c:if test="${errorMessage!=null}">
+        <p style="color: red;"><h2>${errorMessage}</h2><>
+    </c:if>
 </header>
 <!--
     you can substitue the span of reauth email for a input with the email and
@@ -41,7 +41,7 @@
         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
         <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
         <p id="profile-name" class="profile-name-card"></p>
-        <form class="form-signin" action="/login" method="post">
+        <form class="form-signin" action="${pageContext.request.contextPath}/login" method="post">
             <span id="reauth-email" class="reauth-email"></span>
             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required autofocus>
             <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>

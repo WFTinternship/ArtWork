@@ -17,7 +17,6 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
 
-    //    private UserService userService = SpringBean.getBeanFromSpring("userService",UserServiceImpl.class);
     private UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
     private ShoppingCardService shoppingCardService = CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardServiceImpl.class);
 

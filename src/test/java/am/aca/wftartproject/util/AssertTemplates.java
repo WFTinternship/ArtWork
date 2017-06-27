@@ -21,7 +21,7 @@ public class AssertTemplates {
         assertEquals(expectedArtist.getSpecialization(), actualArtist.getSpecialization());
         assertEquals(expectedArtist.getItemList(), actualArtist.getItemList());
         assertEquals(expectedArtist.getFirstName(), actualArtist.getFirstName());
-        assertEquals(expectedArtist.getArtistPhoto(), actualArtist.getArtistPhoto());
+        assertArrayEquals(expectedArtist.getArtistPhoto(), actualArtist.getArtistPhoto());
         assertEquals(expectedArtist.getAge(), actualArtist.getAge());
         assertEquals(expectedArtist.getLastName(), actualArtist.getLastName());
 

@@ -4,10 +4,12 @@ import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,14 +261,48 @@ public class ItemServiceImpl implements ItemService {
      */
     @Transactional
     public void itemBuying(Item item, Long buyerId) {
+        if (buyerId == null || buyerId < 0) {
+            LOGGER.error(String.format("buyerId is not valid: %s", buyerId));
+            throw new InvalidEntryException("Invalid Id");
+        }
+
+        if (item == null || !item.isValidItem()) {
+            LOGGER.error(String.format("Item is not valid: %s", item));
+            throw new InvalidEntryException("Invalid item");
+        }
+
         // Withdraw money from payment method
-        shoppingCardDao.debitBalanceForItemBuying(buyerId, item.getPrice());
+        try {
+            ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(buyerId);
+            if (shoppingCard.getBalance() >= item.getPrice()) {
+                shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
+                shoppingCardDao.updateShoppingCard(buyerId, shoppingCard);
+            } else {
+                throw new NotEnoughMoneyException("Not enough money on the account.");
+            }
+        } catch (DAOException e) {
+            String error = "Failed to debit money: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
 
         // Add item to the buyer's purchase history
-        purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId()));
+        try {
+            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId()));
+        } catch (DAOException e) {
+            String error = "Failed to add item in purchaseHistory: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
 
         // Change item status to sold
-        item.setStatus(true);
-        updateItem(item.getArtistId(), item);
+        try {
+            item.setStatus(true);
+            updateItem(item.getArtistId(), item);
+        } catch (DAOException e) {
+            String error = "Failed to change item status to sold: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
 }

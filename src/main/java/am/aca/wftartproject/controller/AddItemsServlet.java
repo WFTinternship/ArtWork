@@ -1,15 +1,16 @@
 package am.aca.wftartproject.controller;
 
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.*;
+import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.model.ItemType;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
+import am.aca.wftartproject.util.SpringBeanType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,17 +19,16 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 @MultipartConfig(maxFileSize = 2177215)
 public class AddItemsServlet extends HttpServlet {
 
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
-    ItemService itemService = ctx.getBean("itemService", ItemServiceImpl.class);
-    ArtistService artistService = (ArtistService) ctx.getBean("artistService");
+//    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
+    ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE,ItemServiceImpl.class);
+    ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("itemTypes", ItemType.values());

@@ -21,6 +21,8 @@
         <mokito-version>1.9.5</mokito-version>
         <spring-test-version>4.0.5.RELEASE</spring-test-version>
         <spring-mvc-version>4.3.9.RELEASE</spring-mvc-version>
+        <commons-fileupload-version>1.2.2</commons-fileupload-version>
+        <commons-ic>2.4</commons-ic>
     </properties>
 
 
@@ -35,12 +37,12 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.2.2</version>
+            <version>${commons-fileupload-version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>${commons-ic}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -109,14 +111,12 @@
             <scope>test</scope>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-mvc-version}</version>
         </dependency>
-
     </dependencies>
 
 

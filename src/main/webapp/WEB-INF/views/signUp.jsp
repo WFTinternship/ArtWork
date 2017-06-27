@@ -77,7 +77,7 @@
 			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
 		<%--</div>--%>
 		
-		<form action="/signup" method="post">
+		<form action="${pageContext.request.contextPath}/signup" method="post">
 			<fieldset>
 				<legend>Account Info</legend>
 
@@ -108,7 +108,7 @@
 				
 				<div class="half-width">
 					<label for="userPasswordRepeat">Repeat Password</label>
-					<input type="password" id="userPasswordRepeat" name="userPasswordRepeat">
+					<input type="password" id="userPasswordRepeat" name="passwordRepeat">
 				</div>
 
 				<fieldset>
@@ -117,13 +117,13 @@
 					<div>
 						<ul class="cd-payment-gateways">
 							<li>
-								<input type="radio" name="payment-method" id="paypal" value="paypal">
-								<label for="paypal">Paypal</label>
+								<input type="radio" name="payment-method" id="paypal" value="PAYPAL">
+								<label for="paypal">PayPal</label>
 							</li>
 
 							<li>
-								<input type="radio" name="payment-method" id="card" value="card" checked>
-								<label for="card">Card</label>
+								<input type="radio" name="payment-method" id="card" value="MASTERCARD" checked>
+								<label for="card">MasterCard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
 					</div>
@@ -199,7 +199,7 @@
 			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
 		<%--</div>--%>
 
-		<form action="/signup" method="post" enctype="multipart/form-data">
+		<form action="${pageContext.request.contextPath}/signup" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>Account Info</legend>
 
@@ -251,12 +251,12 @@
 					<div>
 						<ul class="cd-payment-gateways">
 							<li>
-								<input type="radio" name="paymentMethod" id="paypal1" value="paypal">
-								<label for="paypal">Paypal</label>
+								<input type="radio" name="paymentMethod" id="paypal1" value="PAYPAL">
+								<label for="paypal">PayPal</label>
 							</li>
 
 							<li>
-								<input type="radio" name="paymentMethod" id="card1" value="card" checked>
+								<input type="radio" name="paymentMethod" id="card1" value="MASTERCARD" checked>
 								<label for="card">MasterCard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->

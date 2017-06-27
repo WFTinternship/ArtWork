@@ -1,7 +1,5 @@
 package am.aca.wftartproject.model;
 
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,13 +12,6 @@ public class Artist extends AbstractUser {
     private List<Item> itemList;
     private String base64;
 
-    public String getBase64() {
-        return base64;
-    }
-
-    public void setBase64(String base64) {
-        this.base64 = base64;
-    }
 
     public ArtistSpecialization getSpecialization() {
         return specialization;
@@ -48,6 +39,16 @@ public class Artist extends AbstractUser {
         this.itemList = itemList;
         return this;
     }
+
+    public String getBase64() {
+        return base64;
+    }
+
+    public Artist setBase64(String base64) {
+        this.base64 = base64;
+        return this;
+    }
+
 
     public Artist() {
 

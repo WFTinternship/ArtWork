@@ -1,10 +1,17 @@
-package am.aca.wftartproject.service;
+package am.aca.wftartproject.service.unit;
 
+import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.service.BaseUnitTest;
+import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.util.AssertTemplates;
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +27,7 @@ import java.util.List;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
@@ -32,6 +40,8 @@ import static org.mockito.Mockito.*;
 public class ItemServiceUnitTest extends BaseUnitTest {
 
     private Item testItem;
+    private ShoppingCard shoppingCard;
+    private PurchaseHistory purchaseHistory;
 
     @InjectMocks
     @Autowired
@@ -39,6 +49,12 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private ItemDaoImpl itemDaoMock;
+
+    @Mock
+    private ShoppingCardDao shoppingCardDaoMock;
+
+    @Mock
+    private PurchaseHistoryDao purchaseHistoryDaoMock;
 
     @Before
     public void beforeTest() {
@@ -50,6 +66,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
     }
 
+    // region <TEST CASES>
 
     /**
      * @see ItemService#addItem(Long, Item)
@@ -79,6 +96,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see ItemService#addItem(Long, Item)
@@ -163,7 +181,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-
         // Change id value to negative
         id = -5L;
 
@@ -190,7 +207,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         itemService.findItem(id);
-
     }
 
 
@@ -199,17 +215,23 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void findItem_findSuccess() {
+        // Create Argument Capture
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+
         // Create test id and test Item
         Long id = 5L;
         testItem = createTestItem();
 
         // Setup mock
-        doReturn(testItem).when(itemDaoMock).findItem(anyLong());
+        doReturn(testItem).when(itemDaoMock).findItem(argument.capture());
 
         // Test method
         assertEqualItems(testItem, itemService.findItem(id));
 
+        // Check input argument
+        assertEquals(id, argument.getValue());
     }
+
 
     /**
      * @see ItemService#getRecentlyAddedItems(int)
@@ -291,20 +313,14 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void getItemsByTitle_getFail() {
-        // Create Argument capture
-        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
-
         // Create test title
         String title = "Title 1";
 
         // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).getItemsByTitle(argument.capture());
+        doThrow(DAOException.class).when(itemDaoMock).getItemsByTitle(anyString());
 
         // Test method
         itemService.getItemsByTitle(title);
-
-        // Check input argument
-        assertEquals(title, argument.getValue());
     }
 
 
@@ -354,20 +370,14 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceException.class)
     public void getItemsByType_getFail() {
-        // Create Argument Capture
-        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
-
         // Create test type
         String type = "TestArtType";
 
         // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).getItemsByType(argument.capture());
+        doThrow(DAOException.class).when(itemDaoMock).getItemsByType(anyString());
 
         //Test method
         itemService.getItemsByType(type);
-
-        // Check input argument
-        assertEquals(type, argument.getValue());
     }
 
 
@@ -410,7 +420,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-
         // Change min price value
         testMinPrice = -100.0;
 
@@ -421,7 +430,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-
         // Change max price value
         testMaxPrice = -100.0;
 
@@ -431,7 +439,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
 
         // Change min price to null
         testMinPrice = null;
@@ -512,7 +519,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-
         // Change itemId to negative
         testItemId = -100L;
 
@@ -522,7 +528,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
 
         // Change artistId to negative
         testArtistId = -100L;
@@ -534,7 +539,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-
         // Change limit to negative
         testLimit = -100L;
 
@@ -544,7 +548,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
 
         // Change itemId to null
         testItemId = null;
@@ -556,7 +559,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-
         // Change artistId to null
         testArtistId = null;
 
@@ -566,7 +568,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
 
         // Change artistId to negative and limit to null
         testArtistId = -100L;
@@ -578,7 +579,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
 
         // Change artistId to null, itemId and limit to negative
         testArtistId = null;
@@ -660,7 +660,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.addItem(id, testItem);
+            itemService.updateItem(id, testItem);
             fail();
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
@@ -671,7 +671,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.addItem(id, testItem);
+            itemService.updateItem(id, testItem);
             fail();
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
@@ -690,7 +690,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.addItem(id, testItem);
+            itemService.updateItem(id, testItem);
             fail();
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
@@ -702,7 +702,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.addItem(id, testItem);
+            itemService.updateItem(id, testItem);
             fail();
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
@@ -768,7 +768,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.addItem(id, testItem);
+            itemService.deleteItem(id);
             fail();
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
@@ -779,7 +779,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.addItem(id, testItem);
+            itemService.deleteItem(id);
             fail();
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
@@ -824,4 +824,143 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         assertEquals(id,argument.getValue());
     }
 
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     */
+    @Test
+    public void itemBuying_idIsNotValid(){
+        // Create test item and test buyerId with null value
+        Long buyerId = null;
+        testItem = createTestItem();
+
+        // Test method
+        try{
+            itemService.itemBuying(testItem,buyerId);
+            fail();
+        }catch (Exception ex){
+            assertTrue(ex instanceof InvalidEntryException || ex instanceof NotEnoughMoneyException);
+        }
+
+        // Change id value to negative
+        buyerId = -5L;
+
+        // Test method
+        try {
+            itemService.itemBuying(testItem,buyerId);
+            fail();
+        }catch (Exception ex){
+            assertTrue(ex instanceof InvalidEntryException);
+        }
+    }
+
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     */
+    @Test
+    public void itemBuying_itemIsNotValid(){
+        // Create test buyerId and test item with null value
+        Long buyerId = 5L;
+        testItem = null;
+
+        // Test method
+        try{
+            itemService.itemBuying(testItem,buyerId);
+            fail();
+        }catch (Exception ex){
+            assertTrue(ex instanceof InvalidEntryException || ex instanceof NotEnoughMoneyException);
+        }
+
+        // Change buyerId value to negative
+        testItem = createTestItem();
+        testItem.setTitle(null);
+
+        // Test method
+        try {
+            itemService.itemBuying(testItem,buyerId);
+            fail();
+        }catch (Exception ex){
+            assertTrue(ex instanceof InvalidEntryException);
+        }
+    }
+
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     */
+    @Test(expected = NotEnoughMoneyException.class)
+    public void itemBuying_notEnoughMoneyOnAccount(){
+        // Create test item, shoppingCard and test buyerId
+        Long buyerId = 5L;
+        shoppingCard = createTestShoppingCard();
+        shoppingCard.setBalance(0);
+        testItem = createTestItem();
+        testItem.setArtistId(5L);
+
+        // Setup mock
+        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(anyLong());
+
+        // Test method
+        itemService.itemBuying(testItem,buyerId);
+    }
+
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void itemBuying_withdrawFail(){
+        // Create test shoppingCard and test item
+        Long id = 5L;
+        shoppingCard = createTestShoppingCard();
+        shoppingCard.setBalance(1000);
+        testItem = createTestItem();
+        testItem.setArtistId(5L);
+        testItem.setPrice(100.0);
+
+        // Setup mock
+        doThrow(DAOException.class).when(shoppingCardDaoMock).updateShoppingCard(anyLong(),any(ShoppingCard.class));
+
+        // Test method
+        itemService.itemBuying(testItem,id);
+    }
+
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     */
+    @Test
+    public void itemBuying_withdrawSuccess(){
+        // Create test shoppingCard and test item
+        Long id = 5L;
+        shoppingCard = createTestShoppingCard();
+        shoppingCard.setBalance(100000);
+        testItem = createTestItem();
+        testItem.setArtistId(5L);
+        testItem.setPrice(100.0);
+
+        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(id);
+
+        // Test method
+        itemService.itemBuying(testItem,id);
+
+        verify(shoppingCardDaoMock).updateShoppingCard(id,shoppingCard);
+    }
+
+    /**
+     * @see ItemService#itemBuying(Item, Long)
+     */
+    @Test
+    public void itemBuying_addPurchaseHistoryFail(){
+        // Create test item and
+
+
+
+    }
+
+
+
+
+    // endregion
 }

@@ -15,21 +15,14 @@ public class Item {
     private String photoURL;
     private Double price;
     private Long artistId;
-
-    public Boolean getStatus() {
-        return status;
-    }
-
     private Boolean status;
     private ItemType itemType;
     private Timestamp additionDate;
 
 
-
     public Long getId() {
         return id;
     }
-
     public Item setId(Long id) {
         this.id = id;
         return this;
@@ -38,7 +31,6 @@ public class Item {
     public String getTitle() {
         return title;
     }
-
     public Item setTitle(String title) {
         this.title = title;
         return this;
@@ -47,7 +39,6 @@ public class Item {
     public String getDescription() {
         return description;
     }
-
     public Item setDescription(String description) {
         this.description = description;
         return this;
@@ -56,7 +47,6 @@ public class Item {
     public String getPhotoURL() {
         return photoURL;
     }
-
     public Item setPhotoURL(String photo) {
         this.photoURL = photo;
         return this;
@@ -65,7 +55,6 @@ public class Item {
     public Double getPrice() {
         return price;
     }
-
     public Item setPrice(Double price) {
         this.price = price;
         return this;
@@ -74,16 +63,14 @@ public class Item {
     public Long getArtistId() {
         return artistId;
     }
-
     public Item setArtistId(Long artistID) {
         this.artistId = artistID;
         return this;
     }
 
-    public Boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
-
     public Item setStatus(Boolean status) {
         this.status = status;
         return this;
@@ -92,7 +79,6 @@ public class Item {
     public ItemType getItemType() {
         return itemType;
     }
-
     public Item setItemType(ItemType itemType) {
         this.itemType = itemType;
         return this;
@@ -101,11 +87,12 @@ public class Item {
     public Timestamp getAdditionDate() {
         return additionDate;
     }
-
     public Item setAdditionDate(Timestamp additionDate) {
         this.additionDate = additionDate;
         return this;
     }
+
+
 
     public Item() {
 

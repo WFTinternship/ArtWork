@@ -6,17 +6,13 @@ import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import am.aca.wftartproject.util.SpringBeanType;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.ui.ModelMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Base64;
 
 /**
  * @author surik
@@ -41,14 +37,15 @@ public class SignUpServlet extends HttpServlet {
         User userFromRequest = null;
         ShoppingCard shoppingCard = null;
         Artist artistFromRequest = null;
-        InputStream inputStream = null; // input stream of the upload file
-        Part filePart = null;
+        InputStream inputStream; // input stream of the upload file
+        Part filePart;
+
 
         // obtains the upload file part in this multipart request
 
-        boolean chosenBuyerUser = request.getParameter("artistSpec") == null;
+        boolean chosenArtist = request.getParameter("artistSpec") != null;
 
-        if (chosenBuyerUser) {
+        if (!chosenArtist) {
             userFromRequest = new User();
             userFromRequest.setFirstName(request.getParameter("firstName"))
                     .setLastName(request.getParameter("lastName"))
@@ -75,25 +72,40 @@ public class SignUpServlet extends HttpServlet {
 
         }
 
-        String page = "";
+        String page;
         try {
-            if (chosenBuyerUser) {
+            if (!chosenArtist) {
                 userService.addUser(userFromRequest);
             } else {
                 artistService.addArtist(artistFromRequest);
             }
             page = "/index";
+
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", !chosenArtist ? userFromRequest : artistFromRequest);
+            Cookie userEmail = new Cookie("userEmail", !chosenArtist ? userFromRequest.getEmail() : artistFromRequest.getEmail());
+            userEmail.setMaxAge(3600);             // 60 minutes
+            response.addCookie(userEmail);
+
+            try {
+                response.setContentType("html/text");
+                response.sendRedirect(page);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage", errorMessage);
             page = "/signup";
+            request.getRequestDispatcher(page)
+                    .forward(request,response);
         }
-        HttpSession session = request.getSession(true);
-        session.setAttribute("user", chosenBuyerUser ? userFromRequest : artistFromRequest);
-        Cookie userEmail = new Cookie("userEmail", chosenBuyerUser ? userFromRequest.getEmail() : artistFromRequest.getEmail());
-        userEmail.setMaxAge(3600);             // 60 minutes
-        response.addCookie(userEmail);
-      /*
+
+
+
+
+        /*
         }
         else {
             Artist artistFromRequest = new Artist();
@@ -121,11 +133,6 @@ public class SignUpServlet extends HttpServlet {
 
         */
 
-        try {
-            response.setContentType("html/text");
-            response.sendRedirect(page);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 }

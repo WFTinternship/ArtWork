@@ -9,7 +9,6 @@ import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import am.aca.wftartproject.util.SpringBeanType;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -20,11 +19,8 @@ import java.util.Base64;
  */
 public class AccountServlet extends HttpServlet {
 
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-//        ArtistService artistService = SpringBean.getBeanFromSpring("artistService",ArtistServiceImpl.class);
 
         ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
         UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
@@ -32,7 +28,7 @@ public class AccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         User user;
-        User finduser;
+        User findUser;
         Artist artist;
         Artist findArtist;
         Cookie[] cookies = request.getCookies();
@@ -40,12 +36,12 @@ public class AccountServlet extends HttpServlet {
         Object obj = session.getAttribute("user").getClass().isInstance(User.class);
 
         try {
-            if (session.getAttribute("user") != null ) {
+            if (session.getAttribute("user") != null) {
                 if (session.getAttribute("user").getClass() == User.class) {
                     user = (User) session.getAttribute("user");
-                    finduser = userService.findUser(user.getId());
+                    findUser = userService.findUser(user.getId());
                     if (user != null) {
-                        request.setAttribute("user", finduser);
+                        request.setAttribute("user", findUser);
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }
@@ -54,28 +50,26 @@ public class AccountServlet extends HttpServlet {
                     findArtist = artistService.findArtist(artist.getId());
                     String image = Base64.getEncoder().encodeToString(findArtist.getArtistPhoto());
                     if (findArtist != null) {
-                        request.getSession().setAttribute("image",image);
+                        request.getSession().setAttribute("image", image);
                         request.getSession().setAttribute("user", findArtist);
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }
                 }
-            }
-            else {
-                if(cookies != null) {
-                    for(Cookie ckElement: cookies){
-                        if(ckElement.getName().equals("userEmail")){
+            } else {
+                if (cookies != null) {
+                    for (Cookie ckElement : cookies) {
+                        if (ckElement.getName().equals("userEmail")) {
                             userEmailFromCookie = ckElement.getValue();
                         }
                     }
-                    if(userEmailFromCookie!=null){
-                        if(artistService.findArtist(userEmailFromCookie) != null) {
+                    if (userEmailFromCookie != null) {
+                        if (artistService.findArtist(userEmailFromCookie) != null) {
                             Artist artistFromCookies = artistService.findArtist(userEmailFromCookie);
                             HttpSession sessionForArtist = request.getSession(true);
                             session.setAttribute("user", artistFromCookies);
-                        }
-                        else {
-                            if(userService.findUser(userEmailFromCookie) != null){
+                        } else {
+                            if (userService.findUser(userEmailFromCookie) != null) {
                                 User userFromCookies = userService.findUser(userEmailFromCookie);
                                 HttpSession sessionForUser = request.getSession(true);
                                 session.setAttribute("user", userFromCookies);
@@ -89,10 +83,12 @@ public class AccountServlet extends HttpServlet {
             throw new RuntimeException(errorMessage, e);
         }
 
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/account.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/account.jsp")
+                .forward(request, response);
 
     }
+
+
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {

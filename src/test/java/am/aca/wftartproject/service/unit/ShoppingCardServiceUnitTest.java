@@ -56,7 +56,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void addShoppingCard_userIdNullOrNegative() {
-        // Create shopping card and null userId
+        // Create shopping card and userId
         Long userId;
         testShoppingCard = createTestShoppingCard();
 
@@ -68,7 +68,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Create negative userId
+        // Change userId to negative value
         userId = -5L;
 
         // Try to add shopping card
@@ -79,6 +79,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
@@ -108,14 +109,15 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
      */
     @Test(expected = ServiceException.class)
     public void addShoppingCard_addFailure() {
+        // Create userId and testShoppingCard
         Long userId = 5L;
         testShoppingCard = createTestShoppingCard();
         testShoppingCard.setId(userId);
@@ -125,8 +127,8 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
 
         // Test method
         shoppingCardService.addShoppingCard(userId, testShoppingCard);
-
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
@@ -137,6 +139,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<ShoppingCard> argumentCaptor1 = ArgumentCaptor.forClass(ShoppingCard.class);
 
+        // Create userId and testShoppingCard
         Long userId = 5L;
         testShoppingCard = createTestShoppingCard();
         testShoppingCard.setId(userId);
@@ -147,16 +150,18 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         // Test method
         shoppingCardService.addShoppingCard(userId, testShoppingCard);
 
+        // Check input argument
         assertEquals(userId, argumentCaptor.getValue());
         assertEquals(testShoppingCard, argumentCaptor1.getValue());
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#getShoppingCard(java.lang.Long)
      */
     @Test
     public void getShoppingCard_idNullOrNegative() {
-        // Create null id
+        // Create id
         Long id;
 
         // Try to get shopping card
@@ -167,7 +172,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Create negative id
+        // Change id to negative value
         id = -5L;
 
         // Try to get shopping card
@@ -179,18 +184,22 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see ShoppingCardServiceImpl#getShoppingCard(java.lang.Long)
      */
     @Test(expected = ServiceException.class)
     public void getShoppingCard_getFailure() {
+        // Create id
         Long id = 5L;
 
+        // Setup mock
         doThrow(DAOException.class).when(shoppingCardDaoMock).getShoppingCard(anyLong());
 
+        // Test method
         shoppingCardService.getShoppingCard(id);
-
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#getShoppingCard(java.lang.Long)
@@ -200,6 +209,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         //Create argument capture
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
+        // Create id and testShoppingCard
         Long id = 5L;
         testShoppingCard = createTestShoppingCard();
 
@@ -209,8 +219,10 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         // Test method
         assertEqualShoppingCards(testShoppingCard, shoppingCardService.getShoppingCard(id));
 
+        // Check input argument
         assertEquals(id, argumentCaptor.getValue());
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
@@ -221,7 +233,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         Long id;
         testShoppingCard = createTestShoppingCard();
 
-        // Try to update shopping card
+        // Test method
         try {
             shoppingCardService.updateShoppingCard(null, testShoppingCard);
             fail();
@@ -229,9 +241,10 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
 
-        // Create negative id
+        // Change id to negative
         id = -5L;
 
+        // Test method
         try {
             shoppingCardService.updateShoppingCard(id, testShoppingCard);
             fail();
@@ -239,6 +252,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
@@ -255,6 +269,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
+
         // Create invalid shopping card
         testShoppingCard = createTestShoppingCard();
         testShoppingCard.setId(id);
@@ -268,6 +283,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
@@ -286,6 +302,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         shoppingCardService.updateShoppingCard(id, testShoppingCard);
     }
 
+
     /**
      * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
      */
@@ -303,19 +320,21 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         // Setup mocks
         doReturn(true).when(shoppingCardDaoMock).updateShoppingCard(argumentCaptor.capture(), argumentCaptor1.capture());
 
+        // Test method
         shoppingCardService.updateShoppingCard(id, testShoppingCard);
 
+        // Check input argument
         assertEquals(id, argumentCaptor.getValue());
         assertEquals(testShoppingCard, argumentCaptor1.getValue());
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
      */
     @Test
     public void deleteShoppingCard_idNullOrNegative() {
-
-        // Create null id
+        // Create id
         Long id;
 
         // Try to delete shopping card
@@ -326,7 +345,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
 
-        // Create negative id
+        // Change id to negative value
         id = -5L;
 
         // Try to delete shopping card
@@ -336,15 +355,15 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         } catch (Exception e) {
             assertTrue(e instanceof InvalidEntryException);
         }
-
     }
+
 
     /**
      * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
      */
     @Test(expected = ServiceException.class)
     public void deleteShoppingCard_deleteFailure() {
-
+        // Create id
         Long id = 5L;
 
         // Setup mocks
@@ -354,6 +373,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         shoppingCardService.deleteShoppingCard(id);
     }
 
+
     /**
      * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
      */
@@ -362,6 +382,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         //Create argument capture
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
+        // Create id
         Long id = 5L;
 
         // Setup mocks
@@ -370,9 +391,9 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         // Test method
         shoppingCardService.deleteShoppingCard(id);
 
+        // Check input argument
         assertEquals(id, argumentCaptor.getValue());
     }
-
 
     // endregion
 }
