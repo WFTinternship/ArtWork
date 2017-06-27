@@ -8,27 +8,19 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.util.AssertTemplates;
 import am.aca.wftartproject.util.TestObjectTemplate;
-import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
-import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import java.sql.SQLException;
-
 import static junit.framework.TestCase.*;
 
 /**
  * Created by Armen on 6/1/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:spring-root.xml"})
+
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -42,7 +34,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * Creates connection and artist
+     * Creates artist for tests
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -71,8 +63,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @After
     public void tearDown() throws SQLException, ClassNotFoundException {
-
-
         // delete inserted test users and artists from db
         if (testArtist.getId() != null) {
             artistDao.deleteArtist(testArtist.getId());
@@ -88,14 +78,13 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         }
     }
 
-    //region(TEST_CASE)
+    // region<TEST_CASE>
 
     /**
      * @see ArtistDao#addArtist(Artist)
      */
     @Test
     public void addArtist_Success() throws SQLException {
-
         // set artist into db, get generated id
         artistDao.addArtist(testArtist);
         System.out.println(testArtist);
@@ -118,7 +107,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void addArtist_Failure() throws SQLException {
-
         // set artist into db, get generated id
         testArtist.setFirstName(null);
         artistDao.addArtist(testArtist);
@@ -142,6 +130,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findArtist_Success() {
+        // add artist into db
         artistDao.addArtist(testArtist);
 
         // find and get artist from db
@@ -149,7 +138,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
         // check for sameness with testArtist
         AssertTemplates.assertEqualArtists(findArtist, testArtist);
-
     }
 
     /**
@@ -202,7 +190,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void updateArtist_Success() {
-
         // set artist specialization  and add into db
         testArtist.setSpecialization(ArtistSpecialization.PAINTER);
         artistDao.addArtist(testArtist);
@@ -219,7 +206,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void updateArtist_Failure() {
-
         // set artist specialization  and add into db
         artistDao.addArtist(testArtist);
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
@@ -238,7 +224,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void deleteArtist_Success() {
-
         // add artist into db
         artistDao.addArtist(testArtist);
 
@@ -254,7 +239,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void deleteArtist_Failure() {
-
         // add artist into db
         artistDao.addArtist(testArtist);
 
@@ -262,5 +246,5 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertFalse(artistDao.deleteArtist(-36L));
     }
 
-    //endregion
+    // endregion
 }

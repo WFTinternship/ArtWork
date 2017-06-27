@@ -50,7 +50,6 @@ public interface ItemService {
      */
     List<Item> getItemsByType(String itemType);
 
-
     /**
      * Gets all items for the given price range.
      *
@@ -68,17 +67,6 @@ public interface ItemService {
      * @return
      */
     List<Item> getArtistItems(Long artistId,Long itemId, Long limit);
-
-
-    /**
-     * Filters and sorts items by the given criteria.
-     * @param itemType
-     * @param price
-     * @param sortingType
-     * @return
-     */
-    List<Item> getFilteredAndSortedItems(String itemType, Integer[] price, String sortingType);
-
 
     /**
      * Updates Item price by id

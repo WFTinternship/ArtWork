@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,13 +55,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setString(5, item.getPhotoURL());
                 ps.setBoolean(6, item.getStatus());
                 ps.setString(7, item.getItemType().getType());
-                ps.setTimestamp(8, item.getAdditionDate());
+                ps.setDate(8, item.getAdditionDate());
                 return ps;
             };
 
             int rowsAffected = jdbcTemplate.update(psc, keyHolder);
             if (rowsAffected > 0) {
                 item.setId(keyHolder.getKey().longValue());
+                item.setArtistId(artistID);
             } else {
                 throw new DAOException("Failed to add Item");
             }
@@ -364,7 +366,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn(String.format("Failed to get items for given price range: %s %s", minPrice, maxPrice));
-            return null;
+            return Collections.emptyList();
         } catch (DataAccessException e) {
             String error = "Failed to get items by the given price range: %s";
             LOGGER.error(String.format(error, e.getMessage()));

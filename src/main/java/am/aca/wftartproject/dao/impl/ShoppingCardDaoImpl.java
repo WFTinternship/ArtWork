@@ -36,7 +36,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
 
         try {
-            shoppingCard.setBalance(getRandomBalance());
+//            shoppingCard.setBalance(getRandomBalance());
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query = "INSERT INTO shopping_card(balance, buyer_id, type) VALUES (?,?,?)";

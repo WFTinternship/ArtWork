@@ -23,7 +23,7 @@ public class ItemMapper implements RowMapper<Item> {
                 .setArtistId(resultSet.getLong("artist_id"))
                 .setStatus(resultSet.getBoolean("status"))
                 .setItemType(ItemType.valueOf(resultSet.getString("type")))
-                .setAdditionDate(resultSet.getTimestamp("addition_date"));
+                .setAdditionDate(resultSet.getDate("addition_date"));
         return item;
     }
 }
