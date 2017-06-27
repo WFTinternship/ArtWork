@@ -43,7 +43,7 @@ public class HomeServlet extends HttpServlet {
             if(artistService.findArtist(userEmailFromCookie) != null) {
                 Artist artist = artistService.findArtist(userEmailFromCookie);
                 HttpSession session = request.getSession(true);
-                session.setAttribute("artist", artist);
+                session.setAttribute("user", artist);
             }
             else {
                 if(userService.findUser(userEmailFromCookie) != null){

@@ -19,7 +19,7 @@ public class CtxListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
-        applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
+        applicationContext = new ClassPathXmlApplicationContext("spring-mvc-servlet.xml");
 
         ArtistSpecializationService artistSpecialization =
                 getBeanFromSpring(SpringBeanType.ARTISTSPECIALIZATIONSERVICE, ArtistSpecializationServiceImpl.class);

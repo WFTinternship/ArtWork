@@ -13,6 +13,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Base64;
 
 /**
  * Created by Armen on 6/9/2017
@@ -36,10 +37,11 @@ public class AccountServlet extends HttpServlet {
         Artist findArtist;
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
+        Object obj = session.getAttribute("user").getClass().isInstance(User.class);
 
         try {
             if (session.getAttribute("user") != null ) {
-                if (session.getAttribute("user").getClass().isInstance(User.class)) {
+                if (session.getAttribute("user").getClass() == User.class) {
                     user = (User) session.getAttribute("user");
                     finduser = userService.findUser(user.getId());
                     if (user != null) {
@@ -47,11 +49,13 @@ public class AccountServlet extends HttpServlet {
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }
-                } else if (session.getAttribute("user").getClass().isInstance(Artist.class)) {
+                } else if (session.getAttribute("user").getClass() == Artist.class) {
                     artist = (Artist) session.getAttribute("user");
                     findArtist = artistService.findArtist(artist.getId());
-                    if (artist != null) {
-                        request.setAttribute("user", findArtist);
+                    String image = Base64.getEncoder().encodeToString(findArtist.getArtistPhoto());
+                    if (findArtist != null) {
+                        request.getSession().setAttribute("image",image);
+                        request.getSession().setAttribute("user", findArtist);
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }

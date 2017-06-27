@@ -13,7 +13,7 @@ import java.util.Random;
 public class TestObjectTemplate {
     public static Artist createTestArtist() {
         Artist testArtist = new Artist();
-        testArtist.setArtistPhoto(new byte[10])
+        testArtist.setArtistPhoto(null)
                 .setSpecialization(ArtistSpecialization.PAINTER)
                 .setAge(26)
                 .setEmail("test" + getRandomNumber() + "@test.com")

@@ -8,6 +8,8 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -17,6 +19,7 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
  * Created by surik on 6/3/17
  */
 @Transactional
+@Component
 public class ArtistServiceImpl implements ArtistService {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);

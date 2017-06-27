@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -23,8 +24,12 @@ public class MyWorksServlet extends HttpServlet {
     Artist artist ;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       artist= (Artist) request.getSession().getAttribute("artist");
-        request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(),8L,100L));
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")!= null  && session.getAttribute("user").getClass() == Artist.class) {
+            artist= (Artist) request.getSession().getAttribute("user");
+            request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(),8888L,100L));
+        }
+
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/my-works.jsp");
         dispatcher.forward(request, response);

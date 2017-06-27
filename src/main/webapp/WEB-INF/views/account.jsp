@@ -5,7 +5,7 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<c:set var="user" value='<%=session.getAttribute("user")%>' />
+<c:set var="user" value='<%=request.getSession().getAttribute("user")%>' />
 
 
 <!Doctype html>
@@ -152,15 +152,15 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <!-- top heading -->
-                                    <h2>My Account</h2>
+                                    <h2>Account Information</h2>
                                     <!-- user image -->
-                                    <img class="img-responsive user" src="../../resources/images/avatar.jpg" alt=""/>
+                                    <img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->
                                         <h3>${user.firstName}  ${user.lastName}</h3>
 
-                                        <span class="a-phone"><i class="fa fa-phone-square"></i>: +91 123 345 6565</span>
+                                        <%--<span class="a-phone"><i class="fa fa-phone-square"></i>: </span>--%>
                                         <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">${user.email}</a></span>
                                     </div>
                                     <div class="clearfix"></div>

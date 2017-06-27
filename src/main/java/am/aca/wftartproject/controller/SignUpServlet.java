@@ -8,14 +8,22 @@ import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import am.aca.wftartproject.util.SpringBeanType;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.ui.ModelMap;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
 
 /**
  * @author surik
  */
+@MultipartConfig(maxFileSize = 2177215)
 public class SignUpServlet extends HttpServlet {
 
     @Override
@@ -38,6 +46,10 @@ public class SignUpServlet extends HttpServlet {
 
         User userFromRequest = null;
         Artist artistFromRequest = null;
+        InputStream inputStream = null; // input stream of the upload file
+        Part filePart = null;
+
+        // obtains the upload file part in this multipart request
 
         boolean chosenBuyerUser = request.getParameter("artistSpec") == null;
 
@@ -50,30 +62,35 @@ public class SignUpServlet extends HttpServlet {
                     .setPassword(request.getParameter("password"));
         } else {
             artistFromRequest = new Artist();
-            artistFromRequest.setFirstName(request.getParameter("firstName"))
-                    .setLastName(request.getParameter("lastName"))
-                    .setAge(Integer.parseInt(request.getParameter("age")))
-                    .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password"));
-
-            //Photo download should be configured
-//            artistFromRequest.setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
-//                    .setArtistPhoto(request.getParameter("imageUpload"));
+            filePart = request.getPart("image");
+            if (filePart != null) {
+                inputStream = filePart.getInputStream();
+                byte[] imageBytes = IOUtils.toByteArray(inputStream);
+                //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
+                artistFromRequest
+                        .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
+                        .setArtistPhoto(imageBytes)
+                        .setFirstName(request.getParameter("firstName"))
+                        .setLastName(request.getParameter("lastName"))
+                        .setAge(Integer.parseInt(request.getParameter("age")))
+                        .setEmail(request.getParameter("email"))
+                        .setPassword(request.getParameter("password"));
+            }
 
         }
 
-
+        String page = "";
         try {
             if (chosenBuyerUser) {
                 userService.addUser(userFromRequest);
             } else {
                 artistService.addArtist(artistFromRequest);
             }
+            page = "/index";
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/signup")
-                    .forward(request, response);
+            page = "/signup";
         }
         HttpSession session = request.getSession(true);
         session.setAttribute("user", chosenBuyerUser ? userFromRequest : artistFromRequest);
@@ -105,12 +122,14 @@ public class SignUpServlet extends HttpServlet {
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         }
+
+        */
+
         try {
             response.setContentType("html/text");
-            response.sendRedirect("/index");
+            response.sendRedirect(page);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
     }
 }

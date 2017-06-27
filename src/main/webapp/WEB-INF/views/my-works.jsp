@@ -10,6 +10,7 @@
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
 <c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>' />
 
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -168,7 +169,8 @@
                                                 <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->
                                                     <div class="product-container">
-                                                        <a href="/shop-detail/${itemElement.id}"><div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
+                                                        <a href="/shop-detail/${itemElement.id}">
+                                                            <div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
                                                             <a href="#" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Edit </a>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -72,32 +73,32 @@
 			<!-- content will be loaded using jQuery - according to the selected plan -->
 		</div>
 
-		<div class="cd-more-info">
-			<h3>Need help?</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-		</div>
+		<%--<div class="cd-more-info">--%>
+			<%--<h3>Need help?</h3>--%>
+			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
+		<%--</div>--%>
 		
-		<form action="/signup" method="post">
+		<form:form action="/userRegister" method="post" modelAttribute="user">
 			<fieldset>
 				<legend>Account Info</legend>
 
 				<div class="half-width">
-					<label for="userName">FirstName</label>
-					<input type="text" id="userName" name="firstName">
+					<form:label path="firstName">FirstName</form:label>
+					<form:input path="firstName" name="firstName" id="firstName" />
 				</div>
 
 				<div class="half-width">
-					<label for="userLastName">LastName</label>
-					<input type="text" id="userLastName" name="lastName">
+					<form:label path="lastName">LastName</form:label>
+					<form:input path="lastName" name="lastName" id="lastName" />
 				</div>
 
 				<div class="half-width">
-					<label for="userAge">Age</label>
-					<input type="text" id="userAge" name="age">
+					<form:label path="age">Age</form:label>
+					<form:input path="age" name="age" id="age" />
 				</div>
 
 				<div class="half-width">
-					<label for="userEmail">Email</label>
+					<form:label path="email">Email</form:label>
 					<input type="email" id="userEmail" name="email">
 				</div>
 				
@@ -127,55 +128,7 @@
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
 					</div>
-
-					<%--<div class="cd-credit-card">
-						<div>
-							<p class="half-width">
-								<label for="cardNumber">Card Number</label>
-								<input type="text" id="cardNumber" name="cardNumber">
-							</p>
-
-							<p class="half-width">
-								<label>Expiration date</label>
-								<b>
-								<span class="cd-select">
-									<select name="card-expiry-month" id="card-expiry-month">
-										<option value="1">1</option>
-										<option value="1">2</option>
-										<option value="1">3</option>
-										<option value="1">4</option>
-										<option value="1">5</option>
-										<option value="1">6</option>
-										<option value="1">7</option>
-										<option value="1">8</option>
-										<option value="1">9</option>
-										<option value="1">10</option>
-										<option value="1">11</option>
-										<option value="1">12</option>
-									</select>
-								</span>
-
-									<span class="cd-select">
-									<select name="card-expiry-year" id="card-expiry-year">
-										<option value="2015">2015</option>
-										<option value="2015">2016</option>
-										<option value="2015">2017</option>
-										<option value="2015">2018</option>
-										<option value="2015">2019</option>
-										<option value="2015">2020</option>
-									</select>
-								</span>
-								</b>
-							</p>
-
-							<p class="half-width">
-								<label for="cardCvc">Card CVC</label>
-								<input type="text" id="cardCvc" name="cardCvc">
-							</p>
-						</div>
-					</div>--%> <!-- .cd-credit-card -->
 				</fieldset>
-
 			</fieldset>
 
 			<fieldset>
@@ -183,7 +136,7 @@
 					<input type="submit" value="Get started">
 				</div>
 			</fieldset>
-		</form>
+		</form:form>
 
 		<a href="#0" class="cd-close"></a>
 	</div> <!-- .cd-form -->
@@ -194,12 +147,12 @@
 			<!-- content will be loaded using jQuery - according to the selected plan -->
 		</div>
 
-		<div class="cd-more-info">
-			<h3>Need help?</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-		</div>
+		<%--<div class="cd-more-info">--%>
+			<%--<h3>Need help?</h3>--%>
+			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
+		<%--</div>--%>
 
-		<form action="/signup" method="post">
+		<form action="/artistRegister"  method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>Account Info</legend>
 
@@ -237,14 +190,11 @@
 					<label for="artistSpec">Specialization</label>
 					<br/>
 					<select name="artistSpec" id="artistSpec">
+						<option value="-1" selected>Choose Specialization</option>
 						<c:forEach items="${artistSpecTypes}" var="element">
-							<option value="${element.type}">${element.type}</option>
+							<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''}>${element.type}</option>
 						</c:forEach>
 
-						<%--<option value="PAINTER">PAINTER</option>--%>
-						<%--<option value="SCULPTOR">SCULPTOR</option>--%>
-						<%--<option value="PHOTOGRAPHER">PHOTOGRAPHER</option>--%>
-						<%--<option value="OTHER">OTHER</option>--%>
 					</select>
 				</div>
 
@@ -272,6 +222,12 @@
 						</ul> <!-- .cd-payment-gateways -->
 					</div>
 				</fieldset>
+				<br/>
+				<div class="half-width">
+					<input type="file" name="image" id="imageUpload" class="hide"/>
+					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
+					<img src="" id="imagePreview" alt="" width="200px"/>
+				</div>
 
 			</fieldset>
 
@@ -296,10 +252,10 @@
 <script src="../../resources/js/signUp-velocity.min.js"></script>
 <script src="../../resources/js/signUp-main-min.js"></script> <!-- Resource jQuery -->
 <script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  	})(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
+//	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+//  	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+//  	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+//  	})(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
 
   	ga('create', 'UA-48014931-1', 'codyhouse.co');
   	ga('send', 'pageview');
