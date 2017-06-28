@@ -52,7 +52,7 @@ public class SignUpController {
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage", errorMessage);
-            page = "/signup";
+            page = "/signUp";
         }
         return new ModelAndView(page, "user", user);
     }
@@ -87,7 +87,7 @@ public class SignUpController {
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage", errorMessage);
-            page = "/signup";
+            page = "/signUp";
         }
 
         return new ModelAndView(page, "user", artistFromRequest);
