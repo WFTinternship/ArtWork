@@ -5,16 +5,11 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +29,7 @@ public class SignUpController {
     ArtistService artistService;
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
         ModelAndView mav = new ModelAndView("signUp");
         mav.addObject("user", new User());
         mav.addObject("artist", new Artist());
