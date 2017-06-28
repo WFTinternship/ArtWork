@@ -31,6 +31,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#addArtistSpecialization()
      */
     @Override
+    @Transactional
     public void addArtistSpecialization() {
         try {
             lkpDao.addArtistSpecialization();
@@ -80,6 +81,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#deleteArtistSpecialization()
      */
     @Override
+    @Transactional
     public void deleteArtistSpecialization() {
         try {
             lkpDao.deleteArtistSpecialization();

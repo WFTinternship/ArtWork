@@ -26,21 +26,19 @@ import java.io.InputStream;
 @MultipartConfig(maxFileSize = 2177215)
 public class AddItemsServlet extends HttpServlet {
 
-//    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
-    ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE,ItemServiceImpl.class);
-    ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
+    private ItemService itemService = CtxListener.getBeanFromSpring(SpringBeanType.ITEMSERVICE, ItemServiceImpl.class);
+    private ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("itemTypes", ItemType.values());
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/additem.jsp");
         dispatcher.forward(request, response);
-
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Item item = new Item();
-        String filePath = null;
+        String filePath;
         String fileName;
         Part filePart;
         InputStream inputStream;
@@ -48,6 +46,7 @@ public class AddItemsServlet extends HttpServlet {
         Artist findArtist;
         HttpSession session = request.getSession();
         response.setContentType("text/html");
+
         if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
             artist = (Artist) session.getAttribute("user");
             findArtist = artistService.findArtist(artist.getId());
@@ -57,7 +56,8 @@ public class AddItemsServlet extends HttpServlet {
                         .setDescription(request.getParameter("description"))
                         .setItemType(ItemType.valueOf(request.getParameter("type")))
                         .setPrice(Double.parseDouble(request.getParameter("price")))
-                        .setArtistId(artist.getId()).setStatus(true);
+                        .setArtistId(artist.getId())
+                        .setStatus(false);
                 if (request.getPart("image") != null) {
                     filePart = request.getPart("image");
                     if (filePart != null) {

@@ -8,280 +8,287 @@
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
 
 
-
 <!doctype html>
 <html lang="en" class="no-js">
 
 <!-- Mirrored from codyhouse.co/demo/animated-sign-up-flow/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 12:52:09 GMT -->
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
 
-	<link rel="stylesheet" href="../../resources/css/signUp-reset.css"> <!-- CSS reset -->
-	<link rel="stylesheet" href="../../resources/css/signUp-style.css"> <!-- Resource style -->
-	<script src="../../resources/js/signUp-modernizr.js"></script> <!-- Modernizr -->
-  	
-	<title>Welcome!</title>
+    <link rel="stylesheet" href="../../resources/css/signUp-reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="../../resources/css/signUp-style.css"> <!-- Resource style -->
+    <script src="../../resources/js/signUp-modernizr.js"></script> <!-- Modernizr -->
+
+    <title>Welcome!</title>
 </head>
 <body>
-	<header class="cd-main-header">
-		<h1>Sign Up</h1>
-	</header>
+<header class="cd-main-header">
+    <h1>Sign Up</h1>
+</header>
 
-	<ul class="cd-pricing">
-		<li>
-			<header class="cd-pricing-header">
-				<h2>Buyer</h2>
+<ul class="cd-pricing">
+    <li>
+        <header class="cd-pricing-header">
+            <h2>Buyer</h2>
 
-			</header> <!-- .cd-pricing-header -->
+        </header> <!-- .cd-pricing-header -->
 
-			<div class="cd-pricing-features">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Fusce ut ante quis sem pretium viverra.
-				Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.
-			</div> <!-- .cd-pricing-features -->
+        <div class="cd-pricing-features">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Fusce ut ante quis sem pretium viverra.
+            Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.
+        </div> <!-- .cd-pricing-features -->
 
-			<footer class="cd-pricing-footer">
-				<a class="buyer" href="#0">Select</a>
-			</footer> <!-- .cd-pricing-footer -->
-		</li>
-		
-		<li>
-			<header class="cd-pricing-header">
-				<h2>Artist</h2>
+        <footer class="cd-pricing-footer">
+            <a class="buyer" href="#0">Select</a>
+        </footer> <!-- .cd-pricing-footer -->
+    </li>
 
-			</header> <!-- .cd-pricing-header -->
+    <li>
+        <header class="cd-pricing-header">
+            <h2>Artist</h2>
 
-			<div class="cd-pricing-features">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Fusce ut ante quis sem pretium viverra.
-				Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.
-			</div> <!-- .cd-pricing-features -->
+        </header> <!-- .cd-pricing-header -->
 
-			<footer class="cd-pricing-footer1">
-				<a class="artist" href="#0">Select</a>
-			</footer> <!-- .cd-pricing-footer -->
-		</li>
-	</ul> <!-- .cd-pricing -->
+        <div class="cd-pricing-features">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Fusce ut ante quis sem pretium viverra.
+            Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.
+        </div> <!-- .cd-pricing-features -->
 
-	<div class="cd-form">
-		
-		<div class="cd-plan-info">
-			<!-- content will be loaded using jQuery - according to the selected plan -->
-		</div>
+        <footer class="cd-pricing-footer1">
+            <a class="artist" href="#0">Select</a>
+        </footer> <!-- .cd-pricing-footer -->
+    </li>
+</ul> <!-- .cd-pricing -->
 
-		<%--<div class="cd-more-info">--%>
-			<%--<h3>Need help?</h3>--%>
-			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
-		<%--</div>--%>
-		
-		<form action="${pageContext.request.contextPath}/signup" method="post">
-			<fieldset>
-				<legend>Account Info</legend>
+<div class="cd-form">
 
-				<div class="half-width">
-					<label for="userName">FirstName</label>
-					<input type="text" id="userName" name="firstName">
-				</div>
+    <div class="cd-plan-info">
+        <!-- content will be loaded using jQuery - according to the selected plan -->
+    </div>
 
-				<div class="half-width">
-					<label for="userLastName">LastName</label>
-					<input type="text" id="userLastName" name="lastName">
-				</div>
+    <%--<div class="cd-more-info">--%>
+    <%--<h3>Need help?</h3>--%>
+    <%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
+    <%--</div>--%>
 
-				<div class="half-width">
-					<label for="userAge">Age</label>
-					<input type="text" id="userAge" name="age">
-				</div>
+    <form action="${pageContext.request.contextPath}/signup" method="post">
+        <fieldset>
+            <legend>Account Info</legend>
 
-				<div class="half-width">
-					<label for="userEmail">Email</label>
-					<input type="email" id="userEmail" name="email">
-				</div>
-				
-				<div class="half-width">
-					<label for="userPassword">Password</label>
-					<input type="password" id="userPassword" name="password">
-				</div>
-				
-				<div class="half-width">
-					<label for="userPasswordRepeat">Repeat Password</label>
-					<input type="password" id="userPasswordRepeat" name="passwordRepeat">
-				</div>
+            <div class="half-width">
+                <label for="userName">FirstName</label>
+                <input type="text" id="userName" name="firstName">
+            </div>
 
-				<fieldset>
-					<legend>Payment Method</legend>
+            <div class="half-width">
+                <label for="userLastName">LastName</label>
+                <input type="text" id="userLastName" name="lastName">
+            </div>
 
-					<div>
-						<ul class="cd-payment-gateways">
-							<li>
-								<input type="radio" name="payment-method" id="paypal" value="PAYPAL">
-								<label for="paypal">PayPal</label>
-							</li>
+            <div class="half-width">
+                <label for="userAge">Age</label>
+                <input type="text" id="userAge" name="age">
+            </div>
 
-							<li>
-								<input type="radio" name="payment-method" id="card" value="MASTERCARD" checked>
-								<label for="card">MasterCard</label>
-							</li>
-						</ul> <!-- .cd-payment-gateways -->
-					</div>
+            <div class="half-width">
+                <label for="userEmail">Email</label>
+                <input type="email" id="userEmail" name="email">
+            </div>
 
-					<%--<div class="cd-credit-card">
-						<div>
-							<p class="half-width">
-								<label for="cardNumber">Card Number</label>
-								<input type="text" id="cardNumber" name="cardNumber">
-							</p>
+            <div class="half-width">
+                <label for="userPassword">Password</label>
+                <input type="password" id="userPassword" name="password">
+            </div>
 
-							<p class="half-width">
-								<label>Expiration date</label>
-								<b>
-								<span class="cd-select">
-									<select name="card-expiry-month" id="card-expiry-month">
-										<option value="1">1</option>
-										<option value="1">2</option>
-										<option value="1">3</option>
-										<option value="1">4</option>
-										<option value="1">5</option>
-										<option value="1">6</option>
-										<option value="1">7</option>
-										<option value="1">8</option>
-										<option value="1">9</option>
-										<option value="1">10</option>
-										<option value="1">11</option>
-										<option value="1">12</option>
-									</select>
-								</span>
+            <div class="half-width">
+                <label for="userPasswordRepeat">Repeat Password</label>
+                <input type="password" id="userPasswordRepeat" name="passwordRepeat">
+            </div>
 
-									<span class="cd-select">
-									<select name="card-expiry-year" id="card-expiry-year">
-										<option value="2015">2015</option>
-										<option value="2015">2016</option>
-										<option value="2015">2017</option>
-										<option value="2015">2018</option>
-										<option value="2015">2019</option>
-										<option value="2015">2020</option>
-									</select>
-								</span>
-								</b>
-							</p>
+            <div class="half-width">
+                <input type="hidden" id="thisField1" name="chosenOption" value="buyer">
+            </div>
 
-							<p class="half-width">
-								<label for="cardCvc">Card CVC</label>
-								<input type="text" id="cardCvc" name="cardCvc">
-							</p>
-						</div>
-					</div>--%> <!-- .cd-credit-card -->
-				</fieldset>
+            <fieldset>
+                <legend>Payment Method</legend>
 
-			</fieldset>
+                <div>
+                    <ul class="cd-payment-gateways">
+                        <li>
+                            <input type="radio" name="paymentMethod" id="paypal" value="PAYPAL">
+                            <label for="paypal">PayPal</label>
+                        </li>
 
-			<fieldset>
-				<div>
-					<input type="submit" value="Get started">
-				</div>
-			</fieldset>
-		</form>
+                        <li>
+                            <input type="radio" name="paymentMethod" id="card" value="MASTERCARD" checked>
+                            <label for="card">MasterCard</label>
+                        </li>
+                    </ul> <!-- .cd-payment-gateways -->
+                </div>
 
-		<a href="#0" class="cd-close"></a>
-	</div> <!-- .cd-form -->
+                <%--<div class="cd-credit-card">
+                    <div>
+                        <p class="half-width">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" name="cardNumber">
+                        </p>
 
-	<div class="cd-form1">
+                        <p class="half-width">
+                            <label>Expiration date</label>
+                            <b>
+                            <span class="cd-select">
+                                <select name="card-expiry-month" id="card-expiry-month">
+                                    <option value="1">1</option>
+                                    <option value="1">2</option>
+                                    <option value="1">3</option>
+                                    <option value="1">4</option>
+                                    <option value="1">5</option>
+                                    <option value="1">6</option>
+                                    <option value="1">7</option>
+                                    <option value="1">8</option>
+                                    <option value="1">9</option>
+                                    <option value="1">10</option>
+                                    <option value="1">11</option>
+                                    <option value="1">12</option>
+                                </select>
+                            </span>
 
-		<div class="cd-plan-info">
-			<!-- content will be loaded using jQuery - according to the selected plan -->
-		</div>
+                                <span class="cd-select">
+                                <select name="card-expiry-year" id="card-expiry-year">
+                                    <option value="2015">2015</option>
+                                    <option value="2015">2016</option>
+                                    <option value="2015">2017</option>
+                                    <option value="2015">2018</option>
+                                    <option value="2015">2019</option>
+                                    <option value="2015">2020</option>
+                                </select>
+                            </span>
+                            </b>
+                        </p>
 
-		<%--<div class="cd-more-info">--%>
-			<%--<h3>Need help?</h3>--%>
-			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
-		<%--</div>--%>
+                        <p class="half-width">
+                            <label for="cardCvc">Card CVC</label>
+                            <input type="text" id="cardCvc" name="cardCvc">
+                        </p>
+                    </div>
+                </div>--%> <!-- .cd-credit-card -->
+            </fieldset>
 
-		<form action="${pageContext.request.contextPath}/signup" method="post" enctype="multipart/form-data">
-			<fieldset>
-				<legend>Account Info</legend>
+        </fieldset>
 
-				<div class="half-width">
-					<label for="artistName">FirstName</label>
-					<input type="text" id="artistName" name="firstName">
-				</div>
+        <fieldset>
+            <div>
+                <input type="submit" value="Get started">
+            </div>
+        </fieldset>
+    </form>
 
-				<div class="half-width">
-					<label for="artistLastName">LastName</label>
-					<input type="text" id="artistLastName" name="lastName">
-				</div>
+    <a href="#0" class="cd-close"></a>
+</div> <!-- .cd-form -->
 
-				<div class="half-width">
-					<label for="artistAge">Age</label>
-					<input type="text" id="artistAge" name="age">
-				</div>
+<div class="cd-form1">
 
-				<div class="half-width">
-					<label for="artistEmail">Email</label>
-					<input type="email" id="artistEmail" name="email">
-				</div>
+    <div class="cd-plan-info">
+        <!-- content will be loaded using jQuery - according to the selected plan -->
+    </div>
 
-				<div class="half-width">
-					<label for="artistPassword">Password</label>
-					<input type="password" id="artistPassword" name="password">
-				</div>
+    <%--<div class="cd-more-info">--%>
+    <%--<h3>Need help?</h3>--%>
+    <%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
+    <%--</div>--%>
 
-				<div class="half-width">
-					<label for="artistPasswordRepeat">Repeat Password</label>
-					<input type="password" id="artistPasswordRepeat" name="passwordRepeat">
-				</div>
+    <form action="${pageContext.request.contextPath}/signup" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Account Info</legend>
 
-				<div class="half-width">
-					<label for="artistSpec">Specialization</label>
-					<br/>
-					<select name="artistSpec" id="artistSpec">
-						<option value="-1" selected>Choose Specialization</option>
-						<c:forEach items="${artistSpecTypes}" var="element">
-							<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''}>${element.type}</option>
-						</c:forEach>
+            <div class="half-width">
+                <label for="artistName">FirstName</label>
+                <input type="text" id="artistName" name="firstName">
+            </div>
 
-					</select>
-				</div>
+            <div class="half-width">
+                <label for="artistLastName">LastName</label>
+                <input type="text" id="artistLastName" name="lastName">
+            </div>
 
-				<fieldset>
-					<legend>Payment Method</legend>
+            <div class="half-width">
+                <label for="artistAge">Age</label>
+                <input type="text" id="artistAge" name="age">
+            </div>
 
-					<div>
-						<ul class="cd-payment-gateways">
-							<li>
-								<input type="radio" name="paymentMethod" id="paypal1" value="PAYPAL">
-								<label for="paypal">PayPal</label>
-							</li>
+            <div class="half-width">
+                <label for="artistEmail">Email</label>
+                <input type="email" id="artistEmail" name="email">
+            </div>
 
-							<li>
-								<input type="radio" name="paymentMethod" id="card1" value="MASTERCARD" checked>
-								<label for="card">MasterCard</label>
-							</li>
-						</ul> <!-- .cd-payment-gateways -->
-					</div>
-				</fieldset>
-				<br/>
-				<div class="half-width">
-					<input type="file" name="image" id="imageUpload" class="hide"/>
-					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
-					<img src="" id="imagePreview" alt="" width="200px"/>
-				</div>
+            <div class="half-width">
+                <label for="artistPassword">Password</label>
+                <input type="password" id="artistPassword" name="password">
+            </div>
 
-			</fieldset>
+            <div class="half-width">
+                <label for="artistPasswordRepeat">Repeat Password</label>
+                <input type="password" id="artistPasswordRepeat" name="passwordRepeat">
+            </div>
 
-			<fieldset>
-				<div>
-					<input type="submit" value="Get started">
-				</div>
-			</fieldset>
-		</form>
+            <div class="half-width">
+                <input type="hidden" id="thisField2" name="chosenOption" value="artist">
+            </div>
 
-		<a href="#0" class="cd-close"></a>
-	</div>
-	
-	<div class="cd-overlay"></div> <!-- shadow layer -->
+            <div class="half-width">
+                <label for="artistSpec">Specialization</label>
+                <br/>
+                <select name="artistSpec" id="artistSpec">
+                    <%--<option value="-1" selected>Choose Specialization</option>--%>
+                    <c:forEach items="${artistSpecTypes}" var="element">
+                        <option value="${element.type}">${element.type}</option>
+                    </c:forEach>
+
+                </select>
+            </div>
+
+            <fieldset>
+                <legend>Payment Method</legend>
+
+                <div>
+                    <ul class="cd-payment-gateways">
+                        <li>
+                            <input type="radio" name="paymentMethod" id="paypal1" value="PAYPAL">
+                            <label for="paypal">PayPal</label>
+                        </li>
+
+                        <li>
+                            <input type="radio" name="paymentMethod" id="card1" value="MASTERCARD" checked>
+                            <label for="card">MasterCard</label>
+                        </li>
+                    </ul> <!-- .cd-payment-gateways -->
+                </div>
+            </fieldset>
+            <br/>
+            <div class="half-width">
+                <input type="file" name="imageUpload" id="imageUpload" class="hide"/>
+                <label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
+                <img src="" id="imagePreview" alt="" width="200px"/>
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+            <div>
+                <input type="submit" value="Get started">
+            </div>
+        </fieldset>
+    </form>
+
+    <a href="#0" class="cd-close"></a>
+</div>
+
+<div class="cd-overlay"></div> <!-- shadow layer -->
 <!-- <div id="carbonads-container">
 		<div class="carbonad">
 			<script async type="text/javascript" src="../../../cdn.carbonads.com/carbon3815.js?zoneid=1673&amp;serve=C6AILKT&amp;placement=codyhouseco" id="_carbonads_js"></script>
@@ -292,20 +299,27 @@
 <script src="../../resources/js/signUp-velocity.min.js"></script>
 <script src="../../resources/js/signUp-main-min.js"></script> <!-- Resource jQuery -->
 <script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  	})(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '../../../www.google-analytics.com/analytics.js', 'ga');
 
-  	ga('create', 'UA-48014931-1', 'codyhouse.co');
-  	ga('send', 'pageview');
+    ga('create', 'UA-48014931-1', 'codyhouse.co');
+    ga('send', 'pageview');
 
-  	jQuery(document).ready(function($){
-  		$('.close-carbon-adv').on('click', function(event){
-  			event.preventDefault();
-  			$('#carbonads-container').hide();
-  		});
-  	});
+    jQuery(document).ready(function ($) {
+        $('.close-carbon-adv').on('click', function (event) {
+            event.preventDefault();
+            $('#carbonads-container').hide();
+        });
+    });
 </script>
 </body>
 

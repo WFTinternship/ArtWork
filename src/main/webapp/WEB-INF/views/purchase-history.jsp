@@ -8,6 +8,7 @@
 
 <c:set var="purchaseHistoryService" value='<%=request.getAttribute("purchaseHistoryService")%>' />
 <c:set var="itemService" value='<%=request.getAttribute("itemService")%>' />
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -114,6 +115,20 @@
                     <li class="menu-item-simple-parent">
                         <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
                     </li>
+                    <li class="menu-item-simple-parent">
+                        <a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
+                                class="fa fa-paint-brush"></span></a>
+                        <ul class="sub-menu">
+                            <%--<li><a href="../../resources/progressbar.html"> Progress-bar </a></li>
+                            <li><a href="../../resources/buttons.html"> Buttons Page </a></li>
+                            <li><a href="../../resources/tabs.html"> tabs-accordions </a></li>
+                            <li><a href="../../resources/typography.html"> typography </a></li>
+                            <li><a href="../../resources/columns.html"> columns </a></li>--%>
+                            <li><a href="${pageContext.request.contextPath}/logout">Log out </a></li>
+
+                        </ul>
+                        <a class="dt-menu-expand">+</a>
+                    </li>
 					                        
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->            
@@ -148,11 +163,13 @@
                                     <h3>My Menu</h3>
                                     <!-- list -->
                                     <ul class="list-unstyled">
-                                        <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
-                                        <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
-                                        <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+                                        <li><a href="${pageContext.request.contextPath}/account"><i class="fa fa-user"></i> My Account</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+                                        <c:if test="${user.getClass().getSimpleName() == 'Artist'}">
+                                            <li><a href="${pageContext.request.contextPath}/my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+                                            <li><a href="${pageContext.request.contextPath}/additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+                                        </c:if>
                                     </ul>
                                 </div>
                             </div>

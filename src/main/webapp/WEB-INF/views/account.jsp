@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
+<c:set var="errorMessage" value='<%=session.getAttribute("errorMessage")%>' />
+
+
+
 
 
 <!Doctype html>
@@ -17,18 +22,18 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
 	<title>Red Art - Digital Painting</title>
-	
+
     <meta name="description" content="">
 	<meta name="author" content="">
-	
+
 	<!--[if lt IE 9]>
 	    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-    
+
     <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
-    
+
     <!-- **CSS - stylesheets** -->
     <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css" rel="stylesheet"/>
 	<link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all" />
@@ -37,29 +42,29 @@
 
 
 
-	
+
     <!-- **Additional - stylesheets** -->
     <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all" />
 	<link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
-   
+
     <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all" />
     <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="../../resources/css/responsive.css" type="text/css" media="all"/>
 	<script src="../../resources/js/modernizr.js"></script> <!-- Modernizr -->
-    
+
 	<link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all" />
 
     <!-- **Font Awesome** -->
 	<link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css" />
-    
+
 </head>
 
 <body>
     <div class="loader-wrapper">
         <div id="large-header" class="large-header">
             <h1 class="loader-title"><span>Red</span> Art</h1>
-        </div>        
+        </div>
     </div>
 <!-- **Wrapper** -->
 <div class="wrapper">
@@ -67,21 +72,21 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
-                    
+                    <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+
                     <a href="#" class="menu-trigger">
                         <span></span>
                     </a>
                 </div>
             </div>
-			
+
             <nav id="main-menu"><!-- Main-menu Starts -->
                 <div id="dt-menu-toggle" class="dt-menu-toggle">
                     Menu
                     <span class="dt-menu-toggle-icon"></span>
-                </div>            
+                </div>
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
 
                     </li>
 
@@ -105,11 +110,25 @@
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="/contact">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="${pageContext.request.contextPath}/contact">contact <span class="fa fa-map-marker"></span></a>
+                    </li>
+                    <li class="menu-item-simple-parent">
+                        <a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
+                                class="fa fa-paint-brush"></span></a>
+                        <ul class="sub-menu">
+                            <%--<li><a href="../../resources/progressbar.html"> Progress-bar </a></li>
+                            <li><a href="../../resources/buttons.html"> Buttons Page </a></li>
+                            <li><a href="../../resources/tabs.html"> tabs-accordions </a></li>
+                            <li><a href="../../resources/typography.html"> typography </a></li>
+                            <li><a href="../../resources/columns.html"> columns </a></li>--%>
+                            <li><a href="${pageContext.request.contextPath}/logout">Log out </a></li>
+
+                        </ul>
+                        <a class="dt-menu-expand">+</a>
                     </li>
                 </ul> <!-- Menu Ends -->
-            </nav> <!-- Main-menu Ends -->            
-        </div><!-- **header-wrapper Ends** -->        
+            </nav> <!-- Main-menu Ends -->
+        </div><!-- **header-wrapper Ends** -->
         <div id="main">
         	<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -120,7 +139,7 @@
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
-                        	<a href="#">Shopping Bag: 0 items</a> 
+                        	<a href="#">Shopping Bag: 0 items</a>
                             <a href="#">($0.00)</a>
                         </div>
                     </div>
@@ -128,8 +147,8 @@
         	</div><!-- *BreadCrumb Ends here** -->
             <!-- main content -->
             <div class="main-content">
-                <div class="container"> 
-                
+                <div class="container">
+
                     <!-- inner page content -->
                     <div class="inner-content">
                         <div class="row">
@@ -140,11 +159,13 @@
                                     <h3>My Menu</h3>
                                     <!-- list -->
                                     <ul class="list-unstyled">
-                                        <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
-                                        <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
-                                        <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+                                        <li><a href="${pageContext.request.contextPath}/account"><i class="fa fa-user"></i> My Account</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+                                        <c:if test="${user.getClass().getSimpleName() == 'Artist'}">
+                                            <li><a href="${pageContext.request.contextPath}/my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+                                            <li><a href="${pageContext.request.contextPath}/additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+                                        </c:if>
                                     </ul>
                                 </div>
                             </div>
@@ -153,8 +174,15 @@
                                 <div class="inner-main account">
                                     <!-- top heading -->
                                     <h2>Account Information</h2>
-                                    <!-- user image -->
-                                    <img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>
+
+                                    <c:if test="${errorMessage!=null}">
+                                        <h3>${errorMessage}</h3>
+                                    </c:if>
+
+                                    <c:if test="${user.getClass().getSimpleName() == 'Artist'}">
+                                        <!-- user image -->
+                                        <img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>
+                                    </c:if>
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->
@@ -179,7 +207,7 @@
                             <li><a href="#">Contact us</a></li>
                             <li><a href="#">Privacy policy</a></li>
                             <li><a href="#">Terms of use</a></li>
-                            <li><a href="#">Faq</a></li>                    
+                            <li><a href="#">Faq</a></li>
                         </ul>
                         <ul class="payment-options">
                             <li><a href="#" class="fa fa-cc-amex"></a></li>
@@ -195,18 +223,18 @@
         </div><!-- Main Ends Here-->
 	</div>
 </div><!-- **Wrapper Ends** -->
-    
-<!-- **jQuery** -->  
+
+<!-- **jQuery** -->
 	<script src="../../resources/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="../../resources/js/jquery.isotope.min.js"></script>
     <script type="text/javascript" src="../../resources/js/jquery.isotope.perfectmasonry.min.js"></script>
 
 	<script type="text/javascript" src="../../resources/js/jquery.dropdown.js"></script>
-    
+
 	<script src="../../resources/js/jsplugins.js" type="text/javascript"></script>
-    
+
     <script src="../../resources/js/custom.js"></script>
-        
+
 </body>
 </html>

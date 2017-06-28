@@ -1,5 +1,6 @@
 package am.aca.wftartproject.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -67,6 +68,7 @@ public class Artist extends AbstractUser {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", specialization=" + specialization +
+                ", artistPhoto=" + Arrays.toString(artistPhoto) +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

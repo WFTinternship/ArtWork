@@ -118,6 +118,20 @@
                     <li class="menu-item-simple-parent">
                         <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
                     </li>
+                    <li class="menu-item-simple-parent">
+                        <a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
+                                class="fa fa-paint-brush"></span></a>
+                        <ul class="sub-menu">
+                            <%--<li><a href="../../resources/progressbar.html"> Progress-bar </a></li>
+                            <li><a href="../../resources/buttons.html"> Buttons Page </a></li>
+                            <li><a href="../../resources/tabs.html"> tabs-accordions </a></li>
+                            <li><a href="../../resources/typography.html"> typography </a></li>
+                            <li><a href="../../resources/columns.html"> columns </a></li>--%>
+                            <li><a href="${pageContext.request.contextPath}/logout">Log out </a></li>
+
+                        </ul>
+                        <a class="dt-menu-expand">+</a>
+                    </li>
 
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->
@@ -174,7 +188,7 @@
                                                   <%----%>
                                                 <%--</div>--%>
 
-                                                <form action="/additem" method="post" id="form2" enctype="multipart/form-data">
+                                                <form action="${pageContext.request.contextPath}/additem" method="post" id="form2" enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         <label for="imageUpload">Choose Avatar</label>
                                                         <input type="file" id="imageUpload" name="image"  />

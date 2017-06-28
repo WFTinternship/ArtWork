@@ -43,9 +43,10 @@ public class SignUpServlet extends HttpServlet {
 
         // obtains the upload file part in this multipart request
 
-        boolean chosenArtist = request.getParameter("artistSpec") != null;
+//        boolean chosenArtist = request.getParameter("artistSpec") != null;
+        boolean chosenBuyer = request.getParameter("chosenOption").equals("buyer");
 
-        if (!chosenArtist) {
+        if (chosenBuyer) {
             userFromRequest = new User();
             userFromRequest.setFirstName(request.getParameter("firstName"))
                     .setLastName(request.getParameter("lastName"))
@@ -55,51 +56,45 @@ public class SignUpServlet extends HttpServlet {
                     .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
         } else {
             artistFromRequest = new Artist();
-            filePart = request.getPart("image");
+            filePart = request.getPart("imageUpload");
             if (filePart != null) {
                 inputStream = filePart.getInputStream();
                 byte[] imageBytes = IOUtils.toByteArray(inputStream);
                 //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
                 artistFromRequest
-                        .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
-                        .setArtistPhoto(imageBytes)
                         .setFirstName(request.getParameter("firstName"))
                         .setLastName(request.getParameter("lastName"))
-                        .setAge(Integer.parseInt(request.getParameter("age")))
                         .setEmail(request.getParameter("email"))
-                        .setPassword(request.getParameter("password"));
+                        .setPassword(request.getParameter("password"))
+                        .setAge(Integer.parseInt(request.getParameter("age")));
+                artistFromRequest.setArtistPhoto(imageBytes)
+                        .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")));
             }
 
         }
 
         String page;
         try {
-            if (!chosenArtist) {
+            if (chosenBuyer) {
                 userService.addUser(userFromRequest);
             } else {
                 artistService.addArtist(artistFromRequest);
             }
-            page = "/index";
-
 
             HttpSession session = request.getSession(true);
-            session.setAttribute("user", !chosenArtist ? userFromRequest : artistFromRequest);
-            Cookie userEmail = new Cookie("userEmail", !chosenArtist ? userFromRequest.getEmail() : artistFromRequest.getEmail());
+            session.setAttribute("user", chosenBuyer ? userFromRequest : artistFromRequest);
+            Cookie userEmail = new Cookie("userEmail", chosenBuyer ? userFromRequest.getEmail() : artistFromRequest.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
-
-            try {
-                response.setContentType("html/text");
-                response.sendRedirect(page);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            page = "/index";
+            response.sendRedirect(page);
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage", errorMessage);
             page = "/signup";
-            request.getRequestDispatcher(page)
-                    .forward(request,response);
+            response.sendRedirect(page);
+//            request.getRequestDispatcher(page)
+//                    .forward(request, response);
         }
 
 

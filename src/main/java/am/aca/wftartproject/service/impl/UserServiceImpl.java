@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @see UserService#addUser(User)
      */
+    @Transactional
     @Override
     public void addUser(User user) {
         if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
@@ -108,6 +109,7 @@ public class UserServiceImpl implements UserService {
      * @see UserService#updateUser(Long, User)
      */
     @Override
+    @Transactional
     public void updateUser(Long id, User user) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -135,6 +137,7 @@ public class UserServiceImpl implements UserService {
      * @see UserService#deleteUser(Long)
      */
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));

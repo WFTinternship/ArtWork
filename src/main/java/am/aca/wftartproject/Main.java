@@ -1,12 +1,7 @@
 package am.aca.wftartproject;
 
-import am.aca.wftartproject.controller.CtxListener;
-import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ShoppingCardType;
-import am.aca.wftartproject.model.User;
-import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBeanType;
 
 import java.sql.SQLException;
 
@@ -17,6 +12,13 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
+        String str = "MASTERCARD";
+        ShoppingCardType shoppingCardType = ShoppingCardType.valueOf(str);
+        System.out.println(shoppingCardType);
+
+
+        Artist artist = new Artist();
+        System.out.println(artist.getClass().getSimpleName());
 
 ////        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
 ////        ItemService itemService = (ItemService)context.getBean("itemService");
@@ -75,7 +77,7 @@ public class Main {
 //            System.out.println("option.getId() + option.toString() = " + option.getId() + option.toString());
 //        }
 
-        UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
-        User user = new User("vahan","bakaryan",34,"vahan.bakaryan@inbox.com","Test123456",new ShoppingCard(ShoppingCardType.MASTERCARD));
+//        UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE, UserServiceImpl.class);
+//        User user = new User("vahan","bakaryan",34,"vahan.bakaryan@inbox.com","Test123456",new ShoppingCard(ShoppingCardType.MASTERCARD));
     }
 }

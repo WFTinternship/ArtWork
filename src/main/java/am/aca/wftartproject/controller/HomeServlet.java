@@ -6,7 +6,6 @@ import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
 import am.aca.wftartproject.util.SpringBeanType;
 
 import javax.servlet.ServletException;
@@ -20,14 +19,8 @@ public class HomeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-//        ArtistSpecializationService artistSpecialization = SpringBean.getBeanFromSpring("artistSpecializationService", ArtistSpecializationServiceImpl.class);
-//        UserService userService = SpringBean.getBeanFromSpring("userService", UserServiceImpl.class);
         UserService userService = CtxListener.getBeanFromSpring(SpringBeanType.USERSERVICE,UserServiceImpl.class);
-        ArtistService artistService = SpringBean.getBeanFromSpring("artistService", ArtistServiceImpl.class);
-
-//        if (artistSpecialization.getArtistSpecialization(1) == null) {
-//            artistSpecialization.addArtistSpecialization();
-//        }
+        ArtistService artistService = CtxListener.getBeanFromSpring(SpringBeanType.ARTISTSERVICE, ArtistServiceImpl.class);
 
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;

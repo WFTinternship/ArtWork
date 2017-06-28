@@ -8,6 +8,7 @@
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
 
+
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -67,7 +68,7 @@
     	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
 			<div id="header" class="header">
             	<div class="container menu-container">
-                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
                     
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -81,7 +82,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>            
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                         	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -92,7 +93,7 @@
                     </li>
 
                     <li class="menu-item-simple-parent">
-                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
+                        <a href="${pageContext.request.contextPath}/about">About us <span class="fa fa-user-secret"></span></a>
                     </li>
                     <li class="menu-item-simple-parent"><a href="#">Gallery <span class="fa fa-camera-retro"></span></a>
                         <ul class="sub-menu">
@@ -102,7 +103,7 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
+                    <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <ul class="sub-menu">
                             <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
                             <li><a href="#">Cart Page</a></li>
@@ -111,8 +112,22 @@
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="/contact">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="${pageContext.request.contextPath}/contact">contact <span class="fa fa-map-marker"></span></a>
                     </li>
+					<li class="menu-item-simple-parent">
+						<a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
+								class="fa fa-paint-brush"></span></a>
+						<ul class="sub-menu">
+							<%--<li><a href="../../resources/progressbar.html"> Progress-bar </a></li>
+                            <li><a href="../../resources/buttons.html"> Buttons Page </a></li>
+                            <li><a href="../../resources/tabs.html"> tabs-accordions </a></li>
+                            <li><a href="../../resources/typography.html"> typography </a></li>
+                            <li><a href="../../resources/columns.html"> columns </a></li>--%>
+							<li><a href="${pageContext.request.contextPath}/logout">Log out </a></li>
+
+						</ul>
+						<a class="dt-menu-expand">+</a>
+					</li>
 
                 </ul> <!-- Menu Ends -->
             </nav> <!-- Main-menu Ends -->            
@@ -123,7 +138,7 @@
                     <h2>Product <span>Detail</span></h2>
                     <div class="user-summary">
                     	<div class="account-links">
-                        	<a href="/account">My Account</a>
+                        	<a href="${pageContext.request.contextPath}/account">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
@@ -147,11 +162,13 @@
 									<h3>My Menu</h3>
 									<!-- list -->
 									<ul class="list-unstyled">
-										<li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
-										<li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
-										<li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-										<li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-										<li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+										<li><a href="${pageContext.request.contextPath}/account"><i class="fa fa-user"></i> My Account</a></li>
+										<li><a href="${pageContext.request.contextPath}/edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
+										<li><a href="${pageContext.request.contextPath}/purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
+										<c:if test="${user.getClass().getSimpleName() == 'Artist'}">
+											<li><a href="${pageContext.request.contextPath}/my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+											<li><a href="${pageContext.request.contextPath}/additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+										</c:if>
 									</ul>
 								</div>
 							</div>
@@ -165,44 +182,52 @@
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
 												<!-- edit personal details -->
-												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
+												<form role="form" action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group" >
 														<label for="exampleInput1">First Name</label>
-														<input type="text" name="firstname" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+														<input type="text" name="firstname" class="form-control" id="exampleInput1" value="${user.firstName}">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput111">Last Name</label>
-														<input type="text" name="lastname" class="form-control" id="exampleInput111" placeholder="Brennan Doe">
+														<input type="text" name="lastname" class="form-control" id="exampleInput111" value="${user.lastName}">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput4">Age</label>
-														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="26">
+														<input type="text" name="age" class="form-control" id="exampleInput4" value="${user.age}">
 													</div>
 
-													<div class="form-group">
-														<select class="shop-dropdown" name="specialization">
-															<option value="-1" selected>Choose artist specialization</option>
-															<c:forEach items="${artistSpecTypes}" var="element">
-																<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>
-															</c:forEach>
+													<input type="hidden" id="thisField1" name="editBlock" value="persInfo">
 
-														</select>
-													</div>
+													<c:if test="${user.getClass().getSimpleName() == 'Artist'}">
+														<div class="form-group">
+															<select class="shop-dropdown" name="specialization">
+																<option value="${user.specialization}" selected class="fa fa-eyedropper">${user.specialization}</option>
+																<c:forEach items="${artistSpecTypes}" var="element">
+																	<option value="${element.type}" class="fa fa-eyedropper">${element.type}</option>
+																</c:forEach>
+															</select>
+														</div>
+													</c:if>
 
 													<button type="submit" class="btn btn-warning">Update Personal Details</button>
 												</form>
+
 											</div>
 											<div class="col-md-6 col-sm-6">
-												<div class="form-group">
-													<form action="/edit-profile" method="post" enctype="multipart/form-data">
-														<label for="imageUpload">Choose Avatar</label>
-														<input type="file" id="imageUpload" name="image"  />
-														<img src="" id="imagePreview" alt="" width="200px"/><br/>
-														<button type="submit" class="btn btn-warning">Apply</button>
-													</form>
-												</div>
+												<c:if test="${user.getClass().getSimpleName() == 'Artist'}">
+													<div class="form-group">
+														<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
+															<label for="imageUpload">Choose Avatar</label>
+															<input type="file" id="imageUpload" name="image"  />
+															<img src="" id="imagePreview" alt="" width="200px"/><br/>
+															<button type="submit" class="btn btn-warning">Apply</button>
+
+															<input type="hidden" id="thisField2" name="editBlock" value="avatar">
+														</form>
+													</div>
+												</c:if>
 												<!-- Password details -->
-												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
+												<form role="form" action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
 														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password">
@@ -215,6 +240,7 @@
 														<label for="exampleInput33">Re - Type Password</label>
 														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password">
 													</div>
+													<input type="hidden" id="thisField3" name="editBlock" value="password">
 													<button type="submit" class="btn btn-warning">Update Password</button>
 												</form>
 											</div>

@@ -35,6 +35,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @see ArtistService#addArtist(Artist)
      */
     @Override
+    @Transactional
     public void addArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
             LOGGER.error(String.format("Artist is not valid: %s", artist));
@@ -106,6 +107,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @see ArtistService#updateArtist(Long, Artist)
      */
     @Override
+    @Transactional
     public void updateArtist(Long id, Artist artist) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -131,6 +133,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @see ArtistService#deleteArtist(Long)
      */
     @Override
+    @Transactional
     public void deleteArtist(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
