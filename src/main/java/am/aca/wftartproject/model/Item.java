@@ -1,6 +1,6 @@
 package am.aca.wftartproject.model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
@@ -22,7 +22,7 @@ public class Item {
 
     private Boolean status;
     private ItemType itemType;
-    private Timestamp additionDate;
+    private Date additionDate;
 
 
 
@@ -98,20 +98,19 @@ public class Item {
         return this;
     }
 
-    public Timestamp getAdditionDate() {
+    public Date getAdditionDate() {
         return additionDate;
     }
 
-    public Item setAdditionDate(Timestamp additionDate) {
+    public void setAdditionDate(Date additionDate) {
         this.additionDate = additionDate;
-        return this;
     }
 
     public Item() {
 
     }
 
-    public Item(String title, String description, String photoURL, Double price, Long artistId, Boolean status, ItemType itemType, Timestamp additionDate) {
+    public Item(String title, String description, String photoURL, Double price, Long artistId, Boolean status, ItemType itemType, Date additionDate) {
         this.title = title;
         this.description = description;
         this.photoURL = photoURL;
@@ -144,15 +143,41 @@ public class Item {
         return
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL) &&
-                artistId != null &&
-                artistId > 0 &&
+                /*artistId != null &&
+                artistId > 0 &&*/
                 price != 0 &&
                 itemType != null ;
         //        && additionDate != null;
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Item item = (Item) o;
 
+        if (!getId().equals(item.getId())) return false;
+        if (!getTitle().equals(item.getTitle())) return false;
+        if (!getDescription().equals(item.getDescription())) return false;
+        if (!getPhotoURL().equals(item.getPhotoURL())) return false;
+        if (!getPrice().equals(item.getPrice())) return false;
+        if (!getArtistId().equals(item.getArtistId())) return false;
+        if (!getStatus().equals(item.getStatus())) return false;
+        if (getItemType() != item.getItemType()) return false;
+        return getAdditionDate().getDate() / 100000000 == item.getAdditionDate().getDate() / 100000000;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getTitle().hashCode();
+        result = 31 * result + getPrice().hashCode();
+        result = 31 * result + getArtistId().hashCode();
+        result = 31 * result + getStatus().hashCode();
+        result = 31 * result + getItemType().hashCode();
+        return result;
+    }
 
 }

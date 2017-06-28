@@ -1,7 +1,6 @@
 package am.aca.wftartproject.model;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by ASUS on 27-May-17
@@ -10,7 +9,7 @@ public class PurchaseHistory {
 
     private Long userId;
     private Long itemId;
-    private Timestamp purchaseDate;
+    private Date purchaseDate;
 
     public Long getUserId() {
         return userId;
@@ -34,7 +33,7 @@ public class PurchaseHistory {
         return purchaseDate;
     }
 
-    public PurchaseHistory setPurchaseDate(Timestamp purchaseDate) {
+    public PurchaseHistory setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
         return this;
     }
@@ -42,7 +41,7 @@ public class PurchaseHistory {
     public PurchaseHistory() {
     }
 
-    public PurchaseHistory(Long userId, Long itemId, Timestamp purchaseDate) {
+    public PurchaseHistory(Long userId, Long itemId, Date purchaseDate) {
         this.userId = userId;
         this.itemId = itemId;
         this.purchaseDate = purchaseDate;

@@ -15,7 +15,7 @@ public class PurchaseHistoryMapper implements RowMapper<PurchaseHistory>{
         PurchaseHistory purchasehistory = new PurchaseHistory();
         purchasehistory.setItemId(resultSet.getLong("item_id"))
                 .setUserId(resultSet.getLong("user_id"))
-                .setPurchaseDate(resultSet.getTimestamp("purchase_date"));
+                .setPurchaseDate(resultSet.getDate("purchase_date"));
         return purchasehistory;
     }
 }

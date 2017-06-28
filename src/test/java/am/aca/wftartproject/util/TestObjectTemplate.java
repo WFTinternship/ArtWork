@@ -2,6 +2,7 @@ package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Random;
@@ -42,14 +43,14 @@ public class TestObjectTemplate {
                 .setPhotoURL("../../resources/images/product/images (1).jpg")
                 .setPrice(getRandomNumber() + 1.1)
                 .setStatus(false)
-                .setAdditionDate(getTimestamp());
+                .setAdditionDate(getDate());
         return item;
     }
 
     public static ShoppingCard createTestShoppingCard() {
         ShoppingCard shoppingCard = new ShoppingCard();
 
-        shoppingCard.setBalance(getRandomNumber() + 100)
+        shoppingCard.setBalance(getRandomNumber() + 100.0)
         .setShoppingCardType(ShoppingCardType.PAYPAL);
 
         return shoppingCard;
@@ -60,7 +61,7 @@ public class TestObjectTemplate {
 
         purchaseHistory.setItemId(getRandomNumber() + 1L)
                 .setUserId(getRandomNumber() + 1L)
-                .setPurchaseDate(getTimestamp());
+                .setPurchaseDate(getDate());
 
         return purchaseHistory;
     }
@@ -70,8 +71,7 @@ public class TestObjectTemplate {
         return rand.nextInt(100000) + 1;
     }
 
-    public static Timestamp getTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        return new Timestamp(cal.getTimeInMillis());
+    public static Date getDate() {
+        return new Date(System.currentTimeMillis());
     }
 }

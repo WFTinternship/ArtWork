@@ -144,7 +144,9 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            artistDao.deleteArtist(id);
+            if (!artistDao.deleteArtist(id)){
+                throw new DAOException("Failed to delete artist");
+            }
         } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

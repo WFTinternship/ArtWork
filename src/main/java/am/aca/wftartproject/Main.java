@@ -1,3 +1,4 @@
+/*
 package am.aca.wftartproject;
 
 import am.aca.wftartproject.model.ArtistSpecialization;
@@ -5,9 +6,11 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import java.sql.SQLException;
 import java.util.concurrent.ThreadLocalRandom;
 
+*/
 /**
  * Created by ASUS on 24-May-17
- */
+ *//*
+
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -32,3 +35,4 @@ public class Main {
 
     }
 }
+*/

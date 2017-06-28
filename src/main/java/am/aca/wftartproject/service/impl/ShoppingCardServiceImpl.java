@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Created by ASUS on 03-Jun-17
  */
-@Transactional(readOnly = true)
+@Transactional
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);

@@ -53,7 +53,6 @@ public interface ItemService {
      */
     List<Item> getItemsByType(String itemType);
 
-
     /**
      * Gets all items for the given price range.
      *
@@ -73,8 +72,6 @@ public interface ItemService {
      */
     List<Item> getArtistItems(Long artistId,Long itemId, Long limit);
 
-
-    /**
      * Updates Item price by id
      *
      * @param id

@@ -421,12 +421,11 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Create test id
         Long id = 5L;
 
+        // Setup mocks
+        doReturn(true).when(artistDaoMock).deleteArtist(id);
+
         // Test method
         artistService.deleteArtist(id);
-
-        // check invocation
-        verify(artistDaoMock).deleteArtist(id);
-
     }
 
 }

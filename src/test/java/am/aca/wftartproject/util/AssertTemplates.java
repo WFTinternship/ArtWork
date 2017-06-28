@@ -34,7 +34,7 @@ public class AssertTemplates {
         assertEquals(expectedItem.getTitle(), actualItem.getTitle());
         assertEquals(expectedItem.getPhotoURL(), actualItem.getPhotoURL());
         assertEquals(expectedItem.getPrice(), actualItem.getPrice());
-        assertEquals(expectedItem.getAdditionDate().getTime() / 100000, actualItem.getAdditionDate().getTime() / 100000);
+        assertEquals(expectedItem.getAdditionDate().getTime() / 100000000, actualItem.getAdditionDate().getTime() / 100000000);
     }
 
     public static void assertEqualShoppingCards(ShoppingCard expectedShoppingCard, ShoppingCard actualShoppingCard) {
@@ -46,6 +46,6 @@ public class AssertTemplates {
     public static void assertEqualPurchaseHistory(PurchaseHistory expectedPurchaseHistory, PurchaseHistory actualPurchaseHistory) {
         assertEquals(expectedPurchaseHistory.getItemId(), actualPurchaseHistory.getItemId());
         assertEquals(expectedPurchaseHistory.getUserId(), actualPurchaseHistory.getUserId());
-        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 100000, actualPurchaseHistory.getPurchaseDate().getTime() / 100000);
+        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 1000_000_000, actualPurchaseHistory.getPurchaseDate().getTime() / 1000000000);
     }
 }

@@ -198,6 +198,13 @@
 					</select>
 				</div>
 
+				<br/>
+				<div class="half-width">
+					<input type="file" name="imageUpload" id="imageUpload" class="hide"/>
+					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
+					<img src="" id="imagePreview" alt="" width="200px"/>
+				</div>
+
 				<fieldset>
 					<legend>Payment Method</legend>
 

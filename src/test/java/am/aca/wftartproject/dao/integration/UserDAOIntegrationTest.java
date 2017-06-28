@@ -6,20 +6,13 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.AssertTemplates;
 import am.aca.wftartproject.util.TestObjectTemplate;
-import am.aca.wftartproject.util.dbconnection.ConnectionFactory;
-import am.aca.wftartproject.util.dbconnection.ConnectionModel;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import java.sql.SQLException;
-
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
@@ -28,10 +21,8 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 5/30/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:springconfig/daointegration/spring-dao-integration.xml",
-        "classpath:springconfig/database/spring-database.xml"})
-public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
+
+public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
@@ -43,7 +34,8 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
     }
 
     /**
-     * Creates connection and user for tests
+     * Creates user for tests
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -61,11 +53,11 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Deletes all users created during the tests
+     *
      * @throws SQLException
      */
     @After
     public void tearDown() throws SQLException {
-
         // delete inserted test users from db
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());
@@ -80,14 +72,13 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
         }
     }
 
-    //region(TEST_CASE)
+    // region<TEST CASE>
 
     /**
      * @see UserDao#addUser(User)
      */
     @Test
     public void addUser_Success() {
-
         // test user already inserted in setup, get record by userId
         testUser.setId(null);
 
@@ -112,7 +103,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void addUser_Failure() {
-
         // test user already inserted in setup, get record by user
         testUser.setLastName(null);
         userDao.addUser(testUser);
@@ -135,14 +125,18 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
         assertEqualUsers(testUser, findResult);
     }
 
-
     /**
      * @see UserDao#findUser(Long)
      */
     @Test
     public void findUser_Failure() {
+        // add user into DB
         userDao.addUser(testUser);
+
+        // try to find user with negative id
         User findResult = userDao.findUser(-7L);
+
+        // check result fo null
         assertNull(findResult);
     }
 
@@ -150,7 +144,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      * @see UserDao#findUser(String)
      */
     @Test
-    public void findUserByEmail_Success(){
+    public void findUserByEmail_Success() {
         // add user into DB
         userDao.addUser(testUser);
 
@@ -165,7 +159,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      * @see UserDao#findUser(String)
      */
     @Test
-    public void findUserByEmail_Failure(){
+    public void findUserByEmail_Failure() {
         // add user into DB
         userDao.addUser(testUser);
 
@@ -181,7 +175,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void updateUser_Success() {
-
         // add user into DB and check for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -204,7 +197,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void updateUser_Failure() {
-
         // add user into DB and check it for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -230,7 +222,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void deleteUser_Success() {
-
         // add user into DB and check it for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -245,7 +236,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void deleteUser_Failure() {
-
         // add user into DB and check it fro not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
@@ -253,5 +243,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest{
         // try to delete user with non-existent id
         assertFalse(userDao.deleteUser(4546465465465L));
     }
-    //endregion
+
+    // endregion
 }

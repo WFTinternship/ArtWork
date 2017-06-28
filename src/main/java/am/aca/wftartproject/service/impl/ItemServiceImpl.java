@@ -1,7 +1,6 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
@@ -23,7 +22,6 @@ public class ItemServiceImpl implements ItemService {
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
     private ItemDao itemDao;
-    private PurchaseHistoryDao purchaseHistoryDao;
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
@@ -238,7 +236,9 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            itemDao.deleteItem(id);
+            if (!itemDao.deleteItem(id)){
+                throw new DAOException("Failed to delete item");
+            }
         } catch (DAOException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));

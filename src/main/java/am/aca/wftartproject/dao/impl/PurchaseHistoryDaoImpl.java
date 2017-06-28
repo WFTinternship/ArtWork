@@ -205,7 +205,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         Boolean status = false;
         try {
-            String query = "DELETE FROM purchase_history WHERE user_id=? AND item_id = ?";
+            String query = "DELETE FROM purchase_history WHERE user_id = ? AND item_id = ?";
 
             int rowsAffected = jdbcTemplate.update(query, userId, itemId);
             if (rowsAffected <= 0) {
