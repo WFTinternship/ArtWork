@@ -33,6 +33,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param shoppingCard
      */
     @Override
+    @Transactional
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
         if (userId == null || userId < 0){
             LOGGER.error(String.format("UserId is not valid: %s", userId));
@@ -79,6 +80,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param shoppingCard
      */
     @Override
+    @Transactional
     public void updateShoppingCard(Long id, ShoppingCard shoppingCard) {
         if (id == null || id < 0){
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -105,6 +107,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param itemPrice
      * @param buyerId
      */
+    @Override
+    @Transactional
     public void debitBalanceForItemBuying(Long buyerId,Double itemPrice){
         if(itemPrice== null || itemPrice<0 || buyerId==null||buyerId<0){
             LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId,itemPrice));
@@ -126,6 +130,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param id
      */
     @Override
+    @Transactional
     public void deleteShoppingCard(Long id) {
         if (id == null || id < 0){
             LOGGER.error(String.format("Id is not valid: %s", id));

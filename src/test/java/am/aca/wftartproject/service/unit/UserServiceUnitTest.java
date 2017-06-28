@@ -1,12 +1,14 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.service.BaseUnitTest;
+import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
@@ -18,10 +20,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
+import static junit.framework.TestCase.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -40,6 +41,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private UserDaoImpl userDaoMock;
+
+    @Mock
+    private ShoppingCardDao shoppingCardDao;
 
     @Before
     public void beforeTest() {
@@ -140,11 +144,13 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Create argument capture
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
 
-        // Create testUser
+        // Create testUser and testShoppingCard
         testUser = createTestUser();
+        ShoppingCard shoppingCard = createTestShoppingCard();
 
         // Setup mocks
         doNothing().when(userDaoMock).addUser(argument.capture());
+        doNothing().when(shoppingCardDao).addShoppingCard(testUser.getId(),shoppingCard);
 
         // Test method
         userService.addUser(testUser);

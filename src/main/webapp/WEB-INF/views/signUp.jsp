@@ -6,6 +6,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
+<c:set var="errorMessage" value='<%=session.getAttribute("errorMessage")%>'/>
 
 
 <!doctype html>
@@ -27,16 +28,21 @@
 <body>
 <header class="cd-main-header">
     <h1>Sign Up</h1>
+    <c:if test="${errorMessage!=null}">
+        <h3>${errorMessage}</h3>
+    </c:if>
 </header>
 
 <ul class="cd-pricing">
     <li>
         <header class="cd-pricing-header">
             <h2>Buyer</h2>
-
         </header> <!-- .cd-pricing-header -->
 
         <div class="cd-pricing-features">
+            <c:if test="${errorMessage==null}">
+                <h3>${errorMessage}</h3>
+            </c:if>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Fusce ut ante quis sem pretium viverra.
             Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.

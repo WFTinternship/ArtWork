@@ -33,6 +33,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @param purchaseHistory
      */
     @Override
+    @Transactional
     public void addPurchase(PurchaseHistory purchaseHistory) {
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
             LOGGER.error(String.format("PurchaseHistory is not valid: %s", purchaseHistory));
@@ -105,6 +106,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @param itemId
      */
     @Override
+    @Transactional
     public void deletePurchase(Long userId, Long itemId) {
         if (userId == null || userId < 0){
             LOGGER.error(String.format("UserId is not valid: %s", userId));

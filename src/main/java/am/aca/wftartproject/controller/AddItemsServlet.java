@@ -1,6 +1,5 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
@@ -12,7 +11,6 @@ import am.aca.wftartproject.util.SpringBeanType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
@@ -31,72 +29,65 @@ public class AddItemsServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("itemTypes", ItemType.values());
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/additem.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/additem.jsp")
+                .forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        HttpSession session = request.getSession();
+
         Item item = new Item();
+        String responsePage = null;
         String filePath;
         String fileName;
         Part filePart;
         InputStream inputStream;
-        Artist artist;
-        Artist findArtist;
-        HttpSession session = request.getSession();
-        response.setContentType("text/html");
+        Artist artistFromRequest;
 
-        if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
-            artist = (Artist) session.getAttribute("user");
-            findArtist = artistService.findArtist(artist.getId());
-            if (findArtist != null) {
-                request.setAttribute("user", findArtist);
+
+        try {
+            if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
+                artistFromRequest = (Artist) session.getAttribute("user");
                 item.setTitle(request.getParameter("title"))
                         .setDescription(request.getParameter("description"))
                         .setItemType(ItemType.valueOf(request.getParameter("type")))
                         .setPrice(Double.parseDouble(request.getParameter("price")))
-                        .setArtistId(artist.getId())
+                        .setArtistId(artistFromRequest.getId())
                         .setStatus(false);
                 if (request.getPart("image") != null) {
                     filePart = request.getPart("image");
                     if (filePart != null) {
                         inputStream = filePart.getInputStream();
                         byte[] imageBytes = IOUtils.toByteArray(inputStream);
-                        String uploadPath = "resources/images/artists/" + artist.getId();
-                        String realPath = getServletContext().getRealPath("resources/images/artists/" + artist.getId());
-                        File uploadDir = new File(realPath);
+                        String uploadPath = "../../resources/images/product/" + artistFromRequest.getId();
+                        String realPath = getServletContext().getRealPath("resources/images/product/" + artistFromRequest.getId());
+                        File uploadDir = new File(uploadPath);
                         if (!uploadDir.exists()) {
                             uploadDir.mkdir();
                         }
                         fileName = new File(item.getTitle()).getName();
                         filePath = realPath + File.separator + fileName + ".jpg";
                         FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                        item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
-
+                        item.setPhotoURL(uploadPath + "/" + fileName + ".jpg");
                     }
                 }
 
-                try {
-                    itemService.addItem(artist.getId(), item);
-                } catch (ServiceException e) {
-                    String errorMessage = "The entered info is not correct";
-                    request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/signup")
-//                    .forward(request,response);
-                }
-
-                try {
-                    response.setContentType("html/text");
-                    response.sendRedirect("/additem");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                itemService.addItem(artistFromRequest.getId(), item);
+                responsePage = "/my-works";
 
             }
-
+        } catch (RuntimeException e) {
+            String errorMessage = "The entered info is not correct";
+            session.setAttribute("errorMessage", errorMessage);
+            responsePage = "/account";
         }
 
-
+        try {
+            response.setContentType("html/text");
+            response.sendRedirect(responsePage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

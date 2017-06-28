@@ -5,8 +5,9 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
+
+
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -202,11 +203,11 @@
                                                         <label for="exampleInput2">Description</label>
                                                         <input type="text" name="description" class="form-control" id="exampleInput2" placeholder=" write descritpion ">
                                                     </div>
-                                                    <label for="exampleInput171">Art Type</label>
+                                                    <label for="exampleInput171">Choose Art Type</label>
                                                     <select class="shop-dropdown" name="type" id="exampleInput171">
-                                                        <option value="-1" selected>Choose art type</option>
+                                                        <%--<option value="-1" selected>Choose art type</option>--%>
                                                         <c:forEach items="${itemTypes}" var="element">
-                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-flask">${element.type}</option>
+                                                            <option value="${element.type}" class="fa fa-flask">${element.type}</option>
                                                         </c:forEach>
                                                     </select>
                                                     <div class="form-group">

@@ -75,6 +75,14 @@ public interface ItemService {
 
 
     /**
+     * Gets available items for sell by artistID.
+     * @param artistId
+     * @return
+     */
+    List<Item> getAvailableItemsForGivenArtist(Long artistId);
+
+
+    /**
      * Updates Item price by id
      *
      * @param id

@@ -72,8 +72,16 @@ public interface ItemDao {
      * @param limit
      * @return
      */
-    List<Item> getArtistItems(Long artistId,Long itemId, Long limit);
+    List<Item> getArtistItems(Long artistId, Long itemId, Long limit);
 
+
+    /**
+     * Gets available items for sell by artistID.
+     *
+     * @param artistId
+     * @return
+     */
+    List<Item> getAvailableItemsForGivenArtist(Long artistId);
 
     /**
      * Updates Item price by id

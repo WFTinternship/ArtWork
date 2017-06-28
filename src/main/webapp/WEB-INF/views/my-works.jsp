@@ -70,7 +70,7 @@
         <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
             <div id="header" class="header">
                 <div class="container menu-container">
-                    <a class="logo" href="../../resources/index.html"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
 
                     <a href="#" class="menu-trigger">
                         <span></span>
@@ -84,7 +84,7 @@
                     <span class="dt-menu-toggle-icon"></span>
                 </div>
                 <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="../../resources/index.html">Home <span class="fa fa-home"></span></a>
+                    <li class="menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
                         <ul class="sub-menu">
                             <li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
                             <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
@@ -105,16 +105,16 @@
                         </ul>
                         <a class="dt-menu-expand">+</a>
                     </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="../../resources/shop.html">Shop <span class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
-                            <li><a href="../../resources/shop-cart.html">Cart Page</a></li>
-                            <li><a href="../../resources/shop-checkout.html">Checkout Page</a></li>
-                        </ul>
+                    <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/shop">Shop <span class="fa fa-cart-plus"></span></a>
+                        <%--<ul class="sub-menu">--%>
+                            <%--<li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>--%>
+                            <%--<li><a href="../../resources/shop-cart.html">Cart Page</a></li>--%>
+                            <%--<li><a href="../../resources/shop-checkout.html">Checkout Page</a></li>--%>
+                        <%--</ul>--%>
                         <a class="dt-menu-expand">+</a>
                     </li>
                     <li class="menu-item-simple-parent">
-                        <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
+                        <a href="${pageContext.request.contextPath}/contact">contact <span class="fa fa-map-marker"></span></a>
                     </li>
                     <li class="menu-item-simple-parent">
                         <a href="<%--../../resources/progressbar.html--%>">Account<%--shortcodes--%> <span
@@ -189,12 +189,12 @@
                                                         <div class="product-title">
                                                             <a href="#" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Edit </a>
                                                             <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Delete </a>
-                                                            <p>You don't take a photograph, Just make it</p>
+                                                            <%--<p>You don't take a photograph, Just make it</p>--%>
                                                         </div> <!-- **product-title - Ends** -->
                                                     </div> <!-- **product-container - Ends** -->
                                                     <!-- **product-details - Starts** -->
                                                     <div class="product-details">
-                                                        <h5> <a href="shop-detail"> ${itemElement.title} </a> </h5>
+                                                        <h5> <a href="${pageContext.request.contextPath}/shop-detail"> ${itemElement.title} </a> </h5>
                                                         <span class="amount"> $${itemElement.price} </span>
                                                     </div> <!-- **product-details - Ends** -->
                                                 </li><!-- **product-wrapper - Ends** -->

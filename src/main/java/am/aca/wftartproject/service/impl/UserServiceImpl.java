@@ -1,5 +1,6 @@
 package am.aca.wftartproject.service.impl;
 
+import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
@@ -8,6 +9,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 
+    @Autowired
+    private ShoppingCardDao shoppingCardDao;
+
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
@@ -34,8 +39,8 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @see UserService#addUser(User)
      */
-    @Transactional
     @Override
+    @Transactional
     public void addUser(User user) {
         if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
             String error = "Invalid user";
@@ -53,6 +58,14 @@ public class UserServiceImpl implements UserService {
             userDao.addUser(user);
         } catch (DAOException e) {
             String error = "Failed to add User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        try {
+            shoppingCardDao.addShoppingCard(user.getId(),user.getShoppingCard());
+        } catch (DAOException e) {
+            String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }

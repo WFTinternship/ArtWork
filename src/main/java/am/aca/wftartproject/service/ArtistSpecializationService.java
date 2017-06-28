@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 public interface ArtistSpecializationService {
 
     /**
-     * Adds artist specializations into springconfig.database
+     * Adds artist specializations into database
      */
     void addArtistSpecialization();
 

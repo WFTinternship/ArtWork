@@ -48,6 +48,7 @@ public class ItemServiceImpl implements ItemService {
      * @see ItemService#addItem(Long, Item)
      */
     @Override
+    @Transactional
     public void addItem(Long artistID, Item item) {
 
         if (artistID == null || artistID < 0) {
@@ -206,6 +207,26 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    /**
+     * @see ItemService#getArtistItems(Long, Long, Long)
+     * @param artistId
+     * @return
+     */
+    @Override
+    public List<Item> getAvailableItemsForGivenArtist(Long artistId){
+        if (artistId == null || artistId < 0) {
+            LOGGER.error(String.format("ArtistId is not valid: %s", artistId));
+            throw new InvalidEntryException("Invalid artistId");
+        }
+
+        try {
+            return itemDao.getAvailableItemsForGivenArtist(artistId);
+        } catch (DAOException e) {
+            String error = "Failed to get available items for the given artistId: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
 
     /**
      * @param id
@@ -213,6 +234,7 @@ public class ItemServiceImpl implements ItemService {
      * @see ItemService#updateItem(Long, Item)
      */
     @Override
+    @Transactional
     public void updateItem(Long id, Item item) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -238,6 +260,7 @@ public class ItemServiceImpl implements ItemService {
      * @see ItemService#deleteItem(Long)
      */
     @Override
+    @Transactional
     public void deleteItem(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -259,6 +282,7 @@ public class ItemServiceImpl implements ItemService {
      * @param buyerId
      * @see ItemService#itemBuying(Item, Long)
      */
+    @Override
     @Transactional
     public void itemBuying(Item item, Long buyerId) {
         if (buyerId == null || buyerId < 0) {

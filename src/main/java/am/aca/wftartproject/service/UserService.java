@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.User;
 public interface UserService {
 
     /**
-     * Adds User to the springconfig.database
+     * Adds User and ShoppingCard to the database
      *
      * @param user
      */

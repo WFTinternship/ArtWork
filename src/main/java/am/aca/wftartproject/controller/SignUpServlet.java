@@ -26,6 +26,7 @@ public class SignUpServlet extends HttpServlet {
         request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
         request.getRequestDispatcher("/WEB-INF/views/signUp.jsp")
                 .forward(request, response);
+        request.getSession().removeAttribute("errorMessage");
     }
 
     @Override
@@ -39,42 +40,39 @@ public class SignUpServlet extends HttpServlet {
         Artist artistFromRequest = null;
         InputStream inputStream; // input stream of the upload file
         Part filePart;
+        String responsePage;
 
-
-        // obtains the upload file part in this multipart request
-
-//        boolean chosenArtist = request.getParameter("artistSpec") != null;
         boolean chosenBuyer = request.getParameter("chosenOption").equals("buyer");
 
-        if (chosenBuyer) {
-            userFromRequest = new User();
-            userFromRequest.setFirstName(request.getParameter("firstName"))
-                    .setLastName(request.getParameter("lastName"))
-                    .setAge(Integer.parseInt(request.getParameter("age")))
-                    .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password"))
-                    .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
-        } else {
-            artistFromRequest = new Artist();
-            filePart = request.getPart("imageUpload");
-            if (filePart != null) {
-                inputStream = filePart.getInputStream();
-                byte[] imageBytes = IOUtils.toByteArray(inputStream);
-                //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
-                artistFromRequest
-                        .setFirstName(request.getParameter("firstName"))
+        // obtains the upload file part in this multipart request
+        try {
+            if (chosenBuyer) {
+                userFromRequest = new User();
+                userFromRequest.setFirstName(request.getParameter("firstName"))
                         .setLastName(request.getParameter("lastName"))
+                        .setAge(Integer.parseInt(request.getParameter("age")))
                         .setEmail(request.getParameter("email"))
                         .setPassword(request.getParameter("password"))
-                        .setAge(Integer.parseInt(request.getParameter("age")));
-                artistFromRequest.setArtistPhoto(imageBytes)
-                        .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")));
+                        .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
+            } else {
+                artistFromRequest = new Artist();
+                filePart = request.getPart("imageUpload");
+                if (filePart != null) {
+                    inputStream = filePart.getInputStream();
+                    byte[] imageBytes = IOUtils.toByteArray(inputStream);
+                    //  FileUtils.writeByteArrayToFile(new File("pathname"), imageBytes);
+                    artistFromRequest
+                            .setFirstName(request.getParameter("firstName"))
+                            .setLastName(request.getParameter("lastName"))
+                            .setEmail(request.getParameter("email"))
+                            .setPassword(request.getParameter("password"))
+                            .setAge(Integer.parseInt(request.getParameter("age")))
+                            .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
+                    artistFromRequest.setArtistPhoto(imageBytes)
+                            .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")));
+                }
             }
 
-        }
-
-        String page;
-        try {
             if (chosenBuyer) {
                 userService.addUser(userFromRequest);
             } else {
@@ -86,17 +84,13 @@ public class SignUpServlet extends HttpServlet {
             Cookie userEmail = new Cookie("userEmail", chosenBuyer ? userFromRequest.getEmail() : artistFromRequest.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
-            page = "/index";
-            response.sendRedirect(page);
+            responsePage = "/index";
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
-            request.setAttribute("errorMessage", errorMessage);
-            page = "/signup";
-            response.sendRedirect(page);
-//            request.getRequestDispatcher(page)
-//                    .forward(request, response);
+            request.getSession().setAttribute("errorMessage", errorMessage);
+            responsePage = "/signup";
         }
-
+        response.sendRedirect(responsePage);
 
 
 

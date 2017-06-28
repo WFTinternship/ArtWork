@@ -268,6 +268,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     }
 
 
+
+    @Override
+    public List<Item> getAvailableItemsForGivenArtist(Long artistId) {
+        return null;
+    }
+
+
     /**
      * @param id
      * @param item

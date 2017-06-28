@@ -8,14 +8,14 @@ import am.aca.wftartproject.model.Artist;
 public interface ArtistService {
 
     /**
-     * Adds artist into the springconfig.database
+     * Adds artist and ShoppingCard into the database
      *
      * @param artist
      */
     void addArtist(Artist artist);
 
     /**
-     * Finds artist from springconfig.database by id
+     * Finds artist from database by id
      *
      * @param id
      * @return
@@ -23,7 +23,7 @@ public interface ArtistService {
     Artist findArtist(Long id);
 
     /**
-     * Finds artist from springconfig.database by email
+     * Finds artist from database by email
      *
      * @param email
      * @return
@@ -31,7 +31,7 @@ public interface ArtistService {
     Artist findArtist(String email);
 
     /**
-     * Updates artist info in springconfig.database
+     * Updates artist info in database
      *
      * @param id
      * @param artist
@@ -39,7 +39,7 @@ public interface ArtistService {
     void updateArtist(Long id, Artist artist);
 
     /**
-     * Deletes artist from springconfig.database
+     * Deletes artist from database
      *
      * @param id
      */
