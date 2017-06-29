@@ -89,7 +89,8 @@ public abstract class AbstractUser {
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password);
+                !isEmptyString(password)&&
+                password.equals(repeatPassword);
 //                &&
 //                shoppingCard.isValidShoppingCard();
     }

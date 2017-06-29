@@ -6,7 +6,7 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
+<c:set var="artistSpecTypes" value='<%=request.getSession().getAttribute("artistSpecTypes")%>'/>
 <c:set var="errormessage" value='<%=request.getAttribute("errorMessage")%>'/>
 
 
@@ -32,7 +32,7 @@
 <c:choose>
 	<c:when test="${errormessage!=null}">
 		<header class="cd-main-header">
-			<h1>${errormessage}</h1>
+			<h2 style="color:red;">${errorMessage}</h2>
 		</header>
 	</c:when>
 	<c:otherwise>

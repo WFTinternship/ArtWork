@@ -29,6 +29,7 @@ public class SignUpController {
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
         ModelAndView mav = new ModelAndView("signUp");
+        request.getSession().setAttribute("artistSpecTypes",ArtistSpecialization.values());
         mav.addObject("user", new User());
         mav.addObject("artist", new Artist());
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
@@ -43,15 +44,14 @@ public class SignUpController {
             user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
             userService.addUser(user);
             page = "index";
+            request.setAttribute("message","Hi " + user.getFirstName());
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             Cookie userEmail = new Cookie("userEmail", user.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct, Please try again";
-            System.out.println(errorMessage);
-            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
         return new ModelAndView(page, "user", user);
@@ -62,10 +62,10 @@ public class SignUpController {
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         Artist artistFromRequest = new Artist();
+        String message;
         artistFromRequest.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
-        if (!image.isEmpty()) {
+        if (!image.isEmpty() && request.getParameter("artistSpec")!=null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
             byte[] imageBytes = image.getBytes();
-
             artistFromRequest
                     .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
                     .setArtistPhoto(imageBytes)
@@ -75,20 +75,26 @@ public class SignUpController {
                     .setEmail(request.getParameter("email"))
                     .setPassword(request.getParameter("password"));
         }
+        else{
+            message = "No chages, empty fields or Incorrect Data";
+            request.setAttribute("errorMessage",message);
+            request.setAttribute("user",artistFromRequest);
+            return new ModelAndView("signUp");
+        }
 
         String page = "";
         try {
 
             artistService.addArtist(artistFromRequest);
             page = "/index";
+            request.setAttribute("message","Hi " + artistFromRequest.getFirstName());
             HttpSession session = request.getSession(true);
             session.setAttribute("user", artistFromRequest);
             Cookie userEmail = new Cookie("userEmail", artistFromRequest.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
-            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
 

@@ -99,6 +99,8 @@ public class AccountController {
     @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST)
     public ModelAndView editProfileProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         HttpSession session = request.getSession();
+        String message ="";
+        int counter = 0;
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
@@ -106,27 +108,37 @@ public class AccountController {
                 request.setAttribute("user", finduser);
                 if (user != null) {
                     response.setContentType("text/html");
-                    if (request.getParameter("firstname") != null) {
+                    if (request.getParameter("firstname") != null && !request.getParameter("firstname").isEmpty()) {
                         finduser.setFirstName(request.getParameter("firstname"));
+                        counter++;
                     }
-                    if (request.getParameter("lastname") != null) {
+                    if ( request.getParameter("lastname") != null && !request.getParameter("lastname").isEmpty()) {
                         finduser.setLastName(request.getParameter("lasstname"));
+                        counter++;
                     }
-                    if (request.getParameter("age") != null) {
+                    if (request.getParameter("age") != null && !request.getParameter("age").isEmpty()) {
                         finduser.setAge(Integer.parseInt(request.getParameter("age")));
+                        counter++;
+                    }
+                    if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() &&  request.getParameter("oldpassword").equals(finduser.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
+                        finduser.setPassword(request.getParameter("newpassword"));
+                        message = "Your password was successfully changed";
+                        counter++;
                     }
 
                     try {
                         userService.updateUser(finduser.getId(), finduser);
+                        if(counter == 0){
+                            message = "No changes ,empty field or The entered info is not correct";
+                        }
+                        request.setAttribute("message",message);
                         request.getSession().setAttribute("user", finduser);
                         request.setAttribute("user", finduser);
                     } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
-                        request.setAttribute("errorMessage", errorMessage);
+                        request.setAttribute("message", errorMessage);
 
                     }
-                    request.setAttribute("user", finduser);
-                    request.getSession().setAttribute("user", finduser);
                 } else {
                     throw new RuntimeException("Incorrect program logic");
                 }
@@ -135,19 +147,19 @@ public class AccountController {
                 findArtist = artistService.findArtist(artist.getId());
                 if (artist != null) {
                     response.setContentType("text/html");
-                    if (request.getParameter("firstname") != null) {
+                    if ( request.getParameter("firstname") != null && !request.getParameter("firstname").isEmpty()) {
                         findArtist.setFirstName(request.getParameter("firstname"));
                     }
-                    if (request.getParameter("lastname") != null) {
+                    if ( request.getParameter("lastname") != null && !request.getParameter("lastname").isEmpty()) {
                         findArtist.setLastName(request.getParameter("lastname"));
                     }
-                    if (request.getParameter("age") != null) {
+                    if ( request.getParameter("age") != null && !request.getParameter("age").isEmpty()) {
                         findArtist.setAge(Integer.parseInt(request.getParameter("age")));
                     }
-                    if (request.getParameter("specialization") != null) {
+                    if (request.getParameter("specialization") != null  && !request.getParameter("specialization").isEmpty() && Integer.valueOf(request.getParameter("specialization")) != -1 ) {
                         findArtist.setSpecialization(ArtistSpecialization.valueOf(request.getParameter("specialization")));
                     }
-                    if (request.getParameter("oldpassword") != null && request.getParameter("oldpassword").equals(findArtist.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
+                    if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() &&  request.getParameter("oldpassword").equals(findArtist.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
                         findArtist.setPassword(request.getParameter("newpassword"));
                     }
                     if ((image) != null) {
@@ -157,11 +169,12 @@ public class AccountController {
 
                     try {
                         artistService.updateArtist(artist.getId(), findArtist);
+                        request.setAttribute("message","You have successfully updated your profile");
                         request.getSession().setAttribute("user", findArtist);
                         request.setAttribute("user", findArtist);
                     } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
-                        request.setAttribute("errorMessage", errorMessage);
+                        request.setAttribute("message", errorMessage);
                     }
                 } else {
                     throw new RuntimeException("Incorrect program logic");
@@ -196,25 +209,25 @@ public class AccountController {
         if (request.getSession().getAttribute("user") == null) {
             page = "redirect:/signup";
         }
-        request.setAttribute("itemTypes", ItemType.values());
+        request.getSession().setAttribute("itemTypes", ItemType.values());
         return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"additem"}, method = RequestMethod.POST)
     public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         HttpSession session = request.getSession();
+        String errorMessage = "";
         item = new Item();
         if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
             artist = (Artist) session.getAttribute("user");
             findArtist = artistService.findArtist(artist.getId());
             if (findArtist != null) {
                 request.setAttribute("user", findArtist);
-                item.setTitle(request.getParameter("title"))
-                        .setDescription(request.getParameter("description"))
-                        .setItemType(ItemType.valueOf(request.getParameter("type")))
-                        .setPrice(Double.parseDouble(request.getParameter("price")))
-                        .setArtistId(artist.getId()).setStatus(true);
-                if (image != null) {
+                if(image != null && !request.getParameter("title").isEmpty() && !request.getParameter("description").isEmpty() && !request.getParameter("type").isEmpty() && !request.getParameter("price").isEmpty() && !request.getParameter("type").equals("-1") ){
+                    item.setTitle(request.getParameter("title"));
+                    item.setDescription(request.getParameter("description"));
+                    item.setItemType(ItemType.valueOf(request.getParameter("type")));
+                    item.setPrice(Double.parseDouble(request.getParameter("price")));
                     byte[] imageBytes = image.getBytes();
                     String uploadPath = "resources/images/artists/" + artist.getId();
                     String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
@@ -226,14 +239,14 @@ public class AccountController {
                     String filePath = realPath + File.separator + fileName + ".jpg";
                     FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
                     item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
-
+                    try {
+                        itemService.addItem(artist.getId(), item);
+                    } catch (ServiceException e) {
+                         errorMessage = "The entered info is not correct";
+                        request.setAttribute("errorMessage", errorMessage);
+                    }
                 }
-            }
-
-            try {
-                itemService.addItem(artist.getId(), item);
-            } catch (ServiceException e) {
-                String errorMessage = "The entered info is not correct";
+                else errorMessage = "Warning !!! You have an empty fields, Please Try again";
                 request.setAttribute("errorMessage", errorMessage);
             }
 

@@ -7,6 +7,10 @@
 
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
+<c:set var="message" value='<%=request.getAttribute("message")%>' />
+
+
+
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -64,59 +68,7 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
 	<div class="inner-wrapper">
-    	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
-			<div id="header" class="header">
-            	<div class="container menu-container">
-                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
-                    
-                    <a href="#" class="menu-trigger">
-                        <span></span>
-                    </a>
-                </div>
-            </div>
-			
-            <nav id="main-menu"><!-- Main-menu Starts -->
-                <div id="dt-menu-toggle" class="dt-menu-toggle">
-                    Menu
-                    <span class="dt-menu-toggle-icon"></span>
-                </div>            
-                <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
-                        <ul class="sub-menu">
-                        	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
-                    </li>
-
-                    <li class="menu-item-simple-parent">
-                        <a href="/about">About us <span class="fa fa-user-secret"></span></a>
-                    </li>
-                    <li class="menu-item-simple-parent"><a href="#">Gallery <span class="fa fa-camera-retro"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="#">Gallery detail</a></li>
-                            <li><a href="#">Gallery-detail-left-sidebar</a></li>
-                            <li><a href="#">Gallery-detail-right-sidebar</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
-                            <li><a href="#">Cart Page</a></li>
-                            <li><a href="#">Checkout Page</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-                    <li class="menu-item-simple-parent">
-                        <a href="/contact">contact <span class="fa fa-map-marker"></span></a>
-                    </li>
-
-                </ul> <!-- Menu Ends -->
-            </nav> <!-- Main-menu Ends -->            
-        </div><!-- **header-wrapper Ends** -->        
+		<jsp:include page="header.jsp" />
         <div id="main">
         	<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -146,21 +98,24 @@
 									<!-- heading -->
 									<h3>My Menu</h3>
 									<!-- list -->
-									<ul class="list-unstyled">
-										<li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
-										<li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
-										<li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-										<li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-										<li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
-									</ul>
+									<jsp:include page="chooser.jsp"/>
 								</div>
 							</div>
 							<div class="col-md-9 col-sm-9">
 								<!-- inner main content area -->
 								<div class="inner-main account">
-									<!-- top heading -->
-									<h2>Edit Profile</h2>
-									<!-- profile edit form -->
+									<c:choose>
+										<c:when test="${message!=null}">
+											<header class="cd-main-header">
+												<h2 style="color:red;">${message}</h2>
+											</header>
+										</c:when>
+										<c:otherwise>
+											<header class="cd-main-header">
+												<h2>Edit Profile</h2>
+											</header>
+										</c:otherwise>
+									</c:choose>
 									<div class="edit-form">
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
@@ -185,7 +140,6 @@
 															<c:forEach items="${artistSpecTypes}" var="element">
 																<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>
 															</c:forEach>
-
 														</select>
 													</div>
 												</c:if>
@@ -204,6 +158,7 @@
 												</div>
 											</div>
 										</c:if>
+											<div class="col-md-6 col-sm-6">
 												<!-- Password details -->
 												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
