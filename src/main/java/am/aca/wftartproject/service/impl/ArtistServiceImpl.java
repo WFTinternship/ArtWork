@@ -1,6 +1,7 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
+import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -25,6 +26,8 @@ public class ArtistServiceImpl implements ArtistService {
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
     private ArtistDao artistDao;
+    @Autowired
+    private ShoppingCardDao shoppingCardDao;
 
     public void setArtistDao(ArtistDao artistDao) {
         this.artistDao = artistDao;
@@ -56,6 +59,14 @@ public class ArtistServiceImpl implements ArtistService {
             artistDao.addArtist(artist);
         } catch (DAOException e) {
             String error = "Failed to add Artist: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        try {
+            shoppingCardDao.addShoppingCard(artist.getId(),artist.getShoppingCard());
+        } catch (DAOException e) {
+            String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }

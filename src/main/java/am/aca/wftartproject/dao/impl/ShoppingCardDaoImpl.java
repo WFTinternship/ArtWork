@@ -104,7 +104,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public ShoppingCard getShoppingCard(Long id) {
 
         try {
-            String query = "SELECT * FROM shopping_card WHERE id=?";
+            String query = "SELECT * FROM shopping_card WHERE buyer_id=?";
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs,rowNum));
 
         } catch (EmptyResultDataAccessException e) {
@@ -156,7 +156,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
         Boolean status;
         try {
-            String query = "UPDATE shopping_card SET balance=?, type=? WHERE id = ?";
+            String query = "UPDATE shopping_card SET balance=?, type=? WHERE buyer_id = ?";
 
             int rowsAffected = jdbcTemplate.update(query, shoppingCard.getBalance(), shoppingCard.getShoppingCardType().getType(), id);
             if (rowsAffected <= 0) {

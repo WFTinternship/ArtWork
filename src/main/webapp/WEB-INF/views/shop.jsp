@@ -279,14 +279,14 @@
                             <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
                                 <!-- **product-container - Starts** -->
                                 <div class="product-container">
-                                    <a href="/shop-detail/${itemElement.id}">
+                                    <a href="item-detail/${itemElement.id}">
                                         <div class="product-thumb"><img src="${itemElement.photoURL}" alt="image"/>
                                         </div>
                                     </a>
                                     <!-- **product-title - Starts** -->
                                     <div class="product-title">
 
-                                        <c:if test="${itemElement.status==true}">
+                                        <c:if test="${itemElement.status==false}">
                                             <p><h1><div style="text-align: center;">SOLD</div></h1></p>
                                         </c:if>
 
@@ -299,7 +299,7 @@
                                 </div> <!-- **product-container - Ends** -->
                                 <!-- **product-details - Starts** -->
                                 <div class="product-details">
-                                    <h5><a href="/shop-detail/${itemElement.id}"> ${itemElement.title} </a></h5>
+                                    <h5><a href="/item-detail/${itemElement.id}"> ${itemElement.title} </a></h5>
                                     <span class="amount"> $${itemElement.price} </span>
                                 </div> <!-- **product-details - Ends** -->
                             </li>
@@ -309,7 +309,7 @@
                         <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
                         <%--<!-- **product-container - Starts** -->   --%>
                         <%--<div class="product-container">--%>
-                        <%--<a href="shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                        <%--<a href="item-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
                         <%--<!-- **product-title - Starts** -->--%>
                         <%--<div class="product-title"> --%>
                         <%--<a href="shop-cart.jsp" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
@@ -319,7 +319,7 @@
                         <%--</div> <!-- **product-container - Ends** --> --%>
                         <%--<!-- **product-details - Starts** --> --%>
                         <%--<div class="product-details"> --%>
-                        <%--<h5> <a href="shop-detail.jsp"> Ellents Style Grade </a> </h5>--%>
+                        <%--<h5> <a href="item-detail.jsp"> Ellents Style Grade </a> </h5>--%>
                         <%--<span class="amount"> $15 </span> --%>
                         <%--</div> <!-- **product-details - Ends** --> --%>
                         <%--</li><!-- **product-wrapper - Ends** -->--%>
@@ -328,7 +328,7 @@
                         <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
                         <%--<!-- **product-container - Starts** -->   --%>
                         <%--<div class="product-container">--%>
-                        <%--<a href="shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                        <%--<a href="item-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
                         <%--<!-- **product-title - Starts** -->--%>
                         <%--<div class="product-title"> --%>
                         <%--<a href="shop-cart.jsp" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
@@ -338,14 +338,14 @@
                         <%--</div> <!-- **product-container - Ends** --> --%>
                         <%--<!-- **product-details - Starts** --> --%>
                         <%--<div class="product-details"> --%>
-                        <%--<h5> <a href="shop-detail.jsp"> Ellents Style Grade </a> </h5>--%>
+                        <%--<h5> <a href="item-detail.jsp"> Ellents Style Grade </a> </h5>--%>
                         <%--<span class="amount"> $20 </span> --%>
                         <%--</div> <!-- **product-details - Ends** --> --%>
                         <%--</li><!-- **product-wrapper - Ends** -->--%>
                         <%--<li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->--%>
                         <%--<!-- **product-container - Starts** -->   --%>
                         <%--<div class="product-container">--%>
-                        <%--<a href="shop-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
+                        <%--<a href="item-detail.jsp"><div class="product-thumb"> <img src="../../resources/images/product/art-deco-600x600.jpg" alt="image"/> </div> </a>--%>
                         <%--<!-- **product-title - Starts** -->--%>
                         <%--<div class="product-title"> --%>
                         <%--<a href="shop-cart.jsp" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>--%>

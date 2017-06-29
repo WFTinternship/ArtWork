@@ -54,7 +54,7 @@ public class AccountController {
         HttpSession session = request.getSession();
         cookies = request.getCookies();
         String page = "redirect:/signup";
-
+        request.setAttribute("artist", new Artist());
         try {
             if (session.getAttribute("user") != null) {
                 if (session.getAttribute("user").getClass() == User.class) {
@@ -249,6 +249,14 @@ public class AccountController {
             artist = (Artist) request.getSession().getAttribute("user");
             request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(), 8888L, 100L));
         } else page = "redirect:/signup";
+        return new ModelAndView("my-works");
+    }
+
+    @RequestMapping(value = {"deleteItem/*"}, method = RequestMethod.GET)
+    public ModelAndView deleteItem(HttpServletRequest request, HttpServletResponse response) {
+        String[] pathInfo = request.getServletPath().split("/");
+        Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
+        itemService.deleteItem(itemId);
         return new ModelAndView("my-works");
     }
 

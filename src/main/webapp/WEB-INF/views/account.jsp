@@ -6,6 +6,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="user" value='<%=request.getSession().getAttribute("user")%>' />
+<c:set var="artist" value='<%=request.getSession().getAttribute("artist")%>' />
 
 
 <!Doctype html>
@@ -143,8 +144,11 @@
                                         <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
                                         <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
                                         <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+                                        <c:if test="${user['class'].simpleName eq 'Artist'}">
+                                            <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
+                                            <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+                                        </c:if>
+
                                     </ul>
                                 </div>
                             </div>
@@ -153,8 +157,10 @@
                                 <div class="inner-main account">
                                     <!-- top heading -->
                                     <h2>Account Information</h2>
+                                 <c:if test="${user['class'].simpleName eq 'Artist'}">
                                     <!-- user image -->
                                     <img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>
+                                 </c:if>
                                     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->

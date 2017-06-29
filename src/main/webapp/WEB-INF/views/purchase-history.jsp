@@ -6,8 +6,8 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="purchaseHistoryService" value='<%=request.getAttribute("purchaseHistoryService")%>' />
-<c:set var="itemService" value='<%=request.getAttribute("itemService")%>' />
+<c:set var="purchaseHistory" value='<%=request.getAttribute("purchaseHistory")%>' />
+
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -174,30 +174,34 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-
-                                            <tr>
-                                                <c:forEach items="${purchaseHistoryService}" var="element">
+                                                <c:forEach items="${purchaseHistory}" var="element">
+                                                <tr>
                                                     <td>${element.userId}</td>
                                                     <td>${element.itemId}</td>
                                                     <td>${element.purchaseDate}</td>
-                                                    <td><!-- **product-container - Starts** -->
-                                                        <div class="product-container">
-                                                            <a href="/shop-detail/${itemService[0].id}"><div class="product-thumb"> <img src="${itemService[0].photoURL}" alt="image"/> </div> </a>
-                                                            <!-- **product-title - Starts** -->
-                                                            <div class="product-title">
-                                                                <a href="/shop-cart" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                                                <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                                                <p>You don't take a photograph, Just make it</p>
-                                                            </div> <!-- **product-title - Ends** -->
-                                                        </div> <!-- **product-container - Ends** -->
-                                                        <!-- **product-details - Starts** -->
-                                                        <div class="product-details">
-                                                            <h5> <a href="shop-detail"> ${itemService[0].title} </a> </h5>
-                                                            <span class="amount"> $${itemService[0].price} </span>
-                                                        </div> <!-- **product-details - Ends** --> </td>
-                                                </c:forEach>
 
-                                            </tr>
+                                                    <td>
+                                                            <!-- **product-container - Starts** -->
+                                                        <div class="product-container">
+                                                                <a href="item-detail/${element.item.id}">
+                                                                    <div class="product-thumb"><img src="${element.item.photoURL}" width="150px" height="150px" alt="image"/>
+                                                                    </div>
+                                                                </a>
+                                                                <!-- **product-title - Starts** -->
+                                                                <div class="product-details">
+                                                                    <c:if test="${itemElement.status==false}">
+                                                                        <p><h1><div style="text-align: center;">SOLD</div></h1></p>
+                                                                    </c:if>
+                                                                </div> <!-- **product-title - Ends** -->
+                                                            <!-- **product-details - Starts** -->
+                                                            <div class="product-title">
+                                                                <h5><a href="/item-detail/${element.item.id}"> ${element.item.title} </a></h5>
+                                                                <span class="amount"> $${element.item.price} </span>
+                                                            </div> <!-- **product-details - Ends** -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>

@@ -53,7 +53,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setDouble(3, item.getPrice());
                 ps.setLong(4, artistID);
                 ps.setString(5, item.getPhotoURL());
-                ps.setBoolean(6, item.getStatus());
+                ps.setBoolean(6, true);
                 ps.setString(7, item.getItemType().getType());
                 ps.setDate(8, item.getAdditionDate());
                 return ps;
@@ -483,8 +483,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public void updateItem(Long id, Item item) {
 
         try {
-            String query = "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?";
-            Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(), id};
+            String query = "UPDATE item SET title=?, description=?, price=?, type=? , status = ? WHERE id=?";
+            Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(),item.getStatus(), item.getId()};
 
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {

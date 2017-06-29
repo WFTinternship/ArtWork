@@ -106,7 +106,7 @@
                     </li>
                     <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
                         <%--<ul class="sub-menu">--%>
-                            <%--<li><a href="shop-detail.jsp">Shop Detail</a></li>--%>
+                            <%--<li><a href="item-detail.jsp">Shop Detail</a></li>--%>
                             <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
                             <%--<li><a href="shop-checkout.html">Checkout Page</a></li>--%>
                         <%--</ul>--%>

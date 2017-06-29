@@ -178,7 +178,7 @@
 														<label for="exampleInput4">Age</label>
 														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="26">
 													</div>
-
+												<c:if test="${user['class'].simpleName eq 'Artist'}">
 													<div class="form-group">
 														<select class="shop-dropdown" name="specialization">
 															<option value="-1" selected>Choose artist specialization</option>
@@ -188,10 +188,11 @@
 
 														</select>
 													</div>
-
+												</c:if>
 													<button type="submit" class="btn btn-warning">Update Personal Details</button>
 												</form>
 											</div>
+										<c:if test="${user['class'].simpleName eq 'Artist'}">
 											<div class="col-md-6 col-sm-6">
 												<div class="form-group">
 													<form action="/edit-profile" method="post" enctype="multipart/form-data">
@@ -201,6 +202,8 @@
 														<button type="submit" class="btn btn-warning">Apply</button>
 													</form>
 												</div>
+											</div>
+										</c:if>
 												<!-- Password details -->
 												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">

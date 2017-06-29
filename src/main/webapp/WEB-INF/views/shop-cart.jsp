@@ -209,12 +209,12 @@
             
                                         <!-- The thumbnail -->
                                         <td class="product-thumbnail">
-                                            <a href="shop-detail.jsp"><img src="http://placehold.it/75x75&text=Thumb+2" class="attachment-shop_thumbnail wp-post-image" alt="T_7_front" /></a>
+                                            <a href="item-detail.jsp"><img src="http://placehold.it/75x75&text=Thumb+2" class="attachment-shop_thumbnail wp-post-image" alt="T_7_front" /></a>
                                         </td>
             
                                         <!-- Product Name -->
                                         <td class="product-name">
-                                            <h6><a href="shop-detail.jsp">Lonely in Rain</a></h6>
+                                            <h6><a href="item-detail.jsp">Lonely in Rain</a></h6>
                                         </td>
             
                                         <!-- Product price -->

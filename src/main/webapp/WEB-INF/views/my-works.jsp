@@ -174,7 +174,7 @@
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
                                                             <a href="#" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Edit </a>
-                                                            <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Delete </a>
+                                                            <a href="/deleteItem/${itemElement.id}" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Delete </a>
                                                             <p>You don't take a photograph, Just make it</p>
                                                         </div> <!-- **product-title - Ends** -->
                                                     </div> <!-- **product-container - Ends** -->

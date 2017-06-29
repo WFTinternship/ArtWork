@@ -1,8 +1,6 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.ArtistSpecialization;
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,7 @@ public class SignUpController {
                                 @ModelAttribute("user") User user) {
         String page = "";
         try {
+            user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
             userService.addUser(user);
             page = "index";
             HttpSession session = request.getSession(true);
@@ -50,7 +49,8 @@ public class SignUpController {
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
+            String errorMessage = "The entered info is not correct, Please try again";
+            System.out.println(errorMessage);
             request.setAttribute("errorMessage", errorMessage);
             page = "/signUp";
         }
@@ -62,8 +62,10 @@ public class SignUpController {
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         Artist artistFromRequest = new Artist();
+        artistFromRequest.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
         if (!image.isEmpty()) {
             byte[] imageBytes = image.getBytes();
+
             artistFromRequest
                     .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
                     .setArtistPhoto(imageBytes)
