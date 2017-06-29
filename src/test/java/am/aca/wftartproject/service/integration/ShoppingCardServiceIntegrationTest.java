@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
@@ -20,6 +21,7 @@ import static junit.framework.TestCase.assertNotNull;
 /**
  * @author surik
  */
+@Transactional
 public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
     private User testUser;
     private ShoppingCard testShoppingCard;

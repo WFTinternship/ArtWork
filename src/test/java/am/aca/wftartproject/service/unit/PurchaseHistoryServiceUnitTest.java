@@ -49,7 +49,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
     public void tearDown() {
     }
 
-    // region <TEST CASE>
+    // region<TEST CASE>
 
     /**
      * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)

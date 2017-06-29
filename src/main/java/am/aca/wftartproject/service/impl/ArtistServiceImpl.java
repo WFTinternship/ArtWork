@@ -18,7 +18,7 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
-@Transactional
+@Transactional(readOnly = true)
 @Component
 public class ArtistServiceImpl implements ArtistService {
 
@@ -40,6 +40,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#addArtist(Artist)
      */
+    @Transactional
     @Override
     public void addArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
@@ -111,6 +112,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#updateArtist(Long, Artist)
      */
+    @Transactional
     @Override
     public void updateArtist(Long id, Artist artist) {
         if (id == null || id < 0) {
@@ -136,6 +138,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @param id
      * @see ArtistService#deleteArtist(Long)
      */
+    @Transactional
     @Override
     public void deleteArtist(Long id) {
         if (id == null || id < 0) {

@@ -1,18 +1,12 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.controller.CtxListener;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
-import am.aca.wftartproject.util.SpringBeanType;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,30 +18,29 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @Controller
 public class AccountController {
-    User user;
-    User finduser;
-    Item item;
-    Artist artist;
-    Artist findArtist;
-    Cookie[] cookies;
-    String userEmailFromCookie = null;
-    HttpSession session;
+    private User user;
+    private User finduser;
+    private Item item;
+    private Artist artist;
+    private Artist findArtist;
+    private Cookie[] cookies;
+    private String userEmailFromCookie = null;
+    private HttpSession session;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    ArtistService artistService;
+    private ArtistService artistService;
     @Autowired
-    PurchaseHistoryService purchaseHistoryService;
+    private PurchaseHistoryService purchaseHistoryService;
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     @RequestMapping(value = {"/account"})
     public ModelAndView accountInfo(HttpServletRequest request, HttpServletResponse response) {

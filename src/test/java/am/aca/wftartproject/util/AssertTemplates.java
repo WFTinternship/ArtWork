@@ -21,7 +21,7 @@ public class AssertTemplates {
         assertEquals(expectedArtist.getSpecialization(), actualArtist.getSpecialization());
         assertEquals(expectedArtist.getItemList(), actualArtist.getItemList());
         assertEquals(expectedArtist.getFirstName(), actualArtist.getFirstName());
-        assertEquals(expectedArtist.getArtistPhoto(), actualArtist.getArtistPhoto());
+        assertArrayEquals(expectedArtist.getArtistPhoto(), actualArtist.getArtistPhoto());
         assertEquals(expectedArtist.getAge(), actualArtist.getAge());
         assertEquals(expectedArtist.getLastName(), actualArtist.getLastName());
 
@@ -34,7 +34,7 @@ public class AssertTemplates {
         assertEquals(expectedItem.getTitle(), actualItem.getTitle());
         assertEquals(expectedItem.getPhotoURL(), actualItem.getPhotoURL());
         assertEquals(expectedItem.getPrice(), actualItem.getPrice());
-        assertEquals(expectedItem.getAdditionDate().getTime() / 100000000, actualItem.getAdditionDate().getTime() / 100000000);
+        assertEquals(expectedItem.getAdditionDate().getTime() / 1000000000, actualItem.getAdditionDate().getTime() / 1000000000);
     }
 
     public static void assertEqualShoppingCards(ShoppingCard expectedShoppingCard, ShoppingCard actualShoppingCard) {

@@ -146,8 +146,8 @@ public class Item {
                 /*artistId != null &&
                 artistId > 0 &&*/
                 price != 0 &&
-                itemType != null ;
-        //        && additionDate != null;
+                itemType != null
+                && additionDate != null;
 
     }
 

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Created by ASUS on 03-Jun-17
  */
-@Transactional
+@Transactional(readOnly = true)
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
@@ -36,6 +36,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param userId
      * @param shoppingCard
      */
+    @Transactional
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
         if (userId == null || userId < 0){
@@ -82,6 +83,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param id
      * @param shoppingCard
      */
+    @Transactional
     @Override
     public void updateShoppingCard(Long id, ShoppingCard shoppingCard) {
         if (id == null || id < 0){
@@ -108,6 +110,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @see ShoppingCardService#deleteShoppingCard(Long)
      * @param id
      */
+    @Transactional
     @Override
     public void deleteShoppingCard(Long id) {
         if (id == null || id < 0){

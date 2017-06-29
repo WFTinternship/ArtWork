@@ -16,7 +16,7 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by surik on 6/1/17
  */
-@Transactional
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
@@ -38,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#addItem(Long, Item)
      */
+    @Transactional
     @Override
     public void addItem(Long artistID, Item item) {
 
@@ -203,6 +204,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#updateItem(Long, Item)
      */
+    @Transactional
     @Override
     public void updateItem(Long id, Item item) {
         if (id == null || id < 0) {
@@ -228,6 +230,7 @@ public class ItemServiceImpl implements ItemService {
      * @param id
      * @see ItemService#deleteItem(Long)
      */
+    @Transactional
     @Override
     public void deleteItem(Long id) {
         if (id == null || id < 0) {

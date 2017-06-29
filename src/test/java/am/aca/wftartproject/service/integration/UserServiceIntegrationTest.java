@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
@@ -18,6 +19,7 @@ import static junit.framework.TestCase.assertNull;
 /**
  * @author surik
  */
+@Transactional
 public class UserServiceIntegrationTest extends BaseIntegrationTest {
     private User testUser;
     @Autowired

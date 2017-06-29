@@ -16,7 +16,7 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @see UserService#addUser(User)
      */
+    @Transactional
     @Override
     public void addUser(User user) {
         if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
@@ -110,6 +111,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @see UserService#updateUser(Long, User)
      */
+    @Transactional
     @Override
     public void updateUser(Long id, User user) {
         if (id == null || id < 0) {
@@ -137,6 +139,7 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @see UserService#deleteUser(Long)
      */
+    @Transactional
     @Override
     public void deleteUser(Long id) {
         if (id == null || id < 0) {

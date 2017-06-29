@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by surik on 6/1/17
  */
-@Transactional
+@Transactional(readOnly = true)
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
@@ -35,6 +35,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @see PurchaseHistoryService#addPurchase(PurchaseHistory)
      * @param purchaseHistory
      */
+    @Transactional
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
@@ -107,6 +108,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @param userId
      * @param itemId
      */
+    @Transactional
     @Override
     public void deletePurchase(Long userId, Long itemId) {
         if (userId == null || userId < 0){

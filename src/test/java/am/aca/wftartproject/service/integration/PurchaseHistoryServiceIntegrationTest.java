@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -28,6 +29,7 @@ import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 /**
  * @author surik
  */
+@Transactional
 public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     private User testUser;
     private Item testItem;
