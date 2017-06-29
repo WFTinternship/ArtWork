@@ -1,17 +1,11 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.controller.CtxListener;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
-import am.aca.wftartproject.util.SpringBeanType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +19,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class HomeController {
+
     @Autowired
     UserService userService;
     @Autowired

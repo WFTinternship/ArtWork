@@ -32,7 +32,7 @@ public class AccountController {
     private Artist findArtist;
     private Cookie[] cookies;
     private String userEmailFromCookie = null;
-    private HttpSession session;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -44,8 +44,9 @@ public class AccountController {
 
     @RequestMapping(value = {"/account"})
     public ModelAndView accountInfo(HttpServletRequest request, HttpServletResponse response) {
-        session = request.getSession();
+        HttpSession session = request.getSession();
         cookies = request.getCookies();
+        String page = "redirect:/signup";
 
         try {
             if (session.getAttribute("user") != null) {
@@ -54,6 +55,7 @@ public class AccountController {
                     finduser = userService.findUser(user.getId());
                     if (user != null) {
                         request.setAttribute("user", finduser);
+                        page = "account";
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }
@@ -64,47 +66,32 @@ public class AccountController {
                     if (findArtist != null) {
                         request.getSession().setAttribute("image", image);
                         request.getSession().setAttribute("user", findArtist);
+                        page = "account";
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }
                 }
-            } else {
-                if (cookies != null) {
-                    for (Cookie ckElement : cookies) {
-                        if (ckElement.getName().equals("userEmail")) {
-                            userEmailFromCookie = ckElement.getValue();
-                        }
-                    }
-                    if (userEmailFromCookie != null) {
-                        if (artistService.findArtist(userEmailFromCookie) != null) {
-                            Artist artistFromCookies = artistService.findArtist(userEmailFromCookie);
-                            HttpSession sessionForArtist = request.getSession(true);
-                            session.setAttribute("user", artistFromCookies);
-                        } else {
-                            if (userService.findUser(userEmailFromCookie) != null) {
-                                User userFromCookies = userService.findUser(userEmailFromCookie);
-                                HttpSession sessionForUser = request.getSession(true);
-                                session.setAttribute("user", userFromCookies);
-                            }
-                        }
-                    }
-                } else return new ModelAndView("/signUp");
             }
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             String errorMessage = String.format("There is problem with artist info retrieving: %s", e.getMessage());
             throw new RuntimeException(errorMessage, e);
         }
-        return new ModelAndView("/account");
+        return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.GET)
     public ModelAndView editProfile(HttpServletRequest request, HttpServletResponse response) {
+        String page = "edit-profile";
+        if (request.getSession().getAttribute("user") == null) {
+            page = "redirect:/signup";
+        }
         request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
-        return new ModelAndView("edit-profile");
+        return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST)
     public ModelAndView editProfileProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        HttpSession session = request.getSession();
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
@@ -179,6 +166,8 @@ public class AccountController {
 
     @RequestMapping(value = {"purchase-history"}, method = RequestMethod.GET)
     public ModelAndView purchaseHistory(HttpServletRequest request, HttpServletResponse response) {
+        String page = "purchase-history";
+        HttpSession session = request.getSession();
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
@@ -189,20 +178,24 @@ public class AccountController {
                 request.setAttribute("purchaseHistory", purchaseHistoryService.getPurchase(artist.getId()));
             }
         } else {
-            return new ModelAndView("login");
+            page = "redirect:/signup";
         }
-        return new ModelAndView("purchase-history");
+        return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"additem"}, method = RequestMethod.GET)
-    public ModelAndView addItem(HttpServletRequest request,HttpServletResponse response){
+    public ModelAndView addItem(HttpServletRequest request, HttpServletResponse response) {
+        String page = "additem";
+        if (request.getSession().getAttribute("user") == null) {
+            page = "redirect:/signup";
+        }
         request.setAttribute("itemTypes", ItemType.values());
-        return new ModelAndView("additem");
+        return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"additem"}, method = RequestMethod.POST)
-    public ModelAndView addItemProcess(HttpServletRequest request,HttpServletResponse response,@RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
-        session = request.getSession();
+    public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        HttpSession session = request.getSession();
         item = new Item();
         if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
             artist = (Artist) session.getAttribute("user");
@@ -214,41 +207,41 @@ public class AccountController {
                         .setItemType(ItemType.valueOf(request.getParameter("type")))
                         .setPrice(Double.parseDouble(request.getParameter("price")))
                         .setArtistId(artist.getId()).setStatus(true);
-                    if (image != null) {
-                        byte[] imageBytes = image.getBytes();
-                        String uploadPath = "resources/images/artists/" + artist.getId();
-                        String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
-                        File uploadDir = new File(realPath);
-                        if (!uploadDir.exists()) {
-                            uploadDir.mkdir();
-                        }
-                        String fileName = new File(item.getTitle()).getName();
-                        String filePath = realPath + File.separator + fileName + ".jpg";
-                        FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                        item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
-
+                if (image != null) {
+                    byte[] imageBytes = image.getBytes();
+                    String uploadPath = "resources/images/artists/" + artist.getId();
+                    String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
+                    File uploadDir = new File(realPath);
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdir();
                     }
-                }
+                    String fileName = new File(item.getTitle()).getName();
+                    String filePath = realPath + File.separator + fileName + ".jpg";
+                    FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+                    item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
 
-                try {
-                    itemService.addItem(artist.getId(), item);
-                } catch (ServiceException e) {
-                    String errorMessage = "The entered info is not correct";
-                    request.setAttribute("errorMessage", errorMessage);
                 }
-
             }
+
+            try {
+                itemService.addItem(artist.getId(), item);
+            } catch (ServiceException e) {
+                String errorMessage = "The entered info is not correct";
+                request.setAttribute("errorMessage", errorMessage);
+            }
+
+        }
         return new ModelAndView("additem");
     }
 
     @RequestMapping(value = {"my-works"}, method = RequestMethod.GET)
-    public ModelAndView myWorks(HttpServletRequest request,HttpServletResponse response){
-        session = request.getSession();
-        if(session.getAttribute("user")!= null  && session.getAttribute("user").getClass() == Artist.class) {
-            artist= (Artist) request.getSession().getAttribute("user");
-            request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(),8888L,100L));
-        }
-        else return new ModelAndView("login");
+    public ModelAndView myWorks(HttpServletRequest request, HttpServletResponse response) {
+        String page = "my-works";
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
+            artist = (Artist) request.getSession().getAttribute("user");
+            request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(), 8888L, 100L));
+        } else page = "redirect:/signup";
         return new ModelAndView("my-works");
     }
 
