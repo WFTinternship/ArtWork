@@ -6,16 +6,19 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
-<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
-<c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>' />
+<c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
+<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
+<c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>'/>
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
+
 
 
 <!Doctype html>
-<!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en-gb" class="no-js"> <!--<![endif]-->
+<!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
+<!--[if IE 8 ]> <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
+<!--[if IE 9 ]> <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en-gb" class="no-js"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
@@ -30,31 +33,30 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon"/>
 
     <!-- **CSS - stylesheets** -->
-    <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css" rel="stylesheet"/>
-    <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all" />
-    <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css" rel="stylesheet"/>
-
-
-
+    <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css"
+          rel="stylesheet"/>
+    <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all"/>
+    <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css"
+          rel="stylesheet"/>
 
 
     <!-- **Additional - stylesheets** -->
-    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all"/>
     <link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
 
-    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
-    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="../../resources/css/responsive.css" type="text/css" media="all"/>
     <script src="../../resources/js/modernizr.js"></script> <!-- Modernizr -->
 
-    <link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all" />
+    <link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all"/>
 
     <!-- **Font Awesome** -->
-    <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
 
 </head>
 
@@ -67,7 +69,7 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
     <div class="inner-wrapper">
-     <jsp:include page="header.jsp"/>
+        <jsp:include page="header.jsp"/>
         <div id="main">
             <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -104,30 +106,49 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <!-- top heading -->
-                                    <h2>Your ArtWorks</h2>
-
-                                        <ul class="products isotope">
-                                            <c:forEach items="${artistItems}" var="itemElement">
-                                                <li class="product-wrapper dt-sc-one-fifth"> <!-- **product-wrapper - Starts** -->
+                                    <c:choose>
+                                        <c:when test="${message!=null}">
+                                            <header class="cd-main-header">
+                                                <h2 style="color:red;">${message}</h2>
+                                            </header>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <header class="cd-main-header">
+                                                <h2>Your ArtWorks</h2>
+                                            </header>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <ul class="products isotope">
+                                        <c:forEach items="${artistItems}" var="itemElement">
+                                            <c:if test="${itemElement.status eq true}">
+                                                <li class="product-wrapper dt-sc-one-fifth">
+                                                    <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->
                                                     <div class="product-container">
                                                         <a href="/item-detail/${itemElement.id}">
-                                                            <div class="product-thumb"> <img src="${itemElement.photoURL}" alt="image"/> </div> </a>
+                                                            <div class="product-thumb"><img
+                                                                    src="${itemElement.photoURL}" alt="image"/></div>
+                                                        </a>
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
-                                                            <a href="#" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Edit </a>
-                                                            <a href="/deleteItem/${itemElement.id}" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Delete </a>
+                                                            <a href="#" class="type1 dt-sc-button"> <span
+                                                                    class="fa fa-shopping-cart"></span> Edit </a>
+                                                            <a href="/deleteItem/${itemElement.id}"
+                                                               class="type1 dt-sc-button"> <span
+                                                                    class="fa fa-unlink"></span> Delete </a>
                                                             <p>You don't take a photograph, Just make it</p>
                                                         </div> <!-- **product-title - Ends** -->
                                                     </div> <!-- **product-container - Ends** -->
                                                     <!-- **product-details - Starts** -->
                                                     <div class="product-details">
-                                                        <h5> <a href="shop-detail"> ${itemElement.title} </a> </h5>
+                                                        <h5><a href="shop-detail"> ${itemElement.title} </a></h5>
                                                         <span class="amount"> $${itemElement.price} </span>
                                                     </div> <!-- **product-details - Ends** -->
-                                                </li><!-- **product-wrapper - Ends** -->
-                                            </c:forEach>
-                                        </ul>
+                                                </li>
+                                                <!-- **product-wrapper - Ends** -->
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
                                 </div>
                             </div>
 
