@@ -6,10 +6,10 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemDetail" value='<%=session.getAttribute("itemDetail")%>'/>
-<c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>'/>
-<c:set var="artistInfo" value='<%=request.getAttribute("artistInfo")%>'/>
-<c:set var="user" value='<%=session.getAttribute("user")%>'/>
+<c:set var="itemDetail" value='<%=request.getSession().getAttribute("itemDetail")%>'/>
+<c:set var="artistItems" value='<%=request.getSession().getAttribute("artistItems")%>'/>
+<c:set var="artistInfo" value='<%=request.getSession().getAttribute("artistInfo")%>'/>
+<c:set var="user" value='<%=session.getServletContext().getAttribute("user")%>'/>
 
 
 
@@ -72,22 +72,22 @@
 <div class="wrapper">
     <div class="inner-wrapper">
         <jsp:include page="header.jsp" />
-        <div id="main">
-            <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
-                <div class="container">
-                    <h2>Product <span>Detail</span></h2>
-                    <div class="user-summary">
-                        <div class="account-links">
-                            <a href="#">My Account</a>
-                            <a href="#">Checkout</a>
-                        </div>
-                        <div class="cart-count">
-                            <a href="#">Shopping Bag: 0 items</a>
-                            <a href="#">($0.00)</a>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- *BreadCrumb Ends here** -->
+        <%--<div id="main">--%>
+            <%--<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->--%>
+                <%--<div class="container">--%>
+                    <%--<h2>Product <span>Detail</span></h2>--%>
+                    <%--<div class="user-summary">--%>
+                        <%--<div class="account-links">--%>
+                            <%--<a href="#">My Account</a>--%>
+                            <%--<a href="#">Checkout</a>--%>
+                        <%--</div>--%>
+                        <%--<div class="cart-count">--%>
+                            <%--<a href="#">Shopping Bag: 0 items</a>--%>
+                            <%--<a href="#">($0.00)</a>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div><!-- *BreadCrumb Ends here** -->--%>
             <section id="primary" class="content-full-width"><!-- **Primary Starts Here** -->
                 <div class="container">
                     <div class="main-title animate" data-animation="pullDown" data-delay="100">
@@ -97,39 +97,19 @@
                     <div class="cart-wrapper"><!-- *cart-wrapper starts here** -->
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
-                                <a data-fancybox="gallery" href="${itemDetail.photoURL}">
-                                    <img src="${itemDetail.photoURL}" alt="" title="Acrylic">
+                                <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL}">
+                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL}" alt="" title="Acrylic">
                                 </a>
                             </div>
                             <h5>more from this artist</h5>
                             <ul class="thumblist">
                                 <c:forEach items="${artistItems}" var="itemElement">
                                     <li>
-                                        <a href="/shop-detail/${itemElement.id}" class="product"><img
-                                                src="${itemElement.photoURL}"
-                                                alt="" title=""></a>
+                                        <a href="/item-detail/${itemElement.id}" class="product"><img
+                                                src="${pageContext.request.contextPath}/${itemElement.photoURL}"
+                                                alt="" height="150" width="150" title=""></a>
                                     </li>
                                 </c:forEach>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                <%--title=""></a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                <%--title=""></a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                <%--title=""></a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                <%--title=""></a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Thumb" alt=""--%>
-                                <%--title=""></a>--%>
-                                <%--</li>--%>
                             </ul>
                             <%--<div class="commententries"><!-- *commententries starts here** -->--%>
                             <%--<h4> Comments ( 3 ) </h4>--%>

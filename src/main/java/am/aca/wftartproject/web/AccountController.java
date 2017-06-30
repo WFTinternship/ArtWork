@@ -216,7 +216,7 @@ public class AccountController {
     @RequestMapping(value = {"additem"}, method = RequestMethod.POST)
     public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         HttpSession session = request.getSession();
-        String errorMessage = "";
+        String message = "";
         item = new Item();
         if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
             artist = (Artist) session.getAttribute("user");
@@ -235,19 +235,20 @@ public class AccountController {
                     if (!uploadDir.exists()) {
                         uploadDir.mkdir();
                     }
-                    String fileName = new File(item.getTitle()).getName();
+                    String fileName = item.getTitle();
                     String filePath = realPath + File.separator + fileName + ".jpg";
                     FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
                     item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
                     try {
                         itemService.addItem(artist.getId(), item);
+                        message = "Your ArtWork has been successfully added, Now you can see it in My ArtWork page";
                     } catch (ServiceException e) {
-                         errorMessage = "The entered info is not correct";
-                        request.setAttribute("errorMessage", errorMessage);
+                         message = "The entered info is not correct";
+                        request.setAttribute("errorMessage", message);
                     }
                 }
-                else errorMessage = "Warning !!! You have an empty fields, Please Try again";
-                request.setAttribute("errorMessage", errorMessage);
+                else message = "Warning !!! You have an empty fields, Please Try again";
+                request.setAttribute("errorMessage", message);
             }
 
         }

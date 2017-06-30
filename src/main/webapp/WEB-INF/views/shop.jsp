@@ -65,21 +65,21 @@
     <div class="inner-wrapper">
         <jsp:include page="header.jsp" />
         <div id="main">
-            <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
-                <div class="container">
-                    <h2>Shop <span>Art</span></h2>
-                    <div class="user-summary">
-                        <div class="account-links">
-                            <a href="#">My Account</a>
-                            <a href="#">Checkout</a>
-                        </div>
-                        <div class="cart-count">
-                            <a href="#">Shopping Bag: 0 items</a>
-                            <a href="#">($0.00)</a>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- *BreadCrumb Ends here** -->
+            <%--<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->--%>
+                <%--<div class="container">--%>
+                    <%--<h2>Shop <span>Art</span></h2>--%>
+                    <%--<div class="user-summary">--%>
+                        <%--<div class="account-links">--%>
+                            <%--<a href="#">My Account</a>--%>
+                            <%--<a href="#">Checkout</a>--%>
+                        <%--</div>--%>
+                        <%--<div class="cart-count">--%>
+                            <%--<a href="#">Shopping Bag: 0 items</a>--%>
+                            <%--<a href="#">($0.00)</a>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div><!-- *BreadCrumb Ends here** -->--%>
             <section id="primary" class="content-full-width"><!-- **Primary Starts Here** -->
                 <div class="container">
                     <div class="main-title animate" data-animation="pullDown" data-delay="100">

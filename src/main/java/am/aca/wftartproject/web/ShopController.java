@@ -73,8 +73,8 @@ public class ShopController {
         Item itemById = itemService.findItem(itemId);
 
         session.setAttribute("itemDetail", itemById);
-        request.setAttribute("artistItems", itemService.getArtistItems(itemById.getArtistId(), itemById.getId(), 10L));
-        request.setAttribute("artistInfo", artistService.findArtist(itemById.getArtistId()));
+        session.setAttribute("artistItems", itemService.getArtistItems(itemById.getArtistId(), itemById.getId(), 10L));
+        session.setAttribute("artistInfo", artistService.findArtist(itemById.getArtistId()));
 
         return new ModelAndView("item-detail");
     }
