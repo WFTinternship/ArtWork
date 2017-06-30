@@ -8,24 +8,24 @@ import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.util.TestObjectTemplate;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.SQLException;
 import java.util.List;
-
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
+import static am.aca.wftartproject.util.TestObjectTemplate.*;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
 import static junit.framework.TestCase.*;
 
 
 /**
  * Created by Armen on 6/1/2017
  */
+
 public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -41,31 +41,31 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     }
 
     /**
-     * Creates connection, artist and item for tests
+     * Creates artist and item for tests
      * @throws SQLException
      * @throws ClassNotFoundException
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create artistSpecialization
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(jdbcTemplate);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
 
         // create test artist and user
-        testArtist = TestObjectTemplate.createTestArtist();
-        testItem = TestObjectTemplate.createTestItem();
-        tempItem = TestObjectTemplate.createTestItem();
+        testArtist = createTestArtist();
+        testItem = createTestItem();
+        tempItem = createTestItem();
 
         // insert test Artist into db, get generated id
         artistDao.addArtist(testArtist);
 
         // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections Start: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
@@ -75,7 +75,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @After
     public void tearDown() throws SQLException {
-
         // delete inserted test users,artists and items  from db
         if (testItem.getId() != null)
             itemDao.deleteItem(testItem.getId());
@@ -92,20 +91,19 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         testItem = null;
 
         // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections End: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
-    //region(TEST_CASE)
+    // region<TEST CASE>
 
     /**
      * @see ItemDao#addItem(Long, Item)
      */
     @Test
     public void addItem_Success() {
-
         // check testItem for null
         assertNotNull(testItem);
 
@@ -125,7 +123,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void addItem_Failure() {
-
         // check testItem for null
         assertNotNull(testItem);
         testItem.setTitle(null);
@@ -145,7 +142,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void findItem_Success() {
-
         // add item into db
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -162,7 +158,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void findItem_Failure(){
-
         // add item into DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -178,10 +173,9 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getRecentlyAddedItems(int)
      */
-    @Test// ConcurrentModificationException
+    @Test
     public void getRecentlyAddedItems_Success(){
         // add items into DB
-
         itemDao.addItem(testArtist.getId(), tempItem);
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -189,7 +183,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         List<Item> itemList = itemDao.getRecentlyAddedItems(1);
 
         assertEqualItems(testItem, itemList.get(0));
-
     }
 
 
@@ -208,22 +201,20 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getItemsByTitle(String)
      */
-    @Test // ConcurrentModificationException
-    public void getItemsByTitleNotEmptyList(){
-
+    @Test
+    public void getItemsByTitle_NotEmptyList(){
         // add item into DB
         itemDao.addItem(testArtist.getId(), testItem);
 
         // get items by title from DB and check for not empty
         assertFalse(itemDao.getItemsByTitle(testItem.getTitle()).isEmpty());
-
     }
 
     /**
      * @see ItemDao#getItemsByTitle(String)
      */
     @Test
-    public void getItemsByTitleEmptyList(){
+    public void getItemsByTitle_EmptyList(){
         // add item into DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -234,9 +225,8 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getItemsByType(String)
      */
-    @Test// ConcurrentModificationException
-    public void getItemsByTypeNotEmptyList(){
-
+    @Test
+    public void getItemsByType_NotEmptyList(){
         // add item into DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -248,8 +238,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsByType(String)
      */
     @Test
-    public void getItemsByTypeEmptyList(){
-
+    public void getItemsByType_EmptyList(){
         // add item into DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -260,9 +249,8 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
-    @Test// ConcurrentModificationException
-    public void getItemsForGivenPriceRangeNotEmptyList(){
-
+    @Test
+    public void getItemsForGivenPriceRange_NotEmptyList(){
         // add item into DB
         itemDao.addItem(testArtist.getId(), tempItem);
 
@@ -274,7 +262,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
     @Test
-    public void getItemsForGivenPriceRangeEmptyList(){
+    public void getItemsForGivenPriceRange_EmptyList(){
         // add item into DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -285,9 +273,8 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     /**
      * @see ItemDao#getArtistItems(Long, Long, Long)
      */
-    @Test// ConcurrentModificationException
-    public void getArtistItemsNotEmptyList(){
-
+    @Test
+    public void getArtistItems_NotEmptyList(){
         // add testArtist's 2 items into DB
         itemDao.addItem(testArtist.getId(), testItem);
         itemDao.addItem(testArtist.getId(), tempItem);
@@ -300,7 +287,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getArtistItems(Long, Long, Long)
      */
     @Test
-    public void getArtistItemsEmptyList(){
+    public void getArtistItems_EmptyList(){
         // add testArtist's 2 items into DB
         itemDao.addItem(testArtist.getId(), testItem);
         itemDao.addItem(testArtist.getId(), tempItem);
@@ -314,7 +301,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void updateItem_Success() {
-
         // check testItem for null
         assertNotNull(testItem);
 
@@ -335,7 +321,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void updateItem_Failure() {
-
         // check testItem for null
         assertNotNull(testItem);
 
@@ -357,7 +342,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     @Test
     public void deleteItem_Success() {
-
         // add item into db
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -374,7 +358,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void deleteItem_Failure() {
-
         // add item into db
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -391,5 +374,5 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
         assertNotNull(deletedItem.getId());
     }
 
-    //endregion
+    // endregion
 }

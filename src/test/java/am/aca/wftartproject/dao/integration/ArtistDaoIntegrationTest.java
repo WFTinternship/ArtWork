@@ -14,14 +14,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.SQLException;
-
 import static junit.framework.TestCase.*;
 
 /**
  * Created by Armen on 6/1/2017
  */
+
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -35,14 +34,14 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * Creates connection and artist
+     * Creates artist for tests
      * @throws SQLException
      * @throws ClassNotFoundException
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // create artistSpecialization
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(jdbcTemplate);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
@@ -50,9 +49,9 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         testArtist = TestObjectTemplate.createTestArtist();
 
         // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections Start: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
@@ -64,8 +63,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @After
     public void tearDown() throws SQLException, ClassNotFoundException {
-
-
         // delete inserted test users and artists from db
         if (testArtist.getId() != null) {
             artistDao.deleteArtist(testArtist.getId());
@@ -75,20 +72,19 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         testArtist = null;
 
         // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections End: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
-    //region(TEST_CASE)
+    // region<TEST_CASE>
 
     /**
      * @see ArtistDao#addArtist(Artist)
      */
     @Test
     public void addArtist_Success() throws SQLException {
-
         // set artist into db, get generated id
         artistDao.addArtist(testArtist);
         System.out.println(testArtist);
@@ -111,7 +107,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void addArtist_Failure() throws SQLException {
-
         // set artist into db, get generated id
         testArtist.setFirstName(null);
         artistDao.addArtist(testArtist);
@@ -135,18 +130,15 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findArtist_Success() {
-        // Add test artist into database
+        // add artist into db
         artistDao.addArtist(testArtist);
 
-        // Find and get artist from db
+        // find and get artist from db
         Artist findArtist = artistDao.findArtist(testArtist.getId());
 
-        System.out.println(testArtist);
-        System.out.println(findArtist);
-        // Check for sameness with testArtist
+        // check for sameness with testArtist
         AssertTemplates.assertEqualArtists(findArtist, testArtist);
     }
-
 
     /**
      * @see ArtistDao#findArtist(Long)
@@ -198,7 +190,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void updateArtist_Success() {
-
         // set artist specialization  and add into db
         testArtist.setSpecialization(ArtistSpecialization.PAINTER);
         artistDao.addArtist(testArtist);
@@ -215,7 +206,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void updateArtist_Failure() {
-
         // set artist specialization  and add into db
         artistDao.addArtist(testArtist);
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
@@ -234,7 +224,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void deleteArtist_Success() {
-
         // add artist into db
         artistDao.addArtist(testArtist);
 
@@ -250,7 +239,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void deleteArtist_Failure() {
-
         // add artist into db
         artistDao.addArtist(testArtist);
 
@@ -258,5 +246,5 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertFalse(artistDao.deleteArtist(-36L));
     }
 
-    //endregion
+    // endregion
 }

@@ -60,16 +60,17 @@ public class AddItemsServlet extends HttpServlet {
                     if (filePart != null) {
                         inputStream = filePart.getInputStream();
                         byte[] imageBytes = IOUtils.toByteArray(inputStream);
-                        String uploadPath = "../../resources/images/product/" + artistFromRequest.getId();
-                        String realPath = getServletContext().getRealPath("resources/images/product/" + artistFromRequest.getId());
-                        File uploadDir = new File(uploadPath);
+                        String uploadPath = "resources/images/artists/" + artistFromRequest.getId();
+                        String realPath = getServletContext().getRealPath("resources/images/artists/" + artistFromRequest.getId());
+                        File uploadDir = new File(realPath);
                         if (!uploadDir.exists()) {
                             uploadDir.mkdir();
                         }
                         fileName = new File(item.getTitle()).getName();
                         filePath = realPath + File.separator + fileName + ".jpg";
                         FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                        item.setPhotoURL(uploadPath + "/" + fileName + ".jpg");
+                        item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
+
                     }
                 }
 

@@ -142,21 +142,22 @@ public class UserServiceUnitTest extends BaseUnitTest {
     @Test
     public void addUser_addSuccess() {
         // Create argument capture
-        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<User> argument1 = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<ShoppingCard> argument2 = ArgumentCaptor.forClass(ShoppingCard.class);
 
         // Create testUser and testShoppingCard
         testUser = createTestUser();
         ShoppingCard shoppingCard = createTestShoppingCard();
 
         // Setup mocks
-        doNothing().when(userDaoMock).addUser(argument.capture());
+        doNothing().when(userDaoMock).addUser(argument1.capture());
         doNothing().when(shoppingCardDao).addShoppingCard(testUser.getId(),shoppingCard);
 
         // Test method
         userService.addUser(testUser);
 
         // Check input argument
-        assertEquals(testUser, argument.getValue());
+        assertEquals(testUser, argument1.getValue());
     }
 
 
