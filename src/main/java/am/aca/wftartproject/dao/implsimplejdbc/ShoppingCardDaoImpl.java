@@ -204,4 +204,26 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         }
         return success;
     }
+
+    @Override
+    public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Boolean success = false;
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("DELETE FROM shopping_card WHERE buyer_id=?");
+            ps.setLong(1, buyerId);
+            if (ps.executeUpdate() > 0) {
+                success = true;
+            }
+        } catch (SQLException e) {
+            String error = "Failed to delete ShoppingCard by buyerId: %s %s";
+            LOGGER.error(String.format(error, buyerId, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(ps, conn);
+        }
+        return success;
+    }
 }

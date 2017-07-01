@@ -41,7 +41,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
                     "INSERT INTO purchase_history(userId, itemId, purchase_date) VALUES (?,?,?)");
             ps.setLong(1, purchaseHistory.getUserId());
             ps.setLong(2, purchaseHistory.getItemId());
-            ps.setTimestamp(3, getCurrentDateTime());
+            ps.setDate(3, getCurrentDateTime());
             if (ps.executeUpdate() > 0) {
                 purchaseHistory.setPurchaseDate(getCurrentDateTime());
             }
@@ -79,7 +79,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             if (rs.next()) {
                 purchaseHistory.setItemId(rs.getLong("itemId"))
                         .setUserId(rs.getLong("userId"))
-                        .setPurchaseDate(rs.getTimestamp("purchase_date"));
+                        .setPurchaseDate(rs.getDate("purchase_date"));
             } else {
                 return null;
             }
@@ -115,7 +115,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             while (rs.next()) {
                 purchaseHistory.setUserId(rs.getLong("user_id"))
                         .setItemId(rs.getLong("item_id"))
-                        .setPurchaseDate(rs.getTimestamp("purchase_date"));
+                        .setPurchaseDate(rs.getDate("purchase_date"));
 
                 purchaseHistoryList.add(purchaseHistory);
             }

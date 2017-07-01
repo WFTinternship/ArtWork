@@ -8,6 +8,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class ArtistSpecializationServiceImpl implements ArtistSpecializationService {
-
     private static final Logger LOGGER = Logger.getLogger(ArtistService.class);
 
-    private ArtistSpecializationLkpDao lkpDao = null;
+    private final ArtistSpecializationLkpDao lkpDao;
 
-    public void setLkpDao(ArtistSpecializationLkpDao lkpDao) {
+    @Autowired
+    public ArtistSpecializationServiceImpl(ArtistSpecializationLkpDao lkpDao) {
         this.lkpDao = lkpDao;
     }
-
 
     /**
      * @see ArtistSpecializationService#addArtistSpecialization()

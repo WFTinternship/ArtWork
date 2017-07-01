@@ -7,17 +7,17 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.User;
-import am.aca.wftartproject.util.TestObjectTemplate;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.SQLException;
-
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.TestCase.*;
 
 
@@ -25,6 +25,7 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 6/2/2017
  */
+
 public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -45,23 +46,23 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
     }
 
     /**
-     * Creates connection, user, artist, items and purchaseHistory for tests
+     * Creates user, artist, items and purchaseHistory for tests
      * @throws SQLException
      * @throws ClassNotFoundException
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        Artist testArtist = TestObjectTemplate.createTestArtist();
+        Artist testArtist = createTestArtist();
 
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(jdbcTemplate);
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }
 
-        // create test Item,User, purchaseHistory and set them into db
-        testItem = TestObjectTemplate.createTestItem();
+        // Create test Item,User, purchaseHistory and set them into db
+        testItem = createTestItem();
         purchaseHistory = new PurchaseHistory();
-        testUser = TestObjectTemplate.createTestUser();
+        testUser = createTestUser();
         userDao.addUser(testUser);
         testArtist.setId(testUser.getId());
         artistDao.addArtist(testArtist);
@@ -70,10 +71,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
         purchaseHistory.setItemId(testItem.getId());
         purchaseHistory.setUserId(testUser.getId());
 
-        // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        // Print busy connections quantity
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections Start: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
@@ -83,8 +84,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @After
     public void tearDown() throws SQLException {
-
-        // delete inserted test users,artists and items  from db
+        // Delete inserted test users,artists and items  from db
         if (purchaseHistory.getUserId() != null) {
             purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId());
         }
@@ -95,33 +95,32 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
             userDao.deleteUser(testUser.getId());
         }
 
-        // set temp objects ref  to null
+        // Set temp objects ref  to null
         purchaseHistoryDao = null;
         testUser = null;
         testItem = null;
 
-        // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        // Print busy connections quantity
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections End: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
-    //region(TEST_CASE)
+    // region<TEST CASE>
 
     /**
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Test
     public void addPurchase_Success() {
-
-        // check for null purchaseHistory
+        // Check for null purchaseHistory
         assertNotNull(purchaseHistory);
 
-        // add purchaseHistory into db
+        // Add purchaseHistory into db
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
-        // get added purchaseHistory from db and check for sameness with origin
+        // Get added purchaseHistory from db and check for sameness with origin
         PurchaseHistory added = purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId());
         assertEqualPurchaseHistory(added, purchaseHistory);
     }
@@ -131,11 +130,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void addPurchase_Failure() {
-
-        // check for null purchaseHistory
+        // Check for null purchaseHistory
         assertNotNull(purchaseHistory);
 
-        // set out of range value for itemId column and add purchaseHistory into db
+        // Set out of range value for itemId column and add purchaseHistory into db
         purchaseHistory.setItemId(1234567891011L);
         purchaseHistoryDao.addPurchase(purchaseHistory);
     }
@@ -145,15 +143,14 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void getPurchaseHistory_Success() {
-
-        // add purchaseHistory into DB
+        // Add purchaseHistory into DB
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
-        // find and get purchase item from DB
+        // Find and get purchase item from DB
         PurchaseHistory purchaseItem = purchaseHistoryDao.
                 getPurchase(purchaseHistory.getUserId(), purchaseHistory.getItemId());
 
-        // check for sameness with purchaseHistory
+        // Check for sameness with purchaseHistory
         assertEqualPurchaseHistory(purchaseItem, purchaseHistory);
     }
 
@@ -162,11 +159,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void getPurchaseHistory_Failure() {
-
-        // add purchaseHistory into Db
+        // Add purchaseHistory into Db
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
-        // find and get purchase item from DB
+        // Find and get purchase item from DB
         assertNull(purchaseHistoryDao.getPurchase(123456789101112131L, 1234567891889901112L));
     }
 
@@ -175,11 +171,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void getPurchaseHistoryNotEmptyList(){
-
-        // add purchaseHistory into DB
+        // Add purchaseHistory into DB
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
-        // find and get user's purchaseHistory from DB
+        // Find and get user's purchaseHistory from DB
         assertFalse(purchaseHistoryDao.getPurchase(purchaseHistory.getUserId()).isEmpty());
     }
 
@@ -188,11 +183,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void getPurchaseHistoryEmptyList(){
-
-        // add purchaseHistory into DB
+        // Add purchaseHistory into DB
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
-        // find and get user's purchaseHistory from DB
+        // Find and get user's purchaseHistory from DB
         assertTrue(purchaseHistoryDao.getPurchase(6598465L).isEmpty());
     }
 
@@ -201,15 +195,14 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void deletePurchaseHistory_Success() {
-
-        // check for null purchaseHistory
+        // Check for null purchaseHistory
         assertNotNull(purchaseHistory);
 
-        // add purchaseHistory into db, get and check it for null
+        // Add purchaseHistory into db, get and check it for null
         purchaseHistoryDao.addPurchase(purchaseHistory);
         assertNotNull(purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId()));
 
-        // try to delete purchaseHistory
+        // Try to delete purchaseHistory
         assertTrue(purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId()));
         purchaseHistory.setUserId(null);
     }
@@ -219,17 +212,16 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void deletePurchaseHistory_Failure() {
-
-        // check for null purchaseHistory;
+        // Check for null purchaseHistory;
         assertNotNull(purchaseHistory);
 
-        // add purchaseHistory into db, get and check it for null
+        // Add purchaseHistory into db, get and check it for null
         purchaseHistoryDao.addPurchase(purchaseHistory);
         assertNotNull(purchaseHistoryDao.getPurchase(testUser.getId(), testItem.getId()));
 
-        // try to delete purchaseHistory
+        // Try to delete purchaseHistory
         assertFalse(purchaseHistoryDao.deletePurchase(1456325896615358332L, testItem.getId()));
     }
 
-    //endregion
+    // endregion
 }

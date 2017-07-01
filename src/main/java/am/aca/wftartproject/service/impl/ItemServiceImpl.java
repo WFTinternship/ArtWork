@@ -3,6 +3,7 @@ package am.aca.wftartproject.service.impl;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.ShoppingCardDao;
+import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
@@ -42,14 +44,6 @@ public class ItemServiceImpl implements ItemService {
         this.itemDao = itemDao;
     }
 
-    /*
-
-        @Autowired
-        public ItemServiceImpl(PurchaseHistoryDao purchaseHistoryDao, ShoppingCardDao shoppingCardDao) {
-            this.purchaseHistoryDao = purchaseHistoryDao;
-            this.shoppingCardDao = shoppingCardDao;
-        }
-    */
     @Autowired
     public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
         this.purchaseHistoryDao = purchaseHistoryDao;
@@ -335,7 +329,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Add item to the buyer's purchase history
         try {
-            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId(), new Timestamp(Calendar.getInstance().getTimeInMillis())));
+            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId(), new Date(Calendar.getInstance().getTimeInMillis())));
         } catch (DAOException e) {
             String error = "Failed to add item in purchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));

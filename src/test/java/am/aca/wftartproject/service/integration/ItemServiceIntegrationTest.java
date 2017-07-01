@@ -1,5 +1,6 @@
 package am.aca.wftartproject.service.integration;
 
+import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
@@ -15,13 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
 import static am.aca.wftartproject.util.TestObjectTemplate.*;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
- * @author surik
+ * Created by ASUS on 30-Jun-17
  */
-public class ItemServiceIntegrationTest extends BaseIntegrationTest{
+public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     private Artist testArtist;
     private Item testItem;
     private Item tempItem;
@@ -65,6 +67,10 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest{
             shoppingCardService.deleteShoppingCard(testShoppingCard.getId());
         }
 
+        if (testArtist.getShoppingCard() != null) {
+            shoppingCardService.deleteShoppingCardByBuyerId(testArtist.getId());
+        }
+
         if (testArtist.getId() != null) {
             artistService.deleteArtist(testArtist.getId());
         }
@@ -77,12 +83,240 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest{
     // region<TEST CASE>
 
     /**
+     * @see ItemServiceImpl#addItem(java.lang.Long, am.aca.wftartproject.model.Item)
+     */
+    @Test
+    public void addItem_Success() {
+        // Check testArtist and its id for null
+        assertNotNull(testArtist);
+        assertNotNull(testArtist.getId());
+
+        // Add item into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Find added item from DB
+        Item addedItem = itemService.findItem(testItem.getId());
+
+        // Check sameness items
+        assertEqualItems(addedItem, testItem);
+    }
+
+    /**
+     * @see ItemServiceImpl#addItem(java.lang.Long, am.aca.wftartproject.model.Item)
+     */
+    @Test(expected = InvalidEntryException.class)
+    public void addItem_Failure() {
+        // Test method
+        itemService.addItem(testArtist.getId(), null);
+    }
+
+    /**
+     * @see ItemServiceImpl#findItem(java.lang.Long)
+     */
+    @Test
+    public void findItem_Success() {
+        // Add item into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Find added item from DB
+        Item foundedItem = itemService.findItem(testItem.getId());
+
+        // Check sameness items
+        assertNotNull(testItem);
+        assertEqualItems(foundedItem, testItem);
+    }
+
+    /**
+     * @see ItemServiceImpl#findItem(java.lang.Long)
+     */
+    @Test(expected = InvalidEntryException.class)
+    public void findItem_Failure() {
+        // Test method
+        itemService.findItem(-5L);
+    }
+
+    /**
+     * @see ItemServiceImpl#getRecentlyAddedItems(int)
+     */
+    @Test
+    public void getRecentlyAddedItems_NotEmptyList() {
+        // Add items into Db
+        itemService.addItem(testArtist.getId(), testItem);
+        itemService.addItem(testArtist.getId(), tempItem);
+
+        // Test method and check
+        List<Item> recentlyAddedItems = itemService.getRecentlyAddedItems(1);
+        assertEqualItems(tempItem, recentlyAddedItems.get(0));
+    }
+
+    /**
+     * @see ItemServiceImpl#getRecentlyAddedItems(int)
+     */
+    @Test(expected = InvalidEntryException.class)
+    public void getRecentlyAddedItems_EmptyList() {
+        // Test method
+        itemService.getRecentlyAddedItems(-1);
+    }
+
+    /**
+     * @see ItemServiceImpl#getItemsByTitle(java.lang.String)
+     */
+    @Test
+    public void getItemsByTitle_NotEmptyList() {
+        testItem.setTitle("itemTitle");
+        // Add item into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        List<Item> items = itemService.getItemsByTitle(testItem.getTitle());
+        assertEqualItems(testItem, items.get(0));
+    }
+
+    /**
+     * @see ItemServiceImpl#getItemsByTitle(java.lang.String)
+     */
+    @Test
+    public void getItemsByTitle_EmptyList() {
+        // Test method
+        List<Item> items = itemService.getItemsByTitle("fake title");
+        assertTrue(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#getItemsByType(java.lang.String)
+     */
+    @Test
+    public void getItemsByType_NotEmptyList() {
+        // Add item into Db
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        List<Item> items = itemService.getItemsByType(testItem.getItemType().getType());
+        Item recentlyAddedItem = null;
+        for (Item item : items) {
+            if (item.equals(testItem)) {
+                recentlyAddedItem = item;
+                break;
+            }
+        }
+        assertNotNull(recentlyAddedItem);
+        assertEqualItems(testItem, recentlyAddedItem);
+    }
+
+    /**
+     * @see ItemServiceImpl#getItemsByType(java.lang.String)
+     */
+    @Test
+    public void getItemsByType_EmptyList() {
+        // Test method
+        List<Item> items = itemService.getItemsByType("fake type");
+        assertTrue(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#getItemsForGivenPriceRange(java.lang.Double, java.lang.Double)
+     */
+    @Test
+    public void getItemsForGivenPriceRange_NotEmptyList() {
+        // Add testIem into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        List<Item> items = itemService.getItemsForGivenPriceRange(testItem.getPrice() - 100.0, testItem.getPrice() + 100.0);
+        assertFalse(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#getItemsForGivenPriceRange(java.lang.Double, java.lang.Double)
+     */
+    @Test
+    public void getItemsForGivenPriceRange_EmptyList() {
+        // Test method
+        List<Item> items = itemService.getItemsForGivenPriceRange(0.0, 1.0);
+//TODO
+        assertTrue(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#getArtistItems(java.lang.Long, java.lang.Long, java.lang.Long)
+     */
+    @Test
+    public void getArtistItems_NotEmptyList() {
+        // Add test items into DB
+        itemService.addItem(testArtist.getId(), testItem);
+        itemService.addItem(testArtist.getId(), tempItem);
+
+        // Test method
+        List<Item> items = itemService.getArtistItems(testArtist.getId(), testItem.getId(), 1L);
+
+        assertFalse(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#getArtistItems(java.lang.Long, java.lang.Long, java.lang.Long)
+     */
+    @Test
+    public void getArtistItems_EmptyList() {
+        // Add testItem into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        List<Item> items = itemService.getArtistItems(testArtist.getId(), testItem.getId(), 10L);
+        assertTrue(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#updateItem(java.lang.Long, am.aca.wftartproject.model.Item)
+     */
+    @Test
+    public void updateItem_Success() {
+        // Add test item into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Change testItem for update
+        testItem.setDescription("new description");
+
+        // Test method
+        itemService.updateItem(testItem.getId(), testItem);
+    }
+
+    /**
+     * @see ItemServiceImpl#updateItem(java.lang.Long, am.aca.wftartproject.model.Item)
+     */
+    @Test(expected = InvalidEntryException.class)
+    public void updateItem_Failure() {
+        // Test method
+        itemService.updateItem(null, testItem);
+    }
+
+    /**
+     * @see ItemServiceImpl#deleteItem(java.lang.Long)
+     */
+    @Test
+    public void deleteItem_Success() {
+        // Add item into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        itemService.deleteItem(testItem.getId());
+        testItem.setId(null);
+    }
+
+    /**
+     * @see ItemServiceImpl#deleteItem(java.lang.Long)
+     */
+    @Test(expected = InvalidEntryException.class)
+    public void deleteItem_Failure() {
+        // Test method
+        itemService.deleteItem(testItem.getId());
+    }
+
+    /**
      * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
      */
     @Test
     public void itemBuying_Success() {
-        // Create testShoppingCard and TestPurchaseHistory
-        Long buyerId = 5L;
+        // Create testShoppingCard and testPurchaseHistory
         testPurchaseHistory = createTestPurchaseHistory();
         testItem.setPrice(1000.0);
         testShoppingCard.setBalance(10000.0);
@@ -91,7 +325,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest{
         itemService.addItem(testArtist.getId(), testItem);
 
         // Test method
-        itemService.itemBuying(testItem, buyerId);
+        itemService.itemBuying(testItem, testArtist.getId());
 
         List<Item> purchaseItems = itemService.getItemsByTitle(testItem.getTitle());
 
@@ -108,5 +342,5 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest{
 
 
     // endregion
-
 }
+

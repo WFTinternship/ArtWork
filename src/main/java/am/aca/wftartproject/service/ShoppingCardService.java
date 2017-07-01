@@ -24,6 +24,14 @@ public interface ShoppingCardService {
     ShoppingCard getShoppingCard(Long id);
 
     /**
+     * Gets shoppingCard from database by buyerId
+     *
+     * @param buyerId
+     * @return
+     */
+    ShoppingCard getShoppingCardByBuyerId(Long buyerId);
+
+    /**
      * Updates shoppingCard in database.
      *
      * @param id
@@ -46,4 +54,11 @@ public interface ShoppingCardService {
      * @param id
      */
     void deleteShoppingCard(Long id);
+
+    /**
+     * Deletes shoppingCard by buyerId.
+     *
+     * @param buyerId
+     */
+    void deleteShoppingCardByBuyerId(Long buyerId);
 }

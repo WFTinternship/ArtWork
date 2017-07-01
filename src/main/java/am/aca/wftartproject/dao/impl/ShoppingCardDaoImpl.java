@@ -6,25 +6,29 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 /**
  * Created by ASUS on 27-May-17
  */
+@Component
 public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
-    public ShoppingCardDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public ShoppingCardDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -53,6 +57,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             int rowsAffected = jdbcTemplate.update(psc, keyHolder);
             if (rowsAffected > 0) {
                 shoppingCard.setId(keyHolder.getKey().longValue());
+                shoppingCard.setBuyerId(userId);
             } else {
                 throw new DAOException("Failed to add ShoppingCard");
             }
@@ -287,5 +292,25 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //        return success;
 
         //endregion
+    }
+
+    @Override
+    public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
+        Boolean status;
+        try {
+            String query = "DELETE FROM shopping_card WHERE buyer_id=?";
+
+            int rowsAffected = jdbcTemplate.update(query, buyerId);
+            if (rowsAffected <= 0) {
+                throw new DAOException("Failed to delete ShoppingCard by buyerId");
+            } else {
+                status = true;
+            }
+        } catch (DataAccessException e) {
+            String error = "Failed to delete ShoppingCard: %s buyerId: %s";
+            LOGGER.error(String.format(error, e.getMessage(), buyerId));
+            throw new DAOException(error, e);
+        }
+        return status;
     }
 }

@@ -39,7 +39,6 @@ public interface ShoppingCardDao {
      */
     Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard);
 
-
     /**
      * Debits balance for item buying
      *
@@ -49,11 +48,18 @@ public interface ShoppingCardDao {
      */
     Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice);
 
-
     /**
      * Deletes shoppingCard by id.
      *
      * @param id
      */
     Boolean deleteShoppingCard(Long id);
+
+    /**
+     * Deletes shoppingCard by buyerId
+     *
+     * @param buyerId
+     * @return
+     */
+    Boolean deleteShoppingCardByBuyerId(Long buyerId);
 }

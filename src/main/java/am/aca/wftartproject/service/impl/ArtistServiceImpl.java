@@ -22,18 +22,21 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 @Service
 @Transactional(readOnly = true)
 public class ArtistServiceImpl implements ArtistService {
-
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
-    private ArtistDao artistDao;
+    private final ArtistDao artistDao;
 
     @Autowired
-    private ShoppingCardDao shoppingCardDao;
-
-    public void setArtistDao(ArtistDao artistDao) {
+    public ArtistServiceImpl(ArtistDao artistDao) {
         this.artistDao = artistDao;
     }
 
+    private ShoppingCardDao shoppingCardDao;
+
+    @Autowired
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
 
     /**
      * @param artist

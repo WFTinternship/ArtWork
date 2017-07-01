@@ -8,6 +8,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +21,12 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
 
-    private ShoppingCardDao shoppingCardDao;
+    private final ShoppingCardDao shoppingCardDao;
 
-    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+    @Autowired
+    public ShoppingCardServiceImpl(ShoppingCardDao shoppingCardDao) {
         this.shoppingCardDao = shoppingCardDao;
     }
-
 
     /**
      * @see ShoppingCardService#addShoppingCard(Long, ShoppingCard)
@@ -46,7 +47,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             shoppingCardDao.addShoppingCard(userId, shoppingCard);
         }catch (DAOException e){
-            String error = "Failed to add ShoppingCard";
+            String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
@@ -67,8 +68,28 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             return shoppingCardDao.getShoppingCard(id);
         }catch (DAOException e){
-            String error = "Failed to get ShoppingCard";
+            String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
+
+    /**
+     * @see ShoppingCardService#getShoppingCardByBuyerId(Long)
+     * @param buyerId
+     * @return
+     */
+    @Override
+    public ShoppingCard getShoppingCardByBuyerId(Long buyerId) {
+        if (buyerId == null || buyerId < 0){
+            LOGGER.error(String.format("BuyerId is not valid: %s", buyerId));
+            throw new InvalidEntryException("Invalid buyerId");
+        }
+        try {
+            return shoppingCardDao.getShoppingCardByBuyerId(buyerId);
+        }catch (DAOException e){
+            String error = "Failed to get ShoppingCard by buyerID: %s %s";
+            LOGGER.error(String.format(error, buyerId, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
     }
@@ -139,6 +160,24 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             if (!shoppingCardDao.deleteShoppingCard(id)){
                 throw new DAOException("Failed to delete shopping card");
+            }
+        }catch (DAOException e){
+            String error = "Failed to delete ShoppingCard: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteShoppingCardByBuyerId(Long buyerId) {
+        if (buyerId == null || buyerId < 0){
+            LOGGER.error(String.format("BuyerId is not valid: %s", buyerId));
+            throw new InvalidEntryException("Invalid buyerId");
+        }
+        try {
+            if (!shoppingCardDao.deleteShoppingCardByBuyerId(buyerId)){
+                throw new DAOException("Failed to delete shopping card by buyerId");
             }
         }catch (DAOException e){
             String error = "Failed to delete ShoppingCard";

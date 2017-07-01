@@ -25,15 +25,19 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
-    private UserDao userDao;
+    private final UserDao userDao;
 
-    @Autowired
     private ShoppingCardDao shoppingCardDao;
 
-    public void setUserDao(UserDao userDao) {
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    @Autowired
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
 
     /**
      * @param user

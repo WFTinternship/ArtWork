@@ -5,14 +5,15 @@ import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
@@ -20,12 +21,14 @@ import java.util.List;
 /**
  * Created by ASUS on 27-May-17
  */
+@Component
 public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
-    public ItemDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public ItemDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -54,13 +57,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setString(5, item.getPhotoURL());
                 ps.setBoolean(6, item.getStatus());
                 ps.setString(7, item.getItemType().getType());
-                ps.setTimestamp(8, item.getAdditionDate());
+                ps.setDate(8, item.getAdditionDate());
                 return ps;
             };
 
             int rowsAffected = jdbcTemplate.update(psc, keyHolder);
             if (rowsAffected > 0) {
                 item.setId(keyHolder.getKey().longValue());
+                item.setArtistId(artistID);
             } else {
                 throw new DAOException("Failed to add Item");
             }

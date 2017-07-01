@@ -99,10 +99,9 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     public void addArtist_exists() {
         // Create test artist
         testArtist = createTestArtist();
-        Artist fakeDbArtist = new Artist();
 
         // Setup mock
-        doReturn(fakeDbArtist).when(artistDaoMock).findArtist(testArtist.getEmail());
+        doReturn(null).when(artistDaoMock).findArtist(testArtist.getEmail());
 
         // Try to add user into db
         // Test method

@@ -58,9 +58,9 @@ public abstract class BaseDaoImpl {
     }
 
 
-    Timestamp getCurrentDateTime(){
+    Date getCurrentDateTime(){
         Calendar cal = Calendar.getInstance();
-        return new Timestamp(cal.getTimeInMillis());
+        return new Date(cal.getTimeInMillis());
     }
 
     double getRandomBalance(){
