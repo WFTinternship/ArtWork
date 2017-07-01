@@ -106,10 +106,12 @@ public class AccountController {
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
-                finduser = userService.findUser(user.getId());
-                request.setAttribute("user", finduser);
-                if (user != null) {
-                    response.setContentType("text/html");
+                if(user != null){
+                    finduser = userService.findUser(user.getId());
+                    request.setAttribute("user", finduser);
+                }
+                if (finduser != null) {
+                    finduser.setUserPasswordRepeat(finduser.getPassword());
                     if (request.getParameter("firstname") != null && !request.getParameter("firstname").isEmpty()) {
                         finduser.setFirstName(request.getParameter("firstname"));
                         counter++;
@@ -124,6 +126,7 @@ public class AccountController {
                     }
                     if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() &&  request.getParameter("oldpassword").equals(finduser.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
                         finduser.setPassword(request.getParameter("newpassword"));
+                        finduser.setUserPasswordRepeat(request.getParameter("retypepassword"));
                         message = "Your password was successfully changed";
                         counter++;
                     }
@@ -146,9 +149,11 @@ public class AccountController {
                 }
             } else if (session.getAttribute("user").getClass() == Artist.class) {
                 artist = (Artist) session.getAttribute("user");
-                findArtist = artistService.findArtist(artist.getId());
-                if (artist != null) {
-                    response.setContentType("text/html");
+                if(artist != null){
+                    findArtist = artistService.findArtist(artist.getId());
+                }
+                if (findArtist != null) {
+                    findArtist.setUserPasswordRepeat(findArtist.getPassword());
                     if ( request.getParameter("firstname") != null && !request.getParameter("firstname").isEmpty()) {
                         findArtist.setFirstName(request.getParameter("firstname"));
                     }
@@ -163,6 +168,7 @@ public class AccountController {
                     }
                     if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() &&  request.getParameter("oldpassword").equals(findArtist.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
                         findArtist.setPassword(request.getParameter("newpassword"));
+                        findArtist.setUserPasswordRepeat(request.getParameter("retypepassword"));
                     }
                     if ((image) != null) {
                         byte[] imageBytes = image.getBytes();
