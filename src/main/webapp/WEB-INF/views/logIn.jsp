@@ -28,7 +28,7 @@
 <body>
 <header class="cd-main-header">
     <c:if test="${errorMessage!=null}">
-        <h1 style="color:red;">${errorMessage}</h1>
+        <h2 style="color:red;">${errorMessage}</h2>
     </c:if>
     <h1>Log In</h1>
 </header>

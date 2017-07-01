@@ -194,7 +194,7 @@
                                 <!-- **product-container - Starts** -->
                                 <div class="product-container">
                                     <a href="item-detail/${itemElement.id}">
-                                        <div class="product-thumb"><img src="${itemElement.photoURL}" alt="image"/>
+                                        <div class="product-thumb"><img src="${itemElement.photoURL[0]}" alt="image"/>
                                         </div>
                                     </a>
                                     <!-- **product-title - Starts** -->

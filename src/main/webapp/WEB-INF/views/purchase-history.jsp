@@ -109,8 +109,7 @@
 
                                             <thead>
                                             <tr>
-                                                <th>User ID</th>
-                                                <th>Item ID</th>
+                                                <th>Price</th>
                                                 <th>Date</th>
                                                 <th>Item</th>
                                             </tr>
@@ -118,29 +117,12 @@
                                             <tbody>
                                                 <c:forEach items="${purchaseHistory}" var="element">
                                                 <tr>
-                                                    <td>${element.userId}</td>
-                                                    <td>${element.itemId}</td>
+                                                    <td>${element.item.price}</td>
                                                     <td>${element.purchaseDate}</td>
-
-                                                    <td>
-                                                            <!-- **product-container - Starts** -->
-                                                        <div class="product-container">
-                                                                <a href="item-detail/${element.item.id}">
-                                                                    <div class="product-thumb"><img src="${element.item.photoURL}" width="150px" height="150px" alt="image"/>
-                                                                    </div>
-                                                                </a>
-                                                                <!-- **product-title - Starts** -->
-                                                                <div class="product-details">
-                                                                    <c:if test="${itemElement.status==false}">
-                                                                        <p><h1><div style="text-align: center;">SOLD</div></h1></p>
-                                                                    </c:if>
-                                                                </div> <!-- **product-title - Ends** -->
-                                                            <!-- **product-details - Starts** -->
-                                                            <div class="product-title">
-                                                                <h5><a href="/item-detail/${element.item.id}"> ${element.item.title} </a></h5>
-                                                                <span class="amount"> $${element.item.price} </span>
-                                                            </div> <!-- **product-details - Ends** -->
-                                                        </div>
+                                                        <td>
+                                                        <a href="item-detail/${element.item.id}" class="product">
+                                                            <img src="${pageContext.request.contextPath}/${element.item.photoURL[0]}"
+                                                                 alt="" height="50" width="50" title=""></a>
                                                     </td>
                                                 </tr>
                                                 </c:forEach>

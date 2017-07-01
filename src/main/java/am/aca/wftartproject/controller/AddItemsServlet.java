@@ -72,7 +72,7 @@ public class AddItemsServlet extends HttpServlet {
                         fileName = new File(item.getTitle()).getName();
                         filePath = realPath + File.separator + fileName + ".jpg";
                         FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                        item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
+                 //       item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
 
                     }
                 }

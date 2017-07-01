@@ -13,14 +13,21 @@ public abstract class AbstractUser {
     int age;
     String email;
     String password;
-    String repeatPassword;
+    String userPasswordRepeat;
     ShoppingCard shoppingCard;
+
+    public String getUserPasswordRepeat() {
+        return userPasswordRepeat;
+    }
+
+    public AbstractUser setUserPasswordRepeat(String userPasswordRepeat) {
+        this.userPasswordRepeat = userPasswordRepeat;
+        return this;
+    }
+
 
     public Long getId() {
         return id;
-    }
-    public String getRepeatPassword() {
-        return repeatPassword;
     }
     public AbstractUser setId(Long id) {
         this.id = id;
@@ -89,8 +96,8 @@ public abstract class AbstractUser {
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password)&&
-                password.equals(repeatPassword);
+                !isEmptyString(password);
+           //     password.equals(userPasswordRepeat);
 //                &&
 //                shoppingCard.isValidShoppingCard();
     }

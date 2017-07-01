@@ -109,7 +109,7 @@
                                     <c:choose>
                                         <c:when test="${message!=null}">
                                             <header class="cd-main-header">
-                                                <h2 style="color:red;">${message}</h2>
+                                                <h3 style="color:red;">${message}</h3>
                                             </header>
                                         </c:when>
                                         <c:otherwise>
@@ -127,7 +127,7 @@
                                                     <div class="product-container">
                                                         <a href="/item-detail/${itemElement.id}">
                                                             <div class="product-thumb"><img
-                                                                    src="${itemElement.photoURL}" alt="image"/></div>
+                                                                    src="${itemElement.photoURL[0]}" alt="image"/></div>
                                                         </a>
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
@@ -141,7 +141,7 @@
                                                     </div> <!-- **product-container - Ends** -->
                                                     <!-- **product-details - Starts** -->
                                                     <div class="product-details">
-                                                        <h5><a href="shop-detail"> ${itemElement.title} </a></h5>
+                                                        <h5><a href="item-detail/${itemElement.id}"> ${itemElement.title} </a></h5>
                                                         <span class="amount"> $${itemElement.price} </span>
                                                     </div> <!-- **product-details - Ends** -->
                                                 </li>

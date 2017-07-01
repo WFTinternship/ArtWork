@@ -27,7 +27,7 @@
 <div class="form">
 
     <c:if test="${errorMessage!=null}">
-        <h2>${errorMessage}</h2>
+        <h3>${errorMessage}</h3>
     </c:if>
     <ul class="tab-group">
         <li class="tab active"><a href="#signup">Sign Up</a></li>

@@ -97,16 +97,25 @@
                     <div class="cart-wrapper"><!-- *cart-wrapper starts here** -->
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
-                                <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL}">
-                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL}" alt="" title="Acrylic">
+                                <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
+                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[1]}" alt="" title="Acrylic">
                                 </a>
                             </div>
+                            <ul class="thumblist">
+                                <c:forEach items="${itemDetail.photoURL}" var="itemElement">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/${itemElement}" class="product">
+                                            <img src="${pageContext.request.contextPath}/${itemElement}"
+                                                alt="" height="150" width="150" title=""></a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
                             <h5>more from this artist</h5>
                             <ul class="thumblist">
                                 <c:forEach items="${artistItems}" var="itemElement">
                                     <li>
                                         <a href="/item-detail/${itemElement.id}" class="product"><img
-                                                src="${pageContext.request.contextPath}/${itemElement.photoURL}"
+                                                src="${pageContext.request.contextPath}/${itemElement.photoURL[0]}"
                                                 alt="" height="150" width="150" title=""></a>
                                     </li>
                                 </c:forEach>

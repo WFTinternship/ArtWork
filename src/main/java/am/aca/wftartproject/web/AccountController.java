@@ -25,7 +25,9 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Created by Armen on 6/26/2017.
@@ -214,9 +216,10 @@ public class AccountController {
     }
 
     @RequestMapping(value = {"additem"}, method = RequestMethod.POST)
-    public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+    public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "files", required = false) MultipartFile [] image) throws IOException {
         HttpSession session = request.getSession();
         String message = "";
+        List<String> photoUrl = new ArrayList<>();
         item = new Item();
         if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
             artist = (Artist) session.getAttribute("user");
@@ -228,18 +231,25 @@ public class AccountController {
                     item.setDescription(request.getParameter("description"));
                     item.setItemType(ItemType.valueOf(request.getParameter("type")));
                     item.setPrice(Double.parseDouble(request.getParameter("price")));
-                    byte[] imageBytes = image.getBytes();
-                    String uploadPath = "resources/images/artists/" + artist.getId();
-                    String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
-                    File uploadDir = new File(realPath);
-                    if (!uploadDir.exists()) {
-                        uploadDir.mkdir();
+                    item.setTitle(request.getParameter("title"));
+                    item.setDescription(request.getParameter("description"));
+                    item.setItemType(ItemType.valueOf(request.getParameter("type")));
+                    item.setPrice(Double.parseDouble(request.getParameter("price")));
+                    for(MultipartFile multipartFile:image){
+                        byte[] imageBytes = multipartFile.getBytes();
+                        String uploadPath = "resources/images/artists/" + artist.getId();
+                        String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
+                        File uploadDir = new File(realPath);
+                        if (!uploadDir.exists()) {
+                            uploadDir.mkdir();
+                        }
+                        String fileName = multipartFile.getOriginalFilename();
+                        String filePath = realPath + File.separator + fileName + ".jpg";
+                        FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+                        photoUrl.add(uploadPath + File.separator + fileName + ".jpg");
                     }
-                    String fileName = item.getTitle();
-                    String filePath = realPath + File.separator + fileName + ".jpg";
-                    FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                    item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
                     try {
+                        item.setPhotoURL(photoUrl);
                         itemService.addItem(artist.getId(), item);
                         message = "Your ArtWork has been successfully added, Now you can see it in My ArtWork page";
                     } catch (ServiceException e) {

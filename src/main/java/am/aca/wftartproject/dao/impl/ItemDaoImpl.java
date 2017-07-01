@@ -52,7 +52,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setString(2, item.getDescription());
                 ps.setDouble(3, item.getPrice());
                 ps.setLong(4, artistID);
-                ps.setString(5, item.getPhotoURL());
+                ps.setString(5, item.getPhotoURL().toString().substring(1,item.getPhotoURL().toString().length()-1));
+                //ps.setString(5,item.getPhotoURL());
                 ps.setBoolean(6, true);
                 ps.setString(7, item.getItemType().getType());
                 ps.setDate(8, item.getAdditionDate());

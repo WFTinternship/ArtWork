@@ -19,13 +19,14 @@ public class User extends AbstractUser {
         this.password = password;
     }
 
-    public User(String firstName, String lastName, int age, String email, String password, ShoppingCard shoppingCard) {
+    public User(String firstName, String lastName, int age, String email, String password,String userPasswordRepeat, ShoppingCard shoppingCard) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.password = password;
         this.shoppingCard = shoppingCard;
+        this.userPasswordRepeat = userPasswordRepeat;
     }
 
     @Override

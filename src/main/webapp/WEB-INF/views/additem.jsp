@@ -6,14 +6,15 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>' />
-<c:set var="errorMessage" value='<%=request.getAttribute("errorMessage")%>' />
+<c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
+<c:set var="Message" value='<%=request.getAttribute("errorMessage")%>'/>
 
 <!Doctype html>
-<!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en-gb" class="no-js"> <!--<![endif]-->
+<!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
+<!--[if IE 8 ]> <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
+<!--[if IE 9 ]> <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en-gb" class="no-js"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
@@ -29,35 +30,39 @@
     <![endif]-->
 
     <%--<script>submitForms = function(){--%>
-        <%--document.getElementById("form1").submit();--%>
-        <%--document.getElementById("form2").submit();--%>
+    <%--document.getElementById("form1").submit();--%>
+    <%--document.getElementById("form2").submit();--%>
     <%--}</script>--%>
+    <script>  function dothat() {
+        var div = document.getElementById('fileuploads');
+        var field = div.getElementsByTagName('input')[0];
 
-    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
+        div.appendChild(document.createElement("br"));
+        div.appendChild(field.cloneNode(false));
+    }</script>
+
+    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon"/>
 
     <!-- **CSS - stylesheets** -->
-    <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css" rel="stylesheet"/>
-    <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all" />
-    <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css" rel="stylesheet"/>
-
-
-
-
-
+    <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css"
+          rel="stylesheet"/>
+    <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all"/>
+    <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css"
+          rel="stylesheet"/>
     <!-- **Additional - stylesheets** -->
-    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all"/>
     <link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
 
-    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
-    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="../../resources/css/responsive.css" type="text/css" media="all"/>
     <script src="../../resources/js/modernizr.js"></script> <!-- Modernizr -->
 
-    <link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all" />
+    <link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all"/>
 
     <!-- **Font Awesome** -->
-    <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
 
 </head>
 
@@ -70,7 +75,7 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
     <div class="inner-wrapper">
-        <jsp:include page="header.jsp" />
+        <jsp:include page="header.jsp"/>
         <div id="main">
             <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -107,9 +112,9 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <c:choose>
-                                        <c:when test="${errorMessage!=null}">
+                                        <c:when test="${Message!=null}">
                                             <header class="cd-main-header">
-                                                <h2 style="color:red;">${errorMessage}</h2>
+                                                <h3 style="color:red;">${Message}</h3>
                                             </header>
                                         </c:when>
                                         <c:otherwise>
@@ -123,33 +128,60 @@
                                             <div class="col-md-6 col-sm-6">
                                                 <!-- edit personal details -->
                                                 <%--<div class="form-group">--%>
-                                                  <%----%>
+                                                <%----%>
                                                 <%--</div>--%>
 
-                                                <form action="/additem" method="post" id="form2" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label for="imageUpload">Choose Item Image</label>
-                                                        <input type="file" id="imageUpload" name="image"  />
-                                                        <img src="" id="imagePreview" alt="" width="200px"/><br/>
-                                                    </div>
+                                                <form action="/additem" method="post" id="form2"
+                                                      enctype="multipart/form-data">
+                                                    <%--<div class="form-group">--%>
+                                                    <%--<label for="imageUpload">Choose Image</label>--%>
+                                                    <%--<input type="file" id="imageUpload" name="image"  />--%>
+                                                    <%--<img src="" id="imagePreview" alt="" width="200px"/><br/>--%>
+                                                    <%--</div>--%>
+
+                                                    <%--Upload File 1: <input type="file" name="file"> <br/>--%>
+                                                    <%--Upload File 2: <input type="file" name="file"> <br/>--%>
+                                                    <%--Upload File 3: <input type="file" name="file"> <br/>--%>
+                                                    <%--Upload File 4: <input type="file" name="file"> <br/>--%>
+
+                                                    <table border="2" align="left">
+                                                        <tr>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <div id="fileuploads" align="left">
+                                                                <input type="file" name="files" id="fileField"/>
+                                                            </div>
+                                                        </tr>
+                                                        <td align="left">
+
+                                                            <input type="button" name="addmore" class="btn btn-warning"
+                                                                   id="addmore" style="width: 100%;height: 100%" value="Add Another Imaage(Optional)" onClick="dothat();"/>
+                                                        </td>
+                                                    </table>
+
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
-                                                        <input type="text" name="title" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+                                                        <input type="text" name="title" class="form-control"
+                                                               id="exampleInput1" placeholder="Brennan Doe">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput2">Description</label>
-                                                        <input type="text" name="description" class="form-control" id="exampleInput2" placeholder=" write descritpion ">
+                                                        <input type="text" name="description" class="form-control"
+                                                               id="exampleInput2" placeholder=" write descritpion ">
                                                     </div>
                                                     <label for="exampleInput171">Art Type</label>
                                                     <select class="shop-dropdown" name="type" id="exampleInput171">
                                                         <option value="-1" selected>Choose art type</option>
                                                         <c:forEach items="${itemTypes}" var="element">
-                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-flask">${element.type}</option>
+                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''}
+                                                                    class="fa fa-flask">${element.type}</option>
                                                         </c:forEach>
                                                     </select>
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
-                                                        <input type="text" name="price" class="form-control" id="exampleInput3" placeholder="100$">
+                                                        <input type="text" name="price" class="form-control"
+                                                               id="exampleInput3" placeholder="100$">
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
                                                 </form>

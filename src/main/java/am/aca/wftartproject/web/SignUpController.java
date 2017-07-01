@@ -44,9 +44,9 @@ public class SignUpController {
             user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
             userService.addUser(user);
             page = "index";
-            request.setAttribute("message","Hi " + user.getFirstName());
+            request.getSession().setAttribute("message","Hi " + user.getFirstName());
             HttpSession session = request.getSession(true);
-            session.setAttribute("user", user);
+            request.getSession().setAttribute("user", user);
             Cookie userEmail = new Cookie("userEmail", user.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);

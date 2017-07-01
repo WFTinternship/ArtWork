@@ -6,8 +6,8 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="user" value='<%=session.getAttribute("user")%>' />
-<c:set var="message" value='<%=request.getAttribute("message")%>' />
+<c:set var="user" value='<%=request.getSession().getAttribute("user")%>' />
+<c:set var="message" value='<%=request.getSession().getAttribute("message")%>' />
 
 
 
@@ -37,11 +37,6 @@
     <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css" rel="stylesheet"/>
 	<link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all" />
     <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css" rel="stylesheet"/>
-
-
-
-
-	
     <!-- **Additional - stylesheets** -->
     <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all" />
 	<link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
@@ -107,7 +102,7 @@
 									<c:choose>
 										<c:when test="${message!=null}">
 											<header class="cd-main-header">
-												<h2 style="color:red;">${message}</h2>
+												<h3 style="color:red;">${message}</h3>
 											</header>
 										</c:when>
 										<c:otherwise>
