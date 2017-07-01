@@ -50,6 +50,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#addItem(Long, Item)
      */
+    @Transactional(readOnly = false)
     @Override
     public void addItem(Long artistID, Item item) {
 
@@ -215,6 +216,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#updateItem(Long, Item)
      */
+    @Transactional(readOnly = false)
     @Override
     public void updateItem(Long id, Item item) {
         if (id == null || id < 0) {
@@ -240,6 +242,7 @@ public class ItemServiceImpl implements ItemService {
      * @param id
      * @see ItemService#deleteItem(Long)
      */
+    @Transactional(readOnly = false)
     @Override
     public void deleteItem(Long id) {
         if (id == null || id < 0) {
@@ -262,7 +265,7 @@ public class ItemServiceImpl implements ItemService {
      * @param buyerId
      * @see ItemService#itemBuying(Item, Long)
      */
-    @Transactional
+    @Transactional(readOnly = false)
     public void itemBuying(Item item, Long buyerId) {
         if (buyerId == null || buyerId < 0) {
             LOGGER.error(String.format("buyerId is not valid: %s", buyerId));

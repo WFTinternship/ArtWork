@@ -33,6 +33,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     /**
      * @see ArtistSpecializationService#addArtistSpecialization()
      */
+    @Transactional(readOnly = false)
     @Override
     public void addArtistSpecialization() {
         try {
@@ -82,6 +83,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
     /**
      * @see ArtistSpecializationService#deleteArtistSpecialization()
      */
+    @Transactional(readOnly = false)
     @Override
     public void deleteArtistSpecialization() {
         try {

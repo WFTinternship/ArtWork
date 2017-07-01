@@ -42,6 +42,7 @@ public class SignUpController {
         String page = "";
         try {
             user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
+            user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
             userService.addUser(user);
             page = "index";
             request.getSession().setAttribute("message","Hi " + user.getFirstName());
@@ -73,7 +74,7 @@ public class SignUpController {
                     .setLastName(request.getParameter("lastName"))
                     .setAge(Integer.parseInt(request.getParameter("age")))
                     .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password"));
+                    .setPassword(request.getParameter("password")).setUserPasswordRepeat(request.getParameter("passwordRepeat"));
         }
         else{
             message = "No chages, empty fields or Incorrect Data";

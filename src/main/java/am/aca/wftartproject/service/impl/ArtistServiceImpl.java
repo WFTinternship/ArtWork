@@ -44,11 +44,13 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#addArtist(Artist)
      */
+    @Transactional(readOnly = false)
     @Override
     public void addArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
+            String error = "Incorrect data or Empty fields ";
             LOGGER.error(String.format("Artist is not valid: %s", artist));
-            throw new InvalidEntryException("Invalid artist");
+            throw new InvalidEntryException(error);
         }
         if (artistDao.findArtist(artist.getEmail()) != null) {
             String error = "User has already exists";
@@ -123,6 +125,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#updateArtist(Long, Artist)
      */
+    @Transactional(readOnly = false)
     @Override
     public void updateArtist(Long id, Artist artist) {
         if (id == null || id < 0) {
@@ -148,6 +151,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @param id
      * @see ArtistService#deleteArtist(Long)
      */
+    @Transactional(readOnly = false)
     @Override
     public void deleteArtist(Long id) {
         if (id == null || id < 0) {

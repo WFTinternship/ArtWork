@@ -32,6 +32,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @see PurchaseHistoryService#addPurchase(PurchaseHistory)
      * @param purchaseHistory
      */
+    @Transactional(readOnly = false)
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
@@ -104,6 +105,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @param userId
      * @param itemId
      */
+    @Transactional(readOnly = false)
     @Override
     public void deletePurchase(Long userId, Long itemId) {
         if (userId == null || userId < 0){
