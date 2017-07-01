@@ -3,6 +3,7 @@ package am.aca.wftartproject.dao.impl;
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.rowmappers.ShoppingCardMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -195,6 +196,29 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //        return success;
 
         //endregion
+    }
+
+    /**
+     * @param itemPrice
+     * @param buyerId
+     * @return
+     * @see ShoppingCardDao#debitBalanceForItemBuying(Long, Double)
+     */
+    @Override
+    public Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
+
+        Boolean isEnoughBalance;
+        ShoppingCard shoppingCard = getShoppingCard(buyerId);
+
+        if (shoppingCard.getBalance() >= itemPrice) {
+            shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
+            updateShoppingCard(buyerId, shoppingCard);
+            isEnoughBalance = true;
+        } else {
+            throw new NotEnoughMoneyException("Not enough money on the account.");
+        }
+
+        return isEnoughBalance;
     }
 
 

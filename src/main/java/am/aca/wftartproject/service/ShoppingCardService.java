@@ -2,8 +2,6 @@ package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.model.ShoppingCard;
 
-import java.sql.SQLException;
-
 /**
  * Created by ASUS on 03-Jun-17
  */
@@ -32,6 +30,15 @@ public interface ShoppingCardService {
      * @param shoppingCard
      */
     void updateShoppingCard(Long id, ShoppingCard shoppingCard);
+
+    /**
+     * Debits balance for item buying
+     *
+     * @param buyerId
+     * @param itemPrice
+     * @return
+     */
+    void debitBalanceForItemBuying(Long buyerId, Double itemPrice);
 
     /**
      * Deletes shoppingCard by id.

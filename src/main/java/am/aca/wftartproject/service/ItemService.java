@@ -71,6 +71,8 @@ public interface ItemService {
      * @return
      */
     List<Item> getArtistItems(Long artistId,Long itemId, Long limit);
+
+
     /**
      * Updates Item price by id
      *

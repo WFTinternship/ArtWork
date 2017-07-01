@@ -10,6 +10,7 @@ import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -18,7 +19,8 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
-@Transactional
+@Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
@@ -30,11 +32,6 @@ public class UserServiceImpl implements UserService {
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
-
-//    public UserServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        userDao = new UserDaoImpl(conn);
-//    }
 
 
     /**

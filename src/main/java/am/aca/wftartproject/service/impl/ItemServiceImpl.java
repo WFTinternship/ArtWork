@@ -13,6 +13,7 @@ import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,7 +23,8 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by surik on 6/1/17
  */
-@Transactional
+@Service
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
@@ -246,9 +248,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            if (!itemDao.deleteItem(id)){
-                throw new DAOException("Failed to delete item");
-            }
+            itemDao.deleteItem(id);
         } catch (DAOException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -262,6 +262,7 @@ public class ItemServiceImpl implements ItemService {
      * @param buyerId
      * @see ItemService#itemBuying(Item, Long)
      */
+    @Transactional
     public void itemBuying(Item item, Long buyerId) {
         if (buyerId == null || buyerId < 0) {
             LOGGER.error(String.format("buyerId is not valid: %s", buyerId));
