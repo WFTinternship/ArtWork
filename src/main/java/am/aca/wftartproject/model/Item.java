@@ -131,8 +131,8 @@ public class Item {
         return
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL) &&
-                artistId != null &&
-                artistId > 0 &&
+                /*artistId != null &&
+                artistId > 0 &&*/
                 price != 0 &&
                 itemType != null ;
         //        && additionDate != null;

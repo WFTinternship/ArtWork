@@ -18,6 +18,7 @@ public class ShoppingCardMapper implements RowMapper<ShoppingCard> {
         ShoppingCard tempShoppingCard = new ShoppingCard();
         tempShoppingCard.setId(resultSet.getLong("id"))
                 .setBalance(resultSet.getDouble("balance"))
+                .setBuyerId(resultSet.getLong("buyer_id"))
                 .setShoppingCardType(ShoppingCardType.valueOf(resultSet.getString("type")));
         return tempShoppingCard;
     }

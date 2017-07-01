@@ -106,10 +106,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
         try {
             String query = "SELECT * FROM shopping_card WHERE id=?";
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ShoppingCardMapper().mapRow(rs, rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, new ShoppingCardMapper());
 
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.warn(String.format("Failed to get shopping card by id: %s", id));
+            LOGGER.warn(String.format("Failed to get shopping card by id: %s Empty result", id));
             return null;
         } catch (DataAccessException e) {
             String error = "Failed to get ShoppingCard: %s";
@@ -146,6 +146,25 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         //endregion
     }
 
+    /**
+     * @param buyerId
+     * @return
+     * @see ShoppingCardDao#getShoppingCardByBuyerId(Long)
+     */
+    @Override
+    public ShoppingCard getShoppingCardByBuyerId(Long buyerId) {
+        try {
+            String query = "SELECT * FROM shopping_card WHERE buyer_id = ?";
+            return jdbcTemplate.queryForObject(query, new Object[]{buyerId}, new ShoppingCardMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.warn(String.format("Failed to get shopping card by buyerId: %s Empty result", buyerId));
+            return null;
+        } catch (DataAccessException e) {
+            String error = "Failed to get ShoppingCard: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        }
+    }
 
     /**
      * @param id

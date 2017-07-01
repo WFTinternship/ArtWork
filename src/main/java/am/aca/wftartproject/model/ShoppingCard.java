@@ -6,6 +6,7 @@ package am.aca.wftartproject.model;
 public class ShoppingCard {
 
     private Long id;
+    private Long buyerId;
     private double balance;
     private ShoppingCardType shoppingCardType;
 
@@ -15,6 +16,15 @@ public class ShoppingCard {
 
     public ShoppingCard setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getBuyerId() {
+        return buyerId;
+    }
+
+    public ShoppingCard setBuyerId(Long buyerId) {
+        this.buyerId = buyerId;
         return this;
     }
 
@@ -40,10 +50,12 @@ public class ShoppingCard {
     public ShoppingCard() {
     }
 
-    public ShoppingCard(ShoppingCardType shoppingCardType) {
+    public ShoppingCard(Long id, Long buyerId, double balance, ShoppingCardType shoppingCardType) {
+        this.id = id;
+        this.buyerId = buyerId;
+        this.balance = balance;
         this.shoppingCardType = shoppingCardType;
     }
-
 
     @Override
     public String toString() {
@@ -55,6 +67,6 @@ public class ShoppingCard {
     }
 
     public boolean isValidShoppingCard() {
-        return (id != null && balance != 0 && shoppingCardType != null);
+        return (/*id != null && */balance != 0 && shoppingCardType != null);
     }
 }

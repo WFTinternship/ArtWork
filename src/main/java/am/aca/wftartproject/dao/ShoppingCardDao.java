@@ -24,6 +24,14 @@ public interface ShoppingCardDao {
     ShoppingCard getShoppingCard(Long id);
 
     /**
+     * Gets shoppingCard from database by buyerId
+     *
+     * @param buyerId
+     * @return
+     */
+    ShoppingCard getShoppingCardByBuyerId(Long buyerId);
+
+    /**
      * Updates shoppingCard in database.
      *
      * @param id

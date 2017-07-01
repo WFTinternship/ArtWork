@@ -81,11 +81,39 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             if (rs.next()) {
                 shoppingCard.setId(rs.getLong("id"))
                         .setBalance(rs.getDouble("balance"))
+                        .setBuyerId(rs.getLong("buyer_id"))
                         .setShoppingCardType(ShoppingCardType.valueOf(rs.getString("type")));
-                ;
             }
         } catch (SQLException e) {
             String error = "Failed to get ShoppingCard: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(error, e);
+        } finally {
+            closeResources(rs, ps, conn);
+        }
+        return shoppingCard;
+    }
+
+    @Override
+    public ShoppingCard getShoppingCardByBuyerId(Long buyerId) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ShoppingCard shoppingCard = new ShoppingCard();
+        try {
+            conn = getDataSource().getConnection();
+            ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE buyer_id = ?");
+
+            ps.setLong(1, buyerId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                shoppingCard.setId(rs.getLong("id"))
+                        .setBalance(rs.getDouble("balance"))
+                        .setBuyerId(rs.getLong("buyer_id"))
+                        .setShoppingCardType(ShoppingCardType.valueOf(rs.getString("type")));
+            }
+        } catch (SQLException e) {
+            String error = "Failed to get shopping card by buyer id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         } finally {

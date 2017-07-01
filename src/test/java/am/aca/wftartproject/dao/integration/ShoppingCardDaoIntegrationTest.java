@@ -151,10 +151,44 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         // check testUser id for null
         assertNotNull(testUser.getId());
 
-
+        // Test method
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard.getId());
         shoppingCardDao.getShoppingCard(1515131651654151351L);
+    }
+
+    /**
+     * @see ShoppingCardDao#getShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void getShoppingCardByBuyerId_Success() {
+        // Check testUser id for null
+        assertNotNull(testUser.getId());
+
+        // Add shopping card into DB
+        shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // Check testShoppingCard and its id for null
+        assertNotNull(testShoppingCard);
+        assertNotNull(testShoppingCard.getId());
+
+        // Get added shopping card from DB and check sameness
+        ShoppingCard foundedCard = shoppingCardDao.getShoppingCardByBuyerId(testShoppingCard.getBuyerId());
+        assertEqualShoppingCards(foundedCard, testShoppingCard);
+    }
+
+    /**
+     * @see ShoppingCardDao#getShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void getShoppingCardByBuyerId_Failure() {
+        // Check testUser id for null
+        assertNotNull(testUser.getId());
+
+        // Add shopping card into DB
+        shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+        assertNotNull(testShoppingCard.getId());
+        shoppingCardDao.getShoppingCardByBuyerId(65435845L);
     }
 
     /**

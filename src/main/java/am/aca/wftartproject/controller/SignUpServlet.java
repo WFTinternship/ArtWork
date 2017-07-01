@@ -53,7 +53,7 @@ public class SignUpServlet extends HttpServlet {
                         .setAge(Integer.parseInt(request.getParameter("age")))
                         .setEmail(request.getParameter("email"))
                         .setPassword(request.getParameter("password"))
-                        .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
+                        .setShoppingCard(new ShoppingCard(/*ShoppingCardType.valueOf(request.getParameter("paymentMethod"))*/));
             } else {
                 artistFromRequest = new Artist();
                 filePart = request.getPart("imageUpload");
@@ -67,7 +67,7 @@ public class SignUpServlet extends HttpServlet {
                             .setEmail(request.getParameter("email"))
                             .setPassword(request.getParameter("password"))
                             .setAge(Integer.parseInt(request.getParameter("age")))
-                            .setShoppingCard(new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentMethod"))));
+                            .setShoppingCard(new ShoppingCard(/*ShoppingCardType.valueOf(request.getParameter("paymentMethod"))*/));
                     artistFromRequest.setArtistPhoto(imageBytes)
                             .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")));
                 }

@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -31,15 +33,36 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemDao itemDao;
 
-    public void setItemDao(ItemDao itemDao) {
+    private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+
+    private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+
+    @Autowired
+    public ItemServiceImpl(ItemDao itemDao) {
         this.itemDao = itemDao;
     }
 
+    /*
+
+        @Autowired
+        public ItemServiceImpl(PurchaseHistoryDao purchaseHistoryDao, ShoppingCardDao shoppingCardDao) {
+            this.purchaseHistoryDao = purchaseHistoryDao;
+            this.shoppingCardDao = shoppingCardDao;
+        }
+    */
     @Autowired
-    private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+    public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
+        this.purchaseHistoryDao = purchaseHistoryDao;
+    }
 
     @Autowired
-    private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
+/*
+    public void setItemDao(ItemDao itemDao) {
+        this.itemDao = itemDao;
+    }*/
 
 
     /**
@@ -312,7 +335,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Add item to the buyer's purchase history
         try {
-            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId()));
+            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId(), new Timestamp(Calendar.getInstance().getTimeInMillis())));
         } catch (DAOException e) {
             String error = "Failed to add item in purchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));

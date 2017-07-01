@@ -42,9 +42,10 @@ public class PurchaseHistory {
     public PurchaseHistory() {
     }
 
-    public PurchaseHistory(Long userId, Long itemId) {
+    public PurchaseHistory(Long userId, Long itemId, Timestamp purchaseDate) {
         this.userId = userId;
         this.itemId = itemId;
+        this.purchaseDate = purchaseDate;
     }
 
 
