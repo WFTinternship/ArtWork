@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.ShoppingCard;
 public interface ShoppingCardService {
 
     /**
-     * Adds shoppingCard to the springconfig.database.
+     * Adds shoppingCard to the database.
      *
      * @param userId
      * @param shoppingCard
@@ -16,7 +16,7 @@ public interface ShoppingCardService {
     void addShoppingCard(Long userId, ShoppingCard shoppingCard);
 
     /**
-     * Gets shoppingCard from springconfig.database.
+     * Gets shoppingCard from database.
      *
      * @param id
      * @return
@@ -24,7 +24,7 @@ public interface ShoppingCardService {
     ShoppingCard getShoppingCard(Long id);
 
     /**
-     * Updates shoppingCard in springconfig.database.
+     * Updates shoppingCard in database.
      *
      * @param id
      * @param shoppingCard
@@ -46,4 +46,11 @@ public interface ShoppingCardService {
      * @param id
      */
     void deleteShoppingCard(Long id);
+
+    /**
+     * Deletes shoppingCard by buyerId.
+     *
+     * @param buyerId
+     */
+    void deleteShoppingCardByBuyerId(Long buyerId);
 }

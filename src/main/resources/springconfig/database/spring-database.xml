@@ -29,8 +29,9 @@
 
     <!-- Creating TransactionManager Bean, since JDBC we are creating of type
         DataSourceTransactionManager -->
+    <!--org.springframework.jdbc.datasource.DataSourceTransactionManager-->
     <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

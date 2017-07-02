@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -28,21 +31,31 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
-    @Autowired
-    private ItemDao itemDao;
-    @Autowired
-    private PurchaseHistoryDao purchaseHistoryDao;
-    @Autowired
-    private ShoppingCardDao shoppingCardDao;
 
-    public void setItemDao(ItemDao itemDao) {
+    private ItemDao itemDao;
+
+    private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+
+    private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+
+    @Autowired
+    public ItemServiceImpl(ItemDao itemDao) {
         this.itemDao = itemDao;
     }
 
-//        public ItemServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        itemDao = new ItemDaoImpl(conn);
-//    }
+    @Autowired
+    public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
+        this.purchaseHistoryDao = purchaseHistoryDao;
+    }
+
+    @Autowired
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
+/*
+    public void setItemDao(ItemDao itemDao) {
+        this.itemDao = itemDao;
+    }*/
 
 
     /**
@@ -265,7 +278,8 @@ public class ItemServiceImpl implements ItemService {
      * @param buyerId
      * @see ItemService#itemBuying(Item, Long)
      */
-    @Transactional(readOnly = false)
+    @Override
+    @Transactional
     public void itemBuying(Item item, Long buyerId) {
         if (buyerId == null || buyerId < 0) {
             LOGGER.error(String.format("buyerId is not valid: %s", buyerId));

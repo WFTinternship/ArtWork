@@ -1,5 +1,6 @@
 package am.aca.wftartproject.model;
 
+import javax.persistence.*;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +8,13 @@ import java.util.List;
 /**
  * Created by ASUS on 24-May-17
  */
+@Entity
+@Table(name = "Artist")
 public class Artist extends AbstractUser {
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
 
     private ArtistSpecialization specialization;
     private byte[] artistPhoto;

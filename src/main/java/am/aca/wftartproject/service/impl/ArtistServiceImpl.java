@@ -10,7 +10,6 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,22 +22,21 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 @Service
 @Transactional(readOnly = true)
 public class ArtistServiceImpl implements ArtistService {
-
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
-    private ArtistDao artistDao;
-    @Autowired
-    private ShoppingCardDao shoppingCardDao;
+    private final ArtistDao artistDao;
 
-    public void setArtistDao(ArtistDao artistDao) {
+    @Autowired
+    public ArtistServiceImpl(ArtistDao artistDao) {
         this.artistDao = artistDao;
     }
 
-//        public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        artistDao = new ArtistDaoImpl(conn);
-//    }
+    private ShoppingCardDao shoppingCardDao;
 
+    @Autowired
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
 
     /**
      * @param artist
@@ -160,9 +158,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            if (!artistDao.deleteArtist(id)){
-                throw new DAOException("Failed to delete artist");
-            }
+            artistDao.deleteArtist(id);
         } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

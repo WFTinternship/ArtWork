@@ -8,6 +8,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +21,20 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
 
-    private ShoppingCardDao shoppingCardDao = null;
+    private final ShoppingCardDao shoppingCardDao;
 
-    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+    @Autowired
+    public ShoppingCardServiceImpl(ShoppingCardDao shoppingCardDao) {
         this.shoppingCardDao = shoppingCardDao;
     }
-
 
     /**
      * @see ShoppingCardService#addShoppingCard(Long, ShoppingCard)
      * @param userId
      * @param shoppingCard
      */
-    @Transactional(readOnly = false)
     @Override
+    @Transactional
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
         if (userId == null || userId < 0){
             LOGGER.error(String.format("UserId is not valid: %s", userId));
@@ -46,7 +47,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             shoppingCardDao.addShoppingCard(userId, shoppingCard);
         }catch (DAOException e){
-            String error = "Failed to add ShoppingCard";
+            String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
@@ -79,8 +80,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param id
      * @param shoppingCard
      */
-    @Transactional(readOnly = false)
     @Override
+    @Transactional
     public void updateShoppingCard(Long id, ShoppingCard shoppingCard) {
         if (id == null || id < 0){
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -107,7 +108,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param itemPrice
      * @param buyerId
      */
-    @Transactional(readOnly = false)
+    @Override
+    @Transactional
     public void debitBalanceForItemBuying(Long buyerId,Double itemPrice){
         if(itemPrice== null || itemPrice<0 || buyerId==null||buyerId<0){
             LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId,itemPrice));
@@ -128,8 +130,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @see ShoppingCardService#deleteShoppingCard(Long)
      * @param id
      */
-    @Transactional(readOnly = false)
     @Override
+    @Transactional
     public void deleteShoppingCard(Long id) {
         if (id == null || id < 0){
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -138,6 +140,24 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             if (!shoppingCardDao.deleteShoppingCard(id)){
                 throw new DAOException("Failed to delete shopping card");
+            }
+        }catch (DAOException e){
+            String error = "Failed to delete ShoppingCard: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteShoppingCardByBuyerId(Long buyerId) {
+        if (buyerId == null || buyerId < 0){
+            LOGGER.error(String.format("BuyerId is not valid: %s", buyerId));
+            throw new InvalidEntryException("Invalid buyerId");
+        }
+        try {
+            if (!shoppingCardDao.deleteShoppingCardByBuyerId(buyerId)){
+                throw new DAOException("Failed to delete shopping card by buyerId");
             }
         }catch (DAOException e){
             String error = "Failed to delete ShoppingCard";

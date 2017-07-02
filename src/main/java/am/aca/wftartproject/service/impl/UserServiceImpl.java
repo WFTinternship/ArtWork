@@ -24,22 +24,27 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-    @Autowired
-    private UserDao userDao;
-    @Autowired
+
+    private final UserDao userDao;
+
     private ShoppingCardDao shoppingCardDao;
 
-    public void setUserDao(UserDao userDao) {
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    @Autowired
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
 
     /**
      * @param user
      * @see UserService#addUser(User)
      */
-    @Transactional(readOnly = false)
     @Override
+    @Transactional
     public void addUser(User user) {
         if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
             String error = "Incorrect data or Empty fields ";
@@ -120,8 +125,8 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @see UserService#updateUser(Long, User)
      */
-    @Transactional(readOnly = false)
     @Override
+    @Transactional
     public void updateUser(Long id, User user) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -148,8 +153,8 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @see UserService#deleteUser(Long)
      */
-    @Transactional(readOnly = false)
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));

@@ -7,6 +7,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +22,10 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
 
-    private PurchaseHistoryDao purchaseHistoryDao = null;
+    private final PurchaseHistoryDao purchaseHistoryDao;
 
-    public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
+    @Autowired
+    public PurchaseHistoryServiceImpl(PurchaseHistoryDao purchaseHistoryDao) {
         this.purchaseHistoryDao = purchaseHistoryDao;
     }
 

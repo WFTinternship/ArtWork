@@ -5,28 +5,30 @@ import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by ASUS on 27-May-17
  */
+@Component
 public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
-    public ItemDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public ItemDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -367,7 +369,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn(String.format("Failed to get items for given price range: %s %s", minPrice, maxPrice));
-            return Collections.emptyList();
+            return null;
         } catch (DataAccessException e) {
             String error = "Failed to get items by the given price range: %s";
             LOGGER.error(String.format(error, e.getMessage()));

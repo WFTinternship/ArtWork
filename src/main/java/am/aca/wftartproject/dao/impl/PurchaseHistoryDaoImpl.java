@@ -5,22 +5,25 @@ import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 /**
  * Created by ASUS on 27-May-17
  */
+@Component
 public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHistoryDao {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
 
-    public PurchaseHistoryDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public PurchaseHistoryDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
