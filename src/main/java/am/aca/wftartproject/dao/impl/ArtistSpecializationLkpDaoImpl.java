@@ -5,6 +5,7 @@ import am.aca.wftartproject.dao.rowmappers.ArtistSpecializationlkpMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,12 +20,11 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
     private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
 
+    private SessionFactory sessionFactory;
     @Autowired
-    public ArtistSpecializationLkpDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ArtistSpecializationLkpDaoImpl(SessionFactory sf) {
+        this.sessionFactory = sf;
     }
-
-
     /**
      * @see ArtistSpecializationLkpDao#addArtistSpecialization()
      */

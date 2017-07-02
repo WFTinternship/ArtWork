@@ -9,7 +9,7 @@ import java.util.List;
  * Created by ASUS on 24-May-17
  */
 @Entity
-@Table(name = "Artist")
+@Table(name = "artist")
 public class Artist extends AbstractUser {
     @Id
     @Column(name="id")

@@ -5,17 +5,14 @@ import am.aca.wftartproject.dao.rowmappers.ArtistMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by ASUS on 27-May-17
@@ -25,9 +22,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
 
-    @Autowired
-    public ArtistDaoImpl(JdbcTemplate   jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    private SessionFactory sessionFactory;
+
+    public ArtistDaoImpl(SessionFactory sf) {
+        this.sessionFactory = sf;
     }
 
 
@@ -37,90 +35,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public void addArtist(Artist artist) {
-
-        try {
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            String query1 = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
-
-            PreparedStatementCreator psc = con -> {
-                PreparedStatement ps = con.prepareStatement(query1, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, artist.getFirstName());
-                ps.setString(2, artist.getLastName());
-                ps.setInt(3, artist.getAge());
-                ps.setString(4, artist.getEmail());
-                ps.setString(5, artist.getPassword());
-                return ps;
-            };
-            int rowsAffected = jdbcTemplate.update(psc, keyHolder);
-            if (rowsAffected > 0) {
-                artist.setId(keyHolder.getKey().longValue());
-            } else {
-                throw new DAOException("Failed to add Artist");
-            }
-
-            String query2 = "INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)";
-            Object[] args = new Object[]{artist.getSpecialization().getSpecId(), artist.getArtistPhoto(), artist.getId()};
-
-            rowsAffected = jdbcTemplate.update(query2, args);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to add Artist");
-            }
-        } catch (DataAccessException e) {
-            String error = "Failed to add Artist: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error, e.getMessage()));
-        }
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        try {
-//            conn = getDataSource().getConnection();
-//
-//            //Start Transaction
-//            conn.setAutoCommit(false);
-//
-//            ps = conn.prepareStatement(
-//                    "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
-//                    Statement.RETURN_GENERATED_KEYS);
-//            ps.setString(1, artist.getFirstName());
-//            ps.setString(2, artist.getLastName());
-//            ps.setInt(3, artist.getAge());
-//            ps.setString(4, artist.getEmail());
-//            ps.setString(5, artist.getPassword());
-//            ps.executeUpdate();
-//            rs = ps.getGeneratedKeys();
-//            if (rs.next()) {
-//                artist.setId(rs.getLong(1));
-//            }
-//
-//            ps = conn.prepareStatement("INSERT INTO artist(spec_id, photo, user_id) VALUE (?,?,?)");
-//            ps.setInt(1, artist.getSpecialization().getId());
-//            ps.setBytes(2, artist.getArtistPhoto());
-//            ps.setLong(3, artist.getId());
-//            ps.executeUpdate();
-//
-//            conn.commit();
-//        } catch (SQLException e) {
-//            String error = "Failed to add Artist: %s";
-//            try {
-//                if (conn != null) {
-//                    conn.rollback();
-//                }
-//            } catch (SQLException e1) {
-//                LOGGER.error(String.format(error, e1.getMessage()));
-//            }
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(String.format(error, e.getMessage()));
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-
-
-//        endregion
-
+        Session session = this.sessionFactory.getCurrentSession();
+        session.persist(artist);
+        LOGGER.info("Person saved successfully, Person Details="+artist);
     }
 
     /**

@@ -5,6 +5,7 @@ import am.aca.wftartproject.dao.rowmappers.UserMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,11 +26,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
-    @Autowired
-    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private SessionFactory sessionFactory;
 
+    @Autowired
+    public UserDaoImpl(SessionFactory sf) {
+        this.sessionFactory = sf;
+    }
 
     /**
      * @param user

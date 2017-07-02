@@ -6,6 +6,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,12 +27,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
+    private SessionFactory sessionFactory;
     @Autowired
-    public ShoppingCardDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ShoppingCardDaoImpl(SessionFactory sf) {
+        this.sessionFactory = sf;
     }
-
-
     /**
      * @param userId
      * @param shoppingCard

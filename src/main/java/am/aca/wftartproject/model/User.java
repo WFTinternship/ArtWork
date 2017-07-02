@@ -2,10 +2,12 @@ package am.aca.wftartproject.model;
 
 import org.springframework.context.annotation.Bean;
 
+import javax.persistence.Entity;
+
 /**
  * Created by ASUS on 24-May-17
  */
-
+@Entity
 public class User extends AbstractUser {
 
     public User() {

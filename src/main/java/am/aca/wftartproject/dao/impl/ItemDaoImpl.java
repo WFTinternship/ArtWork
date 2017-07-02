@@ -5,6 +5,7 @@ import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,12 +27,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
+    private SessionFactory sessionFactory;
     @Autowired
-    public ItemDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ItemDaoImpl(SessionFactory sf) {
+        this.sessionFactory = sf;
     }
-
-
     /**
      * @param artistID
      * @param item

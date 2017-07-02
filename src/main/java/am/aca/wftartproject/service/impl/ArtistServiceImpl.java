@@ -24,6 +24,7 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 public class ArtistServiceImpl implements ArtistService {
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
+    @Autowired
     private final ArtistDao artistDao;
 
     @Autowired

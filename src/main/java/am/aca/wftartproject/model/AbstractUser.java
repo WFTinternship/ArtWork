@@ -1,19 +1,30 @@
 package am.aca.wftartproject.model;
 
+import javax.persistence.*;
+
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by ASUS on 30-May-17
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AbstractUser {
 
     Long id;
+    @Column(name = "firstname",nullable = false ,length = 50)
     String firstName;
+    @Column(name = "lastname",nullable = false, length = 50)
     String lastName;
+    @Column(name = "age",nullable = false, length = 20)
     int age;
+    @Column(name = "email",nullable = false, length = 50)
     String email;
+    @Column(name = "password",nullable = false,length = 30)
     String password;
+
     String userPasswordRepeat;
+
     ShoppingCard shoppingCard;
 
     public String getUserPasswordRepeat() {
