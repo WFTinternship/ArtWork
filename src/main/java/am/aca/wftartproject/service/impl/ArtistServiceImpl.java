@@ -31,7 +31,7 @@ public class ArtistServiceImpl implements ArtistService {
     public ArtistServiceImpl(ArtistDao artistDao) {
         this.artistDao = artistDao;
     }
-
+    @Autowired
     private ShoppingCardDao shoppingCardDao;
 
     @Autowired
@@ -43,19 +43,20 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#addArtist(Artist)
      */
-    @Transactional(readOnly = false)
+
     @Override
+    @Transactional(readOnly = false)
     public void addArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
             String error = "Incorrect data or Empty fields ";
             LOGGER.error(String.format("Artist is not valid: %s", artist));
             throw new InvalidEntryException(error);
         }
-        if (artistDao.findArtist(artist.getEmail()) != null) {
-            String error = "User has already exists";
-            LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
-            throw new DuplicateEntryException(error);
-        }
+//        if (artistDao.findArtist(artist.getEmail()) != null) {
+//            String error = "User has already exists";
+//            LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
+//            throw new DuplicateEntryException(error);
+//        }
 
         try {
             artistDao.addArtist(artist);
@@ -65,13 +66,13 @@ public class ArtistServiceImpl implements ArtistService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
 
-        try {
-            shoppingCardDao.addShoppingCard(artist.getId(),artist.getShoppingCard());
-        } catch (DAOException e) {
-            String error = "Failed to add ShoppingCard: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
-        }
+//        try {
+//            shoppingCardDao.addShoppingCard(artist.getId(),artist.getShoppingCard());
+//        } catch (DAOException e) {
+//            String error = "Failed to add ShoppingCard: %s";
+//            LOGGER.error(String.format(error, e.getMessage()));
+//            throw new ServiceException(String.format(error, e.getMessage()));
+//        }
     }
 
 

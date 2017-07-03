@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 /**
  * Created by ASUS on 24-May-17
  */
-@Entity
+
 public class User extends AbstractUser {
 
     public User() {

@@ -1,5 +1,7 @@
 package am.aca.wftartproject.model;
 
+import org.hibernate.type.BlobType;
+
 import javax.persistence.*;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -11,18 +13,27 @@ import java.util.List;
 @Entity
 @Table(name = "artist")
 public class Artist extends AbstractUser {
+
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private ArtistSpecialization specialization;
+    @Column(length=10000000)
     private byte[] artistPhoto;
+    @Transient
     private List<Item> itemList;
+    @Transient
     private String base64;
 
     public String getBase64() {
         return base64;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     public void setBase64(String base64) {

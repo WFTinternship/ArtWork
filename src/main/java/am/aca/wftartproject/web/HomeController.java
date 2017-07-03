@@ -29,29 +29,30 @@ public class HomeController {
     @RequestMapping(value = {"/", "index"})
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
 
-       cookies = request.getCookies();
-        String userEmailFromCookie = null;
-        if (cookies != null) {
-            for (Cookie ckElement : cookies) {
-                if (ckElement.getName().equals("userEmail")) {
-                    userEmailFromCookie = ckElement.getValue();
-                }
-            }
-        }
 
-        if (userEmailFromCookie != null) {
-            if (artistService.findArtist(userEmailFromCookie) != null) {
-                Artist artist = artistService.findArtist(userEmailFromCookie);
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", artist);
-            } else {
-                if (userService.findUser(userEmailFromCookie) != null) {
-                    User user = userService.findUser(userEmailFromCookie);
-                    HttpSession session = request.getSession(true);
-                    session.setAttribute("user", user);
-                }
-            }
-        }
+//       cookies = request.getCookies();
+//        String userEmailFromCookie = null;
+//        if (cookies != null) {
+//            for (Cookie ckElement : cookies) {
+//                if (ckElement.getName().equals("userEmail")) {
+//                    userEmailFromCookie = ckElement.getValue();
+//                }
+//            }
+//        }
+//
+//        if (userEmailFromCookie != null) {
+//            if (artistService.findArtist(userEmailFromCookie) != null) {
+//                Artist artist = artistService.findArtist(userEmailFromCookie);
+//                HttpSession session = request.getSession(true);
+//                session.setAttribute("user", artist);
+//            } else {
+//                if (userService.findUser(userEmailFromCookie) != null) {
+//                    User user = userService.findUser(userEmailFromCookie);
+//                    HttpSession session = request.getSession(true);
+//                    session.setAttribute("user", user);
+//                }
+//            }
+//        }
         return new ModelAndView("index");
     }
 }

@@ -7,10 +7,11 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by ASUS on 30-May-17
  */
-@Entity
+@Entity(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AbstractUser {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(name = "firstname",nullable = false ,length = 50)
     String firstName;
@@ -22,9 +23,9 @@ public abstract class AbstractUser {
     String email;
     @Column(name = "password",nullable = false,length = 30)
     String password;
-
+    @Transient
     String userPasswordRepeat;
-
+    @Transient
     ShoppingCard shoppingCard;
 
     public String getUserPasswordRepeat() {

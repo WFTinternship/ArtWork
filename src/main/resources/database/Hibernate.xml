@@ -22,19 +22,22 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
     </bean>
 
     <!-- Hibernate session factory -->
-    <bean id="hibernate4AnnotatedSessionFactory"
+    <bean id="hibernate5AnnotatedSessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <!--<property name="annotatedClasses">-->
-            <!--<list>-->
-                <!--<value>com.journaldev.model.Person</value>-->
-            <!--</list>-->
-        <!--</property>-->
+        <property name="annotatedClasses">
+            <list>
+                <value>am.aca.wftartproject.model.Artist</value>
+                <value>am.aca.wftartproject.model.User</value>
+                <value>am.aca.wftartproject.model.AbstractUser</value>
+            </list>
+        </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="hibernate.current_session_context_class">thread</prop>
                 <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
             </props>
         </property>
     </bean>
@@ -50,7 +53,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="dataSource" ref="dataSource" />
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+        <property name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
     </bean>
 
 </beans>

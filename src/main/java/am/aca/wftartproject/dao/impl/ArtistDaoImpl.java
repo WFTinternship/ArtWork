@@ -7,6 +7,7 @@ import am.aca.wftartproject.model.Artist;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Repository;
 public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
-
+    @Autowired
     private SessionFactory sessionFactory;
 
     public ArtistDaoImpl(SessionFactory sf) {
@@ -35,8 +36,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public void addArtist(Artist artist) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.persist(artist);
+        Session session = this.sessionFactory.openSession();
+        Transaction trans=session.beginTransaction();
+        session.save(artist);
+        trans.commit();
         LOGGER.info("Person saved successfully, Person Details="+artist);
     }
 
@@ -47,29 +50,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(Long id) {
-
         Artist artist;
-        try {
-            String query1 = "SELECT * FROM user WHERE id=?";
-            artist = jdbcTemplate.queryForObject(query1, new Object[]{id},
-                    (rs, rowNum) -> new ArtistMapper().mapRow(rs, rowNum));
-
-            String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
-                    "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE ar.user_id=?";
-            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{id},
-                    (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs, rowNum));
-
-            artist.setArtistPhoto(tempArtist.getArtistPhoto())
-                    .setSpecialization(tempArtist.getSpecialization());
-
-        }catch (EmptyResultDataAccessException e){
-            LOGGER.warn(String.format("No artist found by id: %s", id));
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get Artist: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error, e.getMessage()));
-        }
+        Session session = this.sessionFactory.openSession();
+        artist =  (Artist) session.get(Artist.class, id);
         return artist;
 
 //        region <Version with Simple JDBC>
