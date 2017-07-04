@@ -41,7 +41,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create artistSpecialization
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(jdbcTemplate);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();

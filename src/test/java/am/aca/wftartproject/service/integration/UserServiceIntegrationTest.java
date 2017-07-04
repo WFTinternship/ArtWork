@@ -20,9 +20,12 @@ import static junit.framework.TestCase.assertNull;
  * Created by ASUS on 30-Jun-17
  */
 public class UserServiceIntegrationTest extends BaseIntegrationTest {
+
     private User testUser;
+
     @Autowired
     private UserServiceImpl userService;
+
     @Autowired
     private ShoppingCardServiceImpl shoppingCardService;
 

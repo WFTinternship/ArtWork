@@ -4,28 +4,27 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--Dao layer spring integration-->
-    <!--<bean id="userDAO" class="am.aca.wftartproject.dao.impl.UserDaoImpl">-->
-        <!--<constructor-arg name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
+    <bean id="userDAO" class="am.aca.wftartproject.dao.impl.UserDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 
-    <!--<bean id="artistDAO" class="am.aca.wftartproject.dao.impl.ArtistDaoImpl">-->
-        <!--<constructor-arg name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
+    <bean id="artistDAO" class="am.aca.wftartproject.dao.impl.ArtistDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 
-    <!--<bean id="itemDAO" class="am.aca.wftartproject.dao.impl.ItemDaoImpl">-->
-        <!--<constructor-arg name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
+    <bean id="itemDAO" class="am.aca.wftartproject.dao.impl.ItemDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 
-    <!--<bean id="shoppingCardDAO" class="am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl">-->
-        <!--<constructor-arg name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
+    <bean id="shoppingCardDAO" class="am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 
-    <!--<bean id="purchaseHistoryDAO" class="am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl">-->
-        <!--<constructor-arg name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
+    <bean id="purchaseHistoryDAO" class="am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 
-    <!--<bean id="artistSpecialization" class="am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl">-->
-        <!--<constructor-arg name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
-
+    <bean id="artistSpecializationDAO" class="am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 </beans>

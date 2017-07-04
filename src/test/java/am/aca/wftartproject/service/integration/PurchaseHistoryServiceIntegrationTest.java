@@ -6,14 +6,12 @@ import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.BaseIntegrationTest;
-import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,18 +22,23 @@ import static am.aca.wftartproject.util.TestObjectTemplate.*;
  * Created by ASUS on 30-Jun-17
  */
 public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
+
     private User testUser;
     private Item testItem;
     private PurchaseHistory testPurchaseHistory;
 
     @Autowired
     private UserServiceImpl userService;
+
     @Autowired
     private ArtistServiceImpl artistService;
+
     @Autowired
     private ItemServiceImpl itemService;
+
     @Autowired
     private PurchaseHistoryServiceImpl purchaseHistoryService;
+
     @Autowired
     private ShoppingCardServiceImpl shoppingCardService;
 

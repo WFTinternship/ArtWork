@@ -1,9 +1,6 @@
 package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -16,13 +13,9 @@ import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -30,16 +23,13 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by surik on 6/1/17
  */
-@Service
 @Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
     private ItemDao itemDao;
-
     private PurchaseHistoryService purchaseHistoryService; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
-
     private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
     @Autowired

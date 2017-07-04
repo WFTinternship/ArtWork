@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.rowmappers.ItemMapper;
+import am.aca.wftartproject.dao.impl.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
@@ -12,25 +12,23 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Created by ASUS on 27-May-17
  */
-@Component
 public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
     @Autowired
-    public ItemDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ItemDaoImpl(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -41,9 +39,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Long artistID, Item item) {
-
-//        Calendar cal = Calendar.getInstance();
-//        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
 
         try {
             item.setAdditionDate(getCurrentDateTime());
@@ -69,7 +64,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             int rowsAffected = jdbcTemplate.update(psc, keyHolder);
             if (rowsAffected > 0) {
                 item.setId(keyHolder.getKey().longValue());
-//                item.setArtistId(artistID);
             } else {
                 throw new DAOException("Failed to add Item");
             }

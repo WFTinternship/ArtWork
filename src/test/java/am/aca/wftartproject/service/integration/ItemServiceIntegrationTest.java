@@ -2,7 +2,6 @@ package am.aca.wftartproject.service.integration;
 
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
-import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
@@ -18,17 +17,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
-import static am.aca.wftartproject.util.TestObjectTemplate.*;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
 import static junit.framework.TestCase.*;
 
 /**
  * Created by ASUS on 30-Jun-17
  */
 public class ItemServiceIntegrationTest extends BaseIntegrationTest {
+
     private Artist testArtist;
     private Item testItem;
     private Item tempItem;
@@ -37,10 +37,13 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private ArtistServiceImpl artistService;
+
     @Autowired
     private ItemService itemService;
+
     @Autowired
     private ShoppingCardServiceImpl shoppingCardService;
+
     @Autowired
     private PurchaseHistoryService purchaseHistoryService;
 

@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
+
 /**
  * @author surik
  */
@@ -28,14 +30,14 @@ abstract class BaseDAOIntegrationTest {
     }
 
 
-//    DataSource dataSource;
-//
-//    DataSource getDataSource() {
-//        return dataSource;
-//    }
-//
-//    @Autowired
-//    void setDataSource(DataSource dataSource) {
-//        this.dataSource = dataSource;
-//    }
+    DataSource dataSource;
+
+    DataSource getDataSource() {
+        return dataSource;
+    }
+
+    @Autowired
+    void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

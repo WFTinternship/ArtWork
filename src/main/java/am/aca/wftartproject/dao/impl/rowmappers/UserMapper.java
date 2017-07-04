@@ -1,4 +1,4 @@
-package am.aca.wftartproject.dao.rowmappers;
+package am.aca.wftartproject.dao.impl.rowmappers;
 
 import am.aca.wftartproject.model.User;
 import org.springframework.jdbc.core.RowMapper;

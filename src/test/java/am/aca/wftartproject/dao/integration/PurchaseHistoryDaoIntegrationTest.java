@@ -54,7 +54,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
     public void setUp() throws SQLException, ClassNotFoundException {
         Artist testArtist = createTestArtist();
 
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(jdbcTemplate);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
         }

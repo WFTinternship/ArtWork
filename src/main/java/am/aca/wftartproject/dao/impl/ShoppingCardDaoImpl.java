@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.dao.rowmappers.ShoppingCardMapper;
+import am.aca.wftartproject.dao.impl.rowmappers.ShoppingCardMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
@@ -13,22 +13,21 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 /**
  * Created by ASUS on 27-May-17
  */
-@Component
 public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
     @Autowired
-    public ShoppingCardDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ShoppingCardDaoImpl(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -67,37 +66,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-
-        //region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        try {
-//            shoppingCard.setBalance(getRandomBalance());
-
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement(
-//                    "INSERT INTO shopping_card(balance, buyer_id, type) VALUES (?,?,?)",
-//                    Statement.RETURN_GENERATED_KEYS);
-//
-//            ps.setDouble(1, shoppingCard.getBalance());
-//            ps.setLong(2, userId);
-//            ps.setString(3,shoppingCard.getShoppingCardType().getType());
-//            ps.executeUpdate();
-//            rs = ps.getGeneratedKeys();
-//            if (rs.next()) {
-//                shoppingCard.setId(rs.getLong(1));
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to add ShoppingCard: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-
-        //endregion
     }
 
 
@@ -121,34 +89,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        ShoppingCard shoppingCard = new ShoppingCard();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE id=?");
-//
-//            ps.setLong(1, id);
-//            rs = ps.executeQuery();
-//            if (rs.next()) {
-//                shoppingCard.setId(rs.getLong("id"))
-//                        .setBalance(rs.getDouble("balance"))
-//                        .setShoppingCardType(ShoppingCardType.valueOf(resultSet.getString("type")));;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get ShoppingCard: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return shoppingCard;
-
-        //endregion
     }
 
     /**
@@ -195,31 +135,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             throw new DAOException(error, e);
         }
         return status;
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        Boolean success = false;
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("UPDATE shopping_card SET balance=?, type=? WHERE id = ?");
-//            ps.setDouble(1, shoppingCard.getBalance());
-//            ps.setLong(2, id);
-//            ps.setString(3, shoppingCard.getShoppingCardType().getType());
-//            if (ps.executeUpdate() > 0) {
-//                success = true;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to update ShoppingCard";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(ps, conn);
-//        }
-//        return success;
-
-        //endregion
     }
 
     /**
@@ -269,29 +184,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             throw new DAOException(error, e);
         }
         return status;
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        Boolean success = false;
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("DELETE FROM shopping_card WHERE id=?");
-//            ps.setLong(1, id);
-//            if (ps.executeUpdate() > 0) {
-//                success = true;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to delete ShoppingCard: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(ps, conn);
-//        }
-//        return success;
-
-        //endregion
     }
 
     @Override

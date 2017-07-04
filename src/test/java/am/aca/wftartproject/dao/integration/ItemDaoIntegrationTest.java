@@ -32,8 +32,10 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     @Autowired
     private ArtistDaoImpl artistDao;
+
     @Autowired
     private ItemDaoImpl itemDao;
+
     private Item testItem, tempItem;
     private Artist testArtist;
 
@@ -48,7 +50,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create artistSpecialization
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(jdbcTemplate);
+        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();

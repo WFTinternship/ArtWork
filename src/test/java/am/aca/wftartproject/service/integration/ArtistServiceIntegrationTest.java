@@ -25,6 +25,7 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private ArtistServiceImpl artistService;
+
     @Autowired
     private ShoppingCardServiceImpl shoppingCardService;
 

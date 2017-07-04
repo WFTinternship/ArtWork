@@ -8,7 +8,6 @@ import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 /**
  * Created by surik on 6/1/17
  */
-@Service
 @Transactional(readOnly = true)
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 

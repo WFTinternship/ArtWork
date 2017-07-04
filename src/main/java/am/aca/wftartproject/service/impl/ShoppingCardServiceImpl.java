@@ -9,13 +9,11 @@ import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by ASUS on 03-Jun-17
  */
-@Service
 @Transactional(readOnly = true)
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 

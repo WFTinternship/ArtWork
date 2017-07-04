@@ -1,4 +1,4 @@
-package am.aca.wftartproject.dao.rowmappers;
+package am.aca.wftartproject.dao.impl.rowmappers;
 
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
@@ -10,9 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by Armen on 6/16/2017
  */
-
 public class ArtistMapper implements RowMapper<Artist> {
-
     @Override
     public Artist mapRow(ResultSet rs, int rowNum) throws SQLException {
         Artist artist = new Artist();
@@ -24,7 +22,6 @@ public class ArtistMapper implements RowMapper<Artist> {
                 .setPassword(rs.getString("password"));
         return artist;
     }
-
 
     public Artist mapRowSecond(ResultSet rs, int rowNum) throws SQLException {
         Artist artist = new Artist();

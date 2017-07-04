@@ -3,9 +3,11 @@ package am.aca.wftartproject.dao.impl;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -14,6 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class BaseDaoImpl {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);
+
+//    protected DataSource dataSource;
 
     protected JdbcTemplate jdbcTemplate;
 

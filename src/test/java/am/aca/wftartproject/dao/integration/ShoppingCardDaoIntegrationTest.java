@@ -5,7 +5,6 @@ import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
-import am.aca.wftartproject.model.ShoppingCardType;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.TestObjectTemplate;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -14,7 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.SQLException;
+
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
@@ -29,12 +30,14 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private ShoppingCardDao shoppingCardDao;
     private User testUser;
     private ShoppingCard testShoppingCard;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private ShoppingCardDao shoppingCardDao;
 
     public ShoppingCardDaoIntegrationTest() throws SQLException, ClassNotFoundException {
     }

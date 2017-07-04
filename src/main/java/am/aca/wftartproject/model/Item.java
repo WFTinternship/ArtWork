@@ -3,7 +3,7 @@ package am.aca.wftartproject.model;
 import java.time.LocalDateTime;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
-import static am.aca.wftartproject.util.DateHelper.dateComparing;
+import static am.aca.wftartproject.util.DateHelper.dateComparison;
 
 /**
  * Created by ASUS on 24-May-17
@@ -141,7 +141,7 @@ public class Item {
         if (!getArtistId().equals(item.getArtistId())) return false;
         if (!getStatus().equals(item.getStatus())) return false;
         if (getItemType() != item.getItemType()) return false;
-        return dateComparing(this.getAdditionDate(), item.getAdditionDate())/*getAdditionDate().equals(item.getAdditionDate())*/;
+        return dateComparison(this.getAdditionDate(), item.getAdditionDate())/*getAdditionDate().equals(item.getAdditionDate())*/;
     }
 
     @Override

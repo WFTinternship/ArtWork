@@ -1,4 +1,4 @@
-package am.aca.wftartproject.dao.rowmappers;
+package am.aca.wftartproject.dao.impl.rowmappers;
 
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,8 +12,9 @@ import java.time.format.DateTimeFormatter;
  * Created by Armen on 6/16/2017
  */
 public class PurchaseHistoryMapper implements RowMapper<PurchaseHistory> {
-    DateTimeFormatter dtf =
+    private DateTimeFormatter dtf =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+
     @Override
     public PurchaseHistory mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         PurchaseHistory purchasehistory = new PurchaseHistory();

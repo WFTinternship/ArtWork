@@ -2,7 +2,7 @@ package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
 
-import static am.aca.wftartproject.util.DateHelper.dateComparing;
+import static am.aca.wftartproject.util.DateHelper.dateComparison;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,7 +36,7 @@ public class AssertTemplates {
         assertEquals(expectedItem.getTitle(), actualItem.getTitle());
         assertEquals(expectedItem.getPhotoURL(), actualItem.getPhotoURL());
         assertEquals(expectedItem.getPrice(), actualItem.getPrice());
-        assertTrue(dateComparing(expectedItem.getAdditionDate(), actualItem.getAdditionDate()));
+        assertTrue(dateComparison(expectedItem.getAdditionDate(), actualItem.getAdditionDate()));
 //        assertEquals(expectedItem.getAdditionDate().getTime() / 1000000000, actualItem.getAdditionDate().getTime() / 1000000000);
     }
 
@@ -49,7 +49,7 @@ public class AssertTemplates {
     public static void assertEqualPurchaseHistory(PurchaseHistory expectedPurchaseHistory, PurchaseHistory actualPurchaseHistory) {
         assertEquals(expectedPurchaseHistory.getItemId(), actualPurchaseHistory.getItemId());
         assertEquals(expectedPurchaseHistory.getUserId(), actualPurchaseHistory.getUserId());
-        assertTrue(dateComparing(expectedPurchaseHistory.getPurchaseDate(), actualPurchaseHistory.getPurchaseDate()));
+        assertTrue(dateComparison(expectedPurchaseHistory.getPurchaseDate(), actualPurchaseHistory.getPurchaseDate()));
 //        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 1000000000, actualPurchaseHistory.getPurchaseDate().getTime() / 1000000000);
     }
 }

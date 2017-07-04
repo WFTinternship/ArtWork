@@ -26,9 +26,10 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
+    private User testUser;
+
     @Autowired
     private UserDaoImpl userDao;
-    private User testUser;
 
     public UserDAOIntegrationTest() throws SQLException, ClassNotFoundException {
     }

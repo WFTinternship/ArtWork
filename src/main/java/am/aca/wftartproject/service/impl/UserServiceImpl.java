@@ -1,6 +1,5 @@
 package am.aca.wftartproject.service.impl;
 
-import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
@@ -11,7 +10,6 @@ import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -20,14 +18,12 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
-@Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
     private UserDao userDao;
-
     private ShoppingCardService shoppingCardService;
 
     @Autowired
