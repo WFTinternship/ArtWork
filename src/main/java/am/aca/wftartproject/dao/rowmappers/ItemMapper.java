@@ -22,7 +22,6 @@ public class ItemMapper implements RowMapper<Item> {
                 .setPhotoURL(Arrays.asList(resultSet.getString("photo_url").split(",[ ]*")))
  // single file upload   .setPhotoURL(resultSet.getString("photo_url"))
                 .setPrice(resultSet.getDouble("price"))
-                .setArtistId(resultSet.getLong("artist_id"))
                 .setStatus(resultSet.getBoolean("status"))
                 .setItemType(ItemType.valueOf(resultSet.getString("type")))
                 .setAdditionDate(resultSet.getDate("addition_date"));

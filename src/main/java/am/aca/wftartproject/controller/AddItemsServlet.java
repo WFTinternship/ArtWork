@@ -56,8 +56,7 @@ public class AddItemsServlet extends HttpServlet {
                 item.setTitle(request.getParameter("title"))
                         .setDescription(request.getParameter("description"))
                         .setItemType(ItemType.valueOf(request.getParameter("type")))
-                        .setPrice(Double.parseDouble(request.getParameter("price")))
-                        .setArtistId(artist.getId()).setStatus(true);
+                        .setPrice(Double.parseDouble(request.getParameter("price")));
                 if (request.getPart("image") != null) {
                     filePart = request.getPart("image");
                     if (filePart != null) {
@@ -78,7 +77,7 @@ public class AddItemsServlet extends HttpServlet {
                 }
 
                 try {
-                    itemService.addItem(artist.getId(), item);
+                    itemService.addItem(item);
                 } catch (ServiceException e) {
                     String errorMessage = "The entered info is not correct";
                     request.setAttribute("errorMessage", errorMessage);

@@ -1,15 +1,18 @@
 package am.aca.wftartproject.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+
+import java.io.Serializable;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by ASUS on 30-May-17
  */
-@Entity(name = "user")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class AbstractUser {
+@MappedSuperclass
+public abstract class AbstractUser implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -39,11 +42,10 @@ public abstract class AbstractUser {
 
 
     public Long getId() {
-        return id;
+        return this.id;
     }
-    public AbstractUser setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getFirstName() {
@@ -102,8 +104,6 @@ public abstract class AbstractUser {
 
     public boolean isValidUser() {
         return
-//                id != null &&
-//                id > 0 &&
                 !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&

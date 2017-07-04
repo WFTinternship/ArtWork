@@ -41,7 +41,9 @@ public class SignUpController {
                                 @ModelAttribute("user") User user) {
         String page = "";
         try {
-            user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
+            ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
+            shoppingCard.setBuyer_id(user.getId());
+            user.setShoppingCard(shoppingCard);
             user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
             userService.addUser(user);
             page = "index";
@@ -64,7 +66,9 @@ public class SignUpController {
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         Artist artistFromRequest = new Artist();
         String message;
-        artistFromRequest.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
+        ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
+        artistFromRequest.setShoppingCard(shoppingCard );
+        artistFromRequest.getShoppingCard().setArtist_id(artistFromRequest.getId());
         if (!image.isEmpty() && request.getParameter("artistSpec")!=null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
             byte[] imageBytes = image.getBytes();
             artistFromRequest

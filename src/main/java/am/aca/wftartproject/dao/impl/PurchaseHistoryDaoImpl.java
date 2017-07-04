@@ -5,7 +5,10 @@ import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -35,23 +38,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     public void addPurchase(PurchaseHistory purchaseHistory) {
 
         try {
+            Session session = this.sessionFactory.getCurrentSession();
+
             purchaseHistory.setPurchaseDate(getCurrentDateTime());
+            session.save(purchaseHistory);
 
-            String query = "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)";
-//            Calendar cal = Calendar.getInstance();
-//            Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+            
 
-            Object[] args = new Object[]{purchaseHistory.getUserId(), purchaseHistory.getItemId(), purchaseHistory.getPurchaseDate()};
-            int rowsAffected = jdbcTemplate.update(query, args);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to add PurchaseHistory");
-            }
-
-//            else {
-//                purchaseHistory.setPurchaseDate(getCurrentDateTime());
-//            }
-
-        } catch (DataAccessException e) {
+        } catch (DataException e) {
             purchaseHistory.setUserId(null);
             String error = "Failed to add PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -153,13 +147,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         List<PurchaseHistory> purchaseHistoryList;
         try {
-            String query = "SELECT * FROM purchase_history WHERE user_id = ?";
-            purchaseHistoryList = this.jdbcTemplate.query(query, new Object[]{userId}, new PurchaseHistoryMapper());
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.warn(String.format("Failed to get purchase history by userId: %s", userId));
-            return null;
-        } catch (DataAccessException e) {
+           purchaseHistoryList = (List<PurchaseHistory>)sessionFactory.getCurrentSession().createQuery(
+                    "SELECT c FROM PurchaseHistory c WHERE c.userId = :user_id")
+                    .setParameter("user_id", userId)
+                    .getResultList();
+        } catch (DataException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);

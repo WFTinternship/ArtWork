@@ -25,11 +25,9 @@ public interface ShoppingCardService {
 
     /**
      * Updates shoppingCard in database.
-     *
-     * @param id
      * @param shoppingCard
      */
-    void updateShoppingCard(Long id, ShoppingCard shoppingCard);
+    void updateShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Debits balance for item buying

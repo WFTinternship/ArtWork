@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
+            user.getShoppingCard().setBuyer_id(user.getId());
             shoppingCardDao.addShoppingCard(user.getId(),user.getShoppingCard());
         } catch (DAOException e) {
             String error = "Failed to add ShoppingCard: %s";
@@ -121,24 +122,20 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * @param id
      * @param user
-     * @see UserService#updateUser(Long, User)
+     * @see UserService#updateUser( User)
      */
     @Override
     @Transactional
-    public void updateUser(Long id, User user) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid Id");
-        }
+    public void updateUser(User user) {
+
         if (user == null || !user.isValidUser()) {
             LOGGER.error(String.format("User is not valid: %s", user));
             throw new InvalidEntryException("Invalid user");
         }
 
         try {
-            if (!userDao.updateUser(id, user)) {
+            if (!userDao.updateUser(user)) {
                 throw new DAOException("Failed to update user");
             }
         } catch (DAOException e) {
@@ -180,6 +177,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User login(String email, String password) {
+        User user1 = null;
         if (isEmptyString(password) || isEmptyString(email)) {
             LOGGER.error(String.format("Email or password is not valid: %s , %s", email, password));
             throw new InvalidEntryException("Invalid Id");
@@ -188,9 +186,7 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userDao.findUser(email);
             if (user != null && user.getPassword().equals(password)) {
-                return user;
-            } else {
-                throw new RuntimeException("The username or password is not correct");
+               user1 = user;
             }
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
@@ -201,5 +197,6 @@ public class UserServiceImpl implements UserService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
+        return user1;
     }
 }

@@ -1,13 +1,39 @@
 package am.aca.wftartproject.model;
 
+import javax.persistence.*;
+
 /**
  * Created by ASUS on 24-May-17
  */
-
+@Entity
 public class ShoppingCard {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public Long getBuyer_id() {
+        return buyer_id;
+    }
+
+    public void setBuyer_id(Long buyer_id) {
+        this.buyer_id = buyer_id;
+    }
+
+    private Long buyer_id;
+
+    public Long getArtist_id() {
+        return artist_id;
+    }
+
+    public void setArtist_id(Long artist_id) {
+        this.artist_id = artist_id;
+    }
+
+    private Long artist_id;
+
     private double balance;
+
+    @Enumerated(EnumType.STRING)
     private ShoppingCardType shoppingCardType;
 
     public Long getId() {

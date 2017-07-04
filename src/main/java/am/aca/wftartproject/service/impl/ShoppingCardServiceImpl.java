@@ -77,22 +77,17 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     /**
      * @see ShoppingCardService#updateShoppingCard(Long, ShoppingCard)
-     * @param id
      * @param shoppingCard
      */
     @Override
     @Transactional
-    public void updateShoppingCard(Long id, ShoppingCard shoppingCard) {
-        if (id == null || id < 0){
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid id");
-        }
+    public void updateShoppingCard(ShoppingCard shoppingCard) {
         if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid shoppingCard");
         }
         try {
-            if (!shoppingCardDao.updateShoppingCard(id, shoppingCard)) {
+            if (!shoppingCardDao.updateShoppingCard(shoppingCard)) {
                 throw new DAOException("Failed update shopping card");
             }
         }catch (DAOException e){

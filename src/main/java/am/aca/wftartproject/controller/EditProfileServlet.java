@@ -67,7 +67,7 @@ public class EditProfileServlet extends HttpServlet {
                     }
 
                     try {
-                        userService.updateUser(finduser.getId(), finduser);
+                        userService.updateUser(finduser);
                         request.getSession().setAttribute("user", finduser);
                         request.setAttribute("user", finduser);
                     } catch (ServiceException e) {
@@ -110,7 +110,7 @@ public class EditProfileServlet extends HttpServlet {
                     }
 
                     try {
-                        artistService.updateArtist(artist.getId(), findArtist);
+                        artistService.updateArtist(findArtist);
                         request.getSession().setAttribute("user", findArtist);
                         request.setAttribute("user", findArtist);
                     } catch (ServiceException e) {

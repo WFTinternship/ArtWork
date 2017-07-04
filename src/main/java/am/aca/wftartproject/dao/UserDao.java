@@ -33,10 +33,9 @@ public interface UserDao {
     /**
      * Updates user info
      *
-     * @param id
      * @param user
      */
-    Boolean updateUser(Long id, User user);
+    Boolean updateUser(User user);
 
     /**
      * Deletes user with the following id.

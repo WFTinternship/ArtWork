@@ -16,12 +16,12 @@ public class ArtistMapper implements RowMapper<Artist> {
     @Override
     public Artist mapRow(ResultSet rs, int rowNum) throws SQLException {
         Artist artist = new Artist();
-        artist.setId(rs.getLong("id"))
-                .setFirstName(rs.getString("firstname"))
-                .setLastName(rs.getString("lastname"))
-                .setAge(rs.getInt("age"))
-                .setEmail(rs.getString("email"))
-                .setPassword(rs.getString("password"));
+//        artist.setId(rs.getLong("id"))
+//                .setFirstName(rs.getString("firstname"))
+//                .setLastName(rs.getString("lastname"))
+//                .setAge(rs.getInt("age"))
+//                .setEmail(rs.getString("email"))
+//                .setPassword(rs.getString("password"));
         return artist;
     }
 

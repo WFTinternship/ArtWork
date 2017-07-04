@@ -1,5 +1,9 @@
 package am.aca.wftartproject.model;
 
+import sun.security.util.Length;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -8,23 +12,31 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by ASUS on 24-May-17
  */
-public class Item {
-
+@Entity
+@Table(name = "item")
+public class Item implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photoURL;
- //   private String photoURL;
     private Double price;
-    private Long artistId;
+    private Long artist_id;
     private Boolean status;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private ItemType itemType;
     private Date additionDate;
 
-//    public Item setPhotoURL(String photoURL) {
-//        this.photoURL = photoURL;
-//        return this;
-//    }
+    public Long getArtist_id() {
+        return artist_id;
+    }
+
+    public void setArtist_id(Long artist_id) {
+        this.artist_id = artist_id;
+    }
 
     public Boolean getStatus() {
         return status;
@@ -75,14 +87,7 @@ public class Item {
         return this;
     }
 
-    public Long getArtistId() {
-        return artistId;
-    }
 
-    public Item setArtistId(Long artistID) {
-        this.artistId = artistID;
-        return this;
-    }
 
     public Boolean isStatus() {
         return status;
@@ -119,7 +124,6 @@ public class Item {
         this.description = description;
         this.photoURL = photoURL;
         this.price = price;
-        this.artistId = artistId;
         this.status = status;
         this.itemType = itemType;
         this.additionDate = additionDate;
@@ -134,7 +138,7 @@ public class Item {
                 ", description='" + description + '\'' +
                 ", photoURL=" + photoURL +
                 ", price=" + price +
-                ", artistId =" + artistId +
+                ", artistId ="  +
                 ", status=" + status +
                 ", itemType=" + itemType +
                 ", additionDate=" + additionDate +
@@ -167,7 +171,6 @@ public class Item {
         if (!getDescription().equals(item.getDescription())) return false;
         if (!getPhotoURL().equals(item.getPhotoURL())) return false;
         if (!getPrice().equals(item.getPrice())) return false;
-        if (!getArtistId().equals(item.getArtistId())) return false;
         if (!getStatus().equals(item.getStatus())) return false;
         if (getItemType() != item.getItemType()) return false;
         return getAdditionDate().getDate() / 100000000 == item.getAdditionDate().getDate() / 100000000;
@@ -178,7 +181,6 @@ public class Item {
         int result = getId().hashCode();
         result = 31 * result + getTitle().hashCode();
         result = 31 * result + getPrice().hashCode();
-        result = 31 * result + getArtistId().hashCode();
         result = 31 * result + getStatus().hashCode();
         result = 31 * result + getItemType().hashCode();
         return result;

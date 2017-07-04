@@ -73,8 +73,8 @@ public class ShopController {
         Item itemById = itemService.findItem(itemId);
 
         session.setAttribute("itemDetail", itemById);
-        session.setAttribute("artistItems", itemService.getArtistItems(itemById.getArtistId(), itemById.getId(), 10L));
-        session.setAttribute("artistInfo", artistService.findArtist(itemById.getArtistId()));
+        session.setAttribute("artistItems", itemService.getArtistItems(itemById.getArtist_id()));
+        session.setAttribute("artistInfo", artistService.findArtist(itemById.getArtist_id()));
 
         return new ModelAndView("item-detail");
     }
@@ -97,6 +97,7 @@ public class ShopController {
                         "You don't have enough money. Please top-up your account and try again.");
                 page = "redirect:/shop";
             } catch (RuntimeException ex) {
+                System.out.println(ex.getMessage());
                 page = "index";
             }
         }

@@ -3,9 +3,14 @@ package am.aca.wftartproject.dao.impl;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.dao.rowmappers.UserMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.model.AbstractUser;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,60 +45,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public void addUser(User user) {
 
-        try {
-            String query = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-
-            PreparedStatementCreator psc = con -> {
-                PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, user.getFirstName());
-                ps.setString(2, user.getLastName());
-                ps.setInt(3, user.getAge());
-                ps.setString(4, user.getEmail());
-                ps.setString(5, user.getPassword());
-                return ps;
-            };
-
-            int rowsAffected = jdbcTemplate.update(psc, keyHolder);
-            if (rowsAffected > 0) {
-                user.setId(keyHolder.getKey().longValue());
-            }
-        } catch (DataAccessException e) {
-            String error = "Failed to add User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        try {
-//            conn = getDataSource().getConnection();
-//
-//            ps = conn.prepareStatement(
-//                    "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)",
-//                    Statement.RETURN_GENERATED_KEYS);
-//            ps.setString(1, user.getFirstName());
-//            ps.setString(2, user.getLastName());
-//            ps.setInt(3, user.getAge());
-//            ps.setString(4, user.getEmail());
-//            ps.setString(5, user.getPassword());
-//            ps.executeUpdate();
-//            rs = ps.getGeneratedKeys();
-//            if (rs.next()) {
-//                user.setId(rs.getLong(1));
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to add User: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-
-//        endregion
+            Session session = this.sessionFactory.getCurrentSession();
+            session.save(user);
+            LOGGER.info("Person saved successfully, Person Details="+user);
 
     }
 
@@ -105,51 +59,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
-
-        try {
-            String query = "SELECT * FROM user WHERE id = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
-
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        User user = new User();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?");
-//            ps.setLong(1, id);
-//            rs = ps.executeQuery();
-//            if (rs.next()) {
-//                getUserFromResultSet(user, rs);
-////                user.setId(rs.getLong("id"))
-////                        .setFirstName(rs.getString("firstname"))
-////                        .setLastName(rs.getString("lastname"))
-////                        .setAge(rs.getInt("age"))
-////                        .setEmail(rs.getString("email"))
-////                        .setPassword(rs.getString("password"));
-//            } else {
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get User: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return user;
-
-//        endregion
+        Session session = this.sessionFactory.getCurrentSession();
+        return (User) session.get(User.class, id);
     }
 
 
@@ -160,114 +71,27 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(String email) {
-        try {
-            String query = "SELECT * FROM user WHERE email = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{email}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
-
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-
-
-//        region Version with Simple JDBC
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        User user = new User();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?");
-//            ps.setString(1, email);
-//            rs = ps.executeQuery();
-//            if (rs.next()) {
-//                getUserFromResultSet(user, rs);
-////                user.setId(rs.getLong("id"))
-////                        .setFirstName(rs.getString("firstname"))
-////                        .setLastName(rs.getString("lastname"))
-////                        .setAge(rs.getInt("age"))
-////                        .setEmail(rs.getString("email"))
-////                        .setPassword(rs.getString("password"));
-//            } else {
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get User: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return user;
-
-
-//        endregion
-
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+        return (User) criteria.add(Restrictions.eq("email", email))
+                .uniqueResult();
     }
 
 
     /**
-     * @param id
      * @param user
-     * @see UserDao#updateUser(Long, User)
+     * @see UserDao#updateUser(User)
      */
     @Override
-    public Boolean updateUser(Long id, User user) {
-        Boolean status;
-        try {
-            String query = "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?";
+    public Boolean updateUser(User user) {
+        Boolean status = false;
+        Session session = this.sessionFactory.getCurrentSession();
+        session.saveOrUpdate(user);
+        status = true;
+        LOGGER.info("User saved successfully, Person Details="+user);
 
-            Object[] args = new Object[]{user.getFirstName(), user.getLastName(), user.getAge(), user.getPassword(), id};
-            int rowsAffected = jdbcTemplate.update(query, args);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to update User");
-            } else {
-                status = true;
-            }
-        } catch (DataAccessException e) {
-            String error = "Failed to update User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
         return status;
 
-
-//        region Version with Simple JDBC
-
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        Boolean success = false;
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement(
-//                    "UPDATE user SET firstname=? , lastname=?, age=? , password=? WHERE id = ?");
-//            ps.setString(1, user.getFirstName());
-//            ps.setString(2, user.getLastName());
-//            ps.setInt(3, user.getAge());
-//            ps.setString(4, user.getPassword());
-//            ps.setLong(5, id);
-//            if (ps.executeUpdate() > 0) {
-//                success = true;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to update User: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(ps, conn);
-//        }
-//        return success;
-
-
-//        endregion
-
     }
-
 
     /**
      * @param id
@@ -275,45 +99,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean deleteUser(Long id) {
-
-        try {
-            String query = "DELETE FROM user WHERE id =?";
-
-            int rowsAffected = jdbcTemplate.update(query, id);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to delete User");
-            }
-        } catch (DataAccessException e) {
-            String error = "Failed to delete User: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
+        Session session = this.sessionFactory.getCurrentSession();
+        User user =  (User) session.get(User.class, id);
+        session.delete(user);
         return true;
-
-
-//        region Version with Simple JDBC
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        Boolean success = false;
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("DELETE FROM user WHERE id =?");
-//            ps.setLong(1, id);
-//            if (ps.executeUpdate() > 0) {
-//                success = true;
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to delete User: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(ps, conn);
-//        }
-//        return success;
-
-//        endregion
-
-
     }
 }

@@ -7,7 +7,7 @@
 
 
 <c:set var="user" value='<%=request.getSession().getAttribute("user")%>' />
-<c:set var="message" value='<%=request.getSession().getAttribute("message")%>' />
+<c:set var="message" value='<%=request.getAttribute("message")%>' />
 
 
 

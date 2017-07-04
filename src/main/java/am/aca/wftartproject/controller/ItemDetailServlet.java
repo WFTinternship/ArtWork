@@ -29,14 +29,14 @@ public class ItemDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String[] pathInfo = request.getPathInfo().split("/");
-        Long itemId = Long.parseLong(pathInfo[pathInfo.length-1]);
-
-        Item itemById = itemService.findItem(itemId);
-
-        request.setAttribute("itemDetail",itemById);
-        request.setAttribute("artistItems",itemService.getArtistItems(itemById.getArtistId(),itemById.getId(),6L));
-        request.setAttribute("artistInfo",artistService.findArtist(itemById.getArtistId()));
+//        String[] pathInfo = request.getPathInfo().split("/");
+//        Long itemId = Long.parseLong(pathInfo[pathInfo.length-1]);
+//
+//        Item itemById = itemService.findItem(itemId);
+//
+//        request.setAttribute("itemDetail",itemById);
+//        request.setAttribute("artistItems",itemService.getArtistItems(itemById.getArtistId(),itemById.getId(),6L));
+//        request.setAttribute("artistInfo",artistService.findArtist(itemById.getArtistId()));
 
         request.getRequestDispatcher("/WEB-INF/views/item-detail.jsp")
                 .forward(request, response);

@@ -21,15 +21,22 @@ public interface ShoppingCardDao {
      * @param id
      * @return
      */
-    ShoppingCard getShoppingCard(Long id);
+    ShoppingCard getUserShoppingCard(Long id);
+
+    /**
+     * Gets shoppingCard from database.
+     *
+     * @param id
+     * @return
+     */
+    ShoppingCard getArtistShoppingCard(Long id);
+
 
     /**
      * Updates shoppingCard in database.
-     *
-     * @param id
      * @param shoppingCard
      */
-    Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard);
+    Boolean updateShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Debits balance for item buying
