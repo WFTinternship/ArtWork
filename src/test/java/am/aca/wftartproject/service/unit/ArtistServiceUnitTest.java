@@ -1,5 +1,8 @@
 package am.aca.wftartproject.service.unit;
 
+import am.aca.wftartproject.dao.ArtistDao;
+import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
@@ -8,6 +11,7 @@ import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
@@ -18,8 +22,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualArtists;
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
 import static junit.framework.TestCase.*;
 import static org.mockito.Mockito.*;
@@ -36,11 +42,16 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     private ArtistService artistService;
 
     @Mock
-    private ArtistDaoImpl artistDaoMock;
+    private ArtistDao artistDaoMock;
+
+    @Mock
+    private ShoppingCardService shoppingCardServiceMock;
 
     @Before
     public void beforeTest() {
         MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(artistService, "artistDao", artistDaoMock);
+        ((ArtistServiceImpl) artistService).setShoppingCardService(shoppingCardServiceMock);
     }
 
     @After
@@ -101,7 +112,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         testArtist = createTestArtist();
 
         // Setup mock
-        doReturn(null).when(artistDaoMock).findArtist(testArtist.getEmail());
+        doReturn(testArtist).when(artistDaoMock).findArtist(testArtist.getEmail());
 
         // Try to add user into db
         // Test method
@@ -135,14 +146,62 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void addArtist_addSuccess() {
+        ArgumentCaptor<Artist> artistArgumentCaptor = ArgumentCaptor.forClass(Artist.class);
+        ArgumentCaptor<Long> artistArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<ShoppingCard> artistArgumentCaptor2 = ArgumentCaptor.forClass(ShoppingCard.class);
+
         // Create test artist
         testArtist = createTestArtist();
 
         // Setup mocks
-        doNothing().when(artistDaoMock).addArtist(testArtist);
+        doNothing().when(artistDaoMock).addArtist(artistArgumentCaptor.capture());
+        doNothing().when(shoppingCardServiceMock).addShoppingCard(artistArgumentCaptor1.capture(), artistArgumentCaptor2.capture());
 
         // Test method
         artistService.addArtist(testArtist);
+
+        assertEquals(testArtist, artistArgumentCaptor.getValue());
+        assertEquals(testArtist.getId(), artistArgumentCaptor1.getValue());
+        assertEquals(testArtist.getShoppingCard(), artistArgumentCaptor2.getValue());
+
+    }
+
+    /**
+     * @see ArtistServiceImpl#addArtist(Artist)
+     */
+    @Test(expected = ServiceException.class)
+    public void addArtist_addShoppingCardFailed() {
+        // Create testArtist
+        testArtist = createTestArtist();
+
+        // Setup mocks
+        doNothing().when(artistDaoMock).addArtist(any(Artist.class));
+        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
+
+        artistService.addArtist(testArtist);
+    }
+
+    /**
+     * @see ArtistServiceImpl#addArtist(Artist)
+     */
+    @Test
+    public void addArtist_addShoppingCardSuccess() {
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<ShoppingCard> argumentCaptor1 = ArgumentCaptor.forClass(ShoppingCard.class);
+        ArgumentCaptor<Artist> argumentCaptor2 = ArgumentCaptor.forClass(Artist.class);
+
+        // Create testArtist
+        testArtist = createTestArtist();
+
+        // Setup mocks
+        doNothing().when(artistDaoMock).addArtist(argumentCaptor2.capture());
+        doNothing().when(shoppingCardServiceMock).addShoppingCard(argumentCaptor.capture(), argumentCaptor1.capture());
+
+        artistService.addArtist(testArtist);
+
+        assertEquals(testArtist.getId(), argumentCaptor.getValue());
+        assertEqualShoppingCards(testArtist.getShoppingCard(), argumentCaptor1.getValue());
+        assertEquals(testArtist, argumentCaptor2.getValue());
     }
 
     /**

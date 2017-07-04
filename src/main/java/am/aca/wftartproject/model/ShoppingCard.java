@@ -67,6 +67,6 @@ public class ShoppingCard {
     }
 
     public boolean isValidShoppingCard() {
-        return (/*id != null && */balance != 0 && shoppingCardType != null);
+        return (/*id != null && balance != 0 && */shoppingCardType != null);
     }
 }

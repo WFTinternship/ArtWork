@@ -168,7 +168,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
         if (shoppingCard.getBalance() >= itemPrice) {
             shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
-            updateShoppingCard(buyerId, shoppingCard);
+            updateShoppingCard(shoppingCard.getId(), shoppingCard);
             isEnoughBalance = true;
         } else {
             throw new NotEnoughMoneyException("Not enough money on the account.");

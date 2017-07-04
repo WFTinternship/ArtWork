@@ -21,10 +21,14 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
 
-    private final ShoppingCardDao shoppingCardDao;
+    private ShoppingCardDao shoppingCardDao;
 
     @Autowired
     public ShoppingCardServiceImpl(ShoppingCardDao shoppingCardDao) {
+        this.shoppingCardDao = shoppingCardDao;
+    }
+
+    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
         this.shoppingCardDao = shoppingCardDao;
     }
 
@@ -88,7 +92,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             return shoppingCardDao.getShoppingCardByBuyerId(buyerId);
         }catch (DAOException e){
-            String error = "Failed to get ShoppingCard by buyerID: %s %s";
+            String error = "Failed to get ShoppingCard by buyerID: %s";
             LOGGER.error(String.format(error, buyerId, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }

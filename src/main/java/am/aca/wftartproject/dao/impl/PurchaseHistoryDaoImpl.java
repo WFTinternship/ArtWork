@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -38,10 +39,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             purchaseHistory.setPurchaseDate(getCurrentDateTime());
 
             String query = "INSERT INTO purchase_history(user_id, item_id, purchase_date) VALUES (?,?,?)";
-//            Calendar cal = Calendar.getInstance();
-//            Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-
-            Object[] args = new Object[]{purchaseHistory.getUserId(), purchaseHistory.getItemId(), purchaseHistory.getPurchaseDate()};
+            DateTimeFormatter dtf =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            Object[] args = new Object[]{purchaseHistory.getUserId(), purchaseHistory.getItemId(),
+                    dtf.format(purchaseHistory.getPurchaseDate())};
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to add PurchaseHistory");

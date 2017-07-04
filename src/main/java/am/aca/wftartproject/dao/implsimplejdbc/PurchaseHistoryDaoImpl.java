@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +37,15 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         Connection conn = null;
         PreparedStatement ps = null;
+        DateTimeFormatter dtf =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement(
                     "INSERT INTO purchase_history(userId, itemId, purchase_date) VALUES (?,?,?)");
             ps.setLong(1, purchaseHistory.getUserId());
             ps.setLong(2, purchaseHistory.getItemId());
-            ps.setDate(3, getCurrentDateTime());
+            ps.setString(3, dtf.format(getCurrentDateTime()));
             if (ps.executeUpdate() > 0) {
                 purchaseHistory.setPurchaseDate(getCurrentDateTime());
             }
@@ -72,14 +76,16 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement(
-                    "SELECT * FROM purchase_history WHERE itemId = ? AND  userId = ? ");
+                    "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ");
             ps.setLong(1, itemId);
             ps.setLong(2, userId);
             rs = ps.executeQuery();
+            DateTimeFormatter dtf =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
             if (rs.next()) {
                 purchaseHistory.setItemId(rs.getLong("itemId"))
                         .setUserId(rs.getLong("userId"))
-                        .setPurchaseDate(rs.getDate("purchase_date"));
+                        .setPurchaseDate(LocalDateTime.parse(rs.getString("purchase_date"), dtf));
             } else {
                 return null;
             }
@@ -112,10 +118,12 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE userId = ?");
             ps.setLong(1, userId);
             rs = ps.executeQuery();
+            DateTimeFormatter dtf =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
             while (rs.next()) {
                 purchaseHistory.setUserId(rs.getLong("user_id"))
                         .setItemId(rs.getLong("item_id"))
-                        .setPurchaseDate(rs.getDate("purchase_date"));
+                        .setPurchaseDate(LocalDateTime.parse(rs.getString("purchase_date"), dtf));
 
                 purchaseHistoryList.add(purchaseHistory);
             }

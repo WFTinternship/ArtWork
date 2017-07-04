@@ -22,13 +22,16 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
 
-    private final PurchaseHistoryDao purchaseHistoryDao;
+    private PurchaseHistoryDao purchaseHistoryDao;
 
     @Autowired
     public PurchaseHistoryServiceImpl(PurchaseHistoryDao purchaseHistoryDao) {
         this.purchaseHistoryDao = purchaseHistoryDao;
     }
 
+    public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
+        this.purchaseHistoryDao = purchaseHistoryDao;
+    }
 
     /**
      * @see PurchaseHistoryService#addPurchase(PurchaseHistory)

@@ -9,8 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -36,9 +38,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Calendar cal = Calendar.getInstance();
-        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-
+        SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         try {
             item.setAdditionDate(getCurrentDateTime());
             conn = getDataSource().getConnection();
@@ -52,7 +53,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             ps.setString(5, item.getPhotoURL());
             ps.setBoolean(6, item.getStatus());
             ps.setString(7, item.getItemType().getType());
-            ps.setDate(8, item.getAdditionDate());
+            ps.setString(8, sdf.format(item.getAdditionDate()));
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -179,7 +180,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         List<Item> itemList = new ArrayList<>();
         try {
             conn = getDataSource().getConnection();
-            ps = conn.prepareStatement("SELECT * FROM item WHERE item_type =?");
+            ps = conn.prepareStatement("SELECT * FROM item WHERE type =?");
             ps.setString(1, itemType);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -332,6 +333,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
 
     private void getItemFromResultSet(Item item, ResultSet rs) throws SQLException {
+        DateTimeFormatter dtf =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         item.setId(rs.getLong("id"))
                 .setTitle(rs.getString("title"))
                 .setDescription(rs.getString("description"))
@@ -339,7 +342,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 .setPrice(rs.getDouble("price"))
                 .setArtistId(rs.getLong("artist_id"))
                 .setStatus(rs.getBoolean("status"))
-                .setAdditionDate(rs.getDate("addition_date"))
+                .setAdditionDate(LocalDateTime.parse(rs.getString("addition_date"), dtf))
                 .setItemType(ItemType.valueOf(rs.getString("type")));
     }
 }

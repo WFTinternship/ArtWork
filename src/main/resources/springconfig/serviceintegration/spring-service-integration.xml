@@ -17,7 +17,7 @@
     <!--</bean>-->
 
     <!--<bean id="shoppingCardService" class="am.aca.wftartproject.service.impl.ShoppingCardServiceImpl">-->
-        <!--<property name="shoppingCardDao" ref="shoppingCardDAO"/>-->
+        <!--<property nashoppingCardServicedDao" ref="shoppingCardDAO"/>-->
     <!--</bean>-->
 
     <!--<bean id="purchaseHistoryService" class="am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl">-->

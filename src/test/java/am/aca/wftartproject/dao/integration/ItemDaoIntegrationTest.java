@@ -296,6 +296,38 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
     }
 
     /**
+     * @see ItemDao#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_NotEmptyList() {
+        // Add testArtist's 2 items into DB
+        itemDao.addItem(testArtist.getId(), testItem);
+        itemDao.addItem(testArtist.getId(), tempItem);
+
+        // Get available items list and check not empty
+        List<Item> availableItems = itemDao.getAvailableItemsForGivenArtist(testArtist.getId());
+        assertEqualItems(testItem, availableItems.get(0));
+        assertEqualItems(tempItem, availableItems.get(1));
+    }
+
+    /**
+     * @see ItemDao#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_EmptyList() {
+        testItem.setStatus(true);
+        tempItem.setStatus(true);
+
+        // Add testArtist's 2 items into DB
+        itemDao.addItem(testArtist.getId(), testItem);
+        itemDao.addItem(testArtist.getId(), tempItem);
+
+        List availableItems = itemDao.getAvailableItemsForGivenArtist(testArtist.getId());
+        assertTrue(availableItems.isEmpty());
+    }
+
+
+    /**
      * @see ItemDao#updateItem(Long, Item)
      */
     @Test

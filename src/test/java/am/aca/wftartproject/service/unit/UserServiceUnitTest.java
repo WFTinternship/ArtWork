@@ -1,7 +1,6 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.dao.impl.UserDaoImpl;
+import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -9,6 +8,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.BaseUnitTest;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
@@ -17,10 +17,12 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.TestCase.*;
 import static org.mockito.Matchers.any;
@@ -40,13 +42,16 @@ public class UserServiceUnitTest extends BaseUnitTest {
     private UserService userService;
 
     @Mock
-    private UserDaoImpl userDaoMock;
+    private UserDao userDaoMock;
 
     @Mock
-    private ShoppingCardDao shoppingCardDao;
+    private ShoppingCardService shoppingCardServiceMock;
 
     @Before
     public void beforeTest() {
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(userService, "userDao", userDaoMock);
+        ((UserServiceImpl) userService).setShoppingCardService(shoppingCardServiceMock);
     }
 
     @After
@@ -142,24 +147,62 @@ public class UserServiceUnitTest extends BaseUnitTest {
     @Test
     public void addUser_addSuccess() {
         // Create argument capture
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<User> argument1 = ArgumentCaptor.forClass(User.class);
         ArgumentCaptor<ShoppingCard> argument2 = ArgumentCaptor.forClass(ShoppingCard.class);
 
         // Create testUser and testShoppingCard
         testUser = createTestUser();
-        ShoppingCard shoppingCard = createTestShoppingCard();
 
         // Setup mocks
         doNothing().when(userDaoMock).addUser(argument1.capture());
-        doNothing().when(shoppingCardDao).addShoppingCard(testUser.getId(),shoppingCard);
+        doNothing().when(shoppingCardServiceMock).addShoppingCard(argument.capture(), argument2.capture());
 
         // Test method
         userService.addUser(testUser);
 
         // Check input argument
         assertEquals(testUser, argument1.getValue());
+        assertEquals(testUser.getId(), argument.getValue());
+        assertEqualShoppingCards(testUser.getShoppingCard(), argument2.getValue());
     }
 
+    /**
+     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+     */
+    @Test(expected = ServiceException.class)
+    public void addUser_addShoppingCardFailed() {
+        testUser = createTestUser();
+
+        // Setup mocks
+        doNothing().when(userDaoMock).addUser(any(User.class));
+        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
+
+        // Test method
+        userService.addUser(testUser);
+    }
+
+    /**
+     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+     */
+    @Test
+    public void addUser_addShoppingCardSuccess() {
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<ShoppingCard> argumentCaptor1 = ArgumentCaptor.forClass(ShoppingCard.class);
+        ArgumentCaptor<User> argumentCaptor2 = ArgumentCaptor.forClass(User.class);
+
+        testUser = createTestUser();
+
+        // Setup mocks
+        doNothing().when(userDaoMock).addUser(argumentCaptor2.capture());
+        doNothing().when(shoppingCardServiceMock).addShoppingCard(argumentCaptor.capture(), argumentCaptor1.capture());
+
+        userService.addUser(testUser);
+
+        assertEquals(testUser, argumentCaptor2.getValue());
+        assertEquals(testUser.getId(), argumentCaptor.getValue());
+        assertEquals(testUser.getShoppingCard(), argumentCaptor1.getValue());
+    }
 
     /**
      * @see UserServiceImpl#findUser(java.lang.Long)

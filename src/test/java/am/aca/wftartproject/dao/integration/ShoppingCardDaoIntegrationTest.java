@@ -3,6 +3,7 @@ package am.aca.wftartproject.dao.integration;
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.ShoppingCardType;
 import am.aca.wftartproject.model.User;
@@ -15,6 +16,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.SQLException;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.TestCase.*;
 
 
@@ -44,11 +47,9 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create test user and shoppingCard, add user into db
-        testUser = TestObjectTemplate.createTestUser();
+        testUser = createTestUser();
         userDao.addUser(testUser);
-        testShoppingCard = new ShoppingCard();
-//        testShoppingCard.setBalance(TestObjectTemplate.getRandomNumber() + 1.1);
-        testShoppingCard.setShoppingCardType(ShoppingCardType.PAYPAL);
+        testShoppingCard = createTestShoppingCard();
 
         // Print busy connections quantity
         if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
@@ -230,6 +231,35 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
     }
 
     /**
+     * @see ShoppingCardDao#debitBalanceForItemBuying(Long, Double)
+     */
+    @Test
+    public void debitBalanceForItemBuying_Success() {
+        // Check testUser for not null and add shoppingCard into DB
+        assertNotNull(testUser.getId());
+        shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // Test method
+        shoppingCardDao.debitBalanceForItemBuying(testUser.getId(), 100.0);
+
+        testShoppingCard.setBalance(testShoppingCard.getBalance() - 100.0);
+        ShoppingCard updatedShoppingCard = shoppingCardDao.getShoppingCardByBuyerId(testUser.getId());
+        assertEqualShoppingCards(testShoppingCard, updatedShoppingCard);
+    }
+
+    /**
+     * @see ShoppingCardDao#debitBalanceForItemBuying(Long, Double)
+     */
+    @Test(expected = NotEnoughMoneyException.class)
+    public void debitBalanceForItemBuying_Failure() {
+        assertNotNull(testUser.getId());
+        shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+
+        // Test method
+        shoppingCardDao.debitBalanceForItemBuying(testUser.getId(), testShoppingCard.getBalance() + 100.0);
+    }
+
+    /**
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Test
@@ -254,6 +284,33 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
         assertFalse(shoppingCardDao.deleteShoppingCard(4154541654564654656L));
+    }
+
+    /**
+     * @see ShoppingCardDao#deleteShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void deleteShoppingCardByBuyerId_Success() {
+        // Check all components for null and check delete result for true
+        assertNotNull(testUser.getId());
+        shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+        assertNotNull(testShoppingCard);
+        assertNotNull(testShoppingCard.getId());
+        assertTrue(shoppingCardDao.deleteShoppingCardByBuyerId(testUser.getId()));
+        testShoppingCard.setId(null);
+    }
+
+    /**
+     * @see ShoppingCardDao#deleteShoppingCardByBuyerId(Long)
+     */
+    @Test(expected = DAOException.class)
+    public void deleteShoppingCardByBuyerId_Failure() {
+        // Check all components for null and check delete result for true
+        assertNotNull(testUser.getId());
+        shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
+        assertNotNull(testShoppingCard);
+        assertNotNull(testShoppingCard.getId());
+        assertTrue(shoppingCardDao.deleteShoppingCardByBuyerId(68466L));
     }
 
     // endregion

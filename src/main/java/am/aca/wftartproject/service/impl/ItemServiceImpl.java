@@ -12,6 +12,8 @@ import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.PurchaseHistoryService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -35,25 +38,30 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemDao itemDao;
 
-    private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+    private PurchaseHistoryService purchaseHistoryService; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
 
-    private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+    private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
     @Autowired
     public ItemServiceImpl(ItemDao itemDao) {
         this.itemDao = itemDao;
     }
 
-    @Autowired
-    public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
-        this.purchaseHistoryDao = purchaseHistoryDao;
+    public void setItemDao(ItemDao itemDao) {
+        this.itemDao = itemDao;
     }
 
     @Autowired
-    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
-        this.shoppingCardDao = shoppingCardDao;
+    public void setPurchaseHistoryService(PurchaseHistoryService purchaseHistoryService) {
+        this.purchaseHistoryService = purchaseHistoryService;
     }
-/*
+
+    @Autowired
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
+    }
+
+    /*
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
     }*/
@@ -314,10 +322,10 @@ public class ItemServiceImpl implements ItemService {
 
         // Withdraw money from payment method
         try {
-            ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(buyerId);
+            ShoppingCard shoppingCard = shoppingCardService.getShoppingCardByBuyerId(buyerId);
             if (shoppingCard.getBalance() >= item.getPrice()) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
-                shoppingCardDao.updateShoppingCard(buyerId, shoppingCard);
+                shoppingCardService.updateShoppingCard(shoppingCard.getId(), shoppingCard);
             } else {
                 throw new NotEnoughMoneyException("Not enough money on the account.");
             }
@@ -329,7 +337,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Add item to the buyer's purchase history
         try {
-            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId(), new Date(Calendar.getInstance().getTimeInMillis())));
+            purchaseHistoryService.addPurchase(new PurchaseHistory(buyerId, item.getId(), LocalDateTime.now().withNano(0)));
         } catch (DAOException e) {
             String error = "Failed to add item in purchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -57,14 +59,17 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setString(5, item.getPhotoURL());
                 ps.setBoolean(6, item.getStatus());
                 ps.setString(7, item.getItemType().getType());
-                ps.setDate(8, item.getAdditionDate());
+
+                DateTimeFormatter dtf =
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                ps.setString(8, dtf.format(item.getAdditionDate()));
                 return ps;
             };
 
             int rowsAffected = jdbcTemplate.update(psc, keyHolder);
             if (rowsAffected > 0) {
                 item.setId(keyHolder.getKey().longValue());
-                item.setArtistId(artistID);
+//                item.setArtistId(artistID);
             } else {
                 throw new DAOException("Failed to add Item");
             }
@@ -86,7 +91,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         try {
             String query = "SELECT * FROM item WHERE id = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ItemMapper().mapRow(rs, rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, new ItemMapper());
 
         } catch (EmptyResultDataAccessException e) {
             LOGGER.warn(String.format("Failed to find item by id: %s", id));

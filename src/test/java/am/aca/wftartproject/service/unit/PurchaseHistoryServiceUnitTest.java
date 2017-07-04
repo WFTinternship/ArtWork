@@ -14,7 +14,9 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,8 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(purchaseHistoryService, "purchaseHistoryDao", purchaseHistoryDaoMock);
     }
 
     @After

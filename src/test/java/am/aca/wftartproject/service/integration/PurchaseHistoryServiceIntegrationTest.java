@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
@@ -50,7 +51,7 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         userService.addUser(testUser);
         artistService.addArtist(testArtist);
         itemService.addItem(testArtist.getId(), testItem);
-        testPurchaseHistory.setPurchaseDate(new Date(System.currentTimeMillis()));
+        testPurchaseHistory.setPurchaseDate(LocalDateTime.now());
     }
 
     /**

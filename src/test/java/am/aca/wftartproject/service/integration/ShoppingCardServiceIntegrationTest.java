@@ -113,6 +113,22 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see ShoppingCardServiceImpl#getShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void getShoppingCardByBuyerId_Success() {
+//TODO
+    }
+
+    /**
+     * @see ShoppingCardServiceImpl#getShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void getShoppingCardByBuyerId_Failure() {
+//TODO
+    }
+
+    /**
      * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
      */
     @Test
@@ -136,6 +152,19 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see ShoppingCardServiceImpl#debitBalanceForItemBuying(Long, Double)
+     */
+    @Test
+    public void debitBalanceForItemBuying_NotEmptyList() {}
+
+    /**
+     * @see ShoppingCardServiceImpl#debitBalanceForItemBuying(Long, Double)
+     */
+    @Test
+    public void debitBalanceForItemBuying_EmptyList() {}
+
+
+    /**
      * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
      */
     @Test
@@ -156,6 +185,23 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
         // Test method
         shoppingCardService.deleteShoppingCard(-5L);
     }
+
+    /**
+     * @see ShoppingCardServiceImpl#deleteShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void deleteShoppingCardByBuyerId_Success() {
+        //TODO
+    }
+
+    /**
+     * @see ShoppingCardServiceImpl#deleteShoppingCardByBuyerId(Long)
+     */
+    @Test
+    public void deleteShoppingCardByBuyerId_Failure() {
+        //TODO
+    }
+
 
     // endregion
 }

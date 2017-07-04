@@ -3,7 +3,7 @@ package am.aca.wftartproject.util;
 import am.aca.wftartproject.model.*;
 
 import java.sql.Date;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
@@ -44,7 +44,7 @@ public class TestObjectTemplate {
                 .setPhotoURL("../../resources/images/product/images (1).jpg")
                 .setPrice(getRandomNumber() + 1.1)
                 .setStatus(false)
-                .setAdditionDate(getTimestamp());
+                .setAdditionDate(getTestTime());
         return item;
     }
 
@@ -62,7 +62,7 @@ public class TestObjectTemplate {
 
         purchaseHistory.setItemId(getRandomNumber() + 1L)
                 .setUserId(getRandomNumber() + 1L)
-                .setPurchaseDate(getTimestamp());
+                .setPurchaseDate(getTestTime());
 
         return purchaseHistory;
     }
@@ -72,8 +72,7 @@ public class TestObjectTemplate {
         return rand.nextInt(100000) + 1;
     }
 
-    private static Date getTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        return new Date(cal.getTimeInMillis());
+    private static LocalDateTime getTestTime() {
+        return LocalDateTime.now().withNano(0);
     }
 }

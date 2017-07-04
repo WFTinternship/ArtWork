@@ -1,5 +1,8 @@
 package am.aca.wftartproject.service.unit;
 
+import am.aca.wftartproject.dao.ItemDao;
+import am.aca.wftartproject.dao.PurchaseHistoryDao;
+import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
@@ -12,6 +15,8 @@ import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.PurchaseHistoryService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import am.aca.wftartproject.util.AssertTemplates;
 import org.junit.After;
@@ -22,6 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,7 @@ import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCar
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -52,17 +59,20 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     private ItemService itemService;
 
     @Mock
-    private ItemDaoImpl itemDaoMock;
+    private ItemDao itemDaoMock;
 
     @Mock
-    private ShoppingCardDaoImpl shoppingCardDaoMock;
+    private ShoppingCardService shoppingCardServiceMock;
 
     @Mock
-    private PurchaseHistoryDaoImpl purchaseHistoryDaoMock;
+    private PurchaseHistoryService purchaseHistoryServiceMock;
 
     @Before
     public void beforeTest() {
         MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(itemService, "itemDao", itemDaoMock);
+        ((ItemServiceImpl) itemService).setPurchaseHistoryService(purchaseHistoryServiceMock);
+        ((ItemServiceImpl) itemService).setShoppingCardService(shoppingCardServiceMock);
     }
 
     @After
@@ -128,7 +138,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
             itemService.addItem(id, testItem);
             fail();
         } catch (Exception ex) {
-            assertTrue(ex instanceof Exception);
+            assertTrue(ex instanceof InvalidEntryException);
         }
     }
 
@@ -602,7 +612,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#getArtistItems(Long, Long, Long)
      */
     @Test
-    public void getArtistItems_gottenListISNull(){
+    public void getArtistItems_gottenListIsNull(){
         // Create Argument Capture
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
 
@@ -649,6 +659,61 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         assertEquals(testArtistId,argument.getAllValues().get(0));
         assertEquals(testItemId,argument.getAllValues().get(1));
         assertEquals(testLimit,argument.getAllValues().get(2));
+    }
+
+    /**
+     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_artistIdNullOrNegative() {
+        Long artistId = null;
+
+        try {
+            itemService.getAvailableItemsForGivenArtist(artistId);
+            fail();
+        } catch (Exception e) {
+            assertTrue(e instanceof InvalidEntryException);
+        }
+
+        artistId = -5L;
+
+        try {
+            itemService.getAvailableItemsForGivenArtist(artistId);
+            fail();
+        } catch (Exception e) {
+            assertTrue(e instanceof InvalidEntryException);
+        }
+    }
+
+    /**
+     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_gottenListIsNull() {
+        // Setup mock
+        doReturn(null).when(itemDaoMock).getAvailableItemsForGivenArtist(anyLong());
+
+        List<Item> availableItems = itemService.getAvailableItemsForGivenArtist(5L);
+
+        assertNull(availableItems);
+    }
+
+    /**
+     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_gottenListNotNull() {
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+
+        Long artistId = 5L;
+
+        List<Item> availableItems = new ArrayList<>();
+
+        doReturn(availableItems).when(itemDaoMock).getAvailableItemsForGivenArtist(argumentCaptor.capture());
+
+        assertEquals(availableItems, itemService.getAvailableItemsForGivenArtist(artistId));
+
+        assertEquals(artistId, argumentCaptor.getValue());
     }
 
 
@@ -897,7 +962,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         Long buyerId = 5L;
         testItem = createTestItem();
 
-        doThrow(DAOException.class).when(shoppingCardDaoMock).getShoppingCard(buyerId);
+        doThrow(DAOException.class).when(shoppingCardServiceMock).getShoppingCardByBuyerId(anyLong());
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
@@ -916,7 +981,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         testItem.setArtistId(5L);
 
         // Setup mock
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(anyLong());
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(anyLong());
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
@@ -937,8 +1002,8 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         testItem.setPrice(100.0);
 
         // Setup mock
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(anyLong());
-        doThrow(DAOException.class).when(shoppingCardDaoMock).updateShoppingCard(anyLong(),any(ShoppingCard.class));
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(anyLong());
+        doThrow(DAOException.class).when(shoppingCardServiceMock).updateShoppingCard(anyLong(),any(ShoppingCard.class));
 
         // Test method
         itemService.itemBuying(testItem, id);
@@ -961,12 +1026,12 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         testItem.setPrice(100.0);
 
         // SetUp mocks
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(argument.capture());
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
 
         // Test method
         itemService.itemBuying(testItem,id);
 
-        verify(shoppingCardDaoMock).updateShoppingCard(id,shoppingCard);
+        verify(shoppingCardServiceMock).updateShoppingCard(shoppingCard.getId(),shoppingCard);
 
         assertEquals(id, argument.getValue());
     }
@@ -986,9 +1051,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         shoppingCard.setBalance(100000.0);
 
         // Setup mocks
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(argument.capture());
-        doReturn(true).when(shoppingCardDaoMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
-        doThrow(DAOException.class).when(purchaseHistoryDaoMock).addPurchase(any(PurchaseHistory.class));
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
+        doNothing().when(shoppingCardServiceMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
+        doThrow(DAOException.class).when(purchaseHistoryServiceMock).addPurchase(any(PurchaseHistory.class));
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
@@ -1017,15 +1082,16 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         purchaseHistory.setUserId(buyerId);
 
         // Setup mock
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(argument.capture());
-        doReturn(true).when(shoppingCardDaoMock).updateShoppingCard(argument.capture(), argument1.capture());
-        doNothing().when(purchaseHistoryDaoMock).addPurchase(argument2.capture());
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
+        doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
+        doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
         doNothing().when(itemDaoMock).updateItem(anyLong(), any(Item.class));
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
-        assertEquals(buyerId, argument.getValue());
+        assertEquals(buyerId, argument.getAllValues().get(0));
+        assertEquals(shoppingCard.getId(), argument.getAllValues().get(1));
         assertEqualShoppingCards(shoppingCard, argument1.getValue());
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
     }
@@ -1051,9 +1117,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         purchaseHistory.setUserId(buyerId);
 
         // Setup mock
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(argument.capture());
-        doReturn(true).when(shoppingCardDaoMock).updateShoppingCard(argument.capture(), argument1.capture());
-        doNothing().when(purchaseHistoryDaoMock).addPurchase(argument2.capture());
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
+        doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
+        doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
         doThrow(DAOException.class).when(itemDaoMock).updateItem(anyLong(), any(Item.class));
 
         // Test method
@@ -1086,18 +1152,19 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         purchaseHistory.setUserId(buyerId);
 
         // Setup mock
-        doReturn(shoppingCard).when(shoppingCardDaoMock).getShoppingCard(argument.capture());
-        doReturn(true).when(shoppingCardDaoMock).updateShoppingCard(argument.capture(), argument1.capture());
-        doNothing().when(purchaseHistoryDaoMock).addPurchase(argument2.capture());
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
+        doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
+        doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
         doNothing().when(itemDaoMock).updateItem(argument.capture(), argument3.capture());
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
         assertEquals(buyerId, argument.getAllValues().get(0));
+        assertEquals(shoppingCard.getId(), argument.getAllValues().get(1));
         assertEqualShoppingCards(shoppingCard, argument1.getValue());
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
-        assertEquals(testItem.getArtistId(), argument.getAllValues().get(1));
+        assertEquals(testItem.getArtistId(), argument.getAllValues().get(2));
         assertEqualItems(testItem, argument3.getValue());
     }
 

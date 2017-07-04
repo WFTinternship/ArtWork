@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -58,9 +59,8 @@ public abstract class BaseDaoImpl {
     }
 
 
-    Date getCurrentDateTime(){
-        Calendar cal = Calendar.getInstance();
-        return new Date(cal.getTimeInMillis());
+    LocalDateTime getCurrentDateTime(){
+        return LocalDateTime.now();
     }
 
     double getRandomBalance(){
