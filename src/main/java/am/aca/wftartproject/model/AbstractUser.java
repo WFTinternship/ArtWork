@@ -1,32 +1,51 @@
 package am.aca.wftartproject.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+
+import java.io.Serializable;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by ASUS on 30-May-17
  */
-@Entity(name = "user")
+@MappedSuperclass
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class AbstractUser {
+public abstract class AbstractUser implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "firstname",nullable = false ,length = 50)
+
+    @NotEmpty
+    @Column(name = "firstname", nullable = false, length = 50)
     String firstName;
-    @Column(name = "lastname",nullable = false, length = 50)
+
+    @NotEmpty
+    @Column(name = "lastname", nullable = false, length = 50)
     String lastName;
-    @Column(name = "age",nullable = false, length = 20)
+
+    @NotEmpty
+    @Column(name = "age", nullable = false, length = 20)
     int age;
-    @Column(name = "email",nullable = false, length = 50)
+
+    @Email
+    @Column(name = "email", nullable = false, length = 50)
     String email;
-    @Column(name = "password",nullable = false,length = 30)
+
+    @NotEmpty
+    @Column(name = "password", nullable = false, length = 30)
     String password;
+
     @Transient
     String userPasswordRepeat;
+
     @Transient
     ShoppingCard shoppingCard;
+
 
     public String getUserPasswordRepeat() {
         return userPasswordRepeat;
@@ -41,6 +60,7 @@ public abstract class AbstractUser {
     public Long getId() {
         return id;
     }
+
     public AbstractUser setId(Long id) {
         this.id = id;
         return this;
@@ -101,16 +121,12 @@ public abstract class AbstractUser {
     }
 
     public boolean isValidUser() {
-        return
-//                id != null &&
-//                id > 0 &&
-                !isEmptyString(firstName) &&
+        return !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password)&&
-                password.equals(userPasswordRepeat);
-//                &&
-//                shoppingCard.isValidShoppingCard();
+                !isEmptyString(password) &&
+                password.equals(userPasswordRepeat) &&
+                shoppingCard.isValidShoppingCard();
     }
 }

@@ -56,4 +56,11 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
         <property name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
     </bean>
 
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>messages</value>
+        </property>
+    </bean>
+
 </beans>

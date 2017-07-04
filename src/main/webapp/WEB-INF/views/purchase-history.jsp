@@ -106,7 +106,6 @@
                                     <div class="table-responsive a-table">
                                         <!-- account purchase table -->
                                         <table class="table table-striped">
-
                                             <thead>
                                             <tr>
                                                 <th>Price</th>
@@ -117,13 +116,13 @@
                                             <tbody>
                                                 <c:forEach items="${purchaseHistory}" var="element">
                                                 <tr>
-                                                    <td>${element.item.price}</td>
-                                                    <td>${element.purchaseDate}</td>
-                                                        <td>
+                                                    <td>
                                                         <a href="item-detail/${element.item.id}" class="product">
                                                             <img src="${pageContext.request.contextPath}/${element.item.photoURL[0]}"
                                                                  alt="" height="50" width="50" title=""></a>
                                                     </td>
+                                                    <td>${element.item.price}</td>
+                                                    <td>${element.purchaseDate}</td>
                                                 </tr>
                                                 </c:forEach>
                                             </tbody>

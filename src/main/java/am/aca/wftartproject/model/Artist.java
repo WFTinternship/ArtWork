@@ -1,10 +1,6 @@
 package am.aca.wftartproject.model;
 
-import org.hibernate.type.BlobType;
-
 import javax.persistence.*;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,15 +11,20 @@ import java.util.List;
 public class Artist extends AbstractUser {
 
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private ArtistSpecialization specialization;
-    @Column(length=10000000)
+
+    @Lob
+    @Column(length = 10000000,name = "photo")
     private byte[] artistPhoto;
+
     @Transient
     private List<Item> itemList;
+
     @Transient
     private String base64;
 
@@ -93,6 +94,6 @@ public class Artist extends AbstractUser {
     }
 
     public boolean isValidArtist() {
-        return super.isValidUser() ;
+        return super.isValidUser();
     }
 }

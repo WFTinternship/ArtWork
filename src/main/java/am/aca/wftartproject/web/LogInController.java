@@ -9,13 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @Controller
 public class LogInController {
@@ -33,7 +34,7 @@ public class LogInController {
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = null;
+        ModelAndView mav;
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
         try {
@@ -61,7 +62,6 @@ public class LogInController {
             request.setAttribute("errorMessage", userNotExists);
             mav = new ModelAndView("logIn");
         }
-
         return mav;
     }
 
