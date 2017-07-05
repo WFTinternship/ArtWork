@@ -52,11 +52,11 @@ public class ArtistServiceImpl implements ArtistService {
             LOGGER.error(String.format("Artist is not valid: %s", artist));
             throw new InvalidEntryException(error);
         }
-//        if (artistDao.findArtist(artist.getEmail()) != null) {
-//            String error = "User has already exists";
-//            LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
-//            throw new DuplicateEntryException(error);
-//        }
+        if (artistDao.findArtist(artist.getEmail()) != null) {
+            String error = "User has already exists";
+            LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
+            throw new DuplicateEntryException(error);
+        }
 
         try {
             artistDao.addArtist(artist);
@@ -66,13 +66,14 @@ public class ArtistServiceImpl implements ArtistService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
 
-//        try {
-//            shoppingCardDao.addShoppingCard(artist.getId(),artist.getShoppingCard());
-//        } catch (DAOException e) {
-//            String error = "Failed to add ShoppingCard: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new ServiceException(String.format(error, e.getMessage()));
-//        }
+        try {
+            artist.getShoppingCard().setBuyer_id(artist.getId());
+            shoppingCardDao.addShoppingCard(artist.getId(),artist.getShoppingCard());
+        } catch (DAOException e) {
+            String error = "Failed to add ShoppingCard: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
 
 
@@ -121,24 +122,20 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @param id
      * @param artist
-     * @see ArtistService#updateArtist(Long, Artist)
+     * @see ArtistService#updateArtist(Artist)
      */
     @Transactional(readOnly = false)
     @Override
-    public void updateArtist(Long id, Artist artist) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid id");
-        }
+    public void updateArtist( Artist artist) {
+
         if (artist == null || !artist.isValidArtist()) {
-            LOGGER.error(String.format("Artist is not valid: %s", id));
+            LOGGER.error(String.format("Artist is not valid: %s", artist.getId()));
             throw new InvalidEntryException("Invalid artist");
         }
 
         try {
-            artistDao.updateArtist(id, artist);
+            artistDao.updateArtist(artist);
         } catch (DAOException e) {
             String error = "Failed to update Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -166,5 +163,36 @@ public class ArtistServiceImpl implements ArtistService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
+    }
+    /**
+     * LogIn for Artist
+     *
+     * @param email
+     * @param password
+     * @see ArtistService#login(String, String)
+     */
+    @Transactional(readOnly = false)
+    public Artist login(String email, String password) {
+        Artist artist = null;
+        if (isEmptyString(password) || isEmptyString(email)) {
+            LOGGER.error(String.format("Email or password is not valid: %s , %s", email, password));
+            throw new InvalidEntryException("Invalid Id");
+        }
+
+        try {
+            Artist user = artistDao.findArtist(email);
+            if (user != null && user.getPassword().equals(password)) {
+                artist = user;
+            }
+        } catch (DAOException e) {
+            String error = "Failed to find User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        } catch (RuntimeException e) {
+            String error = "Failed to login: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+        return artist;
     }
 }

@@ -30,14 +30,17 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
                 <value>am.aca.wftartproject.model.Artist</value>
                 <value>am.aca.wftartproject.model.User</value>
                 <value>am.aca.wftartproject.model.AbstractUser</value>
+                <value>am.aca.wftartproject.model.ShoppingCard</value>
+                <value>am.aca.wftartproject.model.Item</value>
+                <value>am.aca.wftartproject.model.PurchaseHistory</value>
             </list>
         </property>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
+                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
                 <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
     </bean>

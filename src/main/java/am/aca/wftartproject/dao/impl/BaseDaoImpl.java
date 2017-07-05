@@ -7,9 +7,6 @@ import java.sql.*;
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Created by ASUS on 08-Jun-17
- */
 public abstract class BaseDaoImpl {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);

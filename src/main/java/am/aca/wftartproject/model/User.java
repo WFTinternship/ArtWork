@@ -1,14 +1,19 @@
 package am.aca.wftartproject.model;
 
+import org.springframework.context.annotation.Bean;
+
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * Created by ASUS on 24-May-17
  */
 @Entity
 @Table(name = "user")
-public class User extends AbstractUser {
+public class User extends AbstractUser implements Serializable {
 
     public User() {
     }

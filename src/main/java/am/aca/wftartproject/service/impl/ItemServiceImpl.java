@@ -16,9 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -59,25 +56,20 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param artistID
      * @param item
-     * @see ItemService#addItem(Long, Item)
+     * @see ItemService#addItem(Item)
      */
     @Transactional(readOnly = false)
     @Override
-    public void addItem(Long artistID, Item item) {
+    public void addItem(Item item) {
 
-        if (artistID == null || artistID < 0) {
-            LOGGER.error(String.format("ArtistId is not valid: %s", artistID));
-            throw new InvalidEntryException("Invalid artistId");
-        }
         if (item == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
             throw new InvalidEntryException("Invalid item");
         }
 
         try {
-            itemDao.addItem(artistID, item);
+            itemDao.addItem(item);
         } catch (DAOException e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -203,19 +195,18 @@ public class ItemServiceImpl implements ItemService {
 
     /**
      * @param artistId
-     * @param limit
      * @return
-     * @see ItemService#getArtistItems(Long, Long, Long)
+     * @see ItemService#getArtistItems(Long)
      */
     @Override
-    public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
-        if (artistId == null || artistId < 0 || itemId == null || itemId < 0 || limit == null || limit < 0) {
-            LOGGER.error(String.format("artistId or itemId or limit is not valid: %s , %s, %s", artistId, itemId, limit));
+    public List<Item> getArtistItems(Long artistId) {
+        if (artistId == null || artistId < 0 ) {
+            LOGGER.error(String.format("artistId or itemId or limit is not valid: %s , %s, %s", artistId));
             throw new InvalidEntryException("Invalid artistId or limit");
         }
 
         try {
-            return itemDao.getArtistItems(artistId, itemId, limit);
+            return itemDao.getArtistItems(artistId);
         } catch (DAOException e) {
             String error = "Failed to get items for the given artistId: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -225,24 +216,19 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param id
      * @param item
-     * @see ItemService#updateItem(Long, Item)
+     * @see ItemService#updateItem(Item)
      */
     @Transactional(readOnly = false)
     @Override
-    public void updateItem(Long id, Item item) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid Id");
-        }
+    public void updateItem(Item item) {
         if (item == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
             throw new InvalidEntryException("Invalid item");
         }
 
         try {
-            itemDao.updateItem(id, item);
+            itemDao.updateItem(item);
         } catch (DAOException e) {
             String error = "Failed to update Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -262,7 +248,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(String.format("Id is not valid: %s", id));
             throw new InvalidEntryException("Invalid Id");
         }
-
         try {
             itemDao.deleteItem(id);
         } catch (DAOException e) {
@@ -296,7 +281,7 @@ public class ItemServiceImpl implements ItemService {
             ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(buyerId);
             if (shoppingCard.getBalance() >= item.getPrice()) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
-                shoppingCardDao.updateShoppingCard(buyerId, shoppingCard);
+                shoppingCardDao.updateShoppingCard(shoppingCard);
             } else {
                 throw new NotEnoughMoneyException("Not enough money on the account.");
             }
@@ -308,7 +293,11 @@ public class ItemServiceImpl implements ItemService {
 
         // Add item to the buyer's purchase history
         try {
-            purchaseHistoryDao.addPurchase(new PurchaseHistory(buyerId, item.getId()));
+            PurchaseHistory purchaseHistory = new PurchaseHistory();
+            purchaseHistory.setItemId(item.getId());
+            purchaseHistory.setUserId(buyerId);
+            purchaseHistory.setItem(item);
+            purchaseHistoryDao.addPurchase(purchaseHistory);
         } catch (DAOException e) {
             String error = "Failed to add item in purchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -318,7 +307,7 @@ public class ItemServiceImpl implements ItemService {
         // Change item status to sold
         try {
             item.setStatus(false);
-            updateItem(item.getArtistId(), item);
+            itemDao.updateItem(item);
 
         } catch (DAOException e) {
             String error = "Failed to change item status to sold: %s";

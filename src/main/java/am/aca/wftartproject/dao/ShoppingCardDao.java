@@ -25,11 +25,9 @@ public interface ShoppingCardDao {
 
     /**
      * Updates shoppingCard in database.
-     *
-     * @param id
      * @param shoppingCard
      */
-    Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard);
+    Boolean updateShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Debits balance for item buying

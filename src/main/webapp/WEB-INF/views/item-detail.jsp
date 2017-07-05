@@ -98,7 +98,7 @@
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
                                 <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
-                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[1]}" alt="" title="Acrylic">
+                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}" alt="" title="Acrylic">
                                 </a>
                             </div>
                             <ul class="thumblist">

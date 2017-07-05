@@ -39,7 +39,7 @@ public class LogInController {
         String userPasswordStr = request.getParameter("password");
         try {
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
-            Artist artistFromDB = artistService.findArtist(userFromDB.getId());
+            Artist artistFromDB = artistService.login(userEmailStr,userPasswordStr);
             if (artistFromDB != null) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", artistFromDB);

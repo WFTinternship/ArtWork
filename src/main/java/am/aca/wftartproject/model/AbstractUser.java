@@ -1,7 +1,6 @@
 package am.aca.wftartproject.model;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -12,40 +11,27 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by ASUS on 30-May-17
  */
-@MappedSuperclass
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class AbstractUser implements Serializable {
-
+@Entity
+@Table(name = "abstractuser")
+@Inheritance( strategy = InheritanceType.JOINED )
+public abstract class AbstractUser implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
-    @NotEmpty
-    @Column(name = "firstname", nullable = false, length = 50)
+    @Column(name = "firstname",nullable = false ,length = 50)
     String firstName;
-
-    @NotEmpty
-    @Column(name = "lastname", nullable = false, length = 50)
+    @Column(name = "lastname",nullable = false, length = 50)
     String lastName;
-
-    @NotEmpty
-    @Column(name = "age", nullable = false, length = 20)
+    @Column(name = "age",nullable = false, length = 20)
     int age;
-
-    @Email
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email",nullable = false, length = 50)
     String email;
-
-    @NotEmpty
-    @Column(name = "password", nullable = false, length = 30)
+    @Column(name = "password",nullable = false,length = 30)
     String password;
-
     @Transient
     String userPasswordRepeat;
-
     @Transient
     ShoppingCard shoppingCard;
-
 
     public String getUserPasswordRepeat() {
         return userPasswordRepeat;
@@ -58,12 +44,10 @@ public abstract class AbstractUser implements Serializable {
 
 
     public Long getId() {
-        return id;
+        return this.id;
     }
-
-    public AbstractUser setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getFirstName() {
@@ -121,12 +105,14 @@ public abstract class AbstractUser implements Serializable {
     }
 
     public boolean isValidUser() {
-        return !isEmptyString(firstName) &&
+        return
+                !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password) &&
-                password.equals(userPasswordRepeat) &&
-                shoppingCard.isValidShoppingCard();
+                !isEmptyString(password)&&
+                password.equals(userPasswordRepeat);
+//                &&
+//                shoppingCard.isValidShoppingCard();
     }
 }

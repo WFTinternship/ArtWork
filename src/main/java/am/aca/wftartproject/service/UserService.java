@@ -34,10 +34,9 @@ public interface UserService {
     /**
      * Updates user info
      *
-     * @param id
      * @param user
      */
-    void updateUser(Long id, User user);
+    void updateUser(User user);
 
     /**
      * Deletes user with the following id.

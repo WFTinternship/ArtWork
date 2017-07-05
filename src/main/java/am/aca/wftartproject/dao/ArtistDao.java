@@ -32,11 +32,9 @@ public interface ArtistDao {
 
     /**
      * Updates artist info in springconfig.database
-     *
-     * @param id
      * @param artist
      */
-    void updateArtist(Long id, Artist artist);
+    Boolean updateArtist(Artist artist);
 
     /**
      * Deletes artist from springconfig.database

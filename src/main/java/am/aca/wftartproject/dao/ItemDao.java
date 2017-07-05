@@ -11,11 +11,9 @@ public interface ItemDao {
 
     /**
      * Adds Item info for appropriate artist
-     *
-     * @param artistID
      * @param item
      */
-    void addItem(Long artistID, Item item);
+    void addItem(Item item);
 
 
     /**
@@ -68,20 +66,16 @@ public interface ItemDao {
      * Gets artist items for the given limit.
      *
      * @param artistId
-     * @param itemId
-     * @param limit
      * @return
      */
-    List<Item> getArtistItems(Long artistId,Long itemId, Long limit);
+    List<Item> getArtistItems(Long artistId);
 
 
     /**
      * Updates Item price by id
-     *
-     * @param id
      * @param item
      */
-    void updateItem(Long id, Item item);
+    Boolean updateItem(Item item);
 
 
     /**

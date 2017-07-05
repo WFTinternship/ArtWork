@@ -25,10 +25,10 @@ public class MyWorksServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("user")!= null  && session.getAttribute("user").getClass() == Artist.class) {
-            artist= (Artist) request.getSession().getAttribute("user");
-            request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(),8888L,100L));
-        }
+//        if(session.getAttribute("user")!= null  && session.getAttribute("user").getClass() == Artist.class) {
+//            artist= (Artist) request.getSession().getAttribute("user");
+//            request.setAttribute("artistItems", itemService.getArtistItems(artist.getId(),8888L,100L));
+//        }
 
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/my-works.jsp");

@@ -1,6 +1,12 @@
 package am.aca.wftartproject.model;
 
+import org.hibernate.type.BlobType;
+
 import javax.persistence.*;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.List;
 
 /**
@@ -8,33 +14,19 @@ import java.util.List;
  */
 @Entity
 @Table(name = "artist")
-public class Artist extends AbstractUser {
+public class Artist extends AbstractUser implements Serializable {
 
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private ArtistSpecialization specialization;
-
-    @Lob
-    @Column(length = 10000000,name = "photo")
+    @Column(length=10000000,name = "photo")
     private byte[] artistPhoto;
-
     @Transient
     private List<Item> itemList;
-
     @Transient
     private String base64;
 
     public String getBase64() {
         return base64;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
     }
 
     public void setBase64(String base64) {
@@ -82,18 +74,22 @@ public class Artist extends AbstractUser {
     public String toString() {
         return "Artist{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", specialization=" + specialization +
+                ", firstName='" + firstName + '\'' +
+                ", artistPhoto=" + Arrays.toString(artistPhoto) +
+                ", lastName='" + lastName + '\'' +
+                ", itemList=" + itemList +
+                ", base64='" + base64 + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", userPasswordRepeat='" + userPasswordRepeat + '\'' +
                 ", shoppingCard=" + shoppingCard +
-                ", itemList=" + itemList +
                 '}';
     }
 
+
     public boolean isValidArtist() {
-        return super.isValidUser();
+        return super.isValidUser() ;
     }
 }

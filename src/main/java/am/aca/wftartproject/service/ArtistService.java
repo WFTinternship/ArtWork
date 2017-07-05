@@ -32,11 +32,9 @@ public interface ArtistService {
 
     /**
      * Updates artist info in springconfig.database
-     *
-     * @param id
      * @param artist
      */
-    void updateArtist(Long id, Artist artist);
+    void updateArtist(Artist artist);
 
     /**
      * Deletes artist from springconfig.database
@@ -44,5 +42,13 @@ public interface ArtistService {
      * @param id
      */
     void deleteArtist(Long id);
+
+    /**
+     * LogIn for Artist
+     *
+     * @param email
+     * @param password
+     */
+    Artist login(String email, String password);
 
 }
