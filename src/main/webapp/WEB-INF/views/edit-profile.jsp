@@ -102,7 +102,7 @@
 									<c:choose>
 										<c:when test="${message!=null}">
 											<header class="cd-main-header">
-												<h3 style="color:red;">${message}</h3>
+												<h4 style="color:red;">${message}</h4>
 											</header>
 										</c:when>
 										<c:otherwise>

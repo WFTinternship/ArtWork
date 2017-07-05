@@ -12,19 +12,18 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-/**
- * @author surik
- */
 @Component
 public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements ArtistSpecializationLkpDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
 
     private SessionFactory sessionFactory;
+
     @Autowired
     public ArtistSpecializationLkpDaoImpl(SessionFactory sf) {
         this.sessionFactory = sf;
     }
+
     /**
      * @see ArtistSpecializationLkpDao#addArtistSpecialization()
      */
@@ -71,16 +70,16 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     /**
-     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      * @param id
      * @return
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(int)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
 
         try {
             String query = "SELECT * FROM artist_specialization_lkp WHERE id = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs,rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -121,16 +120,16 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
 
 
     /**
-     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      * @param specialization
      * @return
+     * @see ArtistSpecializationLkpDao#getArtistSpecialization(String)
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
 
         try {
             String query = "SELECT * FROM artist_specialization_lkp WHERE spec_type = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{specialization}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs,rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{specialization}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
             return null;

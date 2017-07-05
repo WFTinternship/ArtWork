@@ -5,6 +5,7 @@ import am.aca.wftartproject.dao.rowmappers.UserMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.AbstractUser;
 import am.aca.wftartproject.model.User;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -23,9 +24,6 @@ import org.springframework.stereotype.Component;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-/**
- * Created by ASUS on 27-May-17
- */
 @Component
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
@@ -44,10 +42,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-
+        try {
             Session session = this.sessionFactory.getCurrentSession();
             session.save(user);
-            LOGGER.info("Person saved successfully, Person Details="+user);
+            LOGGER.info("Person saved successfully, Person Details=" + user);
+        } catch (Exception e) {
+            String error = "Failed to add User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
+        }
+
 
     }
 
@@ -59,8 +63,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
-        Session session = this.sessionFactory.getCurrentSession();
-        return (User) session.get(User.class, id);
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            return (User) session.get(User.class, id);
+        } catch (Exception e) {
+            String error = "Failed to get User by id: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
+        }
+
+
     }
 
 
@@ -71,9 +83,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(String email) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
-        return (User) criteria.add(Restrictions.eq("email", email))
-                .uniqueResult();
+        try {
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+            return (User) criteria.add(Restrictions.eq("email", email))
+                    .uniqueResult();
+        } catch (Exception e) {
+            String error = "Failed to get User by email: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
+        }
     }
 
 
@@ -83,13 +101,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean updateUser(User user) {
-        Boolean status = false;
-        Session session = this.sessionFactory.getCurrentSession();
-        session.saveOrUpdate(user);
-        status = true;
-        LOGGER.info("User saved successfully, Person Details="+user);
+        Boolean result = false;
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            session.saveOrUpdate(user);
+            result = true;
+            LOGGER.info("User saved successfully, Person Details=" + user);
+        } catch (Exception e) {
+            String error = "Failed to update User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
+        }
 
-        return status;
+
+        return result;
 
     }
 
@@ -99,9 +124,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean deleteUser(Long id) {
-        Session session = this.sessionFactory.getCurrentSession();
-        User user =  (User) session.get(User.class, id);
-        session.delete(user);
-        return true;
+        Boolean result = false;
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            User user = (User) session.get(User.class, id);
+            session.delete(user);
+            result = true;
+        } catch (Exception e) {
+            String error = "Failed to delete User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
+        }
+
+        return result;
     }
 }

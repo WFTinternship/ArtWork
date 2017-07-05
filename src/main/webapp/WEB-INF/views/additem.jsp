@@ -113,9 +113,7 @@
                                 <div class="inner-main account">
                                     <c:choose>
                                         <c:when test="${Message!=null}">
-                                            <header class="cd-main-header">
-                                                <h3 style="color:red;">${Message}</h3>
-                                            </header>
+                                                <h4 style="color:red;">${Message}</h4>
                                         </c:when>
                                         <c:otherwise>
                                             <header class="cd-main-header">
@@ -155,8 +153,8 @@
                                                         </tr>
                                                         <td align="left">
 
-                                                            <input type="button" name="addmore" class="btn btn-warning"
-                                                                   id="addmore" style="width: 100%;height: 100%" value="Add Another Imaage(Optional)" onClick="dothat();"/>
+                                                            <input type="button" name="addmore" class="button"
+                                                                   id="addmore" style="width: 100%;height: 100%;color: #c7254e" value="Add Another Imaage(Optional)" onClick="dothat();"/>
                                                         </td>
                                                     </table>
 

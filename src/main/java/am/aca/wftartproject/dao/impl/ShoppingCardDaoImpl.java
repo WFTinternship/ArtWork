@@ -22,19 +22,19 @@ import org.springframework.stereotype.Component;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-/**
- * Created by ASUS on 27-May-17
- */
+
 @Component
 public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
     private SessionFactory sessionFactory;
+
     @Autowired
     public ShoppingCardDaoImpl(SessionFactory sf) {
         this.sessionFactory = sf;
     }
+
     /**
      * @param userId
      * @param shoppingCard
@@ -42,10 +42,17 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
-        Session session = this.sessionFactory.getCurrentSession();
-        shoppingCard.setBuyer_id(userId);
-        session.save(shoppingCard);
-        LOGGER.info("ShoppingCard saved successfully, ShoppingCard Details="+shoppingCard);
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            shoppingCard.setBuyer_id(userId);
+            session.save(shoppingCard);
+            LOGGER.info("ShoppingCard saved successfully, ShoppingCard Details=" + shoppingCard);
+        } catch (DAOException e) {
+            String error = "Failed to add ShoppingCard: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
+        }
+
     }
 
 
@@ -56,16 +63,16 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
-            ShoppingCard shoppingCard = null;
+        ShoppingCard shoppingCard = null;
         try {
             shoppingCard = (ShoppingCard) this.sessionFactory.getCurrentSession().createQuery(
                     "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
                     .setParameter("buyer_id", id)
                     .getSingleResult();
-        } catch (DataException e) {
+        } catch (DAOException e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error));
         }
         return shoppingCard;
 
@@ -100,23 +107,23 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#updateShoppingCard(ShoppingCard)
      * @param shoppingCard
+     * @see ShoppingCardDao#updateShoppingCard(ShoppingCard)
      */
     @Override
     public Boolean updateShoppingCard(ShoppingCard shoppingCard) {
 
-        Boolean status =false;
+        Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
             session.saveOrUpdate(shoppingCard);
-            status = true;
-        } catch (DataException e) {
+            result = true;
+        } catch (DAOException e) {
             String error = "Failed to update ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error));
         }
-        return status;
+        return result;
 
 //        region <Version with Simple JDBC>
 
@@ -155,14 +162,20 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
         Boolean isEnoughBalance;
         ShoppingCard shoppingCard = getShoppingCard(buyerId);
-
-        if (shoppingCard.getBalance() >= itemPrice) {
-            shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
-            updateShoppingCard(shoppingCard);
-            isEnoughBalance = true;
-        } else {
-            throw new NotEnoughMoneyException("Not enough money on the account.");
+        try {
+            if (shoppingCard.getBalance() >= itemPrice) {
+                shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
+                updateShoppingCard(shoppingCard);
+                isEnoughBalance = true;
+            } else {
+                throw new NotEnoughMoneyException("Not enough money on the account.");
+            }
+        } catch (DAOException e) {
+            String error = "Not enough money on the account: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error));
         }
+
 
         return isEnoughBalance;
     }
@@ -175,22 +188,21 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     @Override
     public Boolean deleteShoppingCard(Long id) {
 
-        Boolean status;
+        Boolean result;
         try {
             String query = "DELETE FROM shopping_card WHERE id=?";
-
             int rowsAffected = jdbcTemplate.update(query, id);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete ShoppingCard");
-            }else{
-                status = true;
+            } else {
+                result = true;
             }
-        } catch (DataAccessException e) {
-            String error = "Failed to delete ShoppingCard: %s";
+        } catch (DAOException e) {
+            String error = "Failed to delete ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error, e.getMessage()));
         }
-        return status;
+        return result;
 
 //        region <Version with Simple JDBC>
 
@@ -218,21 +230,20 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
     @Override
     public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
-        Boolean status;
+        Boolean result;
         try {
             String query = "DELETE FROM shopping_card WHERE buyer_id=?";
-
             int rowsAffected = jdbcTemplate.update(query, buyerId);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete ShoppingCard by buyerId");
             } else {
-                status = true;
+                result = true;
             }
-        } catch (DataAccessException e) {
-            String error = "Failed to delete ShoppingCard: %s buyerId: %s";
-            LOGGER.error(String.format(error, e.getMessage(), buyerId));
-            throw new DAOException(error, e);
+        } catch (DAOException e) {
+            String error = "Failed to delete ShoppingCard";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
-        return status;
+        return result;
     }
 }
