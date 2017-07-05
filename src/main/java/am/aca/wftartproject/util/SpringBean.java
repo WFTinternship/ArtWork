@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SpringBean {
 
-    private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-root.xml");
+    private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("WEB-INF/spring-config/spring-root.xml");
 
     public static <T> T getBeanFromSpring(String name, Class<T> requiredType) {
         return applicationContext.getBean(name, requiredType);

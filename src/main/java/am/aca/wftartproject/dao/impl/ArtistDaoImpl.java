@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
-    @Autowired
-    private SessionFactory sessionFactory;
 
+
+    @Autowired
     public ArtistDaoImpl(SessionFactory sf) {
         this.sessionFactory = sf;
     }
@@ -52,7 +52,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             Artist artist;
             Session session = this.sessionFactory.getCurrentSession();
-            artist = (Artist) session.get(Artist.class, id);
+            artist = session.get(Artist.class, id);
             return artist;
         } catch (DAOException e) {
             String error = "Failed to get Artist by ID: %s";

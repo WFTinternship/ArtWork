@@ -10,7 +10,9 @@ public class ConnectionFactory {
         if (connModel == null) {
             return null;
         }
-
+//        if (connModel.equals(ConnectionModel.BASIC)) {
+//            return new BasicConnection();
+//        }
         if (connModel.equals(ConnectionModel.POOL)) {
             return new ConnectionPool();
         }

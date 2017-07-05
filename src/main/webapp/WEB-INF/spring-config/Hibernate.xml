@@ -3,9 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
     <context:annotation-config/>
     <context:property-placeholder location="classpath:database-config.properties"/>
+
     <!--DataSource configuration-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbcDriver}"/>
@@ -22,31 +28,28 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
     </bean>
 
     <!-- Hibernate session factory -->
-    <bean id="hibernate5AnnotatedSessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <bean id="hibernate5AnnotatedSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
                 <value>am.aca.wftartproject.model.Artist</value>
                 <value>am.aca.wftartproject.model.User</value>
-                <value>am.aca.wftartproject.model.AbstractUser</value>
+                <!--<value>am.aca.wftartproject.model.AbstractUser</value>-->
                 <value>am.aca.wftartproject.model.ShoppingCard</value>
                 <value>am.aca.wftartproject.model.Item</value>
                 <value>am.aca.wftartproject.model.PurchaseHistory</value>
+                <value>am.aca.wftartproject.model.UserProfile</value>
             </list>
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
     </bean>
-
-    <context:annotation-config/>
-    <context:property-placeholder location="classpath:database-config.properties"/>
 
 
     <!-- Enable Annotation based Declarative Transaction Management -->
@@ -61,9 +64,11 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
 
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename">
-            <value>messages</value>
+        <property name="basename" value="messages">
         </property>
     </bean>
+
+
+    <bean id="userDetailsService" class="am.aca.wftartproject.security.UserDetailsServiceDao" />
 
 </beans>

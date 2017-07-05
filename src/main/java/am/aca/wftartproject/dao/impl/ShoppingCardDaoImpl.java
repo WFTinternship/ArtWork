@@ -28,8 +28,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
-    private SessionFactory sessionFactory;
-
     @Autowired
     public ShoppingCardDaoImpl(SessionFactory sf) {
         this.sessionFactory = sf;

@@ -1,18 +1,16 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by Armen on 6/26/2017.
@@ -26,9 +24,8 @@ public class HomeController {
     ArtistService artistService;
     Cookie[] cookies;
 
-    @RequestMapping(value = {"/", "index"})
+    @RequestMapping(value = {"/", "index"},method = RequestMethod.GET)
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
-
 
 //       cookies = request.getCookies();
 //        String userEmailFromCookie = null;

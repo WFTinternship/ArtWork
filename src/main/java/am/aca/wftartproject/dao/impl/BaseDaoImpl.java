@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao.impl;
 
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.*;
@@ -12,6 +13,8 @@ public abstract class BaseDaoImpl {
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);
 
     protected JdbcTemplate jdbcTemplate;
+
+    protected SessionFactory sessionFactory;
 
 
     void closeResources(ResultSet rs, Statement st, Connection conn) {

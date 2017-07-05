@@ -1,18 +1,12 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.controller.CtxListener;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
-import am.aca.wftartproject.util.SpringBeanType;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -52,7 +48,10 @@ public class AccountController {
     ItemService itemService;
 
     @RequestMapping(value = {"/account"},method = RequestMethod.GET)
+
     public ModelAndView accountInfo(HttpServletRequest request, HttpServletResponse response) {
+
+
         HttpSession session = request.getSession();
         cookies = request.getCookies();
         String page = "redirect:/signup";

@@ -5,11 +5,8 @@ import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,8 +20,6 @@ import java.util.List;
 public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
-
-    private SessionFactory sessionFactory;
 
     @Autowired
     public ItemDaoImpl(SessionFactory sf) {

@@ -7,12 +7,9 @@ import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,8 +19,6 @@ import java.util.List;
 public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHistoryDao {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
-
-    private SessionFactory sessionFactory;
 
     @Autowired
     public PurchaseHistoryDaoImpl(SessionFactory sf) {

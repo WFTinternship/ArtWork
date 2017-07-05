@@ -28,7 +28,7 @@ public class LogInController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("logIn");
+        ModelAndView mav = new ModelAndView("login");
         return mav;
     }
 
@@ -60,7 +60,7 @@ public class LogInController {
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("errorMessage", userNotExists);
-            mav = new ModelAndView("logIn");
+            mav = new ModelAndView("login");
         }
         return mav;
     }

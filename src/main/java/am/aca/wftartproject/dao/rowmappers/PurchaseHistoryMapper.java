@@ -1,19 +1,12 @@
 package am.aca.wftartproject.dao.rowmappers;
 
-import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
-import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,7 +15,7 @@ import java.sql.SQLException;
  */
 
 public class PurchaseHistoryMapper implements RowMapper<PurchaseHistory>{
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/spring-config/spring-root.xml");
     ItemService itemService = ctx.getBean("itemService", ItemServiceImpl.class);
 
     @Override

@@ -1,11 +1,7 @@
 package am.aca.wftartproject.model;
 
-import org.springframework.context.annotation.Bean;
-
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -33,7 +29,7 @@ public class User extends AbstractUser implements Serializable {
         this.email = email;
         this.password = password;
         this.shoppingCard = shoppingCard;
-        this.userPasswordRepeat = userPasswordRepeat;
+//        this.userPasswordRepeat = userPasswordRepeat;
     }
 
     @Override

@@ -86,7 +86,7 @@ public class ShopController {
         String page = "";
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
-            return new ModelAndView("logIn");
+            return new ModelAndView("login");
         }
         if (session.getAttribute("user").getClass() == Artist.class) {
             Artist artist = (Artist) session.getAttribute("user");

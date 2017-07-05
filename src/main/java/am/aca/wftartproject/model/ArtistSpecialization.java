@@ -14,6 +14,7 @@ public enum ArtistSpecialization {
     private final int id;
     private final String type;
 
+
     ArtistSpecialization(int id, String type) {
         this.id = id;
         this.type = type;

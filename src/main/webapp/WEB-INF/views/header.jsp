@@ -9,10 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
+
+
 <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
     <div id="header" class="header">
         <div class="container menu-container">
-            <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+            <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
 
             <a href="#" class="menu-trigger">
                 <span></span>
@@ -68,10 +70,10 @@
             <li class="menu-item-simple-parent">
                 <c:choose>
                     <c:when test="${user==null}">
-                        <a href="<%--progressbar.html--%>"> Account <span class="fa fa-paint-brush"></span></a>
+                        <a href="${pageContext.request.contextPath}/login"> Account <span class="fa fa-paint-brush"></span></a>
                     </c:when>
                     <c:otherwise>
-                        <a href="<%--progressbar.html--%>"> Hi ${user.firstName} <span class="fa fa-paint-brush"></span></a>
+                        <a href="${pageContext.request.contextPath}/account"> Hi ${user.firstName} <span class="fa fa-paint-brush"></span></a>
                     </c:otherwise>
                 </c:choose>
 

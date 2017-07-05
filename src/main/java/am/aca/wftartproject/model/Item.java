@@ -1,7 +1,5 @@
 package am.aca.wftartproject.model;
 
-import sun.security.util.Length;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -15,27 +13,45 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 @Entity
 @Table(name = "item")
 public class Item implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Basic
     private String title;
+
+    @Basic
     private String description;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photoURL;
+
+    @Basic
     private Double price;
-    private Long artist_id;
+
+    @JoinColumn(name = "artist_id")
+    private Long artistId;
+
+    @Basic
     private Boolean status;
+
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
+
+
+//    @Temporal(TemporalType.DATE)
+    @Column(name = "addition_date")
     private Date additionDate;
 
+
     public Long getArtist_id() {
-        return artist_id;
+        return artistId;
     }
 
     public void setArtist_id(Long artist_id) {
-        this.artist_id = artist_id;
+        this.artistId = artist_id;
     }
 
     public Boolean getStatus() {

@@ -1,12 +1,8 @@
 package am.aca.wftartproject.model;
 
-import org.hibernate.type.BlobType;
-
 import javax.persistence.*;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
 import java.util.List;
 
 /**
@@ -16,12 +12,23 @@ import java.util.List;
 @Table(name = "artist")
 public class Artist extends AbstractUser implements Serializable {
 
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private Integer userId;
+
+//    @Column(name = "spec_id", nullable = false)
+//    private Integer specId;
+
     @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "spec_id")
     private ArtistSpecialization specialization;
-    @Column(length=10000000,name = "photo")
+
+    @Lob
+    @Column(length=10000000,name = "photo", nullable = false)
     private byte[] artistPhoto;
-    @Transient
+
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Item> itemList;
+
     @Transient
     private String base64;
 
@@ -83,7 +90,7 @@ public class Artist extends AbstractUser implements Serializable {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", userPasswordRepeat='" + userPasswordRepeat + '\'' +
+//                ", userPasswordRepeat='" + userPasswordRepeat + '\'' +
                 ", shoppingCard=" + shoppingCard +
                 '}';
     }

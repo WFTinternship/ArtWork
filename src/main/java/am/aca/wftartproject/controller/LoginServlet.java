@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/logIn.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp")
                 .forward(request, response);
     }
 
@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("errorMessage", userNotExists);
-            request.getRequestDispatcher("/WEB-INF/views/logIn.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp")
                     .forward(request, response);
         }
 

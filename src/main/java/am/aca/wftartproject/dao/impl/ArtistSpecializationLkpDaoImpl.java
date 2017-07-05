@@ -9,15 +9,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements ArtistSpecializationLkpDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
-
-    private SessionFactory sessionFactory;
 
     @Autowired
     public ArtistSpecializationLkpDaoImpl(SessionFactory sf) {

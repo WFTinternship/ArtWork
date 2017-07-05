@@ -1,37 +1,60 @@
 package am.aca.wftartproject.model;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
+import java.util.Set;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 
 /**
  * Created by ASUS on 30-May-17
  */
-@Entity
-@Table(name = "abstractuser")
-@Inheritance( strategy = InheritanceType.JOINED )
+//@Entity
+//@Table(name = "abstractuser")
+//@Inheritance( strategy = InheritanceType.JOINED )
+@MappedSuperclass
 public abstract class AbstractUser implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    @NotEmpty
     @Column(name = "firstname",nullable = false ,length = 50)
     String firstName;
+
+    @NotEmpty
     @Column(name = "lastname",nullable = false, length = 50)
     String lastName;
+
+    @NotEmpty
     @Column(name = "age",nullable = false, length = 20)
     int age;
+
+    @NotEmpty
+    @Email
     @Column(name = "email",nullable = false, length = 50)
     String email;
+
+    @NotEmpty
     @Column(name = "password",nullable = false,length = 30)
     String password;
+
+    @JoinColumn(name = "buyer_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    ShoppingCard shoppingCard;
+
     @Transient
     String userPasswordRepeat;
-    @Transient
-    ShoppingCard shoppingCard;
+
+    @NotEmpty
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserProfile> userProfiles;
+
 
     public String getUserPasswordRepeat() {
         return userPasswordRepeat;
@@ -104,13 +127,22 @@ public abstract class AbstractUser implements Serializable{
         return this;
     }
 
+
+    public Set<UserProfile> getUserProfiles() {
+        return userProfiles;
+    }
+
+    public void setUserProfiles(Set<UserProfile> userProfiles) {
+        this.userProfiles = userProfiles;
+    }
+
     public boolean isValidUser() {
         return
                 !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password)&&
+                !isEmptyString(password) &&
                 password.equals(userPasswordRepeat);
 //                &&
 //                shoppingCard.isValidShoppingCard();

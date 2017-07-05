@@ -11,17 +11,24 @@ import java.util.Date;
 @Table(name = "purchase_history")
 public class PurchaseHistory implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "buyer_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
+
+    @Column(name = "item_id", insertable = false, updatable = false)
     private Long item_id;
-    private Date purchase_date;
-    @Column(length = 1000000)
+
+    @Column(name = "purchase_date")
+//    @Temporal(TemporalType.DATE)
+    private Date purchaseDate;
+
+    @OneToOne(fetch = FetchType.LAZY)
     private Item item;
+
+
     public Long getId() {
         return id;
     }
@@ -29,6 +36,7 @@ public class PurchaseHistory implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Item getItem() {
         return item;
     }
@@ -58,11 +66,11 @@ public class PurchaseHistory implements Serializable {
     }
 
     public Date getPurchaseDate() {
-        return purchase_date;
+        return purchaseDate;
     }
 
     public PurchaseHistory setPurchaseDate(Date purchaseDate) {
-        this.purchase_date = purchaseDate;
+        this.purchaseDate = purchaseDate;
         return this;
     }
 
@@ -80,7 +88,7 @@ public class PurchaseHistory implements Serializable {
         return "PurchaseHistory{" +
                 "userId=" + userId +
                 ", itemId=" + item_id +
-                ", purchaseDate=" + purchase_date +
+                ", purchaseDate=" + purchaseDate +
                 '}';
     }
 
@@ -89,7 +97,7 @@ public class PurchaseHistory implements Serializable {
                 userId > 0 &&
                 item_id != null &&
                 item_id > 0 &&
-                purchase_date != null;
+                purchaseDate != null;
     }
 
 

@@ -6,25 +6,31 @@ import javax.persistence.*;
  * Created by ASUS on 24-May-17
  */
 @Entity
+@Table(name="shopping_card")
 public class ShoppingCard {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Basic
+    private double balance;
+
+    @JoinColumn(name = "buyer_id")
+    private Long buyerId;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ShoppingCardType shoppingCardType;
+
+
     public Long getBuyer_id() {
-        return buyer_id;
+        return buyerId;
     }
 
     public void setBuyer_id(Long buyer_id) {
-        this.buyer_id = buyer_id;
+        this.buyerId = buyer_id;
     }
-
-    private Long buyer_id;
-
-    private double balance;
-
-    @Enumerated(EnumType.STRING)
-    private ShoppingCardType shoppingCardType;
 
     public Long getId() {
         return id;
