@@ -21,16 +21,6 @@ public class ShoppingCard {
 
     private Long buyer_id;
 
-    public Long getArtist_id() {
-        return artist_id;
-    }
-
-    public void setArtist_id(Long artist_id) {
-        this.artist_id = artist_id;
-    }
-
-    private Long artist_id;
-
     private double balance;
 
     @Enumerated(EnumType.STRING)

@@ -68,7 +68,7 @@ public class SignUpController {
         String message;
         ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
         artistFromRequest.setShoppingCard(shoppingCard );
-        artistFromRequest.getShoppingCard().setArtist_id(artistFromRequest.getId());
+        artistFromRequest.getShoppingCard().setBuyer_id(artistFromRequest.getId());
         if (!image.isEmpty() && request.getParameter("artistSpec")!=null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
             byte[] imageBytes = image.getBytes();
             artistFromRequest

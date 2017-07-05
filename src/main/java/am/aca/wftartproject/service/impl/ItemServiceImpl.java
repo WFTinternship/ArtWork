@@ -278,7 +278,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Withdraw money from payment method
         try {
-            ShoppingCard shoppingCard = shoppingCardDao.getArtistShoppingCard(buyerId);
+            ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(buyerId);
             if (shoppingCard.getBalance() >= item.getPrice()) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
                 shoppingCardDao.updateShoppingCard(shoppingCard);

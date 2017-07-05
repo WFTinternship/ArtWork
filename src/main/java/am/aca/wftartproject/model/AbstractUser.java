@@ -11,7 +11,9 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by ASUS on 30-May-17
  */
-@MappedSuperclass
+@Entity
+@Table(name = "abstractuser")
+@Inheritance( strategy = InheritanceType.JOINED )
 public abstract class AbstractUser implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

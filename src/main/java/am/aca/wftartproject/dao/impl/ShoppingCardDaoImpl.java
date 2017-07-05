@@ -52,13 +52,13 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     /**
      * @param id
      * @return
-     * @see ShoppingCardDao#getUserShoppingCard(Long)
+     * @see ShoppingCardDao#getShoppingCard(Long)
      */
     @Override
-    public ShoppingCard getUserShoppingCard(Long id) {
+    public ShoppingCard getShoppingCard(Long id) {
             ShoppingCard shoppingCard = null;
         try {
-                    shoppingCard = (ShoppingCard) this.sessionFactory.getCurrentSession().createQuery(
+            shoppingCard = (ShoppingCard) this.sessionFactory.getCurrentSession().createQuery(
                     "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
                     .setParameter("buyer_id", id)
                     .getSingleResult();
@@ -96,27 +96,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //        return shoppingCard;
 
         //endregion
-    }
-
-    /**
-     * @param id
-     * @return
-     * @see ShoppingCardDao#getArtistShoppingCard(Long)
-     */
-    @Override
-    public ShoppingCard getArtistShoppingCard(Long id) {
-        ShoppingCard shoppingCard = null;
-        try {
-            shoppingCard = (ShoppingCard) this.sessionFactory.getCurrentSession().createQuery(
-                    "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
-                    .setParameter("buyer_id", id)
-                    .getSingleResult();
-        } catch (DataException e) {
-            String error = "Failed to get ShoppingCard: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
-        }
-        return shoppingCard;
     }
 
 
@@ -174,8 +153,16 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     @Override
     public Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
 
-        Boolean isEnoughBalance = false;
+        Boolean isEnoughBalance;
+        ShoppingCard shoppingCard = getShoppingCard(buyerId);
 
+        if (shoppingCard.getBalance() >= itemPrice) {
+            shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
+            updateShoppingCard(shoppingCard);
+            isEnoughBalance = true;
+        } else {
+            throw new NotEnoughMoneyException("Not enough money on the account.");
+        }
 
         return isEnoughBalance;
     }
