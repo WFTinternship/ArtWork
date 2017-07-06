@@ -109,18 +109,14 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      */
     @Transactional(readOnly = false)
     @Override
-    public void deletePurchase(Long userId, Long itemId) {
-        if (userId == null || userId < 0){
-            LOGGER.error(String.format("UserId is not valid: %s", userId));
+    public void deletePurchase(PurchaseHistory purchaseHistory) {
+        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()){
+            LOGGER.error(String.format("UserId is not valid: %s", purchaseHistory));
             throw new InvalidEntryException("Invalid userId");
-        }
-        if (itemId == null || itemId < 0) {
-            LOGGER.error(String.format("itemId is not valid: %s", itemId));
-            throw new InvalidEntryException("Invalid itemId");
         }
 
         try {
-            if (!purchaseHistoryDao.deletePurchase(userId, itemId)){
+            if (!purchaseHistoryDao.deletePurchase(purchaseHistory)){
                 throw new DAOException("Failed to delete purchase history");
             }
         }catch (DAOException e) {

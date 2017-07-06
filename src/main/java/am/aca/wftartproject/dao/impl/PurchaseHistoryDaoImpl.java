@@ -3,6 +3,7 @@ package am.aca.wftartproject.dao.impl;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -35,17 +36,25 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
-
+        Transaction tx = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             purchaseHistory.setPurchaseDate(getCurrentDateTime());
             session.save(purchaseHistory);
             tx.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
 //        region <Version with Simple JDBC>
@@ -84,7 +93,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
-        //OLD VERSION WITH SPRING JDBC 
+        //OLD VERSION WITH SPRING JDBC
         try {
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
             return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId},
@@ -140,17 +149,29 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
-
+        Transaction tx = null;
         List<PurchaseHistory> purchaseHistoryList;
-        try {
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             purchaseHistoryList = (List<PurchaseHistory>) sessionFactory.getCurrentSession().createQuery(
                     "SELECT c FROM PurchaseHistory c WHERE c.userId = :user_id")
                     .setParameter("user_id", userId)
                     .getResultList();
-        } catch (HibernateException e) {
-            String error = "Failed to get PurchaseHistory: %s";
+            tx.commit();
+        }
+        catch (Exception e) {
+            String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return purchaseHistoryList;
 
@@ -187,28 +208,33 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
-     * @param userId
-     * @param itemId
      * @return
-     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
+     * @see PurchaseHistoryDao#deletePurchase(PurchaseHistory)
      */
     @Override
-    public Boolean deletePurchase(Long userId, Long itemId) {
-        //OLD VERSION WITH SPRING JDBC 
+    public Boolean deletePurchase(PurchaseHistory purchaseHistory) {
+        Transaction tx = null;
         Boolean result = false;
         try {
-            String query = "DELETE FROM purchase_history WHERE user_id = ? AND item_id = ?";
 
-            int rowsAffected = jdbcTemplate.update(query, userId, itemId);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to delete PurchaseHistory");
-            } else {
-                result = true;
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
             }
-        } catch (HibernateException e) {
-            String error = "Failed to delete PurchaseHistory: %s";
+            session.delete(purchaseHistory);
+            tx.commit();
+            result = true;
+            LOGGER.info("Item deleted successfully");
+        } catch (Exception e) {
+            String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return result;
 

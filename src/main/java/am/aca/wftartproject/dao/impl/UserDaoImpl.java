@@ -42,9 +42,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
+        Transaction tx = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
+              tx = session.getTransaction();
         if(!tx.isActive()){
             tx = session.beginTransaction();}
             session.save(user);
@@ -54,6 +55,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
 
@@ -67,16 +73,28 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
+        Transaction tx = null;
+        User user = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            return (User) session.get(User.class, id);
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
+            user =  (User) session.get(User.class, id);
+            tx.commit();
         } catch (Exception e) {
             String error = "Failed to get User by id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
 
-
+        return user;
     }
 
 
@@ -87,15 +105,30 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(String email) {
+        Transaction tx = null;
+        Session session = null;
+        User user = null;
         try {
+            session = sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
-            return (User) criteria.add(Restrictions.eq("email", email))
+            user = (User) criteria.add(Restrictions.eq("email", email))
                     .uniqueResult();
+            tx.commit();
         } catch (Exception e) {
             String error = "Failed to get User by email: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+        return user;
     }
 
 
@@ -105,10 +138,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean updateUser(User user) {
+        Transaction tx = null;
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
+             tx = session.getTransaction();
         if(!tx.isActive()){
             tx = session.beginTransaction();}
             session.saveOrUpdate(user);
@@ -119,6 +153,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
 
@@ -133,19 +172,25 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public Boolean deleteUser(Long id) {
         Boolean result = false;
+        Transaction tx = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
+             tx = session.getTransaction();
         if(!tx.isActive()){
             tx = session.beginTransaction();}
             User user = (User) session.get(User.class, id);
-            tx.commit();
             session.delete(user);
+            tx.commit();
             result = true;
         } catch (Exception e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
         return result;

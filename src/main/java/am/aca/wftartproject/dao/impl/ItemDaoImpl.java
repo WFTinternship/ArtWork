@@ -37,10 +37,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Item item) {
+        Transaction tx = null;
         try {
             item.setAdditionDate(getCurrentDateTime());
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.getTransaction();
+            tx = session.getTransaction();
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
@@ -51,6 +52,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
     }
@@ -63,10 +69,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Item findItem(Long id) {
+        Transaction tx =null;
         Item item = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.getTransaction();
+            tx = session.getTransaction();
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
@@ -77,6 +84,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+
         return item;
 
     }
@@ -89,11 +102,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
-
+        Transaction tx = null;
         List<Item> itemList = null;
         try {
             Session session = sessionFactory.getCurrentSession();
-            Transaction tx = session.getTransaction();
+            tx = session.getTransaction();
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
@@ -105,6 +118,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to get recently added items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return itemList;
 
@@ -215,11 +233,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
-
+        Transaction tx = null;
         List<Item> itemList = null;
         try {
             Session session = sessionFactory.getCurrentSession();
-            Transaction tx = session.getTransaction();
+            tx = session.getTransaction();
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
@@ -231,6 +249,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to get Items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return itemList;
 
@@ -340,17 +363,31 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getArtistItems(Long artistId) {
         List<Item> list = null;
-
+        Transaction tx = null;
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.getTransaction();
+        tx = session.getTransaction();
         if(!tx.isActive()){
             tx = session.beginTransaction();
         }
-        list =  (List<Item>) sessionFactory.getCurrentSession().createQuery(
-                "SELECT c FROM Item c WHERE c.artist_id = :artist_id")
-                .setParameter("artist_id", artistId)
-                .getResultList();
-        tx.commit();
+        try{
+            list =  (List<Item>) sessionFactory.getCurrentSession().createQuery(
+                    "SELECT c FROM Item c WHERE c.artist_id = :artist_id")
+                    .setParameter("artist_id", artistId)
+                    .getResultList();
+            tx.commit();
+        }
+        catch (Exception e) {
+            String error = "Failed to get Items by type: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+
+
         return list;
     }
 
@@ -361,10 +398,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Boolean updateItem(Item item) {
+        Transaction tx = null;
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.getTransaction();
+            tx = session.getTransaction();
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
@@ -376,6 +414,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to update Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
         return result;
@@ -412,12 +455,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Boolean deleteItem(Long id) {
-
+        Transaction tx = null;
         Boolean result = false;
         try {
 
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.getTransaction();
+            tx = session.getTransaction();
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
@@ -430,6 +473,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return result;
     }

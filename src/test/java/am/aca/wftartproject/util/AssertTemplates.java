@@ -34,7 +34,7 @@ public class AssertTemplates {
         assertEquals(expectedItem.getId(), actualItem.getId());
         assertEquals(expectedItem.getItemType(), actualItem.getItemType());
         assertEquals(expectedItem.getTitle(), actualItem.getTitle());
-        assertEquals(expectedItem.getPhotoURL(), actualItem.getPhotoURL());
+        assertEquals(expectedItem.getPhotoURL().get(0), actualItem.getPhotoURL().get(0));
         assertEquals(expectedItem.getPrice(), actualItem.getPrice());
       //  assertTrue(dateComparison(expectedItem.getAdditionDate(), actualItem.getAdditionDate()));
 //        assertEquals(expectedItem.getAdditionDate().getTime() / 1000000000, actualItem.getAdditionDate().getTime() / 1000000000);

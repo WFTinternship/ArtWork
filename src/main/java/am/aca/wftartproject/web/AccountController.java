@@ -1,18 +1,12 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.controller.CtxListener;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
-import am.aca.wftartproject.util.SpringBeanType;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

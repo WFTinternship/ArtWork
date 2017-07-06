@@ -31,9 +31,13 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
+        Transaction tx = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             shoppingCard.setBuyer_id(userId);
             session.save(shoppingCard);
             tx.commit();
@@ -42,6 +46,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }finally {
+            if(tx.isActive()){
+                tx.commit();
+            }
         }
 
     }
@@ -55,15 +63,28 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     @Override
     public ShoppingCard getShoppingCard(Long id) {
         ShoppingCard shoppingCard = null;
+        Session session = null;
+        Transaction tx = null;
         try {
-            shoppingCard = (ShoppingCard) this.sessionFactory.getCurrentSession().createQuery(
+            session = sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+            shoppingCard = (ShoppingCard) session.createQuery(
                     "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
                     .setParameter("buyer_id", id)
                     .getSingleResult();
+            tx.commit();
         } catch (Exception e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if(tx.isActive()){
+                tx.commit();
+            }
         }
         return shoppingCard;
 
@@ -105,9 +126,13 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public Boolean updateShoppingCard(ShoppingCard shoppingCard) {
 
         Boolean result = false;
+        Transaction tx = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             session.saveOrUpdate(shoppingCard);
             tx.commit();
             result = true;
@@ -115,6 +140,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             String error = "Failed to update ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }finally {
+            if(tx.isActive()){
+                tx.commit();
+            }
         }
         return result;
 

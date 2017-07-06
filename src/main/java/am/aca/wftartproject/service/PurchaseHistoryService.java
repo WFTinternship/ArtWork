@@ -36,10 +36,9 @@ public interface PurchaseHistoryService {
     /**
      * Deletes purchase item by userId and itemId
      *
-     * @param userId
-     * @param itemId
+     * @param purchaseHistory
      */
-    void deletePurchase(Long userId, Long itemId);
+    void deletePurchase(PurchaseHistory purchaseHistory);
 
 
 }

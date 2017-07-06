@@ -18,6 +18,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
     @Autowired
     private SessionFactory sessionFactory;
+
     @Autowired
     public ArtistDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -30,19 +31,24 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public void addArtist(Artist artist) {
+        Transaction tx = null;
         try {
-            Session session = this.sessionFactory.openSession();
-             Transaction tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();
-        }
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
             session.save(artist);
             tx.commit();
             LOGGER.info("Artist saved successfully, Artist Details=" + artist);
         } catch (Exception e) {
             String error = "Failed to add Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(e.getMessage(),error));
+            throw new DAOException(String.format(e.getMessage(), error));
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
     }
@@ -54,22 +60,26 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(Long id) {
+        Transaction tx = null;
         try {
             Artist artist;
             Session session = this.sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();
-        }
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
             artist = (Artist) session.get(Artist.class, id);
             tx.commit();
             return artist;
         } catch (Exception e) {
             String error = "Failed to get Artist by ID: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(e.getMessage(),error));
+            throw new DAOException(String.format(e.getMessage(), error));
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
-
 
     }
 
@@ -82,20 +92,25 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     @Override
     public Artist findArtist(String email) {
         Artist artist = null;
+        Transaction tx = null;
         try {
             Session session = sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();
-        }
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
             Criteria criteria = session.createCriteria(Artist.class);
-            artist =  (Artist) criteria.add(Restrictions.eq("email", email))
+            artist = (Artist) criteria.add(Restrictions.eq("email", email))
                     .uniqueResult();
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to get Artist by Email: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return artist;
 
@@ -110,15 +125,14 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     @Override
     public Boolean updateArtist(Artist artist) {
-
+        Transaction tx = null;
         Boolean result = false;
         try {
-            
             Session session = this.sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();
-        }
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
             session.saveOrUpdate(artist);
             tx.commit();
             result = true;
@@ -127,8 +141,11 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             String error = "Failed to update Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
-
         return result;
     }
 
@@ -138,14 +155,14 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Boolean deleteArtist(Artist artist) {
-
+        Transaction tx = null;
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-             Transaction tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();
-        }
+            tx = session.getTransaction();
+            if (!tx.isActive()) {
+                tx = session.beginTransaction();
+            }
             session.delete(artist);
             tx.commit();
             result = true;
@@ -153,9 +170,13 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
         return result;
-
     }
+
 }

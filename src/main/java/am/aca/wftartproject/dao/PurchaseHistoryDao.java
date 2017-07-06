@@ -39,11 +39,9 @@ public interface PurchaseHistoryDao {
 
     /**
      * Deletes purchase item by userId and itemId
-     *
-     * @param userId
-     * @param itemId
+     * @param purchaseHistory
      */
-    Boolean deletePurchase(Long userId, Long itemId);
+    Boolean deletePurchase(PurchaseHistory purchaseHistory);
 
 
 }

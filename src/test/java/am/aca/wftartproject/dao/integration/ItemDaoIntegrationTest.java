@@ -30,10 +30,7 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 6/1/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:BeanLocations.xml"})
-@EnableTransactionManagement
-@Transactional
+
 public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -119,9 +116,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Test
     public void addItem_Success() {
         // Check testItem for null
-        assertNotNull(testItem);
-
-
+        assertNotNull(testItem.getId());
 
         // Find added item from db
         Item item = itemDao.findItem(testItem.getId());
@@ -134,7 +129,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ItemDao#addItem(Item)
      */
-    @Test(expected = DAOException.class)
+    @Test
     public void addItem_Failure() {
         // Check testItem for null
         assertNotNull(testItem);
@@ -145,7 +140,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         Item item = itemDao.findItem(testItem.getId());
 
         // Check for sameness
-        assertEqualItems(testItem, item);
+        assertFalse(item.equals(testItem));;
     }
 
     /**
@@ -229,15 +224,15 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertFalse(itemDao.getItemsByType(testItem.getItemType().getType()).isEmpty());
     }
 
-    /**
-     * @see ItemDao#getItemsByType(String)
-     */
-    @Test
-    public void getItemsByType_EmptyList() {
-
-        // Get items by type from DB and check list for empty
-        assertTrue(itemDao.getItemsByType("fake type").isEmpty());
-    }
+//    /**
+//     * @see ItemDao#getItemsByType(String)
+//     */
+//    @Test
+//    public void getItemsByType_EmptyList() {
+//
+//        // Get items by type from DB and check list for empty
+//        assertTrue(itemDao.getItemsByType("fake type").isEmpty());
+//    }
 
     /**
      * @see ItemDao#getItemsForGivenPriceRange(Double, Double)

@@ -25,10 +25,7 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 6/1/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:BeanLocations.xml"})
-@EnableTransactionManagement
-@Transactional
+
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -71,7 +68,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void tearDown() throws SQLException, ClassNotFoundException ,DAOException {
         // Delete inserted test users and artists from db
         if (testArtist.getId() != null) {
-            testArtist.setFirstName("bye");
             artistDao.deleteArtist(testArtist);
         }
 
@@ -92,18 +88,13 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void addArtist_Success() throws SQLException {
-        // Set artist into db, get generated id
-
-        System.out.println(testArtist);
+        // testArtist already set into db
 
         // Check testArtist object and testArtist id for null
         assertNotNull(testArtist);
         assertNotNull(testArtist.getId());
 
-        // Get artist by id from db
-        Long id = testArtist.getId();
-        System.out.println(id);
-        Artist addedArtist = artistDao.findArtist(id);
+        Artist addedArtist = artistDao.findArtist(testArtist.getId());
 
         // Check for equals
         AssertTemplates.assertEqualArtists(testArtist, addedArtist);
@@ -196,7 +187,14 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         testArtist.setFirstName(null);
 
         // Update artists specialization field in db, get from db check for false
-        assertFalse(artistDao.updateArtist(testArtist));
+        try{
+            assertFalse(artistDao.updateArtist(testArtist));
+        }catch (DAOException e){
+            // set firstname not nullable for teardown
+            testArtist.setFirstName("test");
+            throw new DAOException("");
+        }
+
 
 
     }
