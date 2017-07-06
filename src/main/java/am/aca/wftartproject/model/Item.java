@@ -18,16 +18,23 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "title", nullable = false,length = 30)
     private String title;
+
+    @Column(name = "description", nullable = false)
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photoURL;
+    @Column(name = "price", nullable = false,length = 10)
     private Double price;
+    @Column(name = "artist_id", nullable = false,length = 10)
     private Long artist_id;
+    @Column(nullable = false)
     private Boolean status;
-    @Column(name = "type")
+    @Column(name = "type",nullable = false)
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
+    @Column(name = "addition_date",nullable= false)
     private Date additionDate;
 
     public Long getArtist_id() {

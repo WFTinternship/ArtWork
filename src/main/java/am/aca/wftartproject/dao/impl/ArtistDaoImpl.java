@@ -32,7 +32,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public void addArtist(Artist artist) {
         try {
             Session session = this.sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();
+        }
             session.save(artist);
             tx.commit();
             LOGGER.info("Artist saved successfully, Artist Details=" + artist);
@@ -54,7 +57,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             Artist artist;
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();
+        }
             artist = (Artist) session.get(Artist.class, id);
             tx.commit();
             return artist;
@@ -78,7 +84,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         Artist artist = null;
         try {
             Session session = sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();
+        }
             Criteria criteria = session.createCriteria(Artist.class);
             artist =  (Artist) criteria.add(Restrictions.eq("email", email))
                     .uniqueResult();
@@ -106,7 +115,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         try {
             
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();
+        }
             session.saveOrUpdate(artist);
             tx.commit();
             result = true;
@@ -130,7 +142,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();
+        }
             session.delete(artist);
             tx.commit();
             result = true;

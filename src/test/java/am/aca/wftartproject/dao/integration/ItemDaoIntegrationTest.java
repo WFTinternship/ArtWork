@@ -67,6 +67,14 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         // Insert test Artist into db, get generated id
         artistDao.addArtist(testArtist);
 
+        testItem.setArtist_id(testArtist.getId());
+        tempItem.setArtist_id(testArtist.getId());
+
+        // Add item into db and get generated id
+        itemDao.addItem(testItem);
+
+
+
         // Print busy connections quantity
 //        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
 //            LOGGER.info(String.format("Number of busy connections Start: %s",
@@ -113,8 +121,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         // Check testItem for null
         assertNotNull(testItem);
 
-        // Add item into db and get generated id
-        itemDao.addItem(testItem);
+
 
         // Find added item from db
         Item item = itemDao.findItem(testItem.getId());
@@ -133,8 +140,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertNotNull(testItem);
         testItem.setTitle(null);
 
-        // Add item into db and get generated id
-        itemDao.addItem(testItem);
 
         // Find added item from db
         Item item = itemDao.findItem(testItem.getId());
@@ -148,8 +153,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findItem_Success() {
-        // Add item into db
-        itemDao.addItem(testItem);
 
         // Find and get item from db
         Item expectedItem = itemDao.findItem(testItem.getId());
@@ -164,9 +167,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findItem_Failure() {
-        // Add item into DB
-        itemDao.addItem(testItem);
-
         // Try to find and get item by id
         Item foundItem = itemDao.findItem(135984984651L);
 
@@ -182,8 +182,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void getRecentlyAddedItems_Success() {
         // Add items into DB
         itemDao.addItem(tempItem);
-        itemDao.addItem(testItem);
-
         // Get items list and check for not empty when limit is positive
         List<Item> itemList = itemDao.getRecentlyAddedItems(1);
 
@@ -196,8 +194,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getRecentlyAddedItems_Failure() {
-        // Add item into DB
-        itemDao.addItem(testItem);
 
         // Get recently added items with 0 limit and check list for empty
         assertTrue(itemDao.getRecentlyAddedItems(0).isEmpty());
@@ -208,8 +204,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getItemsByTitle_NotEmptyList() {
-        // Add item into DB
-        itemDao.addItem(testItem);
 
         // Get items by title from DB and check for not empty
         assertFalse(itemDao.getItemsByTitle(testItem.getTitle()).isEmpty());
@@ -220,8 +214,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getItemsByTitle_EmptyList() {
-        // Add item into DB
-        itemDao.addItem(testItem);
 
         // Get items by title from DB and check list for empty
         assertTrue(itemDao.getItemsByTitle("fake title").isEmpty());
@@ -232,8 +224,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getItemsByType_NotEmptyList() {
-        // Add item into DB
-        itemDao.addItem(testItem);
 
         // Get items by type from DB and check list for not empty
         assertFalse(itemDao.getItemsByType(testItem.getItemType().getType()).isEmpty());
@@ -244,8 +234,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getItemsByType_EmptyList() {
-        // Add item into DB
-        itemDao.addItem(testItem);
 
         // Get items by type from DB and check list for empty
         assertTrue(itemDao.getItemsByType("fake type").isEmpty());
@@ -268,8 +256,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getItemsForGivenPriceRange_EmptyList() {
-        // Add item into DB
-        itemDao.addItem(testItem);
 
         // Try to get items for given price range
         assertTrue(itemDao.getItemsForGivenPriceRange(-200.0, -100.0).isEmpty());
@@ -281,7 +267,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Test
     public void getArtistItems_NotEmptyList() {
         // Add testArtist's 2 items into DB
-        itemDao.addItem(testItem);
+
         itemDao.addItem(tempItem);
 
         // Get testArtist's items and check list for not empty
@@ -294,7 +280,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Test
     public void getArtistItems_EmptyList() {
         // Add testArtist's 2 items into DB
-        itemDao.addItem(testItem);
         itemDao.addItem(tempItem);
 
         // Get testArtist's items and check list for not empty
@@ -310,8 +295,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertNotNull(testItem);
 
         // Add item into db and get generated id
-        itemDao.addItem(testItem);
-        testItem.setTitle("ankap item");
+        testItem.setTitle("test_item");
         itemDao.updateItem(testItem);
 
         // Find added item from db
@@ -328,12 +312,10 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void updateItem_Failure() {
         // Check testItem for null
         assertNotNull(testItem);
+        testItem.setArtist_id(testArtist.getId());
 
-        // Add item into db and get generated id
-        itemDao.addItem(testItem);
         testItem.setTitle(null);
         assertFalse(itemDao.updateItem(testItem));
-
     }
 
     /**
@@ -343,8 +325,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Test
     public void deleteItem_Success() {
         // Add item into db
-        itemDao.addItem(testItem);
-
         // Check item in db for null
         assertNotNull(itemDao.findItem(testItem.getId()));
 
@@ -358,8 +338,6 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void deleteItem_Failure() {
-        // Add item into db
-        itemDao.addItem(testItem);
 
         // Check item in db for null
         assertNotNull(itemDao.findItem(testItem.getId()));

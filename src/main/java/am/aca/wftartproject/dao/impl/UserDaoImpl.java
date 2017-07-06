@@ -44,7 +44,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public void addUser(User user) {
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();}
             session.save(user);
             tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + user);
@@ -106,7 +108,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();}
             session.saveOrUpdate(user);
             tx.commit();
             result = true;
@@ -131,7 +135,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
+             Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();}
             User user = (User) session.get(User.class, id);
             tx.commit();
             session.delete(user);
