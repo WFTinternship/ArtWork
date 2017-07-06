@@ -39,7 +39,9 @@ public interface ArtistDao {
     /**
      * Deletes artist from springconfig.database
      *
-     * @param id
+     * @param artist
      */
-    Boolean deleteArtist(Long id);
+    Boolean deleteArtist(Artist artist);
+
+
 }

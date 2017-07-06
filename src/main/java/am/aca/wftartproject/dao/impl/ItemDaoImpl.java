@@ -5,7 +5,6 @@ import am.aca.wftartproject.dao.rowmappers.ItemMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,8 +27,8 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public ItemDaoImpl(SessionFactory sf) {
-        this.sessionFactory = sf;
+    public ItemDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     /**
@@ -40,14 +40,17 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         try {
             item.setAdditionDate(getCurrentDateTime());
             Session session = this.sessionFactory.getCurrentSession();
-
+            Transaction tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             session.save(item);
-
+            tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + item);
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
     }
@@ -60,14 +63,21 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Item findItem(Long id) {
+        Item item = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            return (Item) session.get(Item.class, id);
-        } catch (DAOException e) {
+            Transaction tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+            item = (Item) session.get(Item.class, id);
+            tx.commit();
+        } catch (Exception e) {
             String error = "Failed to get Item by id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
+        return item;
 
     }
 
@@ -82,13 +92,19 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = null;
         try {
-            itemList = (List<Item>) sessionFactory.getCurrentSession().createQuery(
+            Session session = sessionFactory.getCurrentSession();
+            Transaction tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+            itemList = (List<Item>) session.createQuery(
                     "SELECT c FROM Item c").setMaxResults(limit)
                     .getResultList();
-        } catch (DAOException e) {
+            tx.commit();
+        } catch (Exception e) {
             String error = "Failed to get recently added items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return itemList;
 
@@ -202,13 +218,19 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         List<Item> itemList = null;
         try {
-            itemList = (List<Item>) sessionFactory.getCurrentSession().createQuery(
+            Session session = sessionFactory.getCurrentSession();
+            Transaction tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+            itemList = (List<Item>) session.createQuery(
                     "SELECT c FROM Item c where c.itemType = :itemType").setParameter("itemType", itemType).setMaxResults(100)
                     .getResultList();
-        } catch (DAOException e) {
+            tx.commit();
+        } catch (Exception e) {
             String error = "Failed to get Items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return itemList;
 
@@ -317,11 +339,19 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getArtistItems(Long artistId) {
+        List<Item> list = null;
 
-        return (List<Item>) sessionFactory.getCurrentSession().createQuery(
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.getTransaction();
+        if(!tx.isActive()){
+            tx = session.beginTransaction();
+        }
+        list =  (List<Item>) sessionFactory.getCurrentSession().createQuery(
                 "SELECT c FROM Item c WHERE c.artist_id = :artist_id")
                 .setParameter("artist_id", artistId)
                 .getResultList();
+        tx.commit();
+        return list;
     }
 
 
@@ -334,13 +364,18 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             session.saveOrUpdate(item);
+            tx.commit();
             result = true;
             LOGGER.info("Item updated successfully, Item Details=" + item);
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to update Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
         return result;
@@ -380,17 +415,21 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         Boolean result = false;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
 
+            Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
             Item item = (Item) session.get(Item.class, id);
             session.delete(item);
-
+            tx.commit();
             result = true;
             LOGGER.info("Item deleted successfully");
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return result;
     }

@@ -76,7 +76,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
-     * @see ShoppingCardService#updateShoppingCard(Long, ShoppingCard)
+     * @see ShoppingCardService#updateShoppingCard( ShoppingCard)
      * @param shoppingCard
      */
     @Override

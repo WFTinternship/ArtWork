@@ -1,5 +1,6 @@
 package am.aca.wftartproject.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.type.BlobType;
 
 import javax.persistence.*;
@@ -13,7 +14,9 @@ import java.util.List;
  * Created by ASUS on 24-May-17
  */
 @Entity
+@DynamicUpdate
 @Table(name = "artist")
+
 public class Artist extends AbstractUser implements Serializable {
 
     @Enumerated(EnumType.STRING)

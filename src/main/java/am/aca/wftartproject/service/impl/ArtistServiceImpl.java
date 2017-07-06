@@ -125,8 +125,9 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#updateArtist(Artist)
      */
-    @Transactional(readOnly = false)
+
     @Override
+    @Transactional(readOnly = false)
     public void updateArtist( Artist artist) {
 
         if (artist == null || !artist.isValidArtist()) {
@@ -145,19 +146,18 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     /**
-     * @param id
-     * @see ArtistService#deleteArtist(Long)
+     * @see ArtistService#deleteArtist(Artist)
      */
     @Transactional(readOnly = false)
     @Override
-    public void deleteArtist(Long id) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
+    public void deleteArtist(Artist artist) {
+        if (!artist.isValidArtist()) {
+            LOGGER.error(String.format("Artist is not valid: %s", artist));
             throw new InvalidEntryException("Invalid id");
         }
 
         try {
-            artistDao.deleteArtist(id);
+            artistDao.deleteArtist(artist);
         } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

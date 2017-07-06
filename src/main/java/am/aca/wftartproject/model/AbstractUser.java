@@ -1,5 +1,7 @@
 package am.aca.wftartproject.model;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -18,15 +20,16 @@ public abstract class AbstractUser implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "firstname",nullable = false ,length = 50)
+    @NotNull
+    @Column(name = "firstname",nullable = false ,length = 30)
     String firstName;
-    @Column(name = "lastname",nullable = false, length = 50)
+    @Column(name = "lastname",nullable = false, length = 30)
     String lastName;
     @Column(name = "age",nullable = false, length = 20)
     int age;
-    @Column(name = "email",nullable = false, length = 50)
+    @Column(name = "email",nullable = false)
     String email;
-    @Column(name = "password",nullable = false,length = 30)
+    @Column(name = "password",nullable = false,length = 20)
     String password;
     @Transient
     String userPasswordRepeat;
@@ -49,7 +52,6 @@ public abstract class AbstractUser implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getFirstName() {
         return firstName;
     }
@@ -106,11 +108,11 @@ public abstract class AbstractUser implements Serializable{
 
     public boolean isValidUser() {
         return
-                !isEmptyString(firstName) &&
-                !isEmptyString(lastName) &&
+                !isEmptyString(firstName) && firstName!=null &&
+                !isEmptyString(lastName) && lastName!=null &&
                 age > 0 && age < 150 &&
-                !isEmptyString(email) &&
-                !isEmptyString(password)&&
+                !isEmptyString(email) &&  email!= null &&
+                !isEmptyString(password)&& password != null  &&
                 password.equals(userPasswordRepeat);
 //                &&
 //                shoppingCard.isValidShoppingCard();

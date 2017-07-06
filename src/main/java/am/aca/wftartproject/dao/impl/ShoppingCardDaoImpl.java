@@ -1,7 +1,6 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.dao.rowmappers.ShoppingCardMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
@@ -9,18 +8,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 
 @Component
@@ -31,8 +20,8 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     private SessionFactory sessionFactory;
 
     @Autowired
-    public ShoppingCardDaoImpl(SessionFactory sf) {
-        this.sessionFactory = sf;
+    public ShoppingCardDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     /**
@@ -44,13 +33,15 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
             shoppingCard.setBuyer_id(userId);
             session.save(shoppingCard);
+            tx.commit();
             LOGGER.info("ShoppingCard saved successfully, ShoppingCard Details=" + shoppingCard);
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
     }
@@ -69,10 +60,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
                     "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
                     .setParameter("buyer_id", id)
                     .getSingleResult();
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return shoppingCard;
 
@@ -116,12 +107,14 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
             session.saveOrUpdate(shoppingCard);
+            tx.commit();
             result = true;
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to update ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return result;
 
@@ -170,10 +163,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             } else {
                 throw new NotEnoughMoneyException("Not enough money on the account.");
             }
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Not enough money on the account: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
 
@@ -197,7 +190,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             } else {
                 result = true;
             }
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to delete ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
@@ -239,7 +232,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             } else {
                 result = true;
             }
-        } catch (DAOException e) {
+        } catch (Exception e) {
             String error = "Failed to delete ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <import resource="../database/Hibernate.xml"/>
+    <!--Dao layer spring integration-->
+    <bean id="userDAO" class="am.aca.wftartproject.dao.impl.UserDaoImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="artistDAO" class="am.aca.wftartproject.dao.impl.ArtistDaoImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="itemDAO" class="am.aca.wftartproject.dao.impl.ItemDaoImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="shoppingCardDAO" class="am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="purchaseHistoryDAO" class="am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    </bean>
+
+</beans>

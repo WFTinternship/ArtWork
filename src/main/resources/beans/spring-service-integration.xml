@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <import resource="spring-dao-integration.xml"/>
+    <!--Service layer Spring integration-->
+    <bean id="userService" class="am.aca.wftartproject.service.impl.UserServiceImpl">
+        <constructor-arg name="userDao" ref="userDAO"/>
+    </bean>
+
+    <bean id="artistService" class="am.aca.wftartproject.service.impl.ArtistServiceImpl">
+        <constructor-arg name="artistDao" ref="artistDAO"/>
+    </bean>
+
+    <bean id="itemService" class="am.aca.wftartproject.service.impl.ItemServiceImpl">
+        <constructor-arg name="itemDao" ref="itemDAO"/>
+    </bean>
+
+    <bean id="shoppingCardService" class="am.aca.wftartproject.service.impl.ShoppingCardServiceImpl">
+        <constructor-arg name="shoppingCardDao" ref="shoppingCardDAO"/>
+    </bean>
+
+    <bean id="purchaseHistoryService" class="am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl">
+        <constructor-arg name="purchaseHistoryDao" ref="purchaseHistoryDAO"/>
+    </bean>
+
+</beans>

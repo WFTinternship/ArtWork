@@ -25,15 +25,20 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
     <bean id="hibernate5AnnotatedSessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="annotatedClasses">
-            <list>
-                <value>am.aca.wftartproject.model.Artist</value>
-                <value>am.aca.wftartproject.model.User</value>
-                <value>am.aca.wftartproject.model.AbstractUser</value>
-                <value>am.aca.wftartproject.model.ShoppingCard</value>
-                <value>am.aca.wftartproject.model.Item</value>
-                <value>am.aca.wftartproject.model.PurchaseHistory</value>
-            </list>
+        
+        <!--<property name="annotatedClasses">-->
+            <!--<list>-->
+                <!--<value>am.aca.wftartproject.model.Artist</value>-->
+                <!--<value>am.aca.wftartproject.model.User</value>-->
+                <!--<value>am.aca.wftartproject.model.AbstractUser</value>-->
+                <!--<value>am.aca.wftartproject.model.ShoppingCard</value>-->
+                <!--<value>am.aca.wftartproject.model.Item</value>-->
+                <!--<value>am.aca.wftartproject.model.PurchaseHistory</value>-->
+            <!--</list>-->
+        <!--</property>-->
+
+        <property name="packagesToScan">
+            <value>am.aca.wftartproject</value>
         </property>
         <property name="hibernateProperties">
             <props>
@@ -50,7 +55,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
 
 
     <!-- Enable Annotation based Declarative Transaction Management -->
-    <tx:annotation-driven proxy-target-class="true"
+    <tx:annotation-driven proxy-target-class="true" mode="proxy"
                           transaction-manager="transactionManager" />
 
     <bean id="transactionManager"

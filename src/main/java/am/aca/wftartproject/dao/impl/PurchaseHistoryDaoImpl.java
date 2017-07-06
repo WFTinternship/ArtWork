@@ -5,14 +5,13 @@ import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,8 +25,8 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     private SessionFactory sessionFactory;
 
     @Autowired
-    public PurchaseHistoryDaoImpl(SessionFactory sf) {
-        this.sessionFactory = sf;
+    public PurchaseHistoryDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     /**
@@ -39,12 +38,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
             purchaseHistory.setPurchaseDate(getCurrentDateTime());
             session.save(purchaseHistory);
-        } catch (DAOException e) {
+            tx.commit();
+        } catch (HibernateException e) {
             String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
 //        region <Version with Simple JDBC>
@@ -146,10 +147,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
                     "SELECT c FROM PurchaseHistory c WHERE c.userId = :user_id")
                     .setParameter("user_id", userId)
                     .getResultList();
-        } catch (DAOException e) {
+        } catch (HibernateException e) {
             String error = "Failed to get PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return purchaseHistoryList;
 
@@ -204,10 +205,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             } else {
                 result = true;
             }
-        } catch (DAOException e) {
+        } catch (HibernateException e) {
             String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
         return result;
 

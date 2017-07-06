@@ -32,8 +32,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public UserDaoImpl(SessionFactory sf) {
-        this.sessionFactory = sf;
+    public UserDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     /**
@@ -44,12 +44,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public void addUser(User user) {
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
             session.save(user);
+            tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + user);
         } catch (Exception e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
 
@@ -69,7 +71,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (Exception e) {
             String error = "Failed to get User by id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
 
@@ -90,7 +92,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (Exception e) {
             String error = "Failed to get User by email: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
     }
 
@@ -104,13 +106,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
             session.saveOrUpdate(user);
+            tx.commit();
             result = true;
             LOGGER.info("User saved successfully, Person Details=" + user);
         } catch (Exception e) {
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
 
@@ -127,13 +131,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         Boolean result = false;
         try {
             Session session = this.sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
             User user = (User) session.get(User.class, id);
+            tx.commit();
             session.delete(user);
             result = true;
         } catch (Exception e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error));
+            throw new DAOException(String.format(error, e.getMessage()));
         }
 
         return result;
