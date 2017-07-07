@@ -217,14 +217,15 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
         // Add purchaseHistory into db, get and check it for null
         purchaseHistoryDao.addPurchase(purchaseHistory);
         assertNotNull(purchaseHistoryDao.getPurchase(testItem.getId()));
-        purchaseHistory.setUserId(null);
+        long temp = purchaseHistory.getId();
+        purchaseHistory.setId(null);
         // Try to delete purchaseHistory
         try{
             assertFalse(purchaseHistoryDao.deletePurchase(purchaseHistory));
         }
         catch (DAOException e){
             // to prevent exceptions in tearDown
-            purchaseHistory.setUserId(5L);
+            purchaseHistory.setId(temp);
             throw new DAOException(e.getMessage());
         }
 

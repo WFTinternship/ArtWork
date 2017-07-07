@@ -25,10 +25,6 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 5/30/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:BeanLocations.xml"})
-@EnableTransactionManagement
-@Transactional
 public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
@@ -173,7 +169,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see UserDao#findUser(String)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void findUserByEmail_Failure() {
         // Add user into DB
         userDao.addUser(testUser);

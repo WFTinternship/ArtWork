@@ -31,8 +31,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -42,13 +43,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             entityManager.flush();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -88,9 +90,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public PurchaseHistory getPurchase(Long itemId) {
         PurchaseHistory purchaseHistory = null;
+        EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -98,13 +101,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
            purchaseHistory =  (PurchaseHistory) entityManager.createQuery("SELECT c FROM PurchaseHistory c WHERE c.item_id = :itemId").setParameter("itemId",itemId).getSingleResult();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -151,9 +155,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public List<PurchaseHistory> getPurchaseList(Long userId) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         List<PurchaseHistory> purchaseHistoryList;
         try{
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -165,13 +170,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             tx.commit();
         }
         catch (Exception e) {
+            tx.rollback();
             String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return purchaseHistoryList;
@@ -215,25 +221,29 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public Boolean deletePurchase(PurchaseHistory purchaseHistory) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         Boolean result = false;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
             }
-            entityManager.remove(entityManager.contains(purchaseHistory)  ? purchaseHistory : entityManager.merge(purchaseHistory));
+            purchaseHistory = entityManager.find(PurchaseHistory.class,purchaseHistory.getId());
+            entityManager.remove(purchaseHistory);
+            entityManager.flush();
             tx.commit();
             result = true;
             LOGGER.info("Item deleted successfully");
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return result;

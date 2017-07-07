@@ -301,12 +301,13 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         shoppingCardDao.addShoppingCard(testShoppingCard);
         assertNotNull(testShoppingCard);
         assertNotNull(testShoppingCard.getId());
-        testShoppingCard.setBuyer_id(null);
+        long temp = testShoppingCard.getId();
+        testShoppingCard.setId(-7L);
         try{
-            assertFalse(shoppingCardDao.deleteShoppingCard(testShoppingCard));
+           assertFalse(shoppingCardDao.deleteShoppingCard(testShoppingCard));
         }
         catch (DAOException e){
-            testShoppingCard.setBuyer_id(5L);
+           testShoppingCard.setId(temp);
             throw new DAOException(e.getMessage());
         }
 

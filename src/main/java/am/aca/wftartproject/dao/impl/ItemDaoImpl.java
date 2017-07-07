@@ -37,9 +37,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public void addItem(Item item) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         try {
             item.setAdditionDate(getCurrentDateTime());
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -49,13 +50,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + item);
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -71,8 +73,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public Item findItem(Long id) {
         EntityTransaction tx =null;
         Item item = null;
+        EntityManager entityManager = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -80,13 +83,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             item = (Item) entityManager.find(Item.class, id);
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Item by id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -103,9 +107,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         List<Item> itemList = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -119,13 +124,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             }
 
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get recently added items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return itemList;
@@ -177,9 +183,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsByTitle(String title) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         List<Item> itemList = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -189,13 +196,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                     .getResultList();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Items by title: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return itemList;
@@ -246,9 +254,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsByType(ItemType itemType) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         List<Item> itemList = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -258,13 +267,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                     .getResultList();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return itemList;
@@ -315,9 +325,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
         EntityTransaction tx = null;
+        EntityManager entityManager =null;
         List<Item> itemList = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -327,13 +338,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                     .getResultList();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Items by price: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return itemList;
@@ -397,13 +409,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             tx.commit();
         }
         catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -419,9 +432,10 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public Boolean updateItem(Item item) {
         EntityTransaction tx = null;
+        EntityManager entityManager =null;
         Boolean result = false;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -431,13 +445,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             result = true;
             LOGGER.info("Item updated successfully, Item Details=" + item);
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to update Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -476,10 +491,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public Boolean deleteItem(Long id) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         Boolean result = false;
         try {
 
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -490,13 +506,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             result = true;
             LOGGER.info("Item deleted successfully");
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return result;

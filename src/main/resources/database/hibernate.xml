@@ -32,6 +32,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
             <props>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
             </props>
         </property>
     </bean>

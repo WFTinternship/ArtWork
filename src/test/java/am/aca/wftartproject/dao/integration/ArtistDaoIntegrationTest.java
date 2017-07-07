@@ -147,7 +147,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ArtistDao#findArtist(String)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void findArtistByEmail_Failure(){
 
         // Find and get artist from DB

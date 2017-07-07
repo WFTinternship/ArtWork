@@ -52,11 +52,15 @@ public class ArtistServiceImpl implements ArtistService {
             LOGGER.error(String.format("Artist is not valid: %s", artist));
             throw new InvalidEntryException(error);
         }
-        if (artistDao.findArtist(artist.getEmail()) != null) {
-            String error = "User has already exists";
-            LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
-            throw new DuplicateEntryException(error);
+        try{
+            if (artistDao.findArtist(artist.getEmail()) != null) {
+                String error = "User has already exists";
+                LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
+                throw new DuplicateEntryException(error);
+            }
+        }catch (DAOException e){
         }
+
 
         try {
             artistDao.addArtist(artist);

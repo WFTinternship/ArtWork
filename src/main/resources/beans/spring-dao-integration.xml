@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <import resource="../database/persistance.xml"/>
+    <import resource="../database/hibernate.xml"/>
     <!--Dao layer spring integration-->
     <bean id="userDAO" class="am.aca.wftartproject.dao.impl.UserDaoImpl">
         <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>

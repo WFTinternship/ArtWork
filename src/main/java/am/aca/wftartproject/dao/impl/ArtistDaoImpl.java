@@ -34,8 +34,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     @Override
     public void addArtist(Artist artist) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+           entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -45,16 +46,17 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             tx.commit();
             LOGGER.info("Artist saved successfully, Artist Details=" + artist);
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to add Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(e.getMessage(), error));
         } finally {
-            if (tx.isActive()) {
-                tx.rollback();
+                if(entityManager.isOpen()){
+                    entityManager.close();
+                }
             }
         }
 
-    }
 
     /**
      * @param id
@@ -64,9 +66,10 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     @Override
     public Artist findArtist(Long id) {
        EntityTransaction tx = null;
+        EntityManager entityManager = null;
         try {
             Artist artist;
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -75,12 +78,13 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             tx.commit();
             return artist;
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Artist by ID: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(e.getMessage(), error));
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
+        }finally {
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -96,8 +100,9 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public Artist findArtist(String email) {
         Artist artist = null;
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -105,12 +110,13 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             artist = (Artist) entityManager.createQuery("select c from Artist c where c.email = :email").setParameter("email",email).getSingleResult();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get Artist by Email: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return artist;
@@ -128,23 +134,26 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public Boolean updateArtist(Artist artist) {
        EntityTransaction tx = null;
         Boolean result = false;
+        EntityManager entityManager = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
             }
             entityManager.merge(artist);
+            entityManager.flush();
             tx.commit();
             result = true;
             LOGGER.info("Artist saved successfully, Artist Details=" + artist);
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to update Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return result;
@@ -158,22 +167,25 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     public Boolean deleteArtist(Artist artist) {
        EntityTransaction tx = null;
         Boolean result = false;
+        EntityManager entityManager  = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
             }
             entityManager.remove(entityManager.contains(artist)  ? artist : entityManager.merge(artist));
+            entityManager.flush();
             tx.commit();
             result = true;
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         } finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 

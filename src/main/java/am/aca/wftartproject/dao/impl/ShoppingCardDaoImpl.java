@@ -20,7 +20,7 @@ import javax.persistence.EntityTransaction;
 public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
-
+    @Autowired
     private EntityManagerFactory entityManagerFactory;
 
     @Autowired
@@ -34,22 +34,25 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     @Override
     public void addShoppingCard(ShoppingCard shoppingCard) {
         EntityTransaction tx = null;
+        EntityManager entityManager = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
             }
             entityManager.persist(shoppingCard);
+            entityManager.flush();
             tx.commit();
             LOGGER.info("ShoppingCard saved successfully, ShoppingCard Details=" + shoppingCard);
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }finally {
-            if(tx.isActive()){
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
 
@@ -64,27 +67,28 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     @Override
     public ShoppingCard getShoppingCard(Long id) {
         ShoppingCard shoppingCard = null;
-        Session session = null;
+        EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
             }
-            shoppingCard = (ShoppingCard) session.createQuery(
+            shoppingCard = (ShoppingCard) entityManager.createQuery(
                     "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
                     .setParameter("buyer_id", id)
                     .getSingleResult();
             tx.commit();
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to get ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if(tx.isActive()){
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return shoppingCard;
@@ -125,11 +129,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public Boolean updateShoppingCard(ShoppingCard shoppingCard) {
-
+        EntityManager entityManager = null;
         Boolean result = false;
         EntityTransaction tx = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
@@ -138,12 +142,13 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             tx.commit();
             result = true;
         } catch (Exception e) {
+            tx.rollback();
             String error = "Failed to update ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }finally {
-            if(tx.isActive()){
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return result;
@@ -215,26 +220,29 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public Boolean deleteShoppingCard(ShoppingCard shoppingCard) {
-
+        EntityManager entityManager =null;
         Boolean result = false;
         EntityTransaction tx = null;
         try {
-            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            entityManager = this.entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             if (!tx.isActive()) {
                 entityManager.getTransaction().begin();
             }
-            entityManager.remove(entityManager.contains(shoppingCard)  ? shoppingCard : entityManager.merge(shoppingCard));
+            shoppingCard = entityManager.find(ShoppingCard.class,shoppingCard.getId());
+            entityManager.remove(shoppingCard);
+            entityManager.flush();
             tx.commit();
             result = true;
         } catch (Exception e) {
-            String error = "Failed to delete User: %s";
+            tx.rollback();
+            String error = "Failed to delete shoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
         finally {
-            if (tx.isActive()) {
-                tx.rollback();
+            if(entityManager.isOpen()){
+                entityManager.close();
             }
         }
         return result;
@@ -275,6 +283,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 //                result = true;
 //            }
 //        } catch (Exception e) {
+//            tx.rollback();
 //            String error = "Failed to delete ShoppingCard";
 //            LOGGER.error(String.format(error, e.getMessage()));
 //            throw new DAOException(String.format(error, e.getMessage()));

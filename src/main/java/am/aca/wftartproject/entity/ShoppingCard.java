@@ -10,6 +10,7 @@ public class ShoppingCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private Long buyer_id;
     @Column(nullable = false)

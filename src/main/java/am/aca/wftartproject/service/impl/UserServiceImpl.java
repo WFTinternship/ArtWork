@@ -52,10 +52,13 @@ public class UserServiceImpl implements UserService {
             throw new InvalidEntryException(error);
         }
 
-        if (userDao.findUser(user.getEmail()) != null) {
-            String error = "User has already exists";
-            LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
-            throw new DuplicateEntryException(error);
+        try{
+            if (userDao.findUser(user.getEmail()) != null) {
+                String error = "User has already exists";
+                LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
+                throw new DuplicateEntryException(error);
+            }
+        }catch (DAOException e){
         }
 
         try {
