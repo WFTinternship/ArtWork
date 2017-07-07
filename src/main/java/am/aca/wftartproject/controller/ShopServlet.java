@@ -1,8 +1,8 @@
 //package am.aca.wftartproject.controller;
 //
-//import am.aca.wftartproject.model.ArtistSpecialization;
-//import am.aca.wftartproject.model.Item;
-//import am.aca.wftartproject.model.ItemType;
+//import am.aca.wftartproject.entity.ArtistSpecialization;
+//import am.aca.wftartproject.entity.Item;
+//import am.aca.wftartproject.entity.ItemType;
 //import am.aca.wftartproject.service.ItemService;
 //import am.aca.wftartproject.service.impl.ItemServiceImpl;
 //import am.aca.wftartproject.util.SpringBeanType;

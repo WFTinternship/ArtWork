@@ -1,8 +1,6 @@
-package am.aca.wftartproject.model;
+package am.aca.wftartproject.entity;
 
 import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 

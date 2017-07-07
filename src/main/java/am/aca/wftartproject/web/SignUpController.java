@@ -1,6 +1,6 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.model.*;
+import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

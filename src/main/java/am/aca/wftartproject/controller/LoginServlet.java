@@ -1,6 +1,6 @@
 //package am.aca.wftartproject.controller;
 //
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.UserService;
 //import am.aca.wftartproject.service.impl.UserServiceImpl;
 //import am.aca.wftartproject.util.SpringBeanType;

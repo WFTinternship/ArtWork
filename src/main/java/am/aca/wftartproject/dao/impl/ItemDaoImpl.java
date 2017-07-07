@@ -1,19 +1,15 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.rowmappers.ItemMapper;
+import am.aca.wftartproject.entity.ItemType;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.entity.Item;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -111,9 +107,13 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 tx = session.beginTransaction();
             }
             itemList = (List<Item>) session.createQuery(
-                    "SELECT c FROM Item c").setMaxResults(limit)
+                    "SELECT c FROM Item c")
                     .getResultList();
             tx.commit();
+            if(limit<itemList.size()-1){
+                itemList = itemList.subList(itemList.size()-1,itemList.size()-1 -limit);
+            }
+
         } catch (Exception e) {
             String error = "Failed to get recently added items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -172,19 +172,27 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
-        //OLD VERSION WITH SPRING JDBC
-        List<Item> itemList;
+        Transaction tx = null;
+        List<Item> itemList = null;
         try {
-            String query = "SELECT * FROM item WHERE title=?";
-            itemList = this.jdbcTemplate.query(query, new Object[]{title}, new ItemMapper());
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.warn(String.format("Failed to get items by title: %s", title));
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get ItemsByTitle: %s";
+            Session session = sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+            itemList = (List<Item>) session.createQuery(
+                    "SELECT c FROM Item c where c.title = :title").setParameter("title", title).setMaxResults(100)
+                    .getResultList();
+            tx.commit();
+        } catch (Exception e) {
+            String error = "Failed to get Items by title: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return itemList;
 
@@ -232,7 +240,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#getItemsByType(String)
      */
     @Override
-    public List<Item> getItemsByType(String itemType) {
+    public List<Item> getItemsByType(ItemType itemType) {
         Transaction tx = null;
         List<Item> itemList = null;
         try {
@@ -302,19 +310,27 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
-        //OLD VERSION WITH SPRING JDBC 
-        List<Item> itemList;
+        Transaction tx = null;
+        List<Item> itemList = null;
         try {
-            String query = "SELECT * FROM item WHERE result=0 AND price BETWEEN ? AND ?";
-            itemList = this.jdbcTemplate.query(query, new Object[]{minPrice, maxPrice}, new ItemMapper());
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.warn(String.format("Failed to get items for given price range: %s %s", minPrice, maxPrice));
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get items by the given price range: %s";
+            Session session = sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+            itemList = (List<Item>) session.createQuery(
+                    "SELECT e FROM Item e WHERE e.price BETWEEN :minprice AND :maxprice").setParameter("minprice", minPrice).setParameter("maxprice",maxPrice).setMaxResults(100)
+                    .getResultList();
+            tx.commit();
+        } catch (Exception e) {
+            String error = "Failed to get Items by price: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return itemList;
 

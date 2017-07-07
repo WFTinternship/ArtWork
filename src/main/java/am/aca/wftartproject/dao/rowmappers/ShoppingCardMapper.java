@@ -1,8 +1,8 @@
 package am.aca.wftartproject.dao.rowmappers;
 
 
-import am.aca.wftartproject.model.ShoppingCard;
-import am.aca.wftartproject.model.ShoppingCardType;
+import am.aca.wftartproject.entity.ShoppingCard;
+import am.aca.wftartproject.entity.ShoppingCardType;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

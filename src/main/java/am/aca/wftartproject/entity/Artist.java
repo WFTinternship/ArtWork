@@ -1,13 +1,10 @@
-package am.aca.wftartproject.model;
+package am.aca.wftartproject.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.type.BlobType;
 
 import javax.persistence.*;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
 import java.util.List;
 
 /**

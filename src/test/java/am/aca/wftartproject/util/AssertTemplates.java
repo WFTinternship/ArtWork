@@ -1,8 +1,7 @@
 package am.aca.wftartproject.util;
 
-import am.aca.wftartproject.model.*;
+import am.aca.wftartproject.entity.*;
 
-import static am.aca.wftartproject.util.DateHelper.dateComparison;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

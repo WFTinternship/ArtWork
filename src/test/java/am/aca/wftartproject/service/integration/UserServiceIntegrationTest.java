@@ -2,7 +2,7 @@
 //
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.BaseIntegrationTest;
 //import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 //import am.aca.wftartproject.service.impl.UserServiceImpl;
@@ -52,7 +52,7 @@
 //    // region<TEST CASE>
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void addUser_Success() {
@@ -67,7 +67,7 @@
 //    }
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void addUser_Failure() {
@@ -130,7 +130,7 @@
 //    }
 //
 //    /**
-//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void updateUser_Success() {
@@ -147,7 +147,7 @@
 //    }
 //
 //    /**
-//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.entity.User)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void updateUser_Failure() {

@@ -2,23 +2,16 @@ package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.ArtistSpecialization;
+import am.aca.wftartproject.entity.Artist;
+import am.aca.wftartproject.entity.ArtistSpecialization;
 import am.aca.wftartproject.util.AssertTemplates;
 import am.aca.wftartproject.util.TestObjectTemplate;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.security.spec.ECField;
 import java.sql.SQLException;
 import static junit.framework.TestCase.*;
 

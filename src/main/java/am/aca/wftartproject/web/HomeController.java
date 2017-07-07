@@ -1,7 +1,5 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by Armen on 6/26/2017.

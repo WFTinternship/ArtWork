@@ -1,8 +1,8 @@
 //package am.aca.wftartproject.service.integration;
 //
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
-//import am.aca.wftartproject.model.Artist;
-//import am.aca.wftartproject.model.ArtistSpecialization;
+//import am.aca.wftartproject.entity.Artist;
+//import am.aca.wftartproject.entity.ArtistSpecialization;
 //import am.aca.wftartproject.service.BaseIntegrationTest;
 //import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 //import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
@@ -55,7 +55,7 @@
 //    // region<TEST CASE>
 //
 //    /**
-//     * @see ArtistServiceImpl#addArtist(am.aca.wftartproject.model.Artist)
+//     * @see ArtistServiceImpl#addArtist(am.aca.wftartproject.entity.Artist)
 //     */
 //    @Test
 //    public void addArtist_Success() {
@@ -72,7 +72,7 @@
 //    }
 //
 //    /**
-//     * @see ArtistServiceImpl#addArtist(am.aca.wftartproject.model.Artist)
+//     * @see ArtistServiceImpl#addArtist(am.aca.wftartproject.entity.Artist)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void addArtist_Failure() {
@@ -137,7 +137,7 @@
 //    }
 //
 //    /**
-//     * @see ArtistServiceImpl#updateArtist(java.lang.Long, am.aca.wftartproject.model.Artist)
+//     * @see ArtistServiceImpl#updateArtist(java.lang.Long, am.aca.wftartproject.entity.Artist)
 //     */
 //    @Test
 //    public void updateArtist_Success() {
@@ -155,7 +155,7 @@
 //    }
 //
 //    /**
-//     * @see ArtistServiceImpl#updateArtist(java.lang.Long, am.aca.wftartproject.model.Artist)
+//     * @see ArtistServiceImpl#updateArtist(java.lang.Long, am.aca.wftartproject.entity.Artist)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void updateArtist_Failure() {

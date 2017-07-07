@@ -3,7 +3,7 @@ package am.aca.wftartproject.dao.impl;
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
-import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.entity.ShoppingCard;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,12 +25,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     }
 
     /**
-     * @param userId
      * @param shoppingCard
-     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
+     * @see ShoppingCardDao#addShoppingCard(ShoppingCard)
      */
     @Override
-    public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
+    public void addShoppingCard(ShoppingCard shoppingCard) {
         Transaction tx = null;
         try {
             Session session = this.sessionFactory.getCurrentSession();
@@ -38,7 +37,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             if(!tx.isActive()){
                 tx = session.beginTransaction();
             }
-            shoppingCard.setBuyer_id(userId);
             session.save(shoppingCard);
             tx.commit();
             LOGGER.info("ShoppingCard saved successfully, ShoppingCard Details=" + shoppingCard);
@@ -48,7 +46,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             throw new DAOException(String.format(error, e.getMessage()));
         }finally {
             if(tx.isActive()){
-                tx.commit();
+                tx.rollback();
             }
         }
 
@@ -83,7 +81,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         }
         finally {
             if(tx.isActive()){
-                tx.commit();
+                tx.rollback();
             }
         }
         return shoppingCard;
@@ -142,7 +140,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             throw new DAOException(String.format(error, e.getMessage()));
         }finally {
             if(tx.isActive()){
-                tx.commit();
+                tx.rollback();
             }
         }
         return result;
@@ -192,7 +190,12 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
             } else {
                 throw new NotEnoughMoneyException("Not enough money on the account.");
             }
-        } catch (Exception e) {
+        }catch (NotEnoughMoneyException e) {
+            String error = "Not enough money on the account: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new NotEnoughMoneyException(String.format(error, e.getMessage()));
+        }
+        catch (Exception e) {
             String error = "Not enough money on the account: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
@@ -204,25 +207,31 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @param id
-     * @see ShoppingCardDao#deleteShoppingCard(Long)
+     * @param shoppingCard
+     * @see ShoppingCardDao#deleteShoppingCard(ShoppingCard)
      */
     @Override
-    public Boolean deleteShoppingCard(Long id) {
+    public Boolean deleteShoppingCard(ShoppingCard shoppingCard) {
 
-        Boolean result;
+        Boolean result = false;
+        Transaction tx = null;
         try {
-            String query = "DELETE FROM shopping_card WHERE id=?";
-            int rowsAffected = jdbcTemplate.update(query, id);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to delete ShoppingCard");
-            } else {
-                result = true;
-            }
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();}
+            session.delete(shoppingCard);
+            tx.commit();
+            result = true;
         } catch (Exception e) {
-            String error = "Failed to delete ShoppingCard";
+            String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         return result;
 
@@ -250,22 +259,22 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         //endregion
     }
 
-    @Override
-    public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
-        Boolean result;
-        try {
-            String query = "DELETE FROM shopping_card WHERE buyer_id=?";
-            int rowsAffected = jdbcTemplate.update(query, buyerId);
-            if (rowsAffected <= 0) {
-                throw new DAOException("Failed to delete ShoppingCard by buyerId");
-            } else {
-                result = true;
-            }
-        } catch (Exception e) {
-            String error = "Failed to delete ShoppingCard";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error, e.getMessage()));
-        }
-        return result;
-    }
+//    @Override
+//    public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
+//        Boolean result;
+//        try {
+//            String query = "DELETE FROM shopping_card WHERE buyer_id=?";
+//            int rowsAffected = jdbcTemplate.update(query, buyerId);
+//            if (rowsAffected <= 0) {
+//                throw new DAOException("Failed to delete ShoppingCard by buyerId");
+//            } else {
+//                result = true;
+//            }
+//        } catch (Exception e) {
+//            String error = "Failed to delete ShoppingCard";
+//            LOGGER.error(String.format(error, e.getMessage()));
+//            throw new DAOException(String.format(error, e.getMessage()));
+//        }
+//        return result;
+//    }
 }

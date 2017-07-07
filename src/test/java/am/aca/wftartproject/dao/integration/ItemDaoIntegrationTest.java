@@ -4,19 +4,13 @@ import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.Item;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import am.aca.wftartproject.entity.Artist;
+import am.aca.wftartproject.entity.Item;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -178,9 +172,9 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         // Add items into DB
         itemDao.addItem(tempItem);
         // Get items list and check for not empty when limit is positive
-        List<Item> itemList = itemDao.getRecentlyAddedItems(1);
+        List<Item> itemList = itemDao.getRecentlyAddedItems(20);
 
-        assertEqualItems(testItem, itemList.get(0));
+        assertEqualItems(tempItem, itemList.get(itemList.size()-1));
     }
 
 
@@ -215,13 +209,13 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * @see ItemDao#getItemsByType(String)
+     * @see ItemDao#getItemsByType(am.aca.wftartproject.entity.ItemType)
      */
     @Test
     public void getItemsByType_NotEmptyList() {
 
         // Get items by type from DB and check list for not empty
-        assertFalse(itemDao.getItemsByType(testItem.getItemType().getType()).isEmpty());
+        assertFalse(itemDao.getItemsByType(testItem.getItemType()).isEmpty());
     }
 
 //    /**

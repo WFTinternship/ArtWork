@@ -2,10 +2,10 @@
 //
 //import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
-//import am.aca.wftartproject.model.Artist;
-//import am.aca.wftartproject.model.Item;
-//import am.aca.wftartproject.model.PurchaseHistory;
-//import am.aca.wftartproject.model.ShoppingCard;
+//import am.aca.wftartproject.entity.Artist;
+//import am.aca.wftartproject.entity.Item;
+//import am.aca.wftartproject.entity.PurchaseHistory;
+//import am.aca.wftartproject.entity.ShoppingCard;
 //import am.aca.wftartproject.service.BaseIntegrationTest;
 //import am.aca.wftartproject.service.ItemService;
 //import am.aca.wftartproject.service.PurchaseHistoryService;
@@ -90,7 +90,7 @@
 //    // region<TEST CASE>
 //
 //    /**
-//     * @see ItemServiceImpl#addItem(java.lang.Long, am.aca.wftartproject.model.Item)
+//     * @see ItemServiceImpl#addItem(java.lang.Long, am.aca.wftartproject.entity.Item)
 //     */
 //    @Test
 //    public void addItem_Success() {
@@ -109,7 +109,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#addItem(java.lang.Long, am.aca.wftartproject.model.Item)
+//     * @see ItemServiceImpl#addItem(java.lang.Long, am.aca.wftartproject.entity.Item)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void addItem_Failure() {
@@ -304,7 +304,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#updateItem(java.lang.Long, am.aca.wftartproject.model.Item)
+//     * @see ItemServiceImpl#updateItem(java.lang.Long, am.aca.wftartproject.entity.Item)
 //     */
 //    @Test
 //    public void updateItem_Success() {
@@ -320,7 +320,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#updateItem(java.lang.Long, am.aca.wftartproject.model.Item)
+//     * @see ItemServiceImpl#updateItem(java.lang.Long, am.aca.wftartproject.entity.Item)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void updateItem_Failure() {
@@ -351,7 +351,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.entity.Item, java.lang.Long)
 //     */
 //    @Test
 //    public void itemBuying_Success() {
@@ -379,7 +379,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.entity.Item, java.lang.Long)
 //     */
 //    @Test(expected = NotEnoughMoneyException.class)
 //    public void itemBuying_Failure() {

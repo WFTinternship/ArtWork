@@ -10,9 +10,9 @@
 //import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.Item;
-//import am.aca.wftartproject.model.PurchaseHistory;
-//import am.aca.wftartproject.model.ShoppingCard;
+//import am.aca.wftartproject.entity.Item;
+//import am.aca.wftartproject.entity.PurchaseHistory;
+//import am.aca.wftartproject.entity.ShoppingCard;
 //import am.aca.wftartproject.service.BaseUnitTest;
 //import am.aca.wftartproject.service.ItemService;
 //import am.aca.wftartproject.service.PurchaseHistoryService;
@@ -1097,7 +1097,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.entity.Item, java.lang.Long)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void itemBuying_updateItemFailed() {
@@ -1131,7 +1131,7 @@
 //    }
 //
 //    /**
-//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+//     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.entity.Item, java.lang.Long)
 //     */
 //    @Test
 //    public void itemBuying_updateItemSuccess() {

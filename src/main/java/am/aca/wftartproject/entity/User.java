@@ -1,11 +1,7 @@
-package am.aca.wftartproject.model;
+package am.aca.wftartproject.entity;
 
-import org.springframework.context.annotation.Bean;
-
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**

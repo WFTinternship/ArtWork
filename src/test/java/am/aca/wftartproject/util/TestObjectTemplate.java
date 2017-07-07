@@ -1,10 +1,9 @@
 package am.aca.wftartproject.util;
 
-import am.aca.wftartproject.model.*;
+import am.aca.wftartproject.entity.*;
 
 import java.sql.Date;
 import java.util.Calendar;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

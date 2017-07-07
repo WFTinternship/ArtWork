@@ -5,7 +5,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.entity.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +35,13 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      */
     @Override
     @Transactional
-    public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
-        if (userId == null || userId < 0){
-            LOGGER.error(String.format("UserId is not valid: %s", userId));
-            throw new InvalidEntryException("Invalid userId");
-        }
+    public void addShoppingCard(ShoppingCard shoppingCard) {
         if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid shoppingCard");
         }
         try {
-            shoppingCardDao.addShoppingCard(userId, shoppingCard);
+            shoppingCardDao.addShoppingCard(shoppingCard);
         }catch (DAOException e){
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -122,18 +118,18 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
-     * @see ShoppingCardService#deleteShoppingCard(Long)
-     * @param id
+     * @see ShoppingCardService#deleteShoppingCard(ShoppingCard)
+     * @param shoppingCard
      */
     @Override
     @Transactional
-    public void deleteShoppingCard(Long id) {
-        if (id == null || id < 0){
-            LOGGER.error(String.format("Id is not valid: %s", id));
+    public void deleteShoppingCard(ShoppingCard shoppingCard) {
+        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
+            LOGGER.error(String.format("Id is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid id");
         }
         try {
-            if (!shoppingCardDao.deleteShoppingCard(id)){
+            if (!shoppingCardDao.deleteShoppingCard(shoppingCard)){
                 throw new DAOException("Failed to delete shopping card");
             }
         }catch (DAOException e){
@@ -143,21 +139,21 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         }
     }
 
-    @Override
-    @Transactional
-    public void deleteShoppingCardByBuyerId(Long buyerId) {
-        if (buyerId == null || buyerId < 0){
-            LOGGER.error(String.format("BuyerId is not valid: %s", buyerId));
-            throw new InvalidEntryException("Invalid buyerId");
-        }
-        try {
-            if (!shoppingCardDao.deleteShoppingCardByBuyerId(buyerId)){
-                throw new DAOException("Failed to delete shopping card by buyerId");
-            }
-        }catch (DAOException e){
-            String error = "Failed to delete ShoppingCard";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
-        }
-    }
+//    @Override
+//    @Transactional
+//    public void deleteShoppingCardByBuyerId(Long buyerId) {
+//        if (buyerId == null || buyerId < 0){
+//            LOGGER.error(String.format("BuyerId is not valid: %s", buyerId));
+//            throw new InvalidEntryException("Invalid buyerId");
+//        }
+//        try {
+//            if (!shoppingCardDao.deleteShoppingCardByBuyerId(buyerId)){
+//                throw new DAOException("Failed to delete shopping card by buyerId");
+//            }
+//        }catch (DAOException e){
+//            String error = "Failed to delete ShoppingCard";
+//            LOGGER.error(String.format(error, e.getMessage()));
+//            throw new ServiceException(String.format(error, e.getMessage()));
+//        }
+//    }
 }

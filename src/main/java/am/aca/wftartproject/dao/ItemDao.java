@@ -1,6 +1,7 @@
 package am.aca.wftartproject.dao;
 
-import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.entity.Item;
+import am.aca.wftartproject.entity.ItemType;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public interface ItemDao {
      * @param itemType
      * @return
      */
-    List<Item> getItemsByType(String itemType);
+    List<Item> getItemsByType(ItemType itemType);
 
 
     /**

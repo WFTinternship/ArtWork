@@ -1,6 +1,4 @@
-package am.aca.wftartproject.model;
-
-import sun.security.util.Length;
+package am.aca.wftartproject.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

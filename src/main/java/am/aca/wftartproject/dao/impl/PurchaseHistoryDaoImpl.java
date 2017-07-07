@@ -3,10 +3,8 @@ package am.aca.wftartproject.dao.impl;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.entity.PurchaseHistory;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -86,26 +84,31 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     }
 
     /**
-     * @param userId
      * @param itemId
      * @return
-     * @see PurchaseHistoryDao#getPurchase(Long, Long)
+     * @see PurchaseHistoryDao#getPurchase( Long)
      */
     @Override
-    public PurchaseHistory getPurchase(Long userId, Long itemId) {
-        //OLD VERSION WITH SPRING JDBC
+    public PurchaseHistory getPurchase(Long itemId) {
+        PurchaseHistory purchaseHistory = null;
+        Transaction tx = null;
         try {
-            String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
-            return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId},
-                    (rs, rowNum) -> new PurchaseHistoryMapper().mapRow(rs, rowNum));
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.warn(String.format("Failed to get purchase item by userId and itemId: %s %s", userId, itemId));
-            return null;
-        } catch (DataAccessException e) {
-            String error = "Failed to get PurchaseHistory: %s";
+            Session session = this.sessionFactory.getCurrentSession();
+            tx = session.getTransaction();
+            if(!tx.isActive()){
+                tx = session.beginTransaction();
+            }
+           purchaseHistory =  (PurchaseHistory) session.createQuery("SELECT c FROM PurchaseHistory c WHERE c.item_id = :itemId").setParameter("itemId",itemId).getSingleResult();
+            tx.commit();
+        } catch (Exception e) {
+            String error = "Failed to add Purchase: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(error, e);
+            throw new DAOException(String.format(error, e.getMessage()));
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
 
@@ -139,6 +142,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 //        return purchaseHistory;
 
 //        endregion
+        return purchaseHistory;
     }
 
 
@@ -148,7 +152,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      * @see PurchaseHistoryDao#getPurchase(Long)
      */
     @Override
-    public List<PurchaseHistory> getPurchase(Long userId) {
+    public List<PurchaseHistory> getPurchaseList(Long userId) {
         Transaction tx = null;
         List<PurchaseHistory> purchaseHistoryList;
         try{
@@ -216,7 +220,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         Transaction tx = null;
         Boolean result = false;
         try {
-
             Session session = this.sessionFactory.getCurrentSession();
             tx = session.getTransaction();
             if(!tx.isActive()){

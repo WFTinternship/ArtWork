@@ -1,6 +1,6 @@
 package am.aca.wftartproject.service;
 
-import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.entity.ShoppingCard;
 
 /**
  * Created by ASUS on 03-Jun-17
@@ -10,10 +10,9 @@ public interface ShoppingCardService {
     /**
      * Adds shoppingCard to the database.
      *
-     * @param userId
      * @param shoppingCard
      */
-    void addShoppingCard(Long userId, ShoppingCard shoppingCard);
+    void addShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Gets shoppingCard from database.
@@ -41,14 +40,14 @@ public interface ShoppingCardService {
     /**
      * Deletes shoppingCard by id.
      *
-     * @param id
+     * @param shoppingCard
      */
-    void deleteShoppingCard(Long id);
+    void deleteShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Deletes shoppingCard by buyerId.
      *
      * @param buyerId
      */
-    void deleteShoppingCardByBuyerId(Long buyerId);
+//    void deleteShoppingCardByBuyerId(Long buyerId);
 }

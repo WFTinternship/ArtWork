@@ -1,6 +1,6 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.entity.Item;
 
 import java.util.Collections;
 import java.util.Comparator;

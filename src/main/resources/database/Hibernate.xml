@@ -28,12 +28,12 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
         
         <!--<property name="annotatedClasses">-->
             <!--<list>-->
-                <!--<value>am.aca.wftartproject.model.Artist</value>-->
-                <!--<value>am.aca.wftartproject.model.User</value>-->
-                <!--<value>am.aca.wftartproject.model.AbstractUser</value>-->
-                <!--<value>am.aca.wftartproject.model.ShoppingCard</value>-->
-                <!--<value>am.aca.wftartproject.model.Item</value>-->
-                <!--<value>am.aca.wftartproject.model.PurchaseHistory</value>-->
+                <!--<vaam.aca.wftartproject.entityyodel.Artist</value>-->
+                <!--<vaam.aca.wftartproject.entityyodel.User</value>-->
+                <!--<vaam.aca.wftartproject.entityyodel.AbstractUser</value>-->
+                <!--<vaam.aca.wftartproject.entityyodel.ShoppingCard</value>-->
+                <!--<vaam.aca.wftartproject.entityyodel.Item</value>-->
+                <!--<vaam.aca.wftartproject.entityyodel.PurchaseHistory</value>-->
             <!--</list>-->
         <!--</property>-->
 

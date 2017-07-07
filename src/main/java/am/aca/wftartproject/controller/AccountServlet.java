@@ -1,8 +1,8 @@
 //package am.aca.wftartproject.controller;
 //
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.Artist;
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.Artist;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.ArtistService;
 //import am.aca.wftartproject.service.UserService;
 //import am.aca.wftartproject.service.impl.ArtistServiceImpl;

@@ -1,6 +1,6 @@
 package am.aca.wftartproject.service;
 
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.entity.User;
 
 /**
  * Created by surik on 6/3/17

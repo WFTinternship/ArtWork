@@ -5,7 +5,7 @@
 //import am.aca.wftartproject.exception.dao.DAOException;
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.PurchaseHistory;
+//import am.aca.wftartproject.entity.PurchaseHistory;
 //import am.aca.wftartproject.service.PurchaseHistoryService;
 //import am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl;
 //import org.junit.After;
@@ -56,7 +56,7 @@
 //    // region <TEST CASE>
 //
 //    /**
-//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
+//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.entity.PurchaseHistory)
 //     */
 //    @Test
 //    public void addPurchase_purchaseHistoryNullOrInvalid() {
@@ -83,7 +83,7 @@
 //
 //
 //    /**
-//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
+//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.entity.PurchaseHistory)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void addPurchase_addFailed() {
@@ -98,7 +98,7 @@
 //    }
 //
 //    /**
-//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
+//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.entity.PurchaseHistory)
 //     */
 //    @Test
 //    public void addPurchase_addSuccess() {

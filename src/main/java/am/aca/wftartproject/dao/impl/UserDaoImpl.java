@@ -1,11 +1,8 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.dao.rowmappers.UserMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.AbstractUser;
-import am.aca.wftartproject.model.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import am.aca.wftartproject.entity.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -13,16 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 @Component
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {

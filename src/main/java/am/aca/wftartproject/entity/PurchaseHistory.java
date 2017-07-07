@@ -1,4 +1,4 @@
-package am.aca.wftartproject.model;
+package am.aca.wftartproject.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,9 +16,11 @@ public class PurchaseHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "buyer_id")
+    @Column(name = "buyer_id",nullable = false)
     private Long userId;
+    @Column(nullable = false)
     private Long item_id;
+    @Column(nullable = false)
     private Date purchase_date;
     @Column(length = 1000000)
     private Item item;

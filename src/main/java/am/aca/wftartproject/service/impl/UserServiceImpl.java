@@ -6,7 +6,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.entity.User;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             user.getShoppingCard().setBuyer_id(user.getId());
-            shoppingCardDao.addShoppingCard(user.getId(),user.getShoppingCard());
+            shoppingCardDao.addShoppingCard(user.getShoppingCard());
         } catch (DAOException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));

@@ -2,14 +2,14 @@
 //
 //import am.aca.wftartproject.dao.ArtistDao;
 //import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
-//import am.aca.wftartproject.model.ShoppingCard;
+//import am.aca.wftartproject.entity.ShoppingCard;
 //import am.aca.wftartproject.service.BaseUnitTest;
 //import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 //import am.aca.wftartproject.exception.dao.DAOException;
 //import am.aca.wftartproject.exception.service.DuplicateEntryException;
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.Artist;
+//import am.aca.wftartproject.entity.Artist;
 //import am.aca.wftartproject.service.ArtistService;
 //import am.aca.wftartproject.service.ShoppingCardService;
 //import am.aca.wftartproject.service.impl.ArtistServiceImpl;

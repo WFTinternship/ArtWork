@@ -1,6 +1,6 @@
 package am.aca.wftartproject.dao;
 
-import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.entity.PurchaseHistory;
 
 import java.util.List;
 
@@ -21,11 +21,10 @@ public interface PurchaseHistoryDao {
     /**
      * Gets purchase item by userId and itemId
      *
-     * @param userId
      * @param itemId
      * @return
      */
-    PurchaseHistory getPurchase(Long userId, Long itemId);
+    PurchaseHistory getPurchase(Long itemId);
 
 
     /**
@@ -34,7 +33,7 @@ public interface PurchaseHistoryDao {
      * @param userId
      * @return
      */
-    List<PurchaseHistory> getPurchase(Long userId);
+    List<PurchaseHistory> getPurchaseList(Long userId);
 
 
     /**

@@ -1,12 +1,10 @@
 package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.entity.User;
 import am.aca.wftartproject.util.AssertTemplates;
 import am.aca.wftartproject.util.TestObjectTemplate;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;

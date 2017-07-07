@@ -2,14 +2,12 @@ package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.entity.Artist;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Component

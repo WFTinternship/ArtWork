@@ -1,4 +1,4 @@
-package am.aca.wftartproject.model;
+package am.aca.wftartproject.entity;
 
 import javax.persistence.*;
 
@@ -10,6 +10,17 @@ public class ShoppingCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+    private Long buyer_id;
+    @Column(nullable = false)
+    private double balance;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ShoppingCardType shoppingCardType;
+
+    public Long getId() {
+        return id;
+    }
 
     public Long getBuyer_id() {
         return buyer_id;
@@ -17,17 +28,6 @@ public class ShoppingCard {
 
     public void setBuyer_id(Long buyer_id) {
         this.buyer_id = buyer_id;
-    }
-
-    private Long buyer_id;
-
-    private double balance;
-
-    @Enumerated(EnumType.STRING)
-    private ShoppingCardType shoppingCardType;
-
-    public Long getId() {
-        return id;
     }
 
     public ShoppingCard setId(Long id) {

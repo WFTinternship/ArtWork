@@ -2,7 +2,7 @@ package am.aca.wftartproject.web;
 
 import am.aca.wftartproject.controller.ItemComparator;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
-import am.aca.wftartproject.model.*;
+import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +36,13 @@ public class ShopController {
     @RequestMapping(value = "/shop",method = RequestMethod.POST)
     public ModelAndView shopProcessor(HttpServletRequest request){
         String itemTypeStr = request.getParameter("itemType");
+        ItemType itemType = ItemType.valueOf(itemTypeStr);
         String sortingType = request.getParameter("sortType");
 
         List<Item> itemList = itemService.getRecentlyAddedItems(100);
         try {
             if (!"-1".equals(itemTypeStr)) {
-                itemList = itemService.getItemsByType(itemTypeStr);
+                itemList = itemService.getItemsByType(itemType);
             }
 
             if(!"-1".equals(sortingType)){

@@ -1,7 +1,7 @@
 //package am.aca.wftartproject.controller;
 //
-//import am.aca.wftartproject.model.Item;
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.Item;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.ArtistService;
 //import am.aca.wftartproject.service.ItemService;
 //import am.aca.wftartproject.service.impl.ArtistServiceImpl;

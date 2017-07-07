@@ -3,13 +3,14 @@ package am.aca.wftartproject.service.impl;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.dao.ShoppingCardDao;
+import am.aca.wftartproject.entity.ItemType;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.model.PurchaseHistory;
-import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.entity.Item;
+import am.aca.wftartproject.entity.PurchaseHistory;
+import am.aca.wftartproject.entity.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,9 +153,9 @@ public class ItemServiceImpl implements ItemService {
      * @see ItemService#getItemsByType(String)
      */
     @Override
-    public List<Item> getItemsByType(String itemType) {
+    public List<Item> getItemsByType(ItemType itemType) {
 
-        if (isEmptyString(itemType)) {
+        if (itemType == null) {
             LOGGER.error(String.format("itemType is not valid: %s", itemType));
             throw new InvalidEntryException("Invalid itemType");
         }

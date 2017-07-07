@@ -1,10 +1,10 @@
 //package am.aca.wftartproject.service.integration;
 //
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
-//import am.aca.wftartproject.model.Artist;
-//import am.aca.wftartproject.model.Item;
-//import am.aca.wftartproject.model.PurchaseHistory;
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.Artist;
+//import am.aca.wftartproject.entity.Item;
+//import am.aca.wftartproject.entity.PurchaseHistory;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.BaseIntegrationTest;
 //import am.aca.wftartproject.service.impl.*;
 //import org.junit.After;
@@ -82,7 +82,7 @@
 //    // region<TEST CASE>
 //
 //    /**
-//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
+//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.entity.PurchaseHistory)
 //     */
 //    @Test
 //    public void addPurchase_Success() {
@@ -99,7 +99,7 @@
 //    }
 //
 //    /**
-//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
+//     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.entity.PurchaseHistory)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void addPurchase_Failure() {

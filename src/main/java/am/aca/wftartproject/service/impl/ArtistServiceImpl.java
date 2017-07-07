@@ -6,7 +6,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.service.ArtistService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class ArtistServiceImpl implements ArtistService {
 
         try {
             artist.getShoppingCard().setBuyer_id(artist.getId());
-            shoppingCardDao.addShoppingCard(artist.getId(),artist.getShoppingCard());
+            shoppingCardDao.addShoppingCard(artist.getShoppingCard());
         } catch (DAOException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));

@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.rowmappers;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.ArtistSpecialization;
+import am.aca.wftartproject.entity.Artist;
+import am.aca.wftartproject.entity.ArtistSpecialization;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

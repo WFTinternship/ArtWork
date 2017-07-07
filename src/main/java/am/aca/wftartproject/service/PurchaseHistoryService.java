@@ -1,6 +1,6 @@
 package am.aca.wftartproject.service;
 
-import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.entity.PurchaseHistory;
 
 import java.util.List;
 
@@ -19,11 +19,10 @@ public interface PurchaseHistoryService {
     /**
      * Gets purchase item by userId and itemId
      *
-     * @param userId
      * @param itemId
      * @return
      */
-    PurchaseHistory getPurchase(Long userId, Long itemId);
+    PurchaseHistory getPurchase(Long itemId);
 
     /**
      * Gets all purchase items by userId
@@ -31,7 +30,7 @@ public interface PurchaseHistoryService {
      * @param userId
      * @return
      */
-    List<PurchaseHistory> getPurchase(Long userId);
+    List<PurchaseHistory> getPurchaseList(Long userId);
 
     /**
      * Deletes purchase item by userId and itemId

@@ -1,7 +1,7 @@
 package am.aca.wftartproject.dao.rowmappers;
 
-import am.aca.wftartproject.model.Item;
-import am.aca.wftartproject.model.ItemType;
+import am.aca.wftartproject.entity.Item;
+import am.aca.wftartproject.entity.ItemType;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package am.aca.wftartproject.model;
+package am.aca.wftartproject.entity;
 
 /**
  * Created by ASUS on 24-May-17

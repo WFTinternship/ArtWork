@@ -4,7 +4,7 @@ import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.entity.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,24 +53,19 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
-     * @see PurchaseHistoryService#getPurchase(Long, Long)
-     * @param userId
+     * @see PurchaseHistoryService#getPurchase(Long)
      * @param itemId
      * @return
      */
     @Override
-    public PurchaseHistory getPurchase(Long userId, Long itemId) {
-        if (userId == null || userId < 0){
-            LOGGER.error(String.format("UserId is not valid: %s", userId));
-            throw new InvalidEntryException("Invalid userId");
-        }
+    public PurchaseHistory getPurchase(Long itemId) {
         if (itemId == null || itemId < 0) {
             LOGGER.error(String.format("ItemId is not valid: %s", itemId));
             throw new InvalidEntryException("Invalid itemId");
         }
 
         try {
-            return purchaseHistoryDao.getPurchase(userId, itemId);
+            return purchaseHistoryDao.getPurchase(itemId);
         }catch (DAOException e) {
             String error = "Failed to get purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -85,7 +80,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @return
      */
     @Override
-    public List<PurchaseHistory> getPurchase(Long userId) {
+    public List<PurchaseHistory> getPurchaseList(Long userId) {
 
         if (userId == null || userId < 0){
             LOGGER.error(String.format("UserId is not valid: %s", userId));
@@ -93,7 +88,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
         }
 
         try {
-            return purchaseHistoryDao.getPurchase(userId);
+            return purchaseHistoryDao.getPurchaseList(userId);
         }catch (DAOException e) {
             String error = "Failed to get purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -103,9 +98,8 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
-     * @see PurchaseHistoryService#deletePurchase(Long, Long)
-     * @param userId
-     * @param itemId
+     * @see PurchaseHistoryService#deletePurchase(PurchaseHistory)
+     * @param purchaseHistory
      */
     @Transactional(readOnly = false)
     @Override

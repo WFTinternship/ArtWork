@@ -7,7 +7,7 @@
 //import am.aca.wftartproject.exception.dao.DAOException;
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.ShoppingCard;
+//import am.aca.wftartproject.entity.ShoppingCard;
 //import am.aca.wftartproject.service.ShoppingCardService;
 //import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 //import org.junit.After;
@@ -59,7 +59,7 @@
 //    // region <TEST CASE>
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void addShoppingCard_userIdNullOrNegative() {
@@ -89,7 +89,7 @@
 //
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void addShoppingCard_invalidShoppingCard() {
@@ -120,7 +120,7 @@
 //
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void addShoppingCard_addFailure() {
@@ -138,7 +138,7 @@
 //
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void addShoppingCard_addSuccess() {
@@ -287,7 +287,7 @@
 //    }
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void updateShoppingCard_idNullOrNegative() {
@@ -317,7 +317,7 @@
 //
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void updateShoppingCard_shoppingCardNullOrInvalid() {
@@ -348,7 +348,7 @@
 //
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void updateShoppingCard_updateFailed() {
@@ -366,7 +366,7 @@
 //
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void updateShoppingCard_updateSuccess() {

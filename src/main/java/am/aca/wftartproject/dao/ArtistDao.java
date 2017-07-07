@@ -1,6 +1,6 @@
 package am.aca.wftartproject.dao;
 
-import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.entity.Artist;
 
 /**
  * Created by ASUS on 27-May-17

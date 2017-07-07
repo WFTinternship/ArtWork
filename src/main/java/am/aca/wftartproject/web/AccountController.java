@@ -1,7 +1,7 @@
 package am.aca.wftartproject.web;
 
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.model.*;
+import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;

@@ -1,7 +1,6 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import org.springframework.context.ApplicationContext;

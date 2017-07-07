@@ -1,8 +1,8 @@
 //package am.aca.wftartproject.service.integration;
 //
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
-//import am.aca.wftartproject.model.ShoppingCard;
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.ShoppingCard;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.BaseIntegrationTest;
 //import am.aca.wftartproject.service.ShoppingCardService;
 //import am.aca.wftartproject.service.UserService;
@@ -65,7 +65,7 @@
 //    // region<TEST CASE>
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void addShoppingCard_Success() {
@@ -84,7 +84,7 @@
 //    }
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void addShoppingCard_Failure() {
@@ -131,7 +131,7 @@
 //    }
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test
 //    public void updateShoppingCard_Success() {
@@ -145,7 +145,7 @@
 //    }
 //
 //    /**
-//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+//     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.entity.ShoppingCard)
 //     */
 //    @Test(expected = InvalidEntryException.class)
 //    public void updateShoppingCard_Failure() {

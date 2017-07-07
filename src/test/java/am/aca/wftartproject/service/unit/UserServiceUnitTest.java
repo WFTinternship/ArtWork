@@ -5,8 +5,8 @@
 //import am.aca.wftartproject.exception.service.DuplicateEntryException;
 //import am.aca.wftartproject.exception.service.InvalidEntryException;
 //import am.aca.wftartproject.exception.service.ServiceException;
-//import am.aca.wftartproject.model.ShoppingCard;
-//import am.aca.wftartproject.model.User;
+//import am.aca.wftartproject.entity.ShoppingCard;
+//import am.aca.wftartproject.entity.User;
 //import am.aca.wftartproject.service.BaseUnitTest;
 //import am.aca.wftartproject.service.ShoppingCardService;
 //import am.aca.wftartproject.service.UserService;
@@ -61,7 +61,7 @@
 //    // region <TEST CASES>
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void addUser_userNotValidOrNull() {
@@ -103,7 +103,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void addUser_exists() {
@@ -126,7 +126,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void addUser_addFailed() {
@@ -142,7 +142,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void addUser_addSuccess() {
@@ -168,7 +168,7 @@
 //    }
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void addUser_addShoppingCardFailed() {
@@ -183,7 +183,7 @@
 //    }
 //
 //    /**
-//     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#addUser(am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void addUser_addShoppingCardSuccess() {
@@ -341,7 +341,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void updateUser_idIsNullOrNegative() {
@@ -372,7 +372,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void updateUser_userNotValidOrNull() {
@@ -402,7 +402,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.entity.User)
 //     */
 //    @Test(expected = ServiceException.class)
 //    public void updateUser_updateFailed() {
@@ -419,7 +419,7 @@
 //
 //
 //    /**
-//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+//     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.entity.User)
 //     */
 //    @Test
 //    public void updateUser_updateSuccess() {
