@@ -12,16 +12,20 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
 @Component
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public UserDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public UserDaoImpl(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     /**
@@ -30,13 +34,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-              tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();}
-            session.save(user);
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
+            }
+            entityManager.persist(user);
+            entityManager.flush();
             tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + user);
         } catch (Exception e) {
@@ -61,15 +67,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         User user = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            user =  (User) session.get(User.class, id);
+            user =  (User) entityManager.find(User.class, id);
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to get User by id: %s";
@@ -93,18 +99,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(String email) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         Session session = null;
         User user = null;
         try {
-            session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
-            user = (User) criteria.add(Restrictions.eq("email", email))
-                    .uniqueResult();
+            user = (User) entityManager.createQuery("select c from User c where c.email = :email").setParameter("email",email).getSingleResult();
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to get User by email: %s";
@@ -126,14 +130,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean updateUser(User user) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         Boolean result = false;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-             tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();}
-            session.saveOrUpdate(user);
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
+            }
+            entityManager.merge(user);
             tx.commit();
             result = true;
             LOGGER.info("User saved successfully, Person Details=" + user);
@@ -160,14 +165,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public Boolean deleteUser(Long id) {
         Boolean result = false;
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-             tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();}
-            User user = (User) session.get(User.class, id);
-            session.delete(user);
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
+            }
+            User user = (User) entityManager.find(User.class, id);
+            entityManager.remove(entityManager.contains(user)  ? user : entityManager.merge(user));
             tx.commit();
             result = true;
         } catch (Exception e) {

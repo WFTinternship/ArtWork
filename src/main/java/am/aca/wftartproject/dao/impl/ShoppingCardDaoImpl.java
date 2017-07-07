@@ -11,33 +11,36 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
 
 @Component
 public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public ShoppingCardDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public ShoppingCardDaoImpl( EntityManagerFactory  entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
-
     /**
      * @param shoppingCard
      * @see ShoppingCardDao#addShoppingCard(ShoppingCard)
      */
     @Override
     public void addShoppingCard(ShoppingCard shoppingCard) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            session.save(shoppingCard);
+            entityManager.persist(shoppingCard);
             tx.commit();
             LOGGER.info("ShoppingCard saved successfully, ShoppingCard Details=" + shoppingCard);
         } catch (Exception e) {
@@ -62,12 +65,12 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public ShoppingCard getShoppingCard(Long id) {
         ShoppingCard shoppingCard = null;
         Session session = null;
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
             shoppingCard = (ShoppingCard) session.createQuery(
                     "SELECT c FROM ShoppingCard c WHERE c.buyer_id= :buyer_id")
@@ -124,14 +127,14 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public Boolean updateShoppingCard(ShoppingCard shoppingCard) {
 
         Boolean result = false;
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            session.saveOrUpdate(shoppingCard);
+            entityManager.merge(shoppingCard);
             tx.commit();
             result = true;
         } catch (Exception e) {
@@ -214,13 +217,14 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     public Boolean deleteShoppingCard(ShoppingCard shoppingCard) {
 
         Boolean result = false;
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();}
-            session.delete(shoppingCard);
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
+            }
+            entityManager.remove(entityManager.contains(shoppingCard)  ? shoppingCard : entityManager.merge(shoppingCard));
             tx.commit();
             result = true;
         } catch (Exception e) {

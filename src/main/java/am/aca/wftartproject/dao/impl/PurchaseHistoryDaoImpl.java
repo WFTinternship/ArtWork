@@ -5,14 +5,11 @@ import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.entity.PurchaseHistory;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
-
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 
@@ -21,28 +18,28 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
 
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public PurchaseHistoryDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public PurchaseHistoryDaoImpl( EntityManagerFactory  entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
-
     /**
      * @param purchaseHistory
      * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
             purchaseHistory.setPurchaseDate(getCurrentDateTime());
-            session.save(purchaseHistory);
+            entityManager.persist(purchaseHistory);
+            entityManager.flush();
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to add Purchase: %s";
@@ -91,14 +88,14 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public PurchaseHistory getPurchase(Long itemId) {
         PurchaseHistory purchaseHistory = null;
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-           purchaseHistory =  (PurchaseHistory) session.createQuery("SELECT c FROM PurchaseHistory c WHERE c.item_id = :itemId").setParameter("itemId",itemId).getSingleResult();
+           purchaseHistory =  (PurchaseHistory) entityManager.createQuery("SELECT c FROM PurchaseHistory c WHERE c.item_id = :itemId").setParameter("itemId",itemId).getSingleResult();
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to add Purchase: %s";
@@ -153,15 +150,15 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public List<PurchaseHistory> getPurchaseList(Long userId) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         List<PurchaseHistory> purchaseHistoryList;
         try{
-            Session session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            purchaseHistoryList = (List<PurchaseHistory>) sessionFactory.getCurrentSession().createQuery(
+            purchaseHistoryList = (List<PurchaseHistory>)entityManager.createQuery(
                     "SELECT c FROM PurchaseHistory c WHERE c.userId = :user_id")
                     .setParameter("user_id", userId)
                     .getResultList();
@@ -217,15 +214,15 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public Boolean deletePurchase(PurchaseHistory purchaseHistory) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         Boolean result = false;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            session.delete(purchaseHistory);
+            entityManager.remove(entityManager.contains(purchaseHistory)  ? purchaseHistory : entityManager.merge(purchaseHistory));
             tx.commit();
             result = true;
             LOGGER.info("Item deleted successfully");

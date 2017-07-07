@@ -214,8 +214,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         // Add artist into db
         // Attemp to delete artist from db
         Artist artist = TestObjectTemplate.createTestArtist();
-        artist.setId(-6L);
-
+        artist.setFirstName(null);
         assertFalse(artistDao.deleteArtist(artist));
 
     }

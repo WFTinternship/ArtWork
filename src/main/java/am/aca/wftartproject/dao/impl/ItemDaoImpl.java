@@ -11,6 +11,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 
@@ -20,11 +23,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public ItemDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public ItemDaoImpl( EntityManagerFactory  entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     /**
@@ -33,15 +36,16 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Item item) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
             item.setAdditionDate(getCurrentDateTime());
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            session.save(item);
+           entityManager.persist(item);
+            entityManager.flush();
             tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + item);
         } catch (Exception e) {
@@ -65,15 +69,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Item findItem(Long id) {
-        Transaction tx =null;
+        EntityTransaction tx =null;
         Item item = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            item = (Item) session.get(Item.class, id);
+            item = (Item) entityManager.find(Item.class, id);
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to get Item by id: %s";
@@ -98,15 +102,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         List<Item> itemList = null;
         try {
-            Session session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            itemList = (List<Item>) session.createQuery(
+            itemList = (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c")
                     .getResultList();
             tx.commit();
@@ -172,15 +176,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         List<Item> itemList = null;
         try {
-            Session session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            itemList = (List<Item>) session.createQuery(
+            itemList = (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c where c.title = :title").setParameter("title", title).setMaxResults(100)
                     .getResultList();
             tx.commit();
@@ -241,15 +245,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByType(ItemType itemType) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         List<Item> itemList = null;
         try {
-            Session session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            itemList = (List<Item>) session.createQuery(
+            itemList = (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c where c.itemType = :itemType").setParameter("itemType", itemType).setMaxResults(100)
                     .getResultList();
             tx.commit();
@@ -310,15 +314,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         List<Item> itemList = null;
         try {
-            Session session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            itemList = (List<Item>) session.createQuery(
+            itemList = (List<Item>) entityManager.createQuery(
                     "SELECT e FROM Item e WHERE e.price BETWEEN :minprice AND :maxprice").setParameter("minprice", minPrice).setParameter("maxprice",maxPrice).setMaxResults(100)
                     .getResultList();
             tx.commit();
@@ -379,14 +383,14 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getArtistItems(Long artistId) {
         List<Item> list = null;
-        Transaction tx = null;
-        Session session = sessionFactory.getCurrentSession();
-        tx = session.getTransaction();
-        if(!tx.isActive()){
-            tx = session.beginTransaction();
+        EntityTransaction tx = null;
+        EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+        tx = entityManager.getTransaction();
+        if (!tx.isActive()) {
+            entityManager.getTransaction().begin();
         }
         try{
-            list =  (List<Item>) sessionFactory.getCurrentSession().createQuery(
+            list =  (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c WHERE c.artist_id = :artist_id")
                     .setParameter("artist_id", artistId)
                     .getResultList();
@@ -414,15 +418,15 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Boolean updateItem(Item item) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         Boolean result = false;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            session.saveOrUpdate(item);
+            entityManager.merge(item);
             tx.commit();
             result = true;
             LOGGER.info("Item updated successfully, Item Details=" + item);
@@ -471,17 +475,17 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Boolean deleteItem(Long id) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         Boolean result = false;
         try {
 
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
-            if(!tx.isActive()){
-                tx = session.beginTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
+            if (!tx.isActive()) {
+                entityManager.getTransaction().begin();
             }
-            Item item = (Item) session.get(Item.class, id);
-            session.delete(item);
+            Item item = (Item) entityManager.find(Item.class, id);
+            entityManager.remove(entityManager.contains(item)  ? item : entityManager.merge(item));
             tx.commit();
             result = true;
             LOGGER.info("Item deleted successfully");

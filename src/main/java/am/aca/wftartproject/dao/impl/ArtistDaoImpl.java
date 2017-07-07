@@ -1,5 +1,5 @@
 package am.aca.wftartproject.dao.impl;
-
+import static org.hibernate.testing.transaction.TransactionUtil.*;
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.entity.Artist;
@@ -9,17 +9,21 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
 
 @Component
 public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
     @Autowired
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public ArtistDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public ArtistDaoImpl(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
 
@@ -29,14 +33,15 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public void addArtist(Artist artist) {
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            session.save(artist);
+            entityManager.persist(artist);
+            entityManager.flush();
             tx.commit();
             LOGGER.info("Artist saved successfully, Artist Details=" + artist);
         } catch (Exception e) {
@@ -58,15 +63,15 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(Long id) {
-        Transaction tx = null;
+       EntityTransaction tx = null;
         try {
             Artist artist;
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            artist = (Artist) session.get(Artist.class, id);
+            artist = (Artist) entityManager.find(Artist.class, id);
             tx.commit();
             return artist;
         } catch (Exception e) {
@@ -90,16 +95,14 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     @Override
     public Artist findArtist(String email) {
         Artist artist = null;
-        Transaction tx = null;
+        EntityTransaction tx = null;
         try {
-            Session session = sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            Criteria criteria = session.createCriteria(Artist.class);
-            artist = (Artist) criteria.add(Restrictions.eq("email", email))
-                    .uniqueResult();
+            artist = (Artist) entityManager.createQuery("select c from Artist c where c.email = :email").setParameter("email",email).getSingleResult();
             tx.commit();
         } catch (Exception e) {
             String error = "Failed to get Artist by Email: %s";
@@ -123,15 +126,15 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
     @Override
     public Boolean updateArtist(Artist artist) {
-        Transaction tx = null;
+       EntityTransaction tx = null;
         Boolean result = false;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            session.saveOrUpdate(artist);
+            entityManager.merge(artist);
             tx.commit();
             result = true;
             LOGGER.info("Artist saved successfully, Artist Details=" + artist);
@@ -153,15 +156,15 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Boolean deleteArtist(Artist artist) {
-        Transaction tx = null;
+       EntityTransaction tx = null;
         Boolean result = false;
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            tx = session.getTransaction();
+            EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+            tx = entityManager.getTransaction();
             if (!tx.isActive()) {
-                tx = session.beginTransaction();
+                entityManager.getTransaction().begin();
             }
-            session.delete(artist);
+            entityManager.remove(entityManager.contains(artist)  ? artist : entityManager.merge(artist));
             tx.commit();
             result = true;
         } catch (Exception e) {

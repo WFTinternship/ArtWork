@@ -22,30 +22,16 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
     </bean>
 
     <!-- Hibernate session factory -->
-    <bean id="hibernate5AnnotatedSessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        
-        <!--<property name="annotatedClasses">-->
-            <!--<list>-->
-                <!--<vaam.aca.wftartproject.entityyodel.Artist</value>-->
-                <!--<vaam.aca.wftartproject.entityyodel.User</value>-->
-                <!--<vaam.aca.wftartproject.entityyodel.AbstractUser</value>-->
-                <!--<vaam.aca.wftartproject.entityyodel.ShoppingCard</value>-->
-                <!--<vaam.aca.wftartproject.entityyodel.Item</value>-->
-                <!--<vaam.aca.wftartproject.entityyodel.PurchaseHistory</value>-->
-            <!--</list>-->
-        <!--</property>-->
-
-        <property name="packagesToScan">
-            <value>am.aca.wftartproject</value>
+        <property name="packagesToScan" value="am.aca.wftartproject" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
         </property>
-        <property name="hibernateProperties">
+        <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
-                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
             </props>
         </property>
     </bean>
@@ -58,10 +44,11 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
     <tx:annotation-driven proxy-target-class="true" mode="proxy"
                           transaction-manager="transactionManager" />
 
-    <bean id="transactionManager"
-          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-        <property name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
 </beans>
