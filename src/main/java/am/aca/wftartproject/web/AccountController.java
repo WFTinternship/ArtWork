@@ -194,12 +194,12 @@ public class AccountController {
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
-                request.setAttribute("purchaseHistory", purchaseHistoryService.getPurchase(user.getId()));
+                request.setAttribute("purchaseHistory", purchaseHistoryService.getPurchaseList(user.getId()));
             }
             if (session.getAttribute("user").getClass() == Artist.class) {
                 artist = (Artist) session.getAttribute("user");
 
-                request.setAttribute("purchaseHistory", purchaseHistoryService.getPurchase(artist.getId()));
+                request.setAttribute("purchaseHistory", purchaseHistoryService.getPurchaseList(artist.getId()));
             }
         } else {
             page = "redirect:/signup";
