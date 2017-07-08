@@ -1,11 +1,17 @@
 package am.aca.wftartproject.service.integration;
 
-import am.aca.wftartproject.BaseIntegrationTest;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.service.BaseIntegrationTest;
+import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
+import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,37 +23,47 @@ import java.util.List;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * @author surik
  */
 @Transactional
 public class ItemServiceIntegrationTest extends BaseIntegrationTest {
+
     private Artist testArtist;
     private Item testItem;
     private Item tempItem;
+    private ShoppingCard testShoppingCard;
 
     @Autowired
     private ArtistServiceImpl artistService;
+
     @Autowired
-    private ItemServiceImpl itemService;
+    private ItemService itemService;
+
+    @Autowired
+    private ShoppingCardServiceImpl shoppingCardService;
+
+    @Autowired
+    private PurchaseHistoryService purchaseHistoryService;
 
     /**
-     * Creates testArtist and testItem for tests
+     * Creates testArtist and testItem for test
      */
     @Before
     public void setUp() {
         testArtist = createTestArtist();
         testItem = createTestItem();
+        /*testShoppingCard = createTestShoppingCard();
+        testArtist.setShoppingCard(testShoppingCard);*/
         artistService.addArtist(testArtist);
+        testShoppingCard = testArtist.getShoppingCard();
         tempItem = createTestItem();
     }
 
     /**
-     * Deletes all items and artist created during the tests
+     * Deletes all items and artist created during the test
      */
     @After
     public void tearDown() {
@@ -57,6 +73,10 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
 
         if (testItem.getId() != null) {
             itemService.deleteItem(testItem.getId());
+        }
+
+        if (testShoppingCard.getId() != null) {
+            shoppingCardService.deleteShoppingCard(testShoppingCard.getId());
         }
 
         if (testArtist.getId() != null) {
@@ -79,7 +99,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         assertNotNull(testArtist);
         assertNotNull(testArtist.getId());
 
-        // Add item into DB
+        // Test method
         itemService.addItem(testArtist.getId(), testItem);
 
         // Find added item from DB
@@ -106,7 +126,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         // Add item into DB
         itemService.addItem(testArtist.getId(), testItem);
 
-        // Find added item from DB
+        // Test method
         Item foundedItem = itemService.findItem(testItem.getId());
 
         // Check sameness items
@@ -157,7 +177,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
 
         // Test method
         List<Item> items = itemService.getItemsByTitle(testItem.getTitle());
-        assertEqualItems(testItem, items.get(0));
+        assertEqualItems(testItem, items.get(items.size() - 1));
     }
 
     /**
@@ -180,15 +200,8 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
 
         // Test method
         List<Item> items = itemService.getItemsByType(testItem.getItemType().getType());
-        Item recentlyAddedItem = null;
-        for (Item item: items){
-            if (item.equals(testItem)){
-                recentlyAddedItem = item;
-                break;
-            }
-        }
-        assertNotNull(recentlyAddedItem);
-        assertEqualItems(testItem, recentlyAddedItem);
+
+        assertEqualItems(testItem, items.get(items.size() - 1));
     }
 
     /**
@@ -221,7 +234,6 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     public void getItemsForGivenPriceRange_EmptyList() {
         // Test method
         List<Item> items = itemService.getItemsForGivenPriceRange(0.0, 1.0);
-//TODO
         assertTrue(items.isEmpty());
     }
 
@@ -251,6 +263,37 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         // Test method
         List<Item> items = itemService.getArtistItems(testArtist.getId(), testItem.getId(), 10L);
         assertTrue(items.isEmpty());
+    }
+
+    /**
+     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_NotEmptyLIst() {
+        assertNotNull(testArtist.getId());
+        itemService.addItem(testArtist.getId(), testItem);
+
+        assertNotNull(testItem.getId());
+
+        // Test method
+        List<Item> availableItems = itemService.getAvailableItemsForGivenArtist(testArtist.getId());
+        assertEqualItems(testItem, availableItems.get(0));
+    }
+
+    /**
+     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_EmptyList() {
+        assertNotNull(testArtist.getId());
+        testItem.setStatus(true);
+        itemService.addItem(testArtist.getId(), testItem);
+
+        assertNotNull(testItem.getId());
+
+        // Test method
+        List<Item> availableItems = itemService.getAvailableItemsForGivenArtist(testArtist.getId());
+        assertTrue(availableItems.isEmpty());
     }
 
     /**
@@ -302,7 +345,45 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
      */
+    @Test
+    public void itemBuying_Success() {
+        // Create testShoppingCard and testPurchaseHistory
+        testItem.setPrice(1000.0);
+        testItem.setArtistId(testArtist.getId());
+        testShoppingCard.setBalance(10000.0);
 
+        // Add testItem, shoppingCard into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        itemService.itemBuying(testItem, testArtist.getId());
+
+        PurchaseHistory testPurchaseHistory = purchaseHistoryService.getPurchase(testArtist.getId(), testItem.getId());
+
+        List<Item> purchaseItems = itemService.getItemsByTitle(testItem.getTitle());
+
+        assertEqualItems(testItem, purchaseItems.get(purchaseItems.size() - 1));
+
+        if (testPurchaseHistory.getItemId() != null)
+            purchaseHistoryService.deletePurchase(testPurchaseHistory.getUserId(), testItem.getId());
+    }
+
+    /**
+     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+     */
+    @Test(expected = NotEnoughMoneyException.class)
+    public void itemBuying_Failure() {
+        // Create testShoppingCard and testPurchaseHistory
+        testItem.setPrice(1000000000.0);
+        testItem.setArtistId(testArtist.getId());
+
+        // Add testItem, shoppingCard into DB
+        itemService.addItem(testArtist.getId(), testItem);
+
+        // Test method
+        itemService.itemBuying(testItem, testArtist.getId());
+    }
 
     // endregion
 }
+

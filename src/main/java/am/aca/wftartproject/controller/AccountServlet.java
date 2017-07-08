@@ -32,7 +32,7 @@ public class AccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         User user;
-        User finduser;
+        User findUser;
         Artist artist;
         Artist findArtist;
         Cookie[] cookies = request.getCookies();
@@ -43,9 +43,9 @@ public class AccountServlet extends HttpServlet {
             if (session.getAttribute("user") != null ) {
                 if (session.getAttribute("user").getClass() == User.class) {
                     user = (User) session.getAttribute("user");
-                    finduser = userService.findUser(user.getId());
+                    findUser = userService.findUser(user.getId());
                     if (user != null) {
-                        request.setAttribute("user", finduser);
+                        request.setAttribute("user", findUser);
                     } else {
                         throw new RuntimeException("Incorrect program logic");
                     }

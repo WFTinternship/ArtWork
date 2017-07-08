@@ -5,7 +5,6 @@ import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.AssertTemplates;
-import am.aca.wftartproject.util.TestObjectTemplate;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -14,6 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.SQLException;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
 
@@ -41,13 +41,13 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        // create test user
-        testUser = TestObjectTemplate.createTestUser();
+        // Create test user
+        testUser = createTestUser();
 
-        // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        // Print busy connections quantity
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections Start: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
@@ -58,17 +58,17 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @After
     public void tearDown() throws SQLException {
-        // delete inserted test users from db
+        // Delete inserted test users from db
         if (testUser.getId() != null)
             userDao.deleteUser(testUser.getId());
 
-        // set temp instance refs to null
+        // Set temp instance refs to null
         testUser = null;
 
-        // print busy connections quantity
-        if (dataSource instanceof ComboPooledDataSource) {
+        // Print busy connections quantity
+        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
             LOGGER.info(String.format("Number of busy connections End: %s",
-                    ((ComboPooledDataSource) dataSource).getNumBusyConnections()));
+                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
         }
     }
 
@@ -79,21 +79,16 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void addUser_Success() {
-        // test user already inserted in setup, get record by userId
-        testUser.setId(null);
-
-        // add user into db and check id for null
         assertNotNull(testUser);
 
+        // Test method
         userDao.addUser(testUser);
 
         assertNotNull(testUser.getId());
 
-        // get user by id and check for sameness with origin
+        // Get user by id and check for sameness with origin
         Long id = testUser.getId();
-
         User dbUser = userDao.findUser(id);
-
         assertNotNull(dbUser);
         assertEqualUsers(dbUser, testUser);
     }
@@ -103,9 +98,11 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void addUser_Failure() {
-        // test user already inserted in setup, get record by user
         testUser.setLastName(null);
+
+        // Test method
         userDao.addUser(testUser);
+
         assertNotNull(testUser);
         assertNull(testUser.getId());
     }
@@ -115,13 +112,13 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUser_Success() {
-        // add user into DB
+        // Add user into DB
         userDao.addUser(testUser);
 
-        // try to find user by email
+        // Test method
         User findResult = userDao.findUser(testUser.getId());
 
-        // check for equals
+        // Check for equals
         assertEqualUsers(testUser, findResult);
     }
 
@@ -130,13 +127,13 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUser_Failure() {
-        // add user into DB
+        // Add user into DB
         userDao.addUser(testUser);
 
-        // try to find user with negative id
+        // Test method
         User findResult = userDao.findUser(-7L);
 
-        // check result fo null
+        // Check result fo null
         assertNull(findResult);
     }
 
@@ -145,13 +142,13 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUserByEmail_Success() {
-        // add user into DB
+        // Add user into DB
         userDao.addUser(testUser);
 
-        // try to find user by email
+        // Test method
         User foundUser = userDao.findUser(testUser.getEmail());
 
-        //check for equals
+        // Check for equals
         AssertTemplates.assertEqualUsers(testUser, foundUser);
     }
 
@@ -160,13 +157,13 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUserByEmail_Failure() {
-        // add user into DB
+        // Add user into DB
         userDao.addUser(testUser);
 
-        // try to find user
-        User foundUser = userDao.findUser("flasyrsgiu");
+        // Test method
+        User foundUser = userDao.findUser("fake email");
 
-        // check for null
+        // Check for null
         assertNull(foundUser);
     }
 
@@ -175,18 +172,18 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void updateUser_Success() {
-        // add user into DB and check for not null
+        // Add user into DB and check for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
-        // create new user and check it for null
-        User newUser = TestObjectTemplate.createTestUser();
+        // Create new user and check it for null
+        User newUser = createTestUser();
         assertNotNull(newUser);
 
-        // try to update user
+        // Test method
         userDao.updateUser(testUser.getId(), newUser);
 
-        // find and get updated user from DB and check sameness with testUser
+        // Find and get updated user from DB and check sameness with testUser
         User dbUserUpdate = userDao.findUser(testUser.getId());
         assertNotNull(dbUserUpdate);
         assertNotSame(dbUserUpdate, testUser);
@@ -197,21 +194,21 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void updateUser_Failure() {
-        // add user into DB and check it for not null
+        // Add user into DB and check it for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
-        // create new user and set its firstName
-        User newUser = TestObjectTemplate.createTestUser();
+        // Create new user and set its firstName
+        User newUser = createTestUser();
         newUser.setFirstName(null);
 
-        // check newUser for not null
+        // Check newUser for not null
         assertNotNull(newUser);
 
-        // try to update testUser
+        // Test method
         userDao.updateUser(testUser.getId(), newUser);
 
-        // try to find and get updated user from DB and check it for not null
+        // Try to find and get updated user from DB and check it for not null
         User dbUserUpdate = userDao.findUser(testUser.getId());
         assertNotNull(dbUserUpdate);
     }
@@ -222,12 +219,14 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void deleteUser_Success() {
-        // add user into DB and check it for not null
+        // Add user into DB and check it for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
-        // try to delete user adn then set its id null
-        assertTrue(userDao.deleteUser(testUser.getId()));
+        // Test method
+        Boolean isDeleted = userDao.deleteUser(testUser.getId());
+
+        assertTrue(isDeleted);
         testUser.setId(null);
     }
 
@@ -236,11 +235,11 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void deleteUser_Failure() {
-        // add user into DB and check it fro not null
+        // Add user into DB and check it fro not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
-        // try to delete user with non-existent id
+        // Test method
         assertFalse(userDao.deleteUser(4546465465465L));
     }
 

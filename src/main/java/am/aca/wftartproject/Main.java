@@ -1,15 +1,11 @@
-/*
+
 package am.aca.wftartproject;
 
+import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 
 import java.sql.SQLException;
 import java.util.concurrent.ThreadLocalRandom;
-
-*/
-/**
- * Created by ASUS on 24-May-17
- *//*
 
 public class Main {
 
@@ -17,9 +13,8 @@ public class Main {
 //        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring-root.xml");
 //        ItemService itemService = (ItemService)context.getBean("itemService");
 //        for(Item element:itemService.getRecentlyAddedItems(20)){
-            ArtistSpecialization artistSpecialization = ArtistSpecialization.valueOf("SCULPTOR");
-          System.out.println(artistSpecialization);
-        System.out.println(System.getProperty("java.io.tmpdir"));
+        Artist artist = new Artist();
+        System.out.println(artist.getClass() == Artist.class);
 
 //
 //        }
@@ -35,4 +30,4 @@ public class Main {
 
     }
 }
-*/
+

@@ -7,6 +7,8 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,29 +16,29 @@ import java.util.List;
 /**
  * Created by surik on 6/1/17
  */
+@Service
 @Transactional(readOnly = true)
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
 
-    private PurchaseHistoryDao purchaseHistoryDao = null;
+    private PurchaseHistoryDao purchaseHistoryDao;
+
+    @Autowired
+    public PurchaseHistoryServiceImpl(PurchaseHistoryDao purchaseHistoryDao) {
+        this.purchaseHistoryDao = purchaseHistoryDao;
+    }
 
     public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
         this.purchaseHistoryDao = purchaseHistoryDao;
     }
 
-//        public PurchaseHistoryServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        purchaseHistoryDao= new PurchaseHistoryDaoImpl(conn);
-//    }
-
-
     /**
      * @see PurchaseHistoryService#addPurchase(PurchaseHistory)
      * @param purchaseHistory
      */
-    @Transactional
     @Override
+    @Transactional
     public void addPurchase(PurchaseHistory purchaseHistory) {
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
             LOGGER.error(String.format("PurchaseHistory is not valid: %s", purchaseHistory));
@@ -108,8 +110,8 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
      * @param userId
      * @param itemId
      */
-    @Transactional
     @Override
+    @Transactional
     public void deletePurchase(Long userId, Long itemId) {
         if (userId == null || userId < 0){
             LOGGER.error(String.format("UserId is not valid: %s", userId));

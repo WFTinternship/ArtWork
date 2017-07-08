@@ -1,15 +1,15 @@
 package am.aca.wftartproject.service.integration;
 
-import am.aca.wftartproject.BaseIntegrationTest;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.BaseIntegrationTest;
+import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
@@ -17,16 +17,20 @@ import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 
 /**
- * @author surik
+ * Created by ASUS on 30-Jun-17
  */
-@Transactional
 public class UserServiceIntegrationTest extends BaseIntegrationTest {
+
     private User testUser;
+
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private ShoppingCardServiceImpl shoppingCardService;
+
     /**
-     * Creates user for tests
+     * Creates user for test
      */
     @Before
     public void setUp() {
@@ -34,10 +38,13 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * Deletes all objects created during the tests
+     * Deletes all objects created during the test
      */
     @After
     public void tearDown() {
+        if (testUser.getShoppingCard() != null)
+            shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+
         if (testUser.getId() != null)
             userService.deleteUser(testUser.getId());
     }
@@ -64,8 +71,11 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void addUser_Failure() {
+        // Create invalid user
+        testUser = new User();
+
         // Test method
-        userService.addUser(null);
+        userService.addUser(testUser);
     }
 
     /**
@@ -76,8 +86,9 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
         // Add testUser into DB
         userService.addUser(testUser);
 
-        // Test user
+        // Test method
         User foundedUser = userService.findUser(testUser.getId());
+
         assertEqualUsers(foundedUser, testUser);
     }
 
@@ -86,6 +97,9 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void findUser_Failure() {
+        // Create invalid user
+        testUser = new User();
+
         // Test method
         userService.findUser(testUser.getId());
     }
@@ -100,6 +114,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
 
         // Test method
         User foundedUser = userService.findUser(testUser.getEmail());
+
         assertEqualUsers(foundedUser, testUser);
     }
 
@@ -108,6 +123,10 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test
     public void findUserByEmail_Failure() {
+        // Create invalid user
+        testUser = new User();
+        testUser.setEmail("email@email.com");
+
         // Test method
         assertNull(userService.findUser(testUser.getEmail()));
     }
@@ -134,6 +153,9 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void updateUser_Failure() {
+        // Create invalid user
+        testUser = new User();
+
         // Test method
         userService.updateUser(testUser.getId(), testUser);
     }
@@ -147,6 +169,8 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
         userService.addUser(testUser);
 
         // Test method
+        shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+        testUser.setShoppingCard(null);
         userService.deleteUser(testUser.getId());
 
         // Make sure it deleted
@@ -161,6 +185,9 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void deleteUser_Failure() {
+        // Create invalid testUser
+        testUser = new User();
+
         // Test method
         userService.deleteUser(testUser.getId());
     }
@@ -175,6 +202,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
 
         // Test method
         User loginUser = userService.login(testUser.getEmail(), testUser.getPassword());
+
         assertEqualUsers(loginUser, testUser);
     }
 

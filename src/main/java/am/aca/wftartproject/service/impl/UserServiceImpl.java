@@ -6,8 +6,11 @@ import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -16,29 +19,35 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
+@Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
     private UserDao userDao;
+    private ShoppingCardService shoppingCardService;
+
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
-//    public UserServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        userDao = new UserDaoImpl(conn);
-//    }
-
+    @Autowired
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
+    }
 
     /**
      * @param user
      * @see UserService#addUser(User)
      */
-    @Transactional
     @Override
+    @Transactional
     public void addUser(User user) {
         if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
             String error = "Invalid user";
@@ -56,6 +65,14 @@ public class UserServiceImpl implements UserService {
             userDao.addUser(user);
         } catch (DAOException e) {
             String error = "Failed to add User: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        try {
+            shoppingCardService.addShoppingCard(user.getId(),user.getShoppingCard());
+        } catch (DAOException e) {
+            String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
@@ -111,8 +128,8 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @see UserService#updateUser(Long, User)
      */
-    @Transactional
     @Override
+    @Transactional
     public void updateUser(Long id, User user) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -139,8 +156,8 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @see UserService#deleteUser(Long)
      */
-    @Transactional
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));

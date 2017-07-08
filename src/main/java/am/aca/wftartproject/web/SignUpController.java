@@ -1,8 +1,6 @@
 package am.aca.wftartproject.web;
 
-import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.ArtistSpecialization;
-import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +16,20 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @MultipartConfig
 @Controller
 public class SignUpController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    ArtistService artistService;
+    private ArtistService artistService;
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
         ModelAndView mav = new ModelAndView("signUp");
+        request.getSession().setAttribute("artistSpecTypes",ArtistSpecialization.values());
         mav.addObject("user", new User());
         mav.addObject("artist", new Artist());
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
@@ -42,16 +41,18 @@ public class SignUpController {
                                 @ModelAttribute("user") User user) {
         String page = "";
         try {
+            user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
+            user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
             userService.addUser(user);
             page = "index";
+            request.getSession().setAttribute("message","Hi " + user.getFirstName());
             HttpSession session = request.getSession(true);
-            session.setAttribute("user", user);
+            request.getSession().setAttribute("user", user);
             Cookie userEmail = new Cookie("userEmail", user.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
-            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
         return new ModelAndView(page, "user", user);
@@ -62,7 +63,9 @@ public class SignUpController {
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         Artist artistFromRequest = new Artist();
-        if (!image.isEmpty()) {
+        String message;
+        artistFromRequest.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
+        if (!image.isEmpty() && request.getParameter("artistSpec")!=null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
             byte[] imageBytes = image.getBytes();
             artistFromRequest
                     .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
@@ -71,7 +74,13 @@ public class SignUpController {
                     .setLastName(request.getParameter("lastName"))
                     .setAge(Integer.parseInt(request.getParameter("age")))
                     .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password"));
+                    .setPassword(request.getParameter("password")).setUserPasswordRepeat(request.getParameter("passwordRepeat"));
+        }
+        else{
+            message = "No chages, empty fields or Incorrect Data";
+            request.setAttribute("errorMessage",message);
+            request.setAttribute("user",artistFromRequest);
+            return new ModelAndView("signUp");
         }
 
         String page = "";
@@ -79,14 +88,14 @@ public class SignUpController {
 
             artistService.addArtist(artistFromRequest);
             page = "/index";
+            request.setAttribute("message","Hi " + artistFromRequest.getFirstName());
             HttpSession session = request.getSession(true);
             session.setAttribute("user", artistFromRequest);
             Cookie userEmail = new Cookie("userEmail", artistFromRequest.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
-            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
 

@@ -1,8 +1,10 @@
 package am.aca.wftartproject.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
+import static am.aca.wftartproject.util.DateHelper.dateComparison;
 
 /**
  * Created by ASUS on 24-May-17
@@ -12,19 +14,22 @@ public class Item {
     private Long id;
     private String title;
     private String description;
-    private String photoURL;
+    private List<String> photoURL;
+ //   private String photoURL;
     private Double price;
     private Long artistId;
+    private Boolean status;
+    private ItemType itemType;
+    private LocalDateTime additionDate;
+
+//    public Item setPhotoURL(String photoURL) {
+//        this.photoURL = photoURL;
+//        return this;
+//    }
 
     public Boolean getStatus() {
         return status;
     }
-
-    private Boolean status;
-    private ItemType itemType;
-    private Date additionDate;
-
-
 
     public Long getId() {
         return id;
@@ -53,11 +58,11 @@ public class Item {
         return this;
     }
 
-    public String getPhotoURL() {
+    public List<String> getPhotoURL() {
         return photoURL;
     }
 
-    public Item setPhotoURL(String photo) {
+    public Item setPhotoURL(List<String> photo) {
         this.photoURL = photo;
         return this;
     }
@@ -98,19 +103,21 @@ public class Item {
         return this;
     }
 
-    public Date getAdditionDate() {
+    public LocalDateTime getAdditionDate() {
         return additionDate;
     }
-
-    public void setAdditionDate(Date additionDate) {
+    public Item setAdditionDate(LocalDateTime additionDate) {
         this.additionDate = additionDate;
+        return this;
     }
+
+
 
     public Item() {
 
     }
 
-    public Item(String title, String description, String photoURL, Double price, Long artistId, Boolean status, ItemType itemType, Date additionDate) {
+    public Item(String title, String description, List<String> photoURL, Double price, Long artistId, Boolean status, ItemType itemType, LocalDateTime additionDate) {
         this.title = title;
         this.description = description;
         this.photoURL = photoURL;
@@ -142,12 +149,12 @@ public class Item {
 //                id > 0 &&
         return
                 !isEmptyString(title) &&
-                !isEmptyString(photoURL) &&
+                !isEmptyString(photoURL.get(0)) &&
                 /*artistId != null &&
                 artistId > 0 &&*/
                 price != 0 &&
-                itemType != null
-                && additionDate != null;
+                itemType != null ;
+        //        && additionDate != null;
 
     }
 
@@ -166,17 +173,20 @@ public class Item {
         if (!getArtistId().equals(item.getArtistId())) return false;
         if (!getStatus().equals(item.getStatus())) return false;
         if (getItemType() != item.getItemType()) return false;
-        return getAdditionDate().getDate() / 100000000 == item.getAdditionDate().getDate() / 100000000;
+        return dateComparison(this.getAdditionDate(), item.getAdditionDate())/*getAdditionDate().equals(item.getAdditionDate())*/;
     }
 
     @Override
     public int hashCode() {
         int result = getId().hashCode();
         result = 31 * result + getTitle().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        result = 31 * result + getPhotoURL().hashCode();
         result = 31 * result + getPrice().hashCode();
         result = 31 * result + getArtistId().hashCode();
         result = 31 * result + getStatus().hashCode();
         result = 31 * result + getItemType().hashCode();
+        result = 31 * result + getAdditionDate().hashCode();
         return result;
     }
 

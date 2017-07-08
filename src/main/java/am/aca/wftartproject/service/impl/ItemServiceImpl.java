@@ -2,13 +2,21 @@ package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Item;
+import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.PurchaseHistoryService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -16,21 +24,39 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 /**
  * Created by surik on 6/1/17
  */
+@Service
 @Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
     private ItemDao itemDao;
+    private PurchaseHistoryService purchaseHistoryService; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+    private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+
+    @Autowired
+    public ItemServiceImpl(ItemDao itemDao) {
+        this.itemDao = itemDao;
+    }
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
     }
 
-//        public ItemServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        itemDao = new ItemDaoImpl(conn);
-//    }
+    @Autowired
+    public void setPurchaseHistoryService(PurchaseHistoryService purchaseHistoryService) {
+        this.purchaseHistoryService = purchaseHistoryService;
+    }
+
+    @Autowired
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
+    }
+
+    /*
+    public void setItemDao(ItemDao itemDao) {
+        this.itemDao = itemDao;
+    }*/
 
 
     /**
@@ -38,8 +64,8 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#addItem(Long, Item)
      */
-    @Transactional
     @Override
+    @Transactional
     public void addItem(Long artistID, Item item) {
 
         if (artistID == null || artistID < 0) {
@@ -198,14 +224,34 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    /**
+     * @see ItemService#getArtistItems(Long, Long, Long)
+     * @param artistId
+     * @return
+     */
+    @Override
+    public List<Item> getAvailableItemsForGivenArtist(Long artistId){
+        if (artistId == null || artistId < 0) {
+            LOGGER.error(String.format("ArtistId is not valid: %s", artistId));
+            throw new InvalidEntryException("Invalid artistId");
+        }
+
+        try {
+            return itemDao.getAvailableItemsForGivenArtist(artistId);
+        } catch (DAOException e) {
+            String error = "Failed to get available items for the given artistId: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+    }
 
     /**
      * @param id
      * @param item
      * @see ItemService#updateItem(Long, Item)
      */
-    @Transactional
     @Override
+    @Transactional
     public void updateItem(Long id, Item item) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -230,8 +276,8 @@ public class ItemServiceImpl implements ItemService {
      * @param id
      * @see ItemService#deleteItem(Long)
      */
-    @Transactional
     @Override
+    @Transactional
     public void deleteItem(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -239,9 +285,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            if (!itemDao.deleteItem(id)){
-                throw new DAOException("Failed to delete item");
-            }
+            itemDao.deleteItem(id);
         } catch (DAOException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -255,7 +299,51 @@ public class ItemServiceImpl implements ItemService {
      * @param buyerId
      * @see ItemService#itemBuying(Item, Long)
      */
+    @Override
+    @Transactional
     public void itemBuying(Item item, Long buyerId) {
-//TODO
+        if (buyerId == null || buyerId < 0) {
+            LOGGER.error(String.format("buyerId is not valid: %s", buyerId));
+            throw new InvalidEntryException("Invalid Id");
+        }
+
+        if (item == null || !item.isValidItem()) {
+            LOGGER.error(String.format("Item is not valid: %s", item));
+            throw new InvalidEntryException("Invalid item");
+        }
+
+        // Withdraw money from payment method
+        try {
+            ShoppingCard shoppingCard = shoppingCardService.getShoppingCardByBuyerId(buyerId);
+            if (shoppingCard.getBalance() >= item.getPrice()) {
+                shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
+                shoppingCardService.updateShoppingCard(shoppingCard.getId(), shoppingCard);
+            } else {
+                throw new NotEnoughMoneyException("Not enough money on the account.");
+            }
+        } catch (DAOException e) {
+            String error = "Failed to debit money: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        // Add item to the buyer's purchase history
+        try {
+            purchaseHistoryService.addPurchase(new PurchaseHistory(buyerId, item.getId(), LocalDateTime.now().withNano(0)));
+        } catch (DAOException e) {
+            String error = "Failed to add item in purchaseHistory: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        // Change item status to sold
+        try {
+            item.setStatus(true);
+            updateItem(item.getArtistId(), item);
+        } catch (DAOException e) {
+            String error = "Failed to change item status to sold: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
 }

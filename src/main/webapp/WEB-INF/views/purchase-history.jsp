@@ -6,8 +6,8 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="purchaseHistoryService" value='<%=request.getAttribute("purchaseHistoryService")%>' />
-<c:set var="itemService" value='<%=request.getAttribute("itemService")%>' />
+<c:set var="purchaseHistory" value='<%=request.getAttribute("purchaseHistory")%>' />
+
 
 <!Doctype html>
 <!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -65,59 +65,7 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
 	<div class="inner-wrapper">
-    	<div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
-			<div id="header" class="header">
-            	<div class="container menu-container">
-                    <a class="logo" href="../../resources/index.html"><img alt="Logo" src="../../resources/images/logo.png"></a>
-                    
-                    <a href="#" class="menu-trigger">
-                        <span></span>
-                    </a>
-                </div>
-            </div>
-			
-            <nav id="main-menu"><!-- Main-menu Starts -->
-                <div id="dt-menu-toggle" class="dt-menu-toggle">
-                    Menu
-                    <span class="dt-menu-toggle-icon"></span>
-                </div>            
-                <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="../../resources/index.html">Home <span class="fa fa-home"></span></a>
-                        <ul class="sub-menu">
-                        	<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>                    
-                    </li>
-
-                    <li class="menu-item-simple-parent">
-                        <a href="../../resources/about.html">About us <span class="fa fa-user-secret"></span></a>
-                    </li>
-                    <li class="menu-item-simple-parent"><a href="../../resources/gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="../../resources/gallery-detail.html">Gallery detail</a></li>
-                            <li><a href="../../resources/gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
-                            <li><a href="../../resources/gallery-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="../../resources/shop.html">Shop <span class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
-                            <li><a href="../../resources/shop-cart.html">Cart Page</a></li>
-                            <li><a href="../../resources/shop-checkout.html">Checkout Page</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-                    <li class="menu-item-simple-parent">
-                        <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
-                    </li>
-					                        
-                </ul> <!-- Menu Ends -->
-            </nav> <!-- Main-menu Ends -->            
-        </div><!-- **header-wrapper Ends** -->        
+        <jsp:include page="header.jsp" />
         <div id="main">
         	<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -128,7 +76,7 @@
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
-                        	<a href="#">Shopping Bag: 0 items</a> 
+                        	<a href="#">Shopping Bag: 0 items</a>
                             <a href="#">($0.00)</a>
                         </div>
                     </div>
@@ -147,13 +95,7 @@
                                     <!-- heading -->
                                     <h3>My Menu</h3>
                                     <!-- list -->
-                                    <ul class="list-unstyled">
-                                        <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
-                                        <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
-                                        <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
-                                    </ul>
+                                    <jsp:include page="chooser.jsp"/>
                                 </div>
                             </div>
                             <div class="col-md-9 col-sm-9">
@@ -167,37 +109,23 @@
 
                                             <thead>
                                             <tr>
-                                                <th>User ID</th>
-                                                <th>Item ID</th>
+                                                <th>Price</th>
                                                 <th>Date</th>
                                                 <th>Item</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-
-                                            <tr>
-                                                <c:forEach items="${purchaseHistoryService}" var="element">
-                                                    <td>${element.userId}</td>
-                                                    <td>${element.itemId}</td>
+                                                <c:forEach items="${purchaseHistory}" var="element">
+                                                <tr>
+                                                    <td>${element.item.price}</td>
                                                     <td>${element.purchaseDate}</td>
-                                                    <td><!-- **product-container - Starts** -->
-                                                        <div class="product-container">
-                                                            <a href="/shop-detail/${itemService[0].id}"><div class="product-thumb"> <img src="${itemService[0].photoURL}" alt="image"/> </div> </a>
-                                                            <!-- **product-title - Starts** -->
-                                                            <div class="product-title">
-                                                                <a href="/shop-cart" class="type1 dt-sc-button"> <span class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                                                <a href="#" class="type1 dt-sc-button"> <span class="fa fa-unlink"></span> Options </a>
-                                                                <p>You don't take a photograph, Just make it</p>
-                                                            </div> <!-- **product-title - Ends** -->
-                                                        </div> <!-- **product-container - Ends** -->
-                                                        <!-- **product-details - Starts** -->
-                                                        <div class="product-details">
-                                                            <h5> <a href="shop-detail"> ${itemService[0].title} </a> </h5>
-                                                            <span class="amount"> $${itemService[0].price} </span>
-                                                        </div> <!-- **product-details - Ends** --> </td>
+                                                        <td>
+                                                        <a href="item-detail/${element.item.id}" class="product">
+                                                            <img src="${pageContext.request.contextPath}/${element.item.photoURL[0]}"
+                                                                 alt="" height="50" width="50" title=""></a>
+                                                    </td>
+                                                </tr>
                                                 </c:forEach>
-
-                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>

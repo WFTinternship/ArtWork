@@ -1,19 +1,13 @@
 package am.aca.wftartproject.controller;
 
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,9 +22,9 @@ import java.io.InputStream;
 @MultipartConfig(maxFileSize = 2177215)
 public class EditProfileServlet extends HttpServlet {
     @Autowired
-    ArtistService artistService ;
+    private ArtistService artistService ;
     @Autowired
-    UserService userService ;
+    private UserService userService ;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

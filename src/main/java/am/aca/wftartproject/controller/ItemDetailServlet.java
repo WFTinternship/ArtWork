@@ -38,7 +38,7 @@ public class ItemDetailServlet extends HttpServlet {
         request.setAttribute("artistItems",itemService.getArtistItems(itemById.getArtistId(),itemById.getId(),6L));
         request.setAttribute("artistInfo",artistService.findArtist(itemById.getArtistId()));
 
-        request.getRequestDispatcher("/WEB-INF/views/shop-detail.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/item-detail.jsp")
                 .forward(request, response);
     }
 

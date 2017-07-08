@@ -29,7 +29,7 @@ public enum ShoppingCardType {
         return ShoppingCardType.valueOf(type).getTypeId();
     }
 
-    public static ShoppingCardType getItemType(String type) {
+    public static ShoppingCardType getShoppingCardType(String type) {
         return ShoppingCardType.valueOf(type);
     }
 

@@ -7,9 +7,11 @@ import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -18,30 +20,35 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
+@Service
 @Transactional(readOnly = true)
-@Component
 public class ArtistServiceImpl implements ArtistService {
-
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
     private ArtistDao artistDao;
+    private ShoppingCardService shoppingCardService;
+
+    @Autowired
+    public ArtistServiceImpl(ArtistDao artistDao) {
+        this.artistDao = artistDao;
+    }
+
+    @Autowired
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
+    }
 
     public void setArtistDao(ArtistDao artistDao) {
         this.artistDao = artistDao;
     }
-
-//        public ArtistServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        artistDao = new ArtistDaoImpl(conn);
-//    }
 
 
     /**
      * @param artist
      * @see ArtistService#addArtist(Artist)
      */
-    @Transactional
     @Override
+    @Transactional
     public void addArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
             LOGGER.error(String.format("Artist is not valid: %s", artist));
@@ -55,6 +62,14 @@ public class ArtistServiceImpl implements ArtistService {
 
         try {
             artistDao.addArtist(artist);
+        } catch (DAOException e) {
+            String error = "Failed to add Artist: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        try {
+            shoppingCardService.addShoppingCard(artist.getId(),artist.getShoppingCard());
         } catch (DAOException e) {
             String error = "Failed to add Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -112,8 +127,8 @@ public class ArtistServiceImpl implements ArtistService {
      * @param artist
      * @see ArtistService#updateArtist(Long, Artist)
      */
-    @Transactional
     @Override
+    @Transactional
     public void updateArtist(Long id, Artist artist) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -138,8 +153,8 @@ public class ArtistServiceImpl implements ArtistService {
      * @param id
      * @see ArtistService#deleteArtist(Long)
      */
-    @Transactional
     @Override
+    @Transactional
     public void deleteArtist(Long id) {
         if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
@@ -147,9 +162,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            if (!artistDao.deleteArtist(id)){
-                throw new DAOException("Failed to delete artist");
-            }
+            artistDao.deleteArtist(id);
         } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));

@@ -1,30 +1,23 @@
 package am.aca.wftartproject.service.integration;
 
-import am.aca.wftartproject.BaseIntegrationTest;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.User;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
+import am.aca.wftartproject.service.BaseIntegrationTest;
+import am.aca.wftartproject.service.impl.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
+import static am.aca.wftartproject.util.TestObjectTemplate.*;
 
 /**
  * @author surik
@@ -37,15 +30,21 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private UserServiceImpl userService;
+
     @Autowired
     private ArtistServiceImpl artistService;
+
     @Autowired
     private ItemServiceImpl itemService;
+
     @Autowired
     private PurchaseHistoryServiceImpl purchaseHistoryService;
 
+    @Autowired
+    private ShoppingCardServiceImpl shoppingCardService;
+
     /**
-     * Creates all objects need for tests
+     * Creates all objects need for test
      */
     @Before
     public void setUp() {
@@ -56,11 +55,11 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         userService.addUser(testUser);
         artistService.addArtist(testArtist);
         itemService.addItem(testArtist.getId(), testItem);
-        testPurchaseHistory.setPurchaseDate(new Date(System.currentTimeMillis()));
+        testPurchaseHistory.setPurchaseDate(LocalDateTime.now());
     }
 
     /**
-     * Deletes all objects created during the tests
+     * Deletes all objects created during the test
      */
     @After
     public void tearDown() {
@@ -70,6 +69,9 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         if (testItem.getId() != null)
             itemService.deleteItem(testItem.getId());
 
+        if (testUser.getShoppingCard() != null) {
+            shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+        }
         if (testUser.getId() != null)
             userService.deleteUser(testUser.getId());
 
@@ -125,6 +127,7 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         // Test method
         PurchaseHistory foundedPurchaseHistory =
                 purchaseHistoryService.getPurchase(testPurchaseHistory.getUserId(), testPurchaseHistory.getItemId());
+
         assertEqualPurchaseHistory(foundedPurchaseHistory, testPurchaseHistory);
     }
 
@@ -156,6 +159,7 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         // Test method
         List<PurchaseHistory> purchaseHistories =
                 purchaseHistoryService.getPurchase(testPurchaseHistory.getUserId());
+
         assertEqualPurchaseHistory(purchaseHistories.get(0), testPurchaseHistory);
 
     }
@@ -186,6 +190,7 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
 
         // Test method
         purchaseHistoryService.deletePurchase(testPurchaseHistory.getUserId(), testPurchaseHistory.getItemId());
+
         testPurchaseHistory.setUserId(null);
     }
 

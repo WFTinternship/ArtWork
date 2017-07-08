@@ -24,6 +24,14 @@ public interface ShoppingCardDao {
     ShoppingCard getShoppingCard(Long id);
 
     /**
+     * Gets shoppingCard from database by buyerId
+     *
+     * @param buyerId
+     * @return
+     */
+    ShoppingCard getShoppingCardByBuyerId(Long buyerId);
+
+    /**
      * Updates shoppingCard in springconfig.database.
      *
      * @param id
@@ -32,9 +40,26 @@ public interface ShoppingCardDao {
     Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard);
 
     /**
+     * Debits balance for item buying
+     *
+     * @param buyerId
+     * @param itemPrice
+     * @return
+     */
+    Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice);
+
+    /**
      * Deletes shoppingCard by id.
      *
      * @param id
      */
     Boolean deleteShoppingCard(Long id);
+
+    /**
+     * Deletes shoppingCard by buyerId
+     *
+     * @param buyerId
+     * @return
+     */
+    Boolean deleteShoppingCardByBuyerId(Long buyerId);
 }

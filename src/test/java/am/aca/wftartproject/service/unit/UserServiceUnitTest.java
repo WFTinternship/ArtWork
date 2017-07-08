@@ -1,12 +1,14 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.BaseUnitTest;
-import am.aca.wftartproject.dao.impl.UserDaoImpl;
+import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.BaseUnitTest;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
@@ -15,13 +17,14 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
+import static junit.framework.TestCase.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -39,10 +42,16 @@ public class UserServiceUnitTest extends BaseUnitTest {
     private UserService userService;
 
     @Mock
-    private UserDaoImpl userDaoMock;
+    private UserDao userDaoMock;
+
+    @Mock
+    private ShoppingCardService shoppingCardServiceMock;
 
     @Before
     public void beforeTest() {
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(userService, "userDao", userDaoMock);
+        ((UserServiceImpl) userService).setShoppingCardService(shoppingCardServiceMock);
     }
 
     @After
@@ -56,6 +65,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void addUser_userNotValidOrNull() {
+        // Initialize testUser to null value
         testUser = null;
 
         // Test method
@@ -66,6 +76,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
+        // Create testUser and make not valid
         testUser = createTestUser();
         testUser.setFirstName(null);
 
@@ -77,6 +88,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
+        // Create testUser and make email not valid
         testUser = createTestUser();
         testUser.setEmail("invalidEmail");
 
@@ -89,16 +101,19 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
      */
     @Test
     public void addUser_exists() {
+        // Create testUser
         testUser = createTestUser();
-
         User fakeDbUser = new User();
 
+        // Setup mock
         doReturn(fakeDbUser).when(userDaoMock).findUser(testUser.getEmail());
+
         // Try to add user into db
         // Test method
         try {
@@ -109,11 +124,13 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
      */
     @Test(expected = ServiceException.class)
     public void addUser_addFailed() {
+        // Create testUser
         testUser = createTestUser();
 
         // Setup mocks
@@ -123,23 +140,68 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.addUser(testUser);
     }
 
+
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
      */
     @Test
     public void addUser_addSuccess() {
-        //Create argument capture
-        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        // Create argument capture
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<User> argument1 = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<ShoppingCard> argument2 = ArgumentCaptor.forClass(ShoppingCard.class);
 
+        // Create testUser and testShoppingCard
         testUser = createTestUser();
 
         // Setup mocks
-        doNothing().when(userDaoMock).addUser(argumentCaptor.capture());
+        doNothing().when(userDaoMock).addUser(argument1.capture());
+        doNothing().when(shoppingCardServiceMock).addShoppingCard(argument.capture(), argument2.capture());
 
         // Test method
         userService.addUser(testUser);
 
-        assertEquals(testUser, argumentCaptor.getValue());
+        // Check input argument
+        assertEquals(testUser, argument1.getValue());
+        assertEquals(testUser.getId(), argument.getValue());
+        assertEqualShoppingCards(testUser.getShoppingCard(), argument2.getValue());
+    }
+
+    /**
+     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+     */
+    @Test(expected = ServiceException.class)
+    public void addUser_addShoppingCardFailed() {
+        testUser = createTestUser();
+
+        // Setup mocks
+        doNothing().when(userDaoMock).addUser(any(User.class));
+        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
+
+        // Test method
+        userService.addUser(testUser);
+    }
+
+    /**
+     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+     */
+    @Test
+    public void addUser_addShoppingCardSuccess() {
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<ShoppingCard> argumentCaptor1 = ArgumentCaptor.forClass(ShoppingCard.class);
+        ArgumentCaptor<User> argumentCaptor2 = ArgumentCaptor.forClass(User.class);
+
+        testUser = createTestUser();
+
+        // Setup mocks
+        doNothing().when(userDaoMock).addUser(argumentCaptor2.capture());
+        doNothing().when(shoppingCardServiceMock).addShoppingCard(argumentCaptor.capture(), argumentCaptor1.capture());
+
+        userService.addUser(testUser);
+
+        assertEquals(testUser, argumentCaptor2.getValue());
+        assertEquals(testUser.getId(), argumentCaptor.getValue());
+        assertEquals(testUser.getShoppingCard(), argumentCaptor1.getValue());
     }
 
     /**
@@ -157,6 +219,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
 
+        // Make id not valid
         id = -5L;
 
         // Test method
@@ -168,11 +231,13 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see UserServiceImpl#findUser(java.lang.Long)
      */
     @Test(expected = ServiceException.class)
     public void findUser_findFailed() {
+        // Create test id and initialize it with not exists number
         Long id = 516498484L;
 
         // Setup mocks
@@ -182,6 +247,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.findUser(id);
     }
 
+
     /**
      * @see UserServiceImpl#findUser(java.lang.Long)
      */
@@ -190,9 +256,8 @@ public class UserServiceUnitTest extends BaseUnitTest {
         //Create argument capture
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
-        // Create testUser
+        // Create testUser and test id
         testUser = createTestUser();
-
         Long id = 5L;
 
         // Setup mocks
@@ -201,8 +266,10 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test method
         assertEqualUsers(testUser, userService.findUser(id));
 
+        // Check input argument
         assertEquals(id, argumentCaptor.getValue());
     }
+
 
     /**
      * @see UserServiceImpl#findUser(java.lang.String)
@@ -232,6 +299,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see UserServiceImpl#findUser(java.lang.String)
      */
@@ -246,6 +314,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test methods
         userService.findUser(email);
     }
+
 
     /**
      * @see UserServiceImpl#findUser(java.lang.String)
@@ -266,17 +335,20 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test method
         assertEqualUsers(testUser, userService.findUser(email));
 
+        // Check input argument
         assertEquals(email, argumentCaptor.getValue());
     }
+
 
     /**
      * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
      */
     @Test
     public void updateUser_idIsNullOrNegative() {
-        // Create testUser and null id
+        // Create testUser and test id
         testUser = createTestUser();
         Long id;
+
         // Try to update user
         // Test method
         try {
@@ -286,7 +358,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Create negative id
+        // Change id to negative
         id = -5L;
 
         // Test method
@@ -297,6 +369,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
@@ -327,6 +400,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
      */
@@ -343,12 +417,13 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.updateUser(id, testUser);
     }
 
+
     /**
      * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
      */
     @Test
     public void updateUser_updateSuccess() {
-        //Create argument capture
+        // Create argument capture
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<User> argumentCaptor1 = ArgumentCaptor.forClass(User.class);
 
@@ -362,16 +437,18 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test method
         userService.updateUser(id, testUser);
 
+        // Check input arguments
         assertEquals(id, argumentCaptor.getValue());
         assertEquals(testUser, argumentCaptor1.getValue());
     }
+
 
     /**
      * @see UserServiceImpl#deleteUser(java.lang.Long)
      */
     @Test
     public void deleteUser_idNullOrNegative() {
-        // Create null id
+        // Create test id
         Long id;
 
         // Try to delete user
@@ -382,7 +459,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Create negative id
+        // Change id to negative
         id = -5L;
 
         // Try to delete user
@@ -393,6 +470,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see UserServiceImpl#deleteUser(java.lang.Long)
@@ -406,6 +484,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.deleteUser(5L);
     }
 
+
     /**
      * @see UserServiceImpl#deleteUser(java.lang.Long)
      */
@@ -414,6 +493,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         //Create argument capture
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
+        // Create test id
         Long id = 5L;
 
         // Setup mocks
@@ -422,8 +502,10 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test method
         userService.deleteUser(id);
 
+        // Check input argument
         assertEquals(id, argumentCaptor.getValue());
     }
+
 
     /**
      * @see UserServiceImpl#login(java.lang.String, java.lang.String)
@@ -455,11 +537,13 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see UserServiceImpl#login(java.lang.String, java.lang.String)
      */
     @Test(expected = ServiceException.class)
     public void login_findUserFailed() {
+        // Create email and password
         String email = "email";
         String password = "password";
 
@@ -470,12 +554,14 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.login(email, password);
     }
 
+
     /**
      * @see UserServiceImpl#login(java.lang.String, java.lang.String)
      */
 
     @Test(expected = ServiceException.class)
     public void login_loginPasswordNotMatch() {
+        // Create email and password
         String email = "email";
         String password = "wrongPassword";
 
@@ -483,8 +569,10 @@ public class UserServiceUnitTest extends BaseUnitTest {
         User testUser = createTestUser();
         testUser.setEmail(email);
 
+        // Setup mock
         doReturn(testUser).when(userDaoMock).findUser(anyString());
 
+        // Test method
         userService.login(email, password);
     }
 
@@ -496,14 +584,18 @@ public class UserServiceUnitTest extends BaseUnitTest {
         //Create argument capture
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
 
+        // Create testUser, email and password
         User testUser = createTestUser();
         String email = testUser.getEmail();
         String password = testUser.getPassword();
 
+        // Setup mock
         doReturn(testUser).when(userDaoMock).findUser(argumentCaptor.capture());
 
+        // Test method
         assertEqualUsers(testUser, userService.login(email, password));
 
+        // Check input argument
         assertEquals(email, argumentCaptor.getValue());
     }
 

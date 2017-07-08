@@ -8,6 +8,7 @@ import am.aca.wftartproject.model.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -15,25 +16,24 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class ArtistSpecializationServiceImpl implements ArtistSpecializationService {
-
     private static final Logger LOGGER = Logger.getLogger(ArtistService.class);
 
-    private ArtistSpecializationLkpDao lkpDao = null;
+    private ArtistSpecializationLkpDao lkpDao;
+
+    @Autowired
+    public ArtistSpecializationServiceImpl(ArtistSpecializationLkpDao lkpDao) {
+        this.lkpDao = lkpDao;
+    }
 
     public void setLkpDao(ArtistSpecializationLkpDao lkpDao) {
         this.lkpDao = lkpDao;
     }
 
-//        public ArtistSpecializationServiceImpl() throws SQLException, ClassNotFoundException {
-//        DataSource conn = new ConnectionFactory().getConnection(ConnectionModel.POOL).getProductionDBConnection();
-//        lkpDao = new ArtistSpecializationLkpDaoImpl(conn);
-//    }
-
-
     /**
      * @see ArtistSpecializationService#addArtistSpecialization()
      */
     @Override
+    @Transactional
     public void addArtistSpecialization() {
         try {
             lkpDao.addArtistSpecialization();
@@ -83,6 +83,7 @@ public class ArtistSpecializationServiceImpl implements ArtistSpecializationServ
      * @see ArtistSpecializationService#deleteArtistSpecialization()
      */
     @Override
+    @Transactional
     public void deleteArtistSpecialization() {
         try {
             lkpDao.deleteArtistSpecialization();

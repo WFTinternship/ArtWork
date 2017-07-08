@@ -4,7 +4,6 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -18,10 +17,9 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 
 /**
- * Created by Armen on 6/16/2017.
+ * Created by Armen on 6/16/2017
  */
 @MultipartConfig(maxFileSize = 2177215)
 public class AddItemsServlet extends HttpServlet {
@@ -72,7 +70,7 @@ public class AddItemsServlet extends HttpServlet {
                         fileName = new File(item.getTitle()).getName();
                         filePath = realPath + File.separator + fileName + ".jpg";
                         FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                        item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
+                 //       item.setPhotoURL(uploadPath + File.separator + fileName + ".jpg");
 
                     }
                 }

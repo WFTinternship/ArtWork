@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-
+    <context:annotation-config/>
     <context:property-placeholder location="classpath:database-config.properties"/>
 
     <!--DataSource configuration-->
@@ -22,7 +22,6 @@
         <property name="testConnectionOnCheckout" value="${jdbcTestConnection}"/>
     </bean>
 
-
     <!-- Enable Annotation based Declarative Transaction Management -->
     <tx:annotation-driven proxy-target-class="true"
                           transaction-manager="transactionManager" />
@@ -34,4 +33,7 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 </beans>

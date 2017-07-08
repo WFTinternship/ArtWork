@@ -1,6 +1,6 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.BaseUnitTest;
+import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -14,7 +14,9 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +45,15 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(purchaseHistoryService, "purchaseHistoryDao", purchaseHistoryDaoMock);
     }
 
     @After
     public void tearDown() {
     }
 
-    // region<TEST CASE>
+    // region <TEST CASE>
 
     /**
      * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
@@ -76,6 +80,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
@@ -109,8 +114,10 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         // Test method
         purchaseHistoryService.addPurchase(testPurchaseHistory);
 
+        // Check input argument
         assertEqualPurchaseHistory(testPurchaseHistory, argumentCaptor.getValue());
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long, java.lang.Long)
@@ -128,7 +135,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
 
-        // Create negative userId
+        // Change id to negative value
         userId = -5L;
 
         // Try to get Purchase item
@@ -140,12 +147,13 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long, java.lang.Long)
      */
     @Test
     public void getPurchase_itemIdNullOrNegative() {
-        // Create userId and null itemId
+        // Create userId and itemId
         Long userId = 5L, itemId;
 
         // Try to get Purchase item
@@ -167,6 +175,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long, java.lang.Long)
@@ -203,9 +212,11 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         //Test method
         purchaseHistoryService.getPurchase(userId, itemId);
 
+        // Check input arguments
         assertEquals(userId, argumentCaptor.getAllValues().get(0));
         assertEquals(itemId, argumentCaptor.getAllValues().get(1));
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
@@ -234,6 +245,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
      */
@@ -247,8 +259,8 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
 
         // Test method
         assertEquals(null, purchaseHistoryService.getPurchase(userId));
-
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
@@ -268,8 +280,10 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         // Test method
         assertEquals(purchaseHistoryList, purchaseHistoryService.getPurchase(userId));
 
+        // Check input argument
         assertEquals(userId, argumentCaptor.getValue());
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
@@ -285,7 +299,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         } catch (Exception e) {
             assertTrue(e instanceof InvalidEntryException);
         }
-        // Create negative userId
+        // Change id to negative value
         userId = -5L;
 
         // Try to delete purchase item
@@ -295,6 +309,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
             assertTrue(e instanceof InvalidEntryException);
         }
     }
+
 
     /**
      * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
@@ -321,6 +336,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         }
     }
 
+
     /**
      * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
      */
@@ -336,6 +352,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         purchaseHistoryService.deletePurchase(userId, itemId);
     }
 
+
     /**
      * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
      */
@@ -350,8 +367,10 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         // Setup mock
         doReturn(true).when(purchaseHistoryDaoMock).deletePurchase(argumentCaptor.capture(), argumentCaptor.capture());
 
+        // Test method
         purchaseHistoryService.deletePurchase(userId, itemId);
 
+        // Check input arguments
         assertEquals(userId, argumentCaptor.getAllValues().get(0));
         assertEquals(itemId, argumentCaptor.getAllValues().get(1));
     }

@@ -6,13 +6,15 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>' />
+<c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
+<c:set var="Message" value='<%=request.getAttribute("errorMessage")%>'/>
 
 <!Doctype html>
-<!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en-gb" class="no-js"> <!--<![endif]-->
+<!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
+<!--[if IE 8 ]> <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
+<!--[if IE 9 ]> <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en-gb" class="no-js"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
@@ -28,35 +30,39 @@
     <![endif]-->
 
     <%--<script>submitForms = function(){--%>
-        <%--document.getElementById("form1").submit();--%>
-        <%--document.getElementById("form2").submit();--%>
+    <%--document.getElementById("form1").submit();--%>
+    <%--document.getElementById("form2").submit();--%>
     <%--}</script>--%>
+    <script>  function dothat() {
+        var div = document.getElementById('fileuploads');
+        var field = div.getElementsByTagName('input')[0];
 
-    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
+        div.appendChild(document.createElement("br"));
+        div.appendChild(field.cloneNode(false));
+    }</script>
+
+    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon"/>
 
     <!-- **CSS - stylesheets** -->
-    <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css" rel="stylesheet"/>
-    <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all" />
-    <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css" rel="stylesheet"/>
-
-
-
-
-
+    <link href="../../resources/css/A.bootstrap.min.css+font-awesome.min.css,Mcc.IDMzkxuERs.css.pagespeed.cf.9_8KzKNf-A.css"
+          rel="stylesheet"/>
+    <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all"/>
+    <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css"
+          rel="stylesheet"/>
     <!-- **Additional - stylesheets** -->
-    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all"/>
     <link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
 
-    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
-    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css" />
+    <link href="../../resources/css/isotope.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../../resources/css/prettyPhoto.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/pace.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="../../resources/css/responsive.css" type="text/css" media="all"/>
     <script src="../../resources/js/modernizr.js"></script> <!-- Modernizr -->
 
-    <link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all" />
+    <link id="light-dark-css" href="../../resources/light/light.css" rel="stylesheet" media="all"/>
 
     <!-- **Font Awesome** -->
-    <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
 
 </head>
 
@@ -69,59 +75,7 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
     <div class="inner-wrapper">
-        <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
-            <div id="header" class="header">
-                <div class="container menu-container">
-                    <a class="logo" href="../../resources/index.html"><img alt="Logo" src="../../resources/images/logo.png"></a>
-
-                    <a href="#" class="menu-trigger">
-                        <span></span>
-                    </a>
-                </div>
-            </div>
-
-            <nav id="main-menu"><!-- Main-menu Starts -->
-                <div id="dt-menu-toggle" class="dt-menu-toggle">
-                    Menu
-                    <span class="dt-menu-toggle-icon"></span>
-                </div>
-                <ul class="menu type1"><!-- Menu Starts -->
-                    <li class="menu-item-simple-parent"><a href="../../resources/index.html">Home <span class="fa fa-home"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
-                            <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-
-                    <li class="menu-item-simple-parent">
-                        <a href="../../resources/about.html">About us <span class="fa fa-user-secret"></span></a>
-                    </li>
-                    <li class="menu-item-simple-parent"><a href="../../resources/gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>
-                        <ul class="sub-menu">
-                            <li><a href="../../resources/gallery-detail.html">Gallery detail</a></li>
-                            <li><a href="../../resources/gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
-                            <li><a href="../../resources/gallery-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-                    <li class="current_page_item menu-item-simple-parent"><a href="../../resources/shop.html">Shop <span class="fa fa-cart-plus"></span></a>
-                        <ul class="sub-menu">
-                            <li class="current_page_item"><a href="shop-detail.html">Shop Detail</a></li>
-                            <li><a href="../../resources/shop-cart.html">Cart Page</a></li>
-                            <li><a href="../../resources/shop-checkout.html">Checkout Page</a></li>
-                        </ul>
-                        <a class="dt-menu-expand">+</a>
-                    </li>
-                    <li class="menu-item-simple-parent">
-                        <a href="../../resources/contact.html">contact <span class="fa fa-map-marker"></span></a>
-                    </li>
-
-                </ul> <!-- Menu Ends -->
-            </nav> <!-- Main-menu Ends -->
-        </div><!-- **header-wrapper Ends** -->
+        <jsp:include page="header.jsp"/>
         <div id="main">
             <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -151,53 +105,83 @@
                                     <!-- heading -->
                                     <h3>My Menu</h3>
                                     <!-- list -->
-                                    <ul class="list-unstyled">
-                                        <li><a href="account"><i class="fa fa-user"></i> My Account</a></li>
-                                        <li><a href="edit-profile"><i class="fa fa-edit"></i> Edit Profile</a></li>
-                                        <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
-                                        <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-                                        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
-                                    </ul>
+                                    <jsp:include page="chooser.jsp"/>
                                 </div>
                             </div>
                             <div class="col-md-9 col-sm-9">
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
-                                    <!-- top heading -->
-                                    <h2>Add ArtWork</h2>
-                                    <!-- profile edit form -->
+                                    <c:choose>
+                                        <c:when test="${Message!=null}">
+                                            <header class="cd-main-header">
+                                                <h3 style="color:red;">${Message}</h3>
+                                            </header>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <header class="cd-main-header">
+                                                <h2>Add ArtWork</h2>
+                                            </header>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div class="edit-form">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
                                                 <!-- edit personal details -->
                                                 <%--<div class="form-group">--%>
-                                                  <%----%>
+                                                <%----%>
                                                 <%--</div>--%>
 
-                                                <form action="/additem" method="post" id="form2" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label for="imageUpload">Choose Item Image</label>
-                                                        <input type="file" id="imageUpload" name="image"  />
-                                                        <img src="" id="imagePreview" alt="" width="200px"/><br/>
-                                                    </div>
+                                                <form action="/additem" method="post" id="form2"
+                                                      enctype="multipart/form-data">
+                                                    <%--<div class="form-group">--%>
+                                                    <%--<label for="imageUpload">Choose Image</label>--%>
+                                                    <%--<input type="file" id="imageUpload" name="image"  />--%>
+                                                    <%--<img src="" id="imagePreview" alt="" width="200px"/><br/>--%>
+                                                    <%--</div>--%>
+
+                                                    <%--Upload File 1: <input type="file" name="file"> <br/>--%>
+                                                    <%--Upload File 2: <input type="file" name="file"> <br/>--%>
+                                                    <%--Upload File 3: <input type="file" name="file"> <br/>--%>
+                                                    <%--Upload File 4: <input type="file" name="file"> <br/>--%>
+
+                                                    <table border="2" align="left">
+                                                        <tr>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <div id="fileuploads" align="left">
+                                                                <input type="file" name="files" id="fileField"/>
+                                                            </div>
+                                                        </tr>
+                                                        <td align="left">
+
+                                                            <input type="button" name="addmore" class="btn btn-warning"
+                                                                   id="addmore" style="width: 100%;height: 100%" value="Add Another Imaage(Optional)" onClick="dothat();"/>
+                                                        </td>
+                                                    </table>
+
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
-                                                        <input type="text" name="title" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+                                                        <input type="text" name="title" class="form-control"
+                                                               id="exampleInput1" placeholder="Brennan Doe">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput2">Description</label>
-                                                        <input type="text" name="description" class="form-control" id="exampleInput2" placeholder=" write descritpion ">
+                                                        <input type="text" name="description" class="form-control"
+                                                               id="exampleInput2" placeholder=" write descritpion ">
                                                     </div>
                                                     <label for="exampleInput171">Art Type</label>
                                                     <select class="shop-dropdown" name="type" id="exampleInput171">
                                                         <option value="-1" selected>Choose art type</option>
                                                         <c:forEach items="${itemTypes}" var="element">
-                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-flask">${element.type}</option>
+                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''}
+                                                                    class="fa fa-flask">${element.type}</option>
                                                         </c:forEach>
                                                     </select>
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
-                                                        <input type="text" name="price" class="form-control" id="exampleInput3" placeholder="100$">
+                                                        <input type="text" name="price" class="form-control"
+                                                               id="exampleInput3" placeholder="100$">
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
                                                 </form>

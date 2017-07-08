@@ -3,9 +3,11 @@ package am.aca.wftartproject.dao.impl;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.Calendar;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -15,10 +17,14 @@ public abstract class BaseDaoImpl {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);
 
+//    protected DataSource dataSource;
 
-    void closeResources(ResultSet rs, Statement st, Connection conn){
+    protected JdbcTemplate jdbcTemplate;
+
+
+    void closeResources(ResultSet rs, Statement st, Connection conn) {
         try {
-            if (rs != null){
+            if (rs != null) {
                 rs.close();
             }
         } catch (SQLException e) {
@@ -26,7 +32,7 @@ public abstract class BaseDaoImpl {
         }
 
         try {
-            if (st != null){
+            if (st != null) {
                 st.close();
             }
         } catch (SQLException e) {
@@ -34,7 +40,7 @@ public abstract class BaseDaoImpl {
         }
 
         try {
-            if (conn != null){
+            if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
@@ -42,33 +48,33 @@ public abstract class BaseDaoImpl {
         }
     }
 
-    void closeResources(Statement st, Connection conn){
+    void closeResources(Statement st, Connection conn) {
         closeResources(null, st, conn);
     }
 
-    void closeResources(ResultSet rs, Statement st){
+    void closeResources(ResultSet rs, Statement st) {
         closeResources(rs, st, null);
     }
 
-    void closeResources(Connection conn){
+    void closeResources(Connection conn) {
         closeResources(null, conn);
     }
 
-    void closeResources(Statement st){
+    void closeResources(Statement st) {
         closeResources(st, null);
     }
 
 
-    Date getCurrentDateTime(){
-        return new Date(System.currentTimeMillis());
+    LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now().withNano(0);
     }
 
-    double getRandomBalance(){
+    double getRandomBalance() {
         return ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
     }
 
 
-    private DataSource dataSource = null;
+    /*private DataSource dataSource = null;
     JdbcTemplate jdbcTemplate = null;
 
     public DataSource getDataSource() {
@@ -77,7 +83,7 @@ public abstract class BaseDaoImpl {
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
+    }*/
 
 //    public JdbcTemplate getJdbcTemplate() {
 //        return jdbcTemplate;

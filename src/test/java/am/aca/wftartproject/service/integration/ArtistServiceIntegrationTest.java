@@ -1,10 +1,11 @@
 package am.aca.wftartproject.service.integration;
 
-import am.aca.wftartproject.BaseIntegrationTest;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
+import am.aca.wftartproject.service.BaseIntegrationTest;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
+import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +24,15 @@ import static junit.framework.TestCase.assertNull;
 public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
 
     private Artist testArtist;
+
     @Autowired
     private ArtistServiceImpl artistService;
 
+    @Autowired
+    private ShoppingCardServiceImpl shoppingCardService;
+
     /**
-     * Creates artist for tests
+     * Creates artist for test
      */
     @Before
     public void setUp() {
@@ -35,13 +40,18 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * Deletes all artists created during the tests
+     * Deletes all artists created during the test
      */
     @After
     public void tearDown() {
-        if (testArtist.getId() != null){
+        if (testArtist.getShoppingCard() != null) {
+            shoppingCardService.deleteShoppingCardByBuyerId(testArtist.getId());
+        }
+
+        if (testArtist.getId() != null) {
             artistService.deleteArtist(testArtist.getId());
         }
+
         testArtist = null;
     }
 
@@ -69,8 +79,11 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void addArtist_Failure() {
+        // Create invalid artist
+        testArtist = new Artist();
+
         // Test method
-        artistService.addArtist(null);
+        artistService.addArtist(testArtist);
     }
 
     /**
@@ -81,7 +94,7 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
         // Add artist into DB
         artistService.addArtist(testArtist);
 
-        // Try to find artist by id
+        // Test method
         Artist foundedArtist = artistService.findArtist(testArtist.getId());
 
         // check for equals with testArtist
@@ -93,8 +106,10 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void findArtist_Failure() {
+        testArtist = new Artist();
+
         // Test method
-        artistService.findArtist(-5L);
+        artistService.findArtist(testArtist.getId());
     }
 
     /**
@@ -105,7 +120,7 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
         // Add artist into DB
         artistService.addArtist(testArtist);
 
-        // Try to find artist by email
+        // Test method
         Artist foundedArtist = artistService.findArtist(testArtist.getEmail());
 
         // Check for sameness with testArtist
@@ -117,8 +132,11 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void findArtistByEmail_Failure() {
+        // Create invalid artist
+        testArtist = new Artist();
+
         // Test method
-        artistService.findArtist("this is an invalid email");
+        artistService.findArtist(testArtist.getEmail());
     }
 
     /**
@@ -131,10 +149,11 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
         testArtist.setSpecialization(ArtistSpecialization.OTHER);
 
         Long id = testArtist.getId();
-        // Try to update artist
+
+        // Test method
         artistService.updateArtist(id, testArtist);
 
-        // Check is
+        // Check is updated
         Artist updatedArtist = artistService.findArtist(id);
         assertEqualArtists(updatedArtist, testArtist);
     }
@@ -144,8 +163,11 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void updateArtist_Failure() {
+        // Create invalid artist
+        testArtist = new Artist();
+
         // Test method
-        artistService.updateArtist(-5L, testArtist);
+        artistService.updateArtist(testArtist.getId(), testArtist);
     }
 
     /**
@@ -159,12 +181,13 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
         assertNotNull(testArtist);
         assertNotNull(testArtist.getId());
 
-        // Delete artist by id
+        // Test method
+        shoppingCardService.deleteShoppingCardByBuyerId(testArtist.getId());
+        testArtist.setShoppingCard(null);
         artistService.deleteArtist(testArtist.getId());
 
         // Make sure that it's deleted
         assertNull(artistService.findArtist(testArtist.getId()));
-
         testArtist.setId(null);
     }
 
@@ -173,8 +196,11 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void deleteArtist_Failure() {
+        // Create invalid artist
+        testArtist = new Artist();
+
         // Test method
-        artistService.deleteArtist(null);
+        artistService.deleteArtist(testArtist.getId());
     }
 
     // endregion
