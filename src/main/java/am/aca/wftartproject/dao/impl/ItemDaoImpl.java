@@ -120,7 +120,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                     .getResultList();
             tx.commit();
             if(limit<itemList.size()-1){
-                itemList = itemList.subList(itemList.size()-1,itemList.size()-1 -limit);
+                itemList = itemList.subList(itemList.size()-1 -limit,itemList.size());
             }
 
         } catch (Exception e) {

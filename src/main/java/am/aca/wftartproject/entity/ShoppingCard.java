@@ -74,6 +74,6 @@ public class ShoppingCard {
     }
 
     public boolean isValidShoppingCard() {
-        return (/*id != null && */balance != 0 && shoppingCardType != null);
+        return (/*id != null && */this.balance != 0 && this.shoppingCardType != null  && this.getBuyer_id() != null && this.getBuyer_id() >=0);
     }
 }

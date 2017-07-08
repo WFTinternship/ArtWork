@@ -69,14 +69,6 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
 
-        try {
-            user.getShoppingCard().setBuyer_id(user.getId());
-            shoppingCardDao.addShoppingCard(user.getShoppingCard());
-        } catch (DAOException e) {
-            String error = "Failed to add ShoppingCard: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
-        }
     }
 
 

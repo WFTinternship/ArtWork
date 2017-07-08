@@ -21,7 +21,7 @@ public class TestObjectTemplate {
                 .setEmail("test" + getRandomNumber() + "@test.com")
                 .setFirstName("Test FirstName" + getRandomNumber())
                 .setLastName("Test LastName" + getRandomNumber())
-                .setPassword("test123");
+                .setPassword("test123").setUserPasswordRepeat("test123");
          testArtist.setShoppingCard(new ShoppingCard().setShoppingCardType(ShoppingCardType.PAYPAL));
         return testArtist;
     }
@@ -32,7 +32,7 @@ public class TestObjectTemplate {
                 .setLastName("Test LastName")
                 .setAge(26)
                 .setEmail("test" + getRandomNumber() + "@test.com")
-                .setPassword("testPassword");
+                .setPassword("testPassword").setUserPasswordRepeat("testPassword");
         testUser.setShoppingCard(new ShoppingCard().setShoppingCardType(ShoppingCardType.PAYPAL));
         return testUser;
     }

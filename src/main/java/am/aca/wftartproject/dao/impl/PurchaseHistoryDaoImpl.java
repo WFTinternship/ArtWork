@@ -234,10 +234,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             entityManager.flush();
             tx.commit();
             result = true;
-            LOGGER.info("Item deleted successfully");
+            LOGGER.info("PurchaseHistory deleted successfully");
         } catch (Exception e) {
             tx.rollback();
-            String error = "Failed to delete Item: %s";
+            String error = "Failed to delete PurchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }

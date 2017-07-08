@@ -185,7 +185,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void getRecentlyAddedItems_Failure() {
 
         // Get recently added items with 0 limit and check list for empty
-        assertTrue(itemDao.getRecentlyAddedItems(0).isEmpty());
+        assertTrue(itemDao.getRecentlyAddedItems(-1).isEmpty());
     }
 
     /**

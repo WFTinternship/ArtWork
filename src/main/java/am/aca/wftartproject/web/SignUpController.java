@@ -2,6 +2,7 @@ package am.aca.wftartproject.web;
 
 import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,11 @@ import java.io.IOException;
 @Controller
 public class SignUpController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    ArtistService artistService;
+    private ShoppingCardService shoppingCardService;
+    @Autowired
+    private ArtistService artistService;
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
@@ -46,6 +49,8 @@ public class SignUpController {
             user.setShoppingCard(shoppingCard);
             user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
             userService.addUser(user);
+            user.getShoppingCard().setBuyer_id(user.getId());
+            shoppingCardService.addShoppingCard(user.getShoppingCard());
             page = "index";
             request.getSession().setAttribute("message","Hi " + user.getFirstName());
             HttpSession session = request.getSession(true);

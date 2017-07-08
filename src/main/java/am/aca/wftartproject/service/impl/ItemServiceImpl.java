@@ -150,7 +150,7 @@ public class ItemServiceImpl implements ItemService {
     /**
      * @param itemType
      * @return
-     * @see ItemService#getItemsByType(String)
+     * @see ItemService#getItemsByType(ItemType)
      */
     @Override
     public List<Item> getItemsByType(ItemType itemType) {
@@ -225,7 +225,7 @@ public class ItemServiceImpl implements ItemService {
     public void updateItem(Item item) {
         if (item == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new InvalidEntryException("Invalid item");
+            throw new DAOException("Invalid item");
         }
 
         try {
