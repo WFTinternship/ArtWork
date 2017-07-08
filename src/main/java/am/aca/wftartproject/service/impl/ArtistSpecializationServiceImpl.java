@@ -9,11 +9,13 @@ import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author surik
  */
+@Service
 @Transactional(readOnly = true)
 public class ArtistSpecializationServiceImpl implements ArtistSpecializationService {
     private static final Logger LOGGER = Logger.getLogger(ArtistService.class);

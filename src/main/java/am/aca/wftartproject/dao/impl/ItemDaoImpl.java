@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * Created by ASUS on 27-May-17
  */
+@Component
 public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);

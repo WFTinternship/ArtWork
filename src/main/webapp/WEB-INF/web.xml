@@ -3,14 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <!--<listener>-->
-        <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
-    <!--</listener>-->
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>WEB-INF/spring-config/spring-root.xml</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>spring-mvc</servlet-name>
-        <servlet-class>
-            org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>WEB-INF/spring-config/spring-mvc-servlet.xml</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -21,13 +30,13 @@
 
 
     <!--<listener>-->
-        <!--<listener-class>am.aca.wftartproject.controller.CtxListener</listener-class>-->
+        <!--<listener-clam.aca.wftartproject.servletr.CtxListener</listener-class>-->
     <!--</listener>-->
     <!---->
 
     <!--<filter>-->
         <!--<filter-name>AuthenticationFilter</filter-name>-->
-        <!--<filter-class>am.aca.wftartproject.controller.AuthenticationFilter</filter-class>-->
+        <!--<filter-clam.aca.wftartproject.servletr.AuthenticationFilter</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
         <!--<filter-name>AuthenticationFilter</filter-name>-->
@@ -37,7 +46,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ShopServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.ShopServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.ShopServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>ShopServlet</servlet-name>-->
@@ -46,7 +55,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>UploadServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.FileUploadServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.FileUploadServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
@@ -56,7 +65,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>HomeServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.HomeServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.HomeServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>HomeServlet</servlet-name>-->
@@ -66,7 +75,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>LoginServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.LoginServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.LoginServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>LoginServlet</servlet-name>-->
@@ -76,7 +85,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>LogOutServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.LogOutServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.LogOutServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>LogOutServlet</servlet-name>-->
@@ -85,7 +94,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>SignUp</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.SignUpServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.SignUpServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>SignUp</servlet-name>-->
@@ -94,7 +103,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>My Account</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.AccountServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.AccountServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>My Account</servlet-name>-->
@@ -108,7 +117,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>Edit Profile</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.EditProfileServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.EditProfileServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>Edit Profile</servlet-name>-->
@@ -117,7 +126,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>Purchase History</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.PurchaseHistoryServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.PurchaseHistoryServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>Purchase History</servlet-name>-->
@@ -126,7 +135,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ItemDetail</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.ItemDetailServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.ItemDetailServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>ItemDetail</servlet-name>-->
@@ -140,7 +149,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ContactServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.ContactServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.ContactServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>ContactServlet</servlet-name>-->
@@ -149,7 +158,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>AboutServlet</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.AboutServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.AboutServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>AboutServlet</servlet-name>-->
@@ -158,7 +167,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>MyArtWorks</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.MyWorksServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.MyWorksServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
@@ -168,7 +177,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>AddItem</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.AddItemsServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.AddItemsServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
@@ -178,7 +187,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ShopCart</servlet-name>-->
-        <!--<servlet-class>am.aca.wftartproject.controller.ShopCartServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servletr.ShopCartServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->

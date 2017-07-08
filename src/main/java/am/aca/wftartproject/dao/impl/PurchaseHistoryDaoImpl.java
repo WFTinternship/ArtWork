@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by ASUS on 27-May-17
  */
+@Component
 public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHistoryDao {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);

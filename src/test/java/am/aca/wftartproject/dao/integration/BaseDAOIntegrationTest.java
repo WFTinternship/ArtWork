@@ -13,7 +13,7 @@ import javax.sql.DataSource;
  * @author surik
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:spring-root.xml"})
+@ContextConfiguration(locations= {"classpath:spring-config.xml"})
 abstract class BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDAOIntegrationTest.class);
@@ -25,8 +25,8 @@ abstract class BaseDAOIntegrationTest {
     }
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public void setJdbcTemplate(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
