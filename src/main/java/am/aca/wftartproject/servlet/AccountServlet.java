@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;

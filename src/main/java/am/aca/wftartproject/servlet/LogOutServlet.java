@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;

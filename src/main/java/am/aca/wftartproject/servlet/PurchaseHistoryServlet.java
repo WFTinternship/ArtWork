@@ -1,10 +1,7 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.User;
-import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -21,7 +18,7 @@ import java.io.IOException;
  * Created by Armen on 6/9/2017
  */
 public class PurchaseHistoryServlet extends HttpServlet {
-    private ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
+    private ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/spring-config/spring-root.xml");
     private PurchaseHistoryService purchaseHistoryService = (PurchaseHistoryService) ctx.getBean("purchaseHistoryService");
 
     @Override

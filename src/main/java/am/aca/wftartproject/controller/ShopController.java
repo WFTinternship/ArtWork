@@ -1,6 +1,6 @@
-package am.aca.wftartproject.web;
+package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.controller.ItemComparator;
+import am.aca.wftartproject.servlet.ItemComparator;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
@@ -16,14 +16,18 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @Controller
 public class ShopController {
+    private final ItemService itemService;
+    private final ArtistService artistService;
+
     @Autowired
-    private ItemService itemService;
-    @Autowired
-    private ArtistService artistService;
+    public ShopController(ItemService itemService, ArtistService artistService) {
+        this.itemService = itemService;
+        this.artistService = artistService;
+    }
 
     @RequestMapping(value = "/shop",method = RequestMethod.GET)
     public ModelAndView shopPageView(){
@@ -88,7 +92,8 @@ public class ShopController {
         }
         if(session.getAttribute("user").getClass() == Artist.class){
             Artist artist = (Artist) session.getAttribute("user");
-            try {
+            itemBuyingProcess(artist, session, page);
+            /*try {
                 Item item = (Item) session.getAttribute("itemDetail");
                 itemService.itemBuying(item, artist.getId());
                 page = "thank-you";
@@ -98,11 +103,12 @@ public class ShopController {
                 page = "redirect:/shop";
             } catch (RuntimeException ex) {
                 page = "index";
-            }
+            }*/
         }
         if(session.getAttribute("user").getClass() == User.class){
-            User user = (User)session.getAttribute("user");
-            try {
+            User user = (User) session.getAttribute("user");
+            itemBuyingProcess(user, session, page);
+            /*try {
                 Item item = (Item) session.getAttribute("itemDetail");
                 itemService.itemBuying(item, user.getId());
                 page = "thank-you";
@@ -112,8 +118,22 @@ public class ShopController {
                 page = "redirect:/shop";
             } catch (RuntimeException ex) {
                 page = "index";
-            }
+            }*/
         }
         return new ModelAndView(page);
+    }
+
+    void itemBuyingProcess(AbstractUser abstractUser, HttpSession session, String page) {
+        try {
+            Item item = (Item) session.getAttribute("itemDetail");
+            itemService.itemBuying(item, abstractUser.getId());
+            page = "thank-you";
+        } catch (NotEnoughMoneyException ex) {
+            session.setAttribute("msgNotEnoughMoney",
+                    "You don't have enough money. Please top-up your account and try again.");
+            page = "redirect:/shop";
+        } catch (RuntimeException ex) {
+            page = "index";
+        }
     }
 }

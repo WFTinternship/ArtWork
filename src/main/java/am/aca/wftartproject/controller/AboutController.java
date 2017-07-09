@@ -1,4 +1,4 @@
-package am.aca.wftartproject.web;
+package am.aca.wftartproject.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

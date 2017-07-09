@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,11 +9,12 @@ import java.io.IOException;
 /**
  * Created by ASUS on 11-Jun-17
  */
-public class ContactServlet extends HttpServlet {
+public class AboutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/contact.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/about.jsp")
                 .forward(request, response);
+
     }
 }

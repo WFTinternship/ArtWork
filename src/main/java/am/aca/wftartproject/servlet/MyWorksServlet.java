@@ -1,7 +1,6 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.model.Artist;
-import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +18,7 @@ import java.io.IOException;
  * Created by Armen on 6/16/2017.
  */
 public class MyWorksServlet extends HttpServlet {
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/spring-config/spring-root.xml");
     ItemService itemService = ctx.getBean("itemService",ItemServiceImpl.class);
     Artist artist ;
 

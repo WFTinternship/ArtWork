@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.service.ArtistSpecializationService;
 import am.aca.wftartproject.service.impl.ArtistSpecializationServiceImpl;

@@ -1,5 +1,6 @@
-package am.aca.wftartproject.web;
+package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.model.AbstractUser;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
@@ -9,49 +10,54 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @Controller
 public class LogInController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final ArtistService artistService;
 
     @Autowired
-    private ArtistService artistService;
+    public LogInController(UserService userService, ArtistService artistService) {
+        this.userService = userService;
+        this.artistService = artistService;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("logIn");
-        return mav;
+        return new ModelAndView("logIn");
     }
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = null;
+        ModelAndView mav;
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
         try {
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
             Artist artistFromDB = artistService.findArtist(userFromDB.getId());
             if (artistFromDB != null) {
-                HttpSession session = request.getSession(true);
+                setAttributeInSessionAndCreateCookie(artistFromDB, request, response);
+                /*HttpSession session = request.getSession(true);
                 session.setAttribute("user", artistFromDB);
                 Cookie userEmail = new Cookie("userEmail", artistFromDB.getEmail());
                 userEmail.setMaxAge(3600);    // 60 minutes
-                response.addCookie(userEmail);
+                response.addCookie(userEmail);*/
                 mav = new ModelAndView("index");
             } else if (userFromDB != null) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", userFromDB);
-                Cookie userEmail = new Cookie("userEmail", userFromDB.getEmail());
-                userEmail.setMaxAge(3600);    // 60 minutes
-                response.addCookie(userEmail);
+                setAttributeInSessionAndCreateCookie(userFromDB, request, response);
+                    /*HttpSession session = request.getSession(true);
+                    session.setAttribute("user", userFromDB);
+                    Cookie userEmail = new Cookie("userEmail", userFromDB.getEmail());
+                    userEmail.setMaxAge(3600);    // 60 minutes
+                    response.addCookie(userEmail);*/
                 mav = new ModelAndView("index");
             } else {
                 throw new RuntimeException();
@@ -76,6 +82,14 @@ public class LogInController {
             session.invalidate();
         }
         return new ModelAndView("index");
+    }
+
+    void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", abstractUser);
+        Cookie userEmail = new Cookie("userEmail", abstractUser.getEmail());
+        userEmail.setMaxAge(3600);    // 60 minutes
+        response.addCookie(userEmail);
     }
 
 }

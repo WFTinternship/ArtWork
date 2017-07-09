@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.User;

@@ -1,18 +1,12 @@
-package am.aca.wftartproject.web;
+package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.controller.CtxListener;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.UserService;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
-import am.aca.wftartproject.util.SpringBean;
-import am.aca.wftartproject.util.SpringBeanType;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -35,21 +28,25 @@ import java.util.List;
 @Controller
 public class AccountController {
     private User user;
-    private User finduser;
+    private User findUser;
     private Item item;
     private Artist artist;
     private Artist findArtist;
     private Cookie[] cookies;
     private String userEmailFromCookie = null;
 
+    private final UserService userService;
+    private final ArtistService artistService;
+    private final PurchaseHistoryService purchaseHistoryService;
+    private final ItemService itemService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private ArtistService artistService;
-    @Autowired
-    private PurchaseHistoryService purchaseHistoryService;
-    @Autowired
-    private ItemService itemService;
+    public AccountController(UserService userService, ArtistService artistService, PurchaseHistoryService purchaseHistoryService, ItemService itemService) {
+        this.userService = userService;
+        this.artistService = artistService;
+        this.purchaseHistoryService = purchaseHistoryService;
+        this.itemService = itemService;
+    }
 
     @RequestMapping(value = {"/account"})
     public ModelAndView accountInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -61,9 +58,9 @@ public class AccountController {
             if (session.getAttribute("user") != null) {
                 if (session.getAttribute("user").getClass() == User.class) {
                     user = (User) session.getAttribute("user");
-                    finduser = userService.findUser(user.getId());
+                    findUser = userService.findUser(user.getId());
                     if (user != null) {
-                        request.setAttribute("user", finduser);
+                        request.setAttribute("user", findUser);
                         page = "account";
                     } else {
                         throw new RuntimeException("Incorrect program logic");
@@ -106,36 +103,36 @@ public class AccountController {
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 user = (User) session.getAttribute("user");
-                finduser = userService.findUser(user.getId());
-                request.setAttribute("user", finduser);
+                findUser = userService.findUser(user.getId());
+                request.setAttribute("user", findUser);
                 if (user != null) {
                     response.setContentType("text/html");
                     if (request.getParameter("firstname") != null && !request.getParameter("firstname").isEmpty()) {
-                        finduser.setFirstName(request.getParameter("firstname"));
+                        findUser.setFirstName(request.getParameter("firstname"));
                         counter++;
                     }
                     if ( request.getParameter("lastname") != null && !request.getParameter("lastname").isEmpty()) {
-                        finduser.setLastName(request.getParameter("lasstname"));
+                        findUser.setLastName(request.getParameter("lasstname"));
                         counter++;
                     }
                     if (request.getParameter("age") != null && !request.getParameter("age").isEmpty()) {
-                        finduser.setAge(Integer.parseInt(request.getParameter("age")));
+                        findUser.setAge(Integer.parseInt(request.getParameter("age")));
                         counter++;
                     }
-                    if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() &&  request.getParameter("oldpassword").equals(finduser.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
-                        finduser.setPassword(request.getParameter("newpassword"));
+                    if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() &&  request.getParameter("oldpassword").equals(findUser.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
+                        findUser.setPassword(request.getParameter("newpassword"));
                         message = "Your password was successfully changed";
                         counter++;
                     }
 
                     try {
-                        userService.updateUser(finduser.getId(), finduser);
+                        userService.updateUser(findUser.getId(), findUser);
                         if(counter == 0){
                             message = "No changes ,empty field or The entered info is not correct";
                         }
                         request.setAttribute("message",message);
-                        request.getSession().setAttribute("user", finduser);
-                        request.setAttribute("user", finduser);
+                        request.getSession().setAttribute("user", findUser);
+                        request.setAttribute("user", findUser);
                     } catch (ServiceException e) {
                         String errorMessage = "The entered info is not correct";
                         request.setAttribute("message", errorMessage);

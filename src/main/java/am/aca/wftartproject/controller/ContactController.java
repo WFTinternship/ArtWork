@@ -1,4 +1,4 @@
-package am.aca.wftartproject.web;
+package am.aca.wftartproject.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Created by Armen on 6/27/2017.
+ * Created by Armen on 6/27/2017
  */
 @Controller
 public class ContactController {

@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller;
+package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
@@ -24,7 +24,7 @@ import java.io.InputStream;
 @MultipartConfig(maxFileSize = 2177215)
 public class AddItemsServlet extends HttpServlet {
 
-    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-root.xml");
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/spring-config/spring-root.xml");
     ItemService itemService = ctx.getBean("itemService", ItemServiceImpl.class);
     ArtistService artistService = (ArtistService) ctx.getBean("artistService");
 
