@@ -15,21 +15,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @Controller
 public class HomeController {
 
+    private final UserService userService;
+    private final ArtistService artistService;
+
     @Autowired
-    UserService userService;
-    @Autowired
-    ArtistService artistService;
-    Cookie[] cookies;
+    public HomeController(UserService userService, ArtistService artistService) {
+        this.userService = userService;
+        this.artistService = artistService;
+    }
 
     @RequestMapping(value = {"/", "index"})
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
-
-       cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
         if (cookies != null) {
             for (Cookie ckElement : cookies) {

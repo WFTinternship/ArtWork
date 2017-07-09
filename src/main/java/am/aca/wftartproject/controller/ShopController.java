@@ -1,10 +1,10 @@
 package am.aca.wftartproject.controller;
 
-import am.aca.wftartproject.servlet.ItemComparator;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.servlet.ItemComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +65,7 @@ public class ShopController {
     }
 
 
-    @RequestMapping(value = "item-detail/*",method = RequestMethod.GET)
+    @RequestMapping(value = "/item-detail/*",method = RequestMethod.GET)
     public ModelAndView itemDetailView(HttpServletRequest request){
         String[] pathInfo = request.getServletPath().split("/");
         Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
@@ -81,7 +81,7 @@ public class ShopController {
         return new ModelAndView("item-detail");
     }
 
-    @RequestMapping(value = "item-detail/*", method = RequestMethod.POST)
+    @RequestMapping(value = "/item-detail/*", method = RequestMethod.POST)
     public ModelAndView itemDetailProcess(HttpServletRequest request){
         String page = "";
         HttpSession session = request.getSession();
@@ -99,7 +99,7 @@ public class ShopController {
                         "You don't have enough money. Please top-up your account and try again.");
                 page = "redirect:/shop";
             } catch (RuntimeException ex) {
-                page = "index";
+                page = "redirect:/index";
             }
         }
         if(session.getAttribute("user").getClass() == User.class){
@@ -113,7 +113,7 @@ public class ShopController {
                         "You don't have enough money. Please top-up your account and try again.");
                 page = "redirect:/shop";
             } catch (RuntimeException ex) {
-                page = "index";
+                page = "redirect:/index";
             }
         }
         return new ModelAndView(page);

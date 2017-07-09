@@ -45,6 +45,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
         try {
             item.setAdditionDate(getCurrentDateTime());
+            item.setStatus(false);
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query = "INSERT INTO item(title, description, price, artist_id, photo_url, status, type, addition_date) VALUES (?,?,?,?,?,?,?,?)";
 

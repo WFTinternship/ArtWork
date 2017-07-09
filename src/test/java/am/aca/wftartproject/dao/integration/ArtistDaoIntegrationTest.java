@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.SQLException;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualArtists;
@@ -21,28 +22,31 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Armen on 6/1/2017
  */
-
 public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
-    private Artist testArtist;
-
     @Autowired
     private ArtistDao artistDao;
 
-    public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
-    }
+    private Artist testArtist;
+
+    public ArtistDaoIntegrationTest() throws SQLException,ClassNotFoundException{}
+
+
+
+    private ArtistSpecializationLkpDao artistSpecialization; //= new ArtistSpecializationLkpDaoImpl(dataSource);
 
     /**
      * Creates artist for test
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create artistSpecialization
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
+        ArtistSpecializationLkpDao artistSpecialization= new ArtistSpecializationLkpDaoImpl(dataSource);
 
         if (artistSpecialization.getArtistSpecialization(1) == null) {
             artistSpecialization.addArtistSpecialization();
@@ -59,6 +63,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     /**
      * Deletes artists created during the test
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -146,7 +151,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      * @see ArtistDao#findArtist(String)
      */
     @Test
-    public void findArtistByEmail_Success(){
+    public void findArtistByEmail_Success() {
         // Add artist into Db
         artistDao.addArtist(testArtist);
 
@@ -161,7 +166,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      * @see ArtistDao#findArtist(String)
      */
     @Test
-    public void findArtistByEmail_Failure(){
+    public void findArtistByEmail_Failure() {
         // Add artist into DB
         artistDao.addArtist(testArtist);
 

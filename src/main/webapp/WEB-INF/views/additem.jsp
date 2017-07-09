@@ -4,9 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
-<c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
+<c:set var="itemTypes" value='<%=session.getAttribute("itemTypes")%>'/>
+<c:set var="item" value='<%=request.getAttribute("item")%>'/>
 <c:set var="Message" value='<%=request.getAttribute("errorMessage")%>'/>
 
 <!Doctype html>
@@ -131,7 +133,7 @@
                                                 <%----%>
                                                 <%--</div>--%>
 
-                                                <form action="/additem" method="post" id="form2"
+                                                <form:form action="${pageContext.request.contextPath}/additem" method="post" id="form2"
                                                       enctype="multipart/form-data">
                                                     <%--<div class="form-group">--%>
                                                     <%--<label for="imageUpload">Choose Image</label>--%>
@@ -154,7 +156,6 @@
                                                             </div>
                                                         </tr>
                                                         <td align="left">
-
                                                             <input type="button" name="addmore" class="btn btn-warning"
                                                                    id="addmore" style="width: 100%;height: 100%" value="Add Another Imaage(Optional)" onClick="dothat();"/>
                                                         </td>
@@ -168,7 +169,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput2">Description</label>
                                                         <input type="text" name="description" class="form-control"
-                                                               id="exampleInput2" placeholder=" write descritpion ">
+                                                               id="exampleInput2" placeholder="write description">
                                                     </div>
                                                     <label for="exampleInput171">Art Type</label>
                                                     <select class="shop-dropdown" name="type" id="exampleInput171">
@@ -181,10 +182,10 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
                                                         <input type="text" name="price" class="form-control"
-                                                               id="exampleInput3" placeholder="100$">
+                                                               id="exampleInput3" placeholder="100$" value="${item.price}">
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
-                                                </form>
+                                                </form:form>
                                             </div>
                                         </div>
                                     </div>

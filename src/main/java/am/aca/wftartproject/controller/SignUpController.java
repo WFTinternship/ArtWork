@@ -32,7 +32,7 @@ public class SignUpController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
+    public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("signUp");
         request.getSession().setAttribute("artistSpecTypes",ArtistSpecialization.values());
         mav.addObject("user", new User());
@@ -44,7 +44,7 @@ public class SignUpController {
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
                                 @ModelAttribute("user") User user) {
-        String page = "";
+        String page;
         try {
             user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
             user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
@@ -88,7 +88,7 @@ public class SignUpController {
             return new ModelAndView("signUp");
         }
 
-        String page = "";
+        String page;
         try {
 
             artistService.addArtist(artistFromRequest);
