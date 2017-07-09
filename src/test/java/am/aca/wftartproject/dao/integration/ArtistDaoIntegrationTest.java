@@ -31,7 +31,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Autowired
     private ArtistDao artistDao;
 
-    public ArtistDaoIntegrationTest() throws SQLException, ClassNotFoundException {
+    public ArtistDaoIntegrationTest() {
     }
 
     /**

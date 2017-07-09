@@ -16,7 +16,6 @@ public enum ShoppingCardType {
         this.type = type;
     }
 
-
     public String getType() {
         return type;
     }
@@ -32,6 +31,4 @@ public enum ShoppingCardType {
     public static ShoppingCardType getShoppingCardType(String type) {
         return ShoppingCardType.valueOf(type);
     }
-
-
 }

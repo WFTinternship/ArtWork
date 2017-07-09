@@ -9,8 +9,6 @@ import java.io.IOException;
 /**
  * Created by ASUS on 10-Jun-17
  */
-
-
 public class AuthenticationFilter implements Filter {
 
     private ServletContext context;

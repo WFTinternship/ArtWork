@@ -25,10 +25,10 @@ public abstract class AbstractUser {
         return this;
     }
 
-
     public Long getId() {
         return id;
     }
+
     public AbstractUser setId(Long id) {
         this.id = id;
         return this;
@@ -90,8 +90,6 @@ public abstract class AbstractUser {
 
     public boolean isValidUser() {
         return
-//                id != null &&
-//                id > 0 &&
                 !isEmptyString(firstName) &&
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&

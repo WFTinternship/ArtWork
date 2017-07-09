@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class LogInController {
+
     private final UserService userService;
     private final ArtistService artistService;
 
@@ -37,31 +38,24 @@ public class LogInController {
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(true);
         ModelAndView mav;
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
+
         try {
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
             Artist artistFromDB = artistService.findArtist(userFromDB.getId());
+
             if (artistFromDB != null) {
-                setAttributeInSessionAndCreateCookie(artistFromDB, request, response);
-                /*HttpSession session = request.getSession(true);
-                session.setAttribute("user", artistFromDB);
-                Cookie userEmail = new Cookie("userEmail", artistFromDB.getEmail());
-                userEmail.setMaxAge(3600);    // 60 minutes
-                response.addCookie(userEmail);*/
-                mav = new ModelAndView("index");
+                setAttributeInSessionAndCreateCookie(artistFromDB, request, response, session);
             } else if (userFromDB != null) {
-                setAttributeInSessionAndCreateCookie(userFromDB, request, response);
-                    /*HttpSession session = request.getSession(true);
-                    session.setAttribute("user", userFromDB);
-                    Cookie userEmail = new Cookie("userEmail", userFromDB.getEmail());
-                    userEmail.setMaxAge(3600);    // 60 minutes
-                    response.addCookie(userEmail);*/
-                mav = new ModelAndView("index");
+                setAttributeInSessionAndCreateCookie(userFromDB, request, response, session);
             } else {
                 throw new RuntimeException();
             }
+
+            mav = new ModelAndView("index");
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("errorMessage", userNotExists);
@@ -74,6 +68,7 @@ public class LogInController {
     @RequestMapping(value = "/logoutProcess", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
+
         if (session != null) {
             Cookie cookie = new Cookie("userEmail", "");
             cookie.setMaxAge(0);
@@ -81,15 +76,14 @@ public class LogInController {
             session.setAttribute("user", null);
             session.invalidate();
         }
+
         return new ModelAndView("index");
     }
 
-    void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(true);
+    void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.setAttribute("user", abstractUser);
         Cookie userEmail = new Cookie("userEmail", abstractUser.getEmail());
         userEmail.setMaxAge(3600);    // 60 minutes
         response.addCookie(userEmail);
     }
-
 }

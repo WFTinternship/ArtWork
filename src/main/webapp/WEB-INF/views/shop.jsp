@@ -200,7 +200,7 @@
                                     <!-- **product-title - Starts** -->
                                     <div class="product-title">
 
-                                        <c:if test="${itemElement.status==false}">
+                                        <c:if test="${itemElement.status==true}">
                                             <p><h1><div style="text-align: center;">SOLD</div></h1></p>
                                         </c:if>
 

@@ -19,9 +19,9 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class HomeController {
+
     private final UserService userService;
     private final ArtistService artistService;
-    private Cookie[] cookies;
 
     @Autowired
     public HomeController(UserService userService, ArtistService artistService) {
@@ -31,7 +31,7 @@ public class HomeController {
 
     @RequestMapping(value = {"/", "index"})
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
-        cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
 
         if (cookies != null) {

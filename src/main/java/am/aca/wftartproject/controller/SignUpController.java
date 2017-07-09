@@ -22,6 +22,7 @@ import java.io.IOException;
 @MultipartConfig
 @Controller
 public class SignUpController {
+
     private final UserService userService;
     private final ArtistService artistService;
 
@@ -44,29 +45,32 @@ public class SignUpController {
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
                                 @ModelAttribute("user") User user) {
-        String page = "";
+        HttpSession session = request.getSession(true);
+        ModelAndView mv = new ModelAndView();
+        String page;
         try {
             user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
             user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
             userService.addUser(user);
             page = "index";
-            request.getSession().setAttribute("message", "Hi " + user.getFirstName());
-            HttpSession session = request.getSession(true);
-            request.getSession().setAttribute("user", user);
+            session.setAttribute("message", "Hi " + user.getFirstName());
+            session.setAttribute("user", user);
             Cookie userEmail = new Cookie("userEmail", user.getEmail());
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            mv.addObject("errorMessage", e.getMessage());
+//            request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
-        return new ModelAndView(page, "user", user);
+        mv.setViewName(page);
+        return mv;
     }
-
 
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        ModelAndView mv = new ModelAndView();
         Artist artistFromRequest = new Artist();
         String message;
         artistFromRequest.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
@@ -86,9 +90,13 @@ public class SignUpController {
                     .setPassword(request.getParameter("password")).setUserPasswordRepeat(request.getParameter("passwordRepeat"));
         } else {
             message = "No changes, empty fields or Incorrect Data";
-            request.setAttribute("errorMessage", message);
-            request.setAttribute("user", artistFromRequest);
-            return new ModelAndView("signUp");
+            mv.addObject("errorMessage", message);
+            mv.addObject("user", artistFromRequest);
+//            request.setAttribute("errorMessage", message);
+//            request.setAttribute("user", artistFromRequest);
+            mv.setViewName("signUp");
+            return mv;
+//            return new ModelAndView("signUp");
         }
 
         String page = "";
@@ -103,11 +111,12 @@ public class SignUpController {
             userEmail.setMaxAge(3600);             // 60 minutes
             response.addCookie(userEmail);
         } catch (RuntimeException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            mv.addObject("errorMessage", e.getMessage());
+//            request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
-
-        return new ModelAndView(page, "user", artistFromRequest);
+        mv.setViewName(page);
+        return mv;
+//        return new ModelAndView(page, "user", artistFromRequest);
     }
-
 }

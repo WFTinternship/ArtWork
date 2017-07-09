@@ -10,7 +10,6 @@ public enum ArtistSpecialization {
     PHOTOGRAPHER(3, "PHOTOGRAPHER"),
     OTHER(4, "OTHER");
 
-
     private final int id;
     private final String type;
 
@@ -30,11 +29,4 @@ public enum ArtistSpecialization {
     public int getSpecId() {
         return ArtistSpecialization.valueOf(type).getId();
     }
-
-//    @Override
-//    public String toString() {
-//        return this.id + " " + this.type;
-//    }
-
-
 }

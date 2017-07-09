@@ -14,10 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by ASUS on 08-Jun-17
  */
 public abstract class BaseDaoImpl {
-
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);
-
-//    protected DataSource dataSource;
 
     protected JdbcTemplate jdbcTemplate;
 
@@ -72,24 +69,4 @@ public abstract class BaseDaoImpl {
     double getRandomBalance() {
         return ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
     }
-
-
-    /*private DataSource dataSource = null;
-    JdbcTemplate jdbcTemplate = null;
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }*/
-
-//    public JdbcTemplate getJdbcTemplate() {
-//        return jdbcTemplate;
-//    }
-//
-//    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-//        this.jdbcTemplate = jdbcTemplate;
-//    }
 }

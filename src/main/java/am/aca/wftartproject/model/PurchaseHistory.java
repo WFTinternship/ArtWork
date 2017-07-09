@@ -21,7 +21,6 @@ public class PurchaseHistory {
         return this;
     }
 
-
     public Long getUserId() {
         return userId;
     }
@@ -58,7 +57,6 @@ public class PurchaseHistory {
         this.purchaseDate = purchaseDate;
     }
 
-
     @Override
     public String toString() {
         return "PurchaseHistory{" +
@@ -75,6 +73,4 @@ public class PurchaseHistory {
                 itemId > 0 &&
                 purchaseDate != null;
     }
-
-
 }
