@@ -40,9 +40,9 @@ public interface UserDao {
     /**
      * Deletes user with the following id.
      *
-     * @param id
+     * @param user
      */
-    Boolean deleteUser(Long id);
+    Boolean deleteUser(User user);
 
 
 }

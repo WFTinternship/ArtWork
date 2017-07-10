@@ -72,7 +72,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         if (testShoppingCard.getId() != null)
             shoppingCardDao.deleteShoppingCard(testShoppingCard);
         if (testUser.getId() != null)
-            userDao.deleteUser(testUser.getId());
+            userDao.deleteUser(testUser);
 
         // Set temp instance refs to null
         testShoppingCard = null;

@@ -82,7 +82,7 @@ public interface ItemDao {
     /**
      * Deletes Item by id
      *
-     * @param id
+     * @param item
      */
-    Boolean deleteItem(Long id);
+    Boolean deleteItem(Item item);
 }

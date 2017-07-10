@@ -5,23 +5,18 @@
     <import resource="../database/hibernate.xml"/>
     <!--Dao layer spring integration-->
     <bean id="userDAO" class="am.aca.wftartproject.dao.impl.UserDaoImpl">
-        <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
     <bean id="artistDAO" class="am.aca.wftartproject.dao.impl.ArtistDaoImpl">
-        <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
     <bean id="itemDAO" class="am.aca.wftartproject.dao.impl.ItemDaoImpl">
-        <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
     <bean id="shoppingCardDAO" class="am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl">
-        <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
     <bean id="purchaseHistoryDAO" class="am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl">
-        <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
 </beans>

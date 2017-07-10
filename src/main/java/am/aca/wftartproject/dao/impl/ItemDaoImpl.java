@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 
@@ -22,13 +23,8 @@ import java.util.List;
 public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
 
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
-
-    private EntityManagerFactory entityManagerFactory;
-
-    @Autowired
-    public ItemDaoImpl( EntityManagerFactory  entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * @param item
@@ -36,29 +32,17 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Item item) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
+
         try {
             item.setAdditionDate(getCurrentDateTime());
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
            entityManager.persist(item);
             entityManager.flush();
-            tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + item);
         } catch (Exception e) {
-            tx.rollback();
+
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
-        }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
         }
 
     }
@@ -71,31 +55,16 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Item findItem(Long id) {
-        EntityTransaction tx =null;
-        Item item = null;
-        EntityManager entityManager = null;
+        
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
-            item = (Item) entityManager.find(Item.class, id);
-            tx.commit();
+
+          Item  item = (Item) entityManager.find(Item.class, id);
+            return item;
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to get Item by id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
-
-        return item;
-
     }
 
 
@@ -106,71 +75,26 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
+
+
         List<Item> itemList = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
+
             itemList = (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c")
                     .getResultList();
-            tx.commit();
             if(limit<itemList.size()-1){
                 itemList = itemList.subList(itemList.size()-1 -limit,itemList.size());
             }
 
         } catch (Exception e) {
-            tx.rollback();
+
             String error = "Failed to get recently added items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+
         return itemList;
-
-
-//            region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        List<Item> itemList = new ArrayList<>();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?");
-//            ps.setInt(1, limit);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Item item = new Item();
-//                getItemFromResultSet(item, rs);
-////                item.setId(rs.getLong("id"))
-////                        .setTitle(rs.getString("title"))
-////                        .setDescription(rs.getString("description"))
-////                        .setPrice(rs.getDouble("price"))
-////                        .setPhotoURL(rs.getString("photo_url"))
-////                        .setStatus(rs.getBoolean("result"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type"))
-////                        .setAdditionDate(rs.getTimestamp("addition_date"));
-//                itemList.add(item);
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get RecentlyAddedItems: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return itemList;
-
-//            endregion
 
     }
 
@@ -182,67 +106,23 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
+
+
         List<Item> itemList = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
+
             itemList = (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c where c.title = :title").setParameter("title", title).setMaxResults(100)
                     .getResultList();
-            tx.commit();
         } catch (Exception e) {
-            tx.rollback();
+
             String error = "Failed to get Items by title: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+
         return itemList;
 
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        List<Item> itemList = new ArrayList<>();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT * FROM item WHERE title=?");
-//            ps.setString(1, title);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Item item = new Item();
-//                getItemFromResultSet(item, rs);
-////                item.setId(rs.getLong("id"))
-////                        .setTitle(rs.getString("title"))
-////                        .setDescription(rs.getString("description"))
-////                        .setPrice(rs.getDouble("price"))
-////                        .setPhotoURL(rs.getString("photo_url"))
-////                        .setStatus(rs.getBoolean("result"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type"))
-////                        .setAdditionDate(rs.getTimestamp("addition_date"));
-//                itemList.add(item);
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get ItemsByTitle: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return itemList;
-
-//        endregion
     }
 
 
@@ -253,66 +133,23 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByType(ItemType itemType) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
+
+
         List<Item> itemList = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
+
             itemList = (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c where c.itemType = :itemType").setParameter("itemType", itemType).setMaxResults(100)
                     .getResultList();
-            tx.commit();
+
         } catch (Exception e) {
-            tx.rollback();
+
             String error = "Failed to get Items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+
         return itemList;
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        List<Item> itemList = new ArrayList<>();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT * FROM item WHERE item_type =?");
-//            ps.setString(1, itemType);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Item item = new Item();
-//                getItemFromResultSet(item, rs);
-////                item.setId(rs.getLong("id"))
-////                        .setTitle(rs.getString("title"))
-////                        .setDescription(rs.getString("description"))
-////                        .setPrice(rs.getDouble("price"))
-////                        .setPhotoURL(rs.getString("photo_url"))
-////                        .setStatus(rs.getBoolean("result"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type"))
-////                        .setAdditionDate(rs.getTimestamp("addition_date"));
-//                itemList.add(item);
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get ItemsByType: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return itemList;
-
-//        endregion
     }
 
 
@@ -324,67 +161,22 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
-        EntityTransaction tx = null;
-        EntityManager entityManager =null;
+
+
         List<Item> itemList = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
+
             itemList = (List<Item>) entityManager.createQuery(
                     "SELECT e FROM Item e WHERE e.price BETWEEN :minprice AND :maxprice").setParameter("minprice", minPrice).setParameter("maxprice",maxPrice).setMaxResults(100)
                     .getResultList();
-            tx.commit();
         } catch (Exception e) {
-            tx.rollback();
+
             String error = "Failed to get Items by price: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+
         return itemList;
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        List<Item> itemList = new ArrayList<>();
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement("SELECT * FROM item WHERE result=0 AND price between ? AND ? ");
-//            ps.setDouble(1, minPrice);
-//            ps.setDouble(2, maxPrice);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Item item = new Item();
-//                getItemFromResultSet(item, rs);
-////                item.setId(rs.getLong("id"))
-////                        .setTitle(rs.getString("title"))
-////                        .setDescription(rs.getString("description"))
-////                        .setPrice(rs.getDouble("price"))
-////                        .setPhotoURL(rs.getString("photo_url"))
-////                        .setStatus(rs.getBoolean("result"))
-////                        .setItemType(ItemType.valueOf(rs.getString("type"))
-////                        .setAdditionDate(rs.getTimestamp("addition_date"));
-//                itemList.add(item);
-//            }
-//        } catch (SQLException e) {
-//            String error = "Failed to get items by the given price range: %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(rs, ps, conn);
-//        }
-//        return itemList;
-
-//        endregion
     }
 
     /**
@@ -395,30 +187,19 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     @Override
     public List<Item> getArtistItems(Long artistId) {
         List<Item> list = null;
-        EntityTransaction tx = null;
-        EntityManager entityManager = this.entityManagerFactory.createEntityManager();
-        tx = entityManager.getTransaction();
-        if (!tx.isActive()) {
-            entityManager.getTransaction().begin();
-        }
         try{
             list =  (List<Item>) entityManager.createQuery(
                     "SELECT c FROM Item c WHERE c.artist_id = :artist_id")
                     .setParameter("artist_id", artistId)
                     .getResultList();
-            tx.commit();
         }
         catch (Exception e) {
-            tx.rollback();
+
             String error = "Failed to get Items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+
 
 
         return list;
@@ -431,56 +212,21 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Boolean updateItem(Item item) {
-        EntityTransaction tx = null;
-        EntityManager entityManager =null;
+
         Boolean result = false;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
             entityManager.merge(item);
-            tx.commit();
+            entityManager.flush();
             result = true;
             LOGGER.info("Item updated successfully, Item Details=" + item);
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to update Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+        
 
         return result;
-
-//        region <Version with Simple JDBC>
-
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        try {
-//            conn = getDataSource().getConnection();
-//            ps = conn.prepareStatement(
-//                    "UPDATE item SET title=?, description=?, price=?, type=? WHERE id=?");
-//            ps.setString(1, item.getTitle());
-//            ps.setString(2, item.getDescription());
-//            ps.setDouble(3, item.getPrice());
-//            ps.setString(4, item.getItemType().getType());
-//            ps.setLong(5, id);
-//            ps.executeUpdate();
-//        } catch (SQLException e) {
-//            String error = "Failed to update Item:  %s";
-//            LOGGER.error(String.format(error, e.getMessage()));
-//            throw new DAOException(error, e);
-//        } finally {
-//            closeResources(ps, conn);
-//        }
-
-//        endregion
     }
 
 
@@ -489,33 +235,21 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      * @see ItemDao#deleteItem(Long)
      */
     @Override
-    public Boolean deleteItem(Long id) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
+    public Boolean deleteItem(Item item) {
+        
+        
         Boolean result = false;
         try {
-
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
-            Item item = (Item) entityManager.find(Item.class, id);
-            entityManager.remove(entityManager.contains(item)  ? item : entityManager.merge(item));
-            tx.commit();
+            entityManager.find(Item.class,item.getId());
+            entityManager.remove(item);
             result = true;
             LOGGER.info("Item deleted successfully");
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
+        
         return result;
     }
 }

@@ -96,6 +96,8 @@ public class SignUpController {
         try {
 
             artistService.addArtist(artistFromRequest);
+            artistFromRequest.getShoppingCard().setBuyer_id(artistFromRequest.getId());
+            shoppingCardService.addShoppingCard(artistFromRequest.getShoppingCard());
             page = "/index";
             request.setAttribute("message","Hi " + artistFromRequest.getFirstName());
             HttpSession session = request.getSession(true);

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
+import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.*;
 
@@ -46,7 +47,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create test user
-        testUser = TestObjectTemplate.createTestUser();
+        testUser = createTestUser();
 
         // Print busy connections quantity
 //        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
@@ -64,7 +65,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
     public void tearDown() throws SQLException {
         // Delete inserted test users from db
         if (testUser.getId() != null)
-            userDao.deleteUser(testUser.getId());
+            userDao.deleteUser(testUser);
 
         // Set temp instance refs to null
         testUser = null;
@@ -189,19 +190,15 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
         // Add user into DB and check for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
-
-        // Create new user and check it for null
-        User newUser = TestObjectTemplate.createTestUser();
-        newUser.setId(testUser.getId());
-        assertNotNull(newUser);
-
+        Integer temp = testUser.getAge();
+        testUser.setAge(77);
         // Try to update user
-        userDao.updateUser(newUser);
-
+        assertFalse(temp.equals(testUser.getAge()));
+        userDao.updateUser(testUser);
         // Find and get updated user from DB and check sameness with testUser
         User dbUserUpdate = userDao.findUser(testUser.getId());
         assertNotNull(dbUserUpdate);
-        assertNotSame(dbUserUpdate, testUser);
+        assertFalse(temp.equals(dbUserUpdate.getAge()));
     }
 
     /**
@@ -214,7 +211,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
         assertNotNull(testUser);
 
         // Create new user and set its firstName
-        User newUser = TestObjectTemplate.createTestUser();
+        User newUser = createTestUser();
         newUser.setFirstName(null);
 
         // Check newUser for not null
@@ -230,7 +227,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
 
     /**
-     * @see UserDao#deleteUser(Long)
+     * @see UserDao#deleteUser(User)
      */
     @Test
     public void deleteUser_Success() {
@@ -239,21 +236,22 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
         assertNotNull(testUser);
 
         // Try to delete user adn then set its id null
-        assertTrue(userDao.deleteUser(testUser.getId()));
+        assertTrue(userDao.deleteUser(testUser));
         testUser.setId(null);
     }
 
     /**
-     * @see UserDao#deleteUser(Long)
+     * @see UserDao#deleteUser(User)
      */
     @Test(expected = DAOException.class)
     public void deleteUser_Failure() {
         // Add user into DB and check it fro not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
+        testUser.setId(null);
 
         // Try to delete user with non-existent id
-        assertFalse(userDao.deleteUser(4546465465465L));
+        assertFalse(userDao.deleteUser(testUser));
     }
 
     // endregion

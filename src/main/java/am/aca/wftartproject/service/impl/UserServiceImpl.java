@@ -24,20 +24,10 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-
-    private final UserDao userDao;
-
+    @Autowired
+    private  UserDao userDao;
+    @Autowired
     private ShoppingCardDao shoppingCardDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    @Autowired
-    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
-        this.shoppingCardDao = shoppingCardDao;
-    }
 
     /**
      * @param user
@@ -142,19 +132,19 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * @param id
-     * @see UserService#deleteUser(Long)
+     * @param user
+     * @see UserService#deleteUser(User)
      */
     @Override
     @Transactional
-    public void deleteUser(Long id) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid Id");
+    public void deleteUser(User user) {
+        if (user == null || !user.isValidUser()) {
+            LOGGER.error(String.format("User is not valid: %s", user));
+            throw new InvalidEntryException("Invalid User");
         }
 
         try {
-            if (!userDao.deleteUser(id)) {
+            if (!userDao.deleteUser(user)) {
                 throw new DAOException("Failed to delete user");
             }
         } catch (DAOException e) {

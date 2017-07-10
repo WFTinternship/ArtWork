@@ -70,11 +70,11 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     @After
     public void tearDown() {
         if (tempItem.getId() != null) {
-            itemService.deleteItem(tempItem.getId());
+            itemService.deleteItem(tempItem);
         }
 
         if (testItem.getId() != null) {
-            itemService.deleteItem(testItem.getId());
+            itemService.deleteItem(testItem);
         }
 
         if (testShoppingCard.getId() != null) {
@@ -323,7 +323,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
      * @see ItemServiceImpl#updateItem(Item)
      */
 
-    @Test(expected = ServiceException.class)
+    @Test(expected = InvalidEntryException.class)
     public void updateItem_Failure() {
         // Test method
 
@@ -332,15 +332,15 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         try{
             itemService.updateItem(testItem);
         }
-        catch (ServiceException e){
+        catch (InvalidEntryException e){
             testItem.setArtist_id(temp);
-            throw new ServiceException("");
+            throw new InvalidEntryException("");
         }
 
     }
 
     /**
-     * @see ItemServiceImpl#deleteItem(java.lang.Long)
+     * @see ItemServiceImpl#deleteItem(Item)
      */
     @Test
     public void deleteItem_Success() {
@@ -348,17 +348,18 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         itemService.addItem(testItem);
 
         // Test method
-        itemService.deleteItem(testItem.getId());
+        itemService.deleteItem(testItem);
         testItem.setId(null);
     }
 
     /**
-     * @see ItemServiceImpl#deleteItem(java.lang.Long)
+     * @see ItemServiceImpl#deleteItem(Item)
      */
     @Test(expected = InvalidEntryException.class)
     public void deleteItem_Failure() {
         // Test method
-        itemService.deleteItem(testItem.getId());
+        testItem.setTitle(null);
+        itemService.deleteItem(testItem);
     }
 
     /**

@@ -52,7 +52,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
             shoppingCardService.deleteShoppingCard(testShoppingCard);
 
         if (testUser.getId() != null)
-            userService.deleteUser(testUser.getId());
+            userService.deleteUser(testUser);
 
         // set temp instance refs to null
         testShoppingCard = null;

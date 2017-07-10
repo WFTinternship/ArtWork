@@ -21,13 +21,9 @@ import java.util.List;
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
-
-    private final PurchaseHistoryDao purchaseHistoryDao;
-
     @Autowired
-    public PurchaseHistoryServiceImpl(PurchaseHistoryDao purchaseHistoryDao) {
-        this.purchaseHistoryDao = purchaseHistoryDao;
-    }
+    private  PurchaseHistoryDao purchaseHistoryDao;
+
 
 
     /**

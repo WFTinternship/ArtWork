@@ -81,10 +81,10 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
             purchaseHistoryDao.deletePurchase(purchaseHistory);
         }
         if (testItem.getId() != null) {
-            itemDao.deleteItem(testItem.getId());
+            itemDao.deleteItem(testItem);
         }
         if (testUser.getId() != null) {
-            userDao.deleteUser(testUser.getId());
+            userDao.deleteUser(testUser);
         }
 
         // Set temp objects ref  to null

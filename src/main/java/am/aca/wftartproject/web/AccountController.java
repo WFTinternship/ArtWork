@@ -280,7 +280,7 @@ public class AccountController {
     public ModelAndView deleteItem(HttpServletRequest request, HttpServletResponse response) {
         String[] pathInfo = request.getServletPath().split("/");
         Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
-        itemService.deleteItem(itemId);
+        itemService.deleteItem(item);
         request.setAttribute("message","Your ArtWork has been successfully deletet");
         return new ModelAndView("redirect:/my-works");
     }

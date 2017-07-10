@@ -80,9 +80,9 @@ public interface ItemService {
     /**
      * Deletes Item by id
      *
-     * @param id
+     * @param item
      */
-    void deleteItem(Long id);
+    void deleteItem(Item item);
 
     /**
      * Makes buying processes.

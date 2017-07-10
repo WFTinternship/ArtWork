@@ -1,6 +1,5 @@
 package am.aca.wftartproject.entity;
 
-import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
 
@@ -18,7 +17,7 @@ public abstract class AbstractUser implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NotNull
+
     @Column(name = "firstname",nullable = false ,length = 30)
     String firstName;
     @Column(name = "lastname",nullable = false, length = 30)

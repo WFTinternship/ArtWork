@@ -20,17 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
-
-    private final ShoppingCardDao shoppingCardDao;
-
     @Autowired
-    public ShoppingCardServiceImpl(ShoppingCardDao shoppingCardDao) {
-        this.shoppingCardDao = shoppingCardDao;
-    }
-
+    private ShoppingCardDao shoppingCardDao;
     /**
-     * @see ShoppingCardService#addShoppingCard(Long, ShoppingCard)
-     * @param userId
+     * @see ShoppingCardService#addShoppingCard(ShoppingCard)
      * @param shoppingCard
      */
     @Override
@@ -48,7 +41,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
     }
-
 
     /**
      * @see ShoppingCardService#getShoppingCard(Long)

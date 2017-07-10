@@ -70,13 +70,13 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
             purchaseHistoryService.deletePurchase(testPurchaseHistory);
 
         if (testItem.getId() != null)
-            itemService.deleteItem(testItem.getId());
+            itemService.deleteItem(testItem);
 
         if (testUser.getShoppingCard() != null) {
             shoppingCardService.deleteShoppingCard(shoppingCard);
         }
         if (testUser.getId() != null)
-            userService.deleteUser(testUser.getId());
+            userService.deleteUser(testUser);
 
         testPurchaseHistory = null;
         testItem = null;

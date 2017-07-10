@@ -1,11 +1,13 @@
 package am.aca.wftartproject.dao.integration;
 
+import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.ItemDao;
 import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.dao.impl.ItemDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.entity.Item;
+import am.aca.wftartproject.util.TestObjectTemplate;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -30,10 +32,10 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
     @Autowired
-    private ArtistDaoImpl artistDao;
+    private ArtistDao artistDao;
 
     @Autowired
-    private ItemDaoImpl itemDao;
+    private ItemDao itemDao;
 
     private Item testItem, tempItem;
     private Artist testArtist;
@@ -82,10 +84,10 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void tearDown() throws SQLException {
         // Delete inserted test users,artists and items  from db
         if (testItem.getId() != null)
-            itemDao.deleteItem(testItem.getId());
+            itemDao.deleteItem(testItem);
 
         if (tempItem.getId() != null)
-            itemDao.deleteItem(tempItem.getId());
+            itemDao.deleteItem(tempItem);
 
         if (testArtist.getId() != null)
             artistDao.deleteArtist(testArtist);
@@ -123,18 +125,12 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     /**
      * @see ItemDao#addItem(Item)
      */
-    @Test
+    @Test(expected = DAOException.class)
     public void addItem_Failure() {
         // Check testItem for null
-        assertNotNull(testItem);
-        testItem.setTitle(null);
-
-
-        // Find added item from db
-        Item item = itemDao.findItem(testItem.getId());
-
-        // Check for sameness
-        assertFalse(item.equals(testItem));;
+        Item testitem2 = TestObjectTemplate.createTestItem();
+        testitem2.setDescription(null);
+        itemDao.addItem(testitem2);
     }
 
     /**
@@ -308,7 +304,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * @see ItemDao#deleteItem(Long)
+     * @see ItemDao#deleteItem(Item)
      */
 
     @Test
@@ -318,12 +314,12 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertNotNull(itemDao.findItem(testItem.getId()));
 
         // Delete item from db
-        assertTrue(itemDao.deleteItem(testItem.getId()));
+        assertTrue(itemDao.deleteItem(testItem));
         testItem.setId(null);
     }
 
     /**
-     * @see ItemDao#deleteItem(Long)
+     * @see ItemDao#deleteItem(Item)
      */
     @Test(expected = DAOException.class)
     public void deleteItem_Failure() {
@@ -332,7 +328,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
         assertNotNull(itemDao.findItem(testItem.getId()));
 
         // Delete item from db
-        itemDao.deleteItem(-7L);
+        itemDao.deleteItem(tempItem);
 
         // Get deleted item from db
         Item deletedItem = itemDao.findItem(testItem.getId());

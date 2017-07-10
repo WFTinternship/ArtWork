@@ -156,8 +156,8 @@ public class Item implements Serializable {
         return
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL.get(0)) &&
-                /*artistId != null &&
-                artistId > 0 &&*/
+                artist_id != null &&
+                artist_id > 0 &&
                 price != 0 &&
                 itemType != null ;
         //        && additionDate != null;

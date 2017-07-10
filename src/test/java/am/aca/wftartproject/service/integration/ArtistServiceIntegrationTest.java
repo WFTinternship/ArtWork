@@ -3,6 +3,7 @@ package am.aca.wftartproject.service.integration;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.entity.ArtistSpecialization;
+import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.BaseIntegrationTest;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
@@ -25,7 +26,7 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
     private Artist testArtist;
 
     @Autowired
-    private ArtistServiceImpl artistService;
+    private ArtistService artistService;
 
     @Autowired
     private ShoppingCardServiceImpl shoppingCardService;

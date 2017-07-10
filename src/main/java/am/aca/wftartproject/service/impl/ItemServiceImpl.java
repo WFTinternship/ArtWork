@@ -29,27 +29,13 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
-
+    @Autowired
     private ItemDao itemDao;
-
+    @Autowired
     private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
-
+    @Autowired
     private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
-    @Autowired
-    public ItemServiceImpl(ItemDao itemDao) {
-        this.itemDao = itemDao;
-    }
-
-    @Autowired
-    public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
-        this.purchaseHistoryDao = purchaseHistoryDao;
-    }
-
-    @Autowired
-    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
-        this.shoppingCardDao = shoppingCardDao;
-    }
 /*
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
@@ -225,7 +211,7 @@ public class ItemServiceImpl implements ItemService {
     public void updateItem(Item item) {
         if (item == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new DAOException("Invalid item");
+            throw new InvalidEntryException("Invalid item");
         }
 
         try {
@@ -239,18 +225,18 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param id
-     * @see ItemService#deleteItem(Long)
+     * @param item
+     * @see ItemService#deleteItem(Item)
      */
     @Transactional(readOnly = false)
     @Override
-    public void deleteItem(Long id) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
+    public void deleteItem(Item item) {
+        if (item == null || !item.isValidItem()) {
+            LOGGER.error(String.format("Item is not valid: %s", item));
             throw new InvalidEntryException("Invalid Id");
         }
         try {
-            itemDao.deleteItem(id);
+            itemDao.deleteItem(item);
         } catch (DAOException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));

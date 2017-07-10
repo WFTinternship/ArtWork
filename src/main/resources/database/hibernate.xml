@@ -21,7 +21,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
         <property name="testConnectionOnCheckout" value="${jdbcTestConnection}"/>
     </bean>
 
-    <!-- Hibernate session factory -->
+    <!--  JPA entitymanager -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="am.aca.wftartproject" />
@@ -30,9 +30,11 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
         </property>
         <property name="jpaProperties">
             <props>
+                <!--<prop key="org.hibernate.flushMode">commit</prop>-->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
             </props>
         </property>
     </bean>
@@ -42,8 +44,9 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
 
 
     <!-- Enable Annotation based Declarative Transaction Management -->
-    <tx:annotation-driven proxy-target-class="true" mode="proxy"
-                          transaction-manager="transactionManager" />
+    <!--<tx:annotation-driven proxy-target-class="true"-->
+                          <!--transaction-manager="transactionManager" />-->
+    <tx:jta-transaction-manager/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />

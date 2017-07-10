@@ -8,6 +8,7 @@ import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,18 +26,16 @@ public class ArtistServiceImpl implements ArtistService {
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
     @Autowired
-    private final ArtistDao artistDao;
+    private  ArtistDao artistDao;
 
-    @Autowired
-    public ArtistServiceImpl(ArtistDao artistDao) {
-        this.artistDao = artistDao;
-    }
     @Autowired
     private ShoppingCardDao shoppingCardDao;
 
+    private ShoppingCardService shoppingCardService;
+
     @Autowired
-    public void setShoppingCardDao(ShoppingCardDao shoppingCardDao) {
-        this.shoppingCardDao = shoppingCardDao;
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
     }
 
     /**
@@ -70,14 +69,6 @@ public class ArtistServiceImpl implements ArtistService {
             throw new ServiceException(String.format(error, e.getMessage()));
         }
 
-        try {
-            artist.getShoppingCard().setBuyer_id(artist.getId());
-            shoppingCardDao.addShoppingCard(artist.getShoppingCard());
-        } catch (DAOException e) {
-            String error = "Failed to add ShoppingCard: %s";
-            LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
-        }
     }
 
 

@@ -41,9 +41,9 @@ public interface UserService {
     /**
      * Deletes user with the following id.
      *
-     * @param id
+     * @param user
      */
-    void deleteUser(Long id);
+    void deleteUser(User user);
 
     /**
      * Authenticates user info.

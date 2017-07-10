@@ -15,18 +15,15 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 
 @Component
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
 
-    @Autowired
-    public UserDaoImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * @param user
@@ -34,30 +31,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
             entityManager.persist(user);
             entityManager.flush();
-            tx.commit();
             LOGGER.info("Person saved successfully, Person Details=" + user);
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
-
 
     }
 
@@ -69,29 +51,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
         User user = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
             user =  (User) entityManager.find(User.class, id);
-            tx.commit();
+            entityManager.flush();
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to get User by id: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
-
         return user;
     }
 
@@ -103,28 +71,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(String email) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
-        Session session = null;
         User user = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
             user = (User) entityManager.createQuery("select c from User c where c.email = :email").setParameter("email",email).getSingleResult();
-            tx.commit();
+            entityManager.flush();
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to get User by email: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
-        }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
         }
         return user;
     }
@@ -136,67 +90,36 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean updateUser(User user) {
-        EntityTransaction tx = null;
-        EntityManager entityManager = null;
         Boolean result = false;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
             entityManager.merge(user);
-            tx.commit();
+            entityManager.flush();
             result = true;
             LOGGER.info("User saved successfully, Person Details=" + user);
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to update User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
-
-
         return result;
 
     }
 
     /**
-     * @param id
-     * @see UserDao#deleteUser(Long)
+     * @see UserDao#deleteUser(User)
      */
     @Override
-    public Boolean deleteUser(Long id) {
-        EntityManager entityManager = null;
+    public Boolean deleteUser(User user) {
         Boolean result = false;
-        EntityTransaction tx = null;
         try {
-            entityManager = this.entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            if (!tx.isActive()) {
-                entityManager.getTransaction().begin();
-            }
-            User user = (User) entityManager.find(User.class, id);
-            entityManager.remove(entityManager.contains(user)  ? user : entityManager.merge(user));
-            tx.commit();
+            entityManager.find(User.class,user.getId());
+            entityManager.remove(user);
             result = true;
         } catch (Exception e) {
-            tx.rollback();
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(String.format(error, e.getMessage()));
         }
-        finally {
-            if(entityManager.isOpen()){
-                entityManager.close();
-            }
-        }
-
         return result;
     }
 }

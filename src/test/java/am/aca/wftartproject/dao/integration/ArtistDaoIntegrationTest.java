@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.sql.SQLException;
 import static junit.framework.TestCase.*;
 
@@ -37,6 +38,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      * @throws ClassNotFoundException
      */
     @Before
+    @Transactional
     public void setUp() throws SQLException, ClassNotFoundException {
         // Create artistSpecialization
         testArtist = TestObjectTemplate.createTestArtist();
@@ -44,11 +46,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         // Add artist into db
         artistDao.addArtist(testArtist);
 
-        // Print busy connections quantity
-//        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {
-//            LOGGER.info(String.format("Number of busy connections Start: %s",
-//                    ((ComboPooledDataSource) jdbcTemplate.getDataSource()).getNumBusyConnections()));
-//        }
     }
 
 
@@ -60,7 +57,7 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     @After
     public void tearDown() throws SQLException, ClassNotFoundException ,DAOException {
         // Delete inserted test users and artists from db
-        if (testArtist.getId() != null) {
+        if (testArtist.getId() != null && testArtist.isValidArtist()) {
             artistDao.deleteArtist(testArtist);
         }
 
@@ -213,9 +210,16 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void deleteArtist_Failure() {
         // Add artist into db
         // Attemp to delete artist from db
-        Artist artist = TestObjectTemplate.createTestArtist();
-        artist.setFirstName(null);
-        assertFalse(artistDao.deleteArtist(artist));
+        Long temp = testArtist.getId();
+       testArtist.setId(null);
+       try{
+           artistDao.deleteArtist(testArtist);
+       }
+       catch (DAOException e){
+           testArtist.setId(temp);
+           throw new DAOException("");
+       }
+
 
     }
 

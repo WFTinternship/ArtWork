@@ -52,7 +52,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
 //            shoppingCardService.deleteShoppingCard(testshoppingCard);
 
         if (testUser.getId() != null)
-            userService.deleteUser(testUser.getId());
+            userService.deleteUser(testUser);
     }
 
     // region<TEST CASE>
@@ -168,7 +168,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see UserServiceImpl#deleteUser(java.lang.Long)
+     * @see UserServiceImpl#deleteUser(User)
      */
     @Test(expected = ServiceException.class)
     public void deleteUser_Success() {
@@ -176,7 +176,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
         userService.addUser(testUser);
 
       // TestMethod
-        userService.deleteUser(testUser.getId());
+        userService.deleteUser(testUser);
         testUser.setId(null);
         // Make sure it deleted
         User founded = userService.findUser(testUser.getEmail());
@@ -184,7 +184,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see UserServiceImpl#deleteUser(java.lang.Long)
+     * @see UserServiceImpl#deleteUser(User)
      */
     @Test(expected = InvalidEntryException.class)
     public void deleteUser_Failure() {
@@ -192,7 +192,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
         testUser = new User();
 
         // Test method
-        userService.deleteUser(testUser.getId());
+        userService.deleteUser(testUser);
     }
 
     /**
