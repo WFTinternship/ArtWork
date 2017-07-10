@@ -37,7 +37,6 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
     @Before
     public void setUp() {
         testArtist = createTestArtist();
-        testArtist.setShoppingCard(TestObjectTemplate.createTestShoppingCard());
     }
 
     /**
@@ -45,9 +44,6 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
      */
     @After
     public void tearDown() {
-        if (testArtist.getShoppingCard() != null) {
-            shoppingCardService.deleteShoppingCard(testArtist.getShoppingCard());
-        }
 
         if (testArtist.getId() != null) {
             artistService.deleteArtist(testArtist);
@@ -181,9 +177,7 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
         assertNotNull(testArtist);
         assertNotNull(testArtist.getId());
 
-        // Delete artist by id and its shoppingCard
-        shoppingCardService.deleteShoppingCard(testArtist.getShoppingCard());
-        testArtist.setShoppingCard(null);
+        // Delete artist
         artistService.deleteArtist(testArtist);
 
         // Make sure that it's deleted

@@ -48,7 +48,6 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     public void setUp() {
         testArtist =  createTestArtist();
         shoppingCard = createTestShoppingCard();
-        testArtist.setShoppingCard(shoppingCard);
         testItem = createTestItem();
         testUser = createTestUser();
         testPurchaseHistory = TestObjectTemplate.createTestPurchaseHistory();
@@ -72,9 +71,6 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         if (testItem.getId() != null)
             itemService.deleteItem(testItem);
 
-        if (testUser.getShoppingCard() != null) {
-            shoppingCardService.deleteShoppingCard(shoppingCard);
-        }
         if (testUser.getId() != null)
             userService.deleteUser(testUser);
 

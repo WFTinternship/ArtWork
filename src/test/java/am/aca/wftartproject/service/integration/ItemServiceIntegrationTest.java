@@ -62,6 +62,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         testItem.setArtist_id(testArtist.getId());
         tempItem = createTestItem();
         tempItem.setArtist_id(testArtist.getId());
+        testShoppingCard.setBuyer_id(testArtist.getId());
     }
 
     /**
@@ -371,6 +372,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         testItem.setPrice(1000.0);
         testItem.setArtist_id(testArtist.getId());
         testShoppingCard.setBalance(10000.0);
+        shoppingCardService.addShoppingCard(testShoppingCard);
 
         // Add testItem, shoppingCard into DB
         itemService.addItem(testItem);
@@ -398,6 +400,8 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         // Create testShoppingCard and testPurchaseHistory
         testItem.setPrice(1000000000.0);
         testItem.setArtist_id(testArtist.getId());
+
+        shoppingCardService.addShoppingCard(testShoppingCard);
 
         // Add testItem, shoppingCard into DB
         itemService.addItem(testItem);

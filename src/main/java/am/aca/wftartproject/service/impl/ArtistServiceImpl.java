@@ -125,8 +125,8 @@ public class ArtistServiceImpl implements ArtistService {
     @Transactional(readOnly = false)
     public void updateArtist( Artist artist) {
 
-        if (artist == null || !artist.isValidArtist()) {
-            LOGGER.error(String.format("Artist is not valid: %s", artist.getId()));
+        if (artist == null || !artist.isValidArtist() || artist.getId() == null || artist.getId()<0) {
+            LOGGER.error(String.format("Artist is not valid"));
             throw new InvalidEntryException("Invalid artist");
         }
 
@@ -146,7 +146,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Transactional(readOnly = false)
     @Override
     public void deleteArtist(Artist artist) {
-        if (!artist.isValidArtist()) {
+        if (artist == null || !artist.isValidArtist() || artist.getId() == null || artist.getId()<0) {
             LOGGER.error(String.format("Artist is not valid: %s", artist));
             throw new InvalidEntryException("Invalid id");
         }

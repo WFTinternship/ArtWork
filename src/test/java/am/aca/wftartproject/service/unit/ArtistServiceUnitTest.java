@@ -147,62 +147,56 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     @Test
     public void addArtist_addSuccess() {
         ArgumentCaptor<Artist> artistArgumentCaptor = ArgumentCaptor.forClass(Artist.class);
-        ArgumentCaptor<Long> artistArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<ShoppingCard> artistArgumentCaptor2 = ArgumentCaptor.forClass(ShoppingCard.class);
 
         // Create test artist
         testArtist = createTestArtist();
 
         // Setup mocks
         doNothing().when(artistDaoMock).addArtist(artistArgumentCaptor.capture());
-        doNothing().when(shoppingCardServiceMock).addShoppingCard(artistArgumentCaptor2.capture());
 
         // Test method
         artistService.addArtist(testArtist);
 
         assertEquals(testArtist, artistArgumentCaptor.getValue());
-        assertEquals(testArtist.getId(), artistArgumentCaptor1.getValue());
-        assertEquals(testArtist.getShoppingCard(), artistArgumentCaptor2.getValue());
 
     }
 
-    /**
-     * @see ArtistServiceImpl#addArtist(Artist)
-     */
-    @Test(expected = ServiceException.class)
-    public void addArtist_addShoppingCardFailed() {
-        // Create testArtist
-        testArtist = createTestArtist();
-
-        // Setup mocks
-        doNothing().when(artistDaoMock).addArtist(any(Artist.class));
-        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(any(ShoppingCard.class));
-
-        artistService.addArtist(testArtist);
-    }
-
-    /**
-     * @see ArtistServiceImpl#addArtist(Artist)
-     */
-    @Test
-    public void addArtist_addShoppingCardSuccess() {
-        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<ShoppingCard> argumentCaptor1 = ArgumentCaptor.forClass(ShoppingCard.class);
-        ArgumentCaptor<Artist> argumentCaptor2 = ArgumentCaptor.forClass(Artist.class);
-
-        // Create testArtist
-        testArtist = createTestArtist();
-
-        // Setup mocks
-        doNothing().when(artistDaoMock).addArtist(argumentCaptor2.capture());
-        doNothing().when(shoppingCardServiceMock).addShoppingCard( argumentCaptor1.capture());
-
-        artistService.addArtist(testArtist);
-
-        assertEquals(testArtist.getId(), argumentCaptor.getValue());
-        assertEqualShoppingCards(testArtist.getShoppingCard(), argumentCaptor1.getValue());
-        assertEquals(testArtist, argumentCaptor2.getValue());
-    }
+//    /**
+//     * @see ArtistServiceImpl#addArtist(Artist)
+//     */
+//    @Test(expected = ServiceException.class)
+//    public void addArtist_addShoppingCardFailed() {
+//        // Create testArtist
+//        testArtist = createTestArtist();
+//
+//        // Setup mocks
+//        doNothing().when(artistDaoMock).addArtist(any(Artist.class));
+//        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(any(ShoppingCard.class));
+//
+//        artistService.addArtist(testArtist);
+//    }
+//
+//    /**
+//     * @see ArtistServiceImpl#addArtist(Artist)
+//     */
+//    @Test
+//    public void addArtist_addShoppingCardSuccess() {
+////        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+//        ArgumentCaptor<ShoppingCard> argumentCaptor1 = ArgumentCaptor.forClass(ShoppingCard.class);
+//        ArgumentCaptor<Artist> argumentCaptor2 = ArgumentCaptor.forClass(Artist.class);
+//
+//        // Create testArtist
+//        testArtist = createTestArtist();
+//
+//        // Setup mocks
+//        doNothing().when(artistDaoMock).addArtist(argumentCaptor2.capture());
+//        doNothing().when(shoppingCardServiceMock).addShoppingCard( argumentCaptor1.capture());
+//
+//        artistService.addArtist(testArtist);
+//
+//        assertEqualShoppingCards(testArtist.getShoppingCard(), argumentCaptor1.getValue());
+//        assertEquals(testArtist, argumentCaptor2.getValue());
+//    }
 
     /**
      * @see ArtistServiceImpl#findArtist(java.lang.Long)
@@ -345,6 +339,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Create test id and testArtist
         Long id = null;
         testArtist = createTestArtist();
+        testArtist.setId(id);
 
         // Test method
         try {
@@ -356,7 +351,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         // Change id value to negative
         id = -5L;
-
+        testArtist.setId(id);
         // Test method
         try {
             artistService.updateArtist(testArtist);
@@ -373,7 +368,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     @Test
     public void updateArtist_artistIsNullOrNotValid() {
         // Create test id and testArtist with null value
-        Long id = 5L;
+
         testArtist = null;
 
         // Test method
@@ -406,6 +401,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Create test id and test Artist
         Long id = 5L;
         testArtist = createTestArtist();
+        testArtist.setId(id);
 
         // Setup mock
         doThrow(DAOException.class).when(artistDaoMock).updateArtist(any(Artist.class));
@@ -423,6 +419,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Create test id and test artist
         Long id = 5L;
         testArtist = createTestArtist();
+        testArtist.setId(id);
 
         // Test method
         artistService.updateArtist(testArtist);
@@ -467,7 +464,8 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     public void deleteArtist_deleteFail(){
         // Create test id;
         Long id = 5L;
-
+        testArtist = createTestArtist();
+        testArtist.setId(id);
         // Setup mock
         doThrow(DAOException.class).when(artistDaoMock).deleteArtist(any(Artist.class));
 
@@ -483,7 +481,8 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     public void deleteArtist_deleteSuccess(){
         // Create test id
         Long id = 5L;
-
+        testArtist = createTestArtist();
+        testArtist.setId(id);
         // Test method
         artistService.deleteArtist(testArtist);
 

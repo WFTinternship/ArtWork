@@ -188,7 +188,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getArtistItems(Long artistId) {
         if (artistId == null || artistId < 0 ) {
-            LOGGER.error(String.format("artistId or itemId or limit is not valid: %s , %s, %s", artistId));
+            LOGGER.error(String.format("artistId or itemId or limit is not valid"));
             throw new InvalidEntryException("Invalid artistId or limit");
         }
 
