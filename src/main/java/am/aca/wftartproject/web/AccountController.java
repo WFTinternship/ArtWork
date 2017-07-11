@@ -9,6 +9,7 @@ import am.aca.wftartproject.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -277,10 +278,12 @@ public class AccountController {
     }
 
     @RequestMapping(value = {"deleteItem/*"}, method = RequestMethod.GET)
+    @Transactional(readOnly = false)
     public ModelAndView deleteItem(HttpServletRequest request, HttpServletResponse response) {
         String[] pathInfo = request.getServletPath().split("/");
         Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
-        itemService.deleteItem(item);
+       Item itemForRemove =  itemService.findItem(itemId);
+        itemService.deleteItem(itemForRemove);
         request.setAttribute("message","Your ArtWork has been successfully deletet");
         return new ModelAndView("redirect:/my-works");
     }

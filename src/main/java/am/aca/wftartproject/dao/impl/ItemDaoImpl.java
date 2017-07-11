@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -240,8 +241,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         
         Boolean result = false;
         try {
-            entityManager.find(Item.class,item.getId());
-            entityManager.remove(item);
+            Item item1 = entityManager.find(Item.class,item.getId());
+            entityManager.merge(item1);
+            entityManager.remove(item1);
             result = true;
             LOGGER.info("Item deleted successfully");
         } catch (Exception e) {
