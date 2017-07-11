@@ -35,7 +35,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
+                <prop key="hibernate.current_session_context_class">thread</prop>
             </props>
         </property>
     </bean>
@@ -62,7 +62,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
         <!--<aop:advisor pointcut-ref="serviceMethods" advice-ref="txAdvice" />-->
     <!--</aop:config>-->
 
-    <tx:jta-transaction-manager/>
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />

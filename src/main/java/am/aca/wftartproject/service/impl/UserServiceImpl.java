@@ -176,7 +176,7 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new ServiceException(String.format(error, e.getMessage()));
+//            throw new ServiceException(String.format(error, e.getMessage()));
         } catch (RuntimeException e) {
             String error = "Failed to login: %s";
             LOGGER.error(String.format(error, e.getMessage()));

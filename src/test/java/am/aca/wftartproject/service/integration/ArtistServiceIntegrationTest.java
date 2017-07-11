@@ -5,6 +5,7 @@ import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.entity.ArtistSpecialization;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.BaseIntegrationTest;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import am.aca.wftartproject.util.TestObjectTemplate;
@@ -29,7 +30,7 @@ public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
     private ArtistService artistService;
 
     @Autowired
-    private ShoppingCardServiceImpl shoppingCardService;
+    private ShoppingCardService shoppingCardService;
 
     /**
      * Creates artist for tests

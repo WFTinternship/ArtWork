@@ -5,9 +5,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.service.BaseIntegrationTest;
-import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.service.PurchaseHistoryService;
+import am.aca.wftartproject.service.*;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
@@ -36,13 +34,13 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     private PurchaseHistory testPurchaseHistory;
 
     @Autowired
-    private ArtistServiceImpl artistService;
+    private ArtistService artistService;
 
     @Autowired
     private ItemService itemService;
 
     @Autowired
-    private ShoppingCardServiceImpl shoppingCardService;
+    private ShoppingCardService shoppingCardService;
 
     @Autowired
     private PurchaseHistoryService purchaseHistoryService;

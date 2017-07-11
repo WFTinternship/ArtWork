@@ -2,7 +2,7 @@ package am.aca.wftartproject.service.integration;
 
 import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
-import am.aca.wftartproject.service.BaseIntegrationTest;
+import am.aca.wftartproject.service.*;
 import am.aca.wftartproject.service.impl.*;
 import am.aca.wftartproject.util.TestObjectTemplate;
 import org.junit.After;
@@ -27,19 +27,19 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     private ShoppingCard shoppingCard ;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    private ArtistServiceImpl artistService;
+    private ArtistService artistService;
 
     @Autowired
-    private ItemServiceImpl itemService;
+    private ItemService itemService;
 
     @Autowired
-    private PurchaseHistoryServiceImpl purchaseHistoryService;
+    private PurchaseHistoryService purchaseHistoryService;
 
     @Autowired
-    private ShoppingCardServiceImpl shoppingCardService;
+    private ShoppingCardService shoppingCardService;
 
     /**
      * Creates all objects need for tests

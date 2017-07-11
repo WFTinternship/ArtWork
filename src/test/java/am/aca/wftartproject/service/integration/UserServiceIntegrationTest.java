@@ -5,6 +5,8 @@ import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.User;
 import am.aca.wftartproject.service.BaseIntegrationTest;
+import am.aca.wftartproject.service.ShoppingCardService;
+import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.After;
@@ -26,10 +28,10 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     private User testUser;
     private ShoppingCard testshoppingCard;
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    private ShoppingCardServiceImpl shoppingCardService;
+    private ShoppingCardService shoppingCardService;
 
 
 

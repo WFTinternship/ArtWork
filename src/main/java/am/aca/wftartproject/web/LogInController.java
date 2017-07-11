@@ -37,6 +37,7 @@ public class LogInController {
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
         try {
+
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
             Artist artistFromDB = artistService.login(userEmailStr,userPasswordStr);
             if (artistFromDB != null) {

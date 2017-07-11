@@ -6,6 +6,7 @@ import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -64,7 +65,6 @@ public class SignUpController {
         }
         return new ModelAndView(page, "user", user);
     }
-
 
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
