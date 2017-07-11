@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,18 +27,22 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 6/2/2017
  */
 
-public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
+public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
     @Autowired
     private UserDao userDao;
+
     @Autowired
     private ArtistDao artistDao;
+
     @Autowired
     private ItemDao itemDao;
+
     @Autowired
     private PurchaseHistoryDao purchaseHistoryDao;
+
     private User testUser;
     private Artist testArtist;
     private Item testItem;
@@ -48,6 +53,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Creates user, artist, items and purchaseHistory for test
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -81,6 +87,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Deletes all users, artists, items and purchaseHistory created during the test
+     *
      * @throws SQLException
      */
     @After

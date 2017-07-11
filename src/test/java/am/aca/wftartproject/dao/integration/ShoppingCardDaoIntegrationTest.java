@@ -8,7 +8,6 @@ import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.TestObjectTemplate;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +15,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
-import java.util.function.BooleanSupplier;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
@@ -28,7 +26,7 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 6/2/2017
  */
 
-public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
+public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
@@ -46,6 +44,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Creates user and shoppingCard for tests
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -65,6 +64,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Deletes all users and shoppingCards created during the tests
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */

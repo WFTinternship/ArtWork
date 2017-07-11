@@ -120,7 +120,7 @@
                                     </c:choose>
                                     <ul class="products isotope">
                                         <c:forEach items="${artistItems}" var="itemElement">
-                                            <c:if test="${itemElement.status eq true}">
+                                            <c:if test="${itemElement.status eq false}">
                                                 <li class="product-wrapper dt-sc-one-fifth">
                                                     <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->

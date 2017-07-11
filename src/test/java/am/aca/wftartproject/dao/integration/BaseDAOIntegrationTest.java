@@ -15,10 +15,23 @@ import javax.sql.DataSource;
  */
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:spring-config/spring-root.xml"})
+@ContextConfiguration(locations= {"classpath:spring-root.xml"})
 abstract class BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDAOIntegrationTest.class);
+
+    DataSource dataSource;
+
+    DataSource getDataSource() {
+        return dataSource;
+    }
+
+    @Autowired
+    void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
 
     protected JdbcTemplate jdbcTemplate;
 
@@ -32,14 +45,5 @@ abstract class BaseDAOIntegrationTest {
     }
 
 
-    DataSource dataSource;
 
-    DataSource getDataSource() {
-        return dataSource;
-    }
-
-    @Autowired
-    void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 }

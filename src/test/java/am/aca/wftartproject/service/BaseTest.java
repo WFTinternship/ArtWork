@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:spring-config/spring-root.xml"})
+@ContextConfiguration(locations= {"classpath:spring-root.xml"})
 public abstract class BaseTest {
 
 }

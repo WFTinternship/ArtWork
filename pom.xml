@@ -20,6 +20,10 @@
         <spring-framework-version>4.3.8.RELEASE</spring-framework-version>
         <mokito-version>1.9.5</mokito-version>
         <spring-test-version>4.0.5.RELEASE</spring-test-version>
+        <hibernate-version>5.2.10.Final</hibernate-version>
+        <spring-security-version>4.2.3.RELEASE</spring-security-version>
+        <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
+        <validation-api-verison>1.1.0.Final</validation-api-verison>
     </properties>
 
 
@@ -114,6 +118,33 @@
             <version>4.3.7.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+
+        <!-- jsr303 validation dependencies-->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api-verison}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator-version}</version>
+        </dependency>
 
 
 

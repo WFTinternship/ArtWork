@@ -16,6 +16,15 @@ public abstract class AbstractUser {
     String userPasswordRepeat;
     ShoppingCard shoppingCard;
 
+
+
+//    @NotEmpty
+//    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Set<UserProfile> userProfiles;
+
+
+
     public String getUserPasswordRepeat() {
         return userPasswordRepeat;
     }
@@ -94,8 +103,8 @@ public abstract class AbstractUser {
                 !isEmptyString(lastName) &&
                 age > 0 && age < 150 &&
                 !isEmptyString(email) &&
-                !isEmptyString(password) &&
-                password.equals(userPasswordRepeat)/* &&
+                !isEmptyString(password) /*&&
+                password.equals(userPasswordRepeat) &&
                 shoppingCard.isValidShoppingCard()*/;
     }
 }

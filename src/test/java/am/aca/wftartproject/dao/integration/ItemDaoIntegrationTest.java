@@ -14,8 +14,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.SQLException;
 import java.util.List;
+
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
 import static am.aca.wftartproject.util.TestObjectTemplate.*;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
@@ -26,7 +28,7 @@ import static junit.framework.TestCase.*;
  * Created by Armen on 6/1/2017
  */
 
-public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
+public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
@@ -44,6 +46,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Creates artist and item for test
+     *
      * @throws SQLException
      * @throws ClassNotFoundException
      */
@@ -73,6 +76,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
 
     /**
      * Deletes all artists and items created during the test
+     *
      * @throws SQLException
      */
     @After
@@ -159,7 +163,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#findItem(Long)
      */
     @Test
-    public void findItem_Failure(){
+    public void findItem_Failure() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -207,7 +211,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsByTitle(String)
      */
     @Test
-    public void getItemsByTitle_NotEmptyList(){
+    public void getItemsByTitle_NotEmptyList() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -222,7 +226,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsByTitle(String)
      */
     @Test
-    public void getItemsByTitle_EmptyList(){
+    public void getItemsByTitle_EmptyList() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -237,7 +241,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsByType(String)
      */
     @Test
-    public void getItemsByType_NotEmptyList(){
+    public void getItemsByType_NotEmptyList() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -252,7 +256,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsByType(String)
      */
     @Test
-    public void getItemsByType_EmptyList(){
+    public void getItemsByType_EmptyList() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -267,13 +271,13 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
     @Test
-    public void getItemsForGivenPriceRange_NotEmptyList(){
+    public void getItemsForGivenPriceRange_NotEmptyList() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
         // Test method
         List<Item> items = itemDao.getItemsForGivenPriceRange(testItem.getPrice() - 10, testItem.getPrice() + 10);
-        
+
         // Try to get items for given price range
         assertEqualItems(items.get(0), testItem);
     }
@@ -282,7 +286,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getItemsForGivenPriceRange(Double, Double)
      */
     @Test
-    public void getItemsForGivenPriceRange_EmptyList(){
+    public void getItemsForGivenPriceRange_EmptyList() {
         // Add item to DB
         itemDao.addItem(testArtist.getId(), testItem);
 
@@ -296,7 +300,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getArtistItems(Long, Long, Long)
      */
     @Test
-    public void getArtistItems_NotEmptyList(){
+    public void getArtistItems_NotEmptyList() {
         // Add testArtist's 2 items to DB
         itemDao.addItem(testArtist.getId(), testItem);
         itemDao.addItem(testArtist.getId(), tempItem);
@@ -312,7 +316,7 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest{
      * @see ItemDao#getArtistItems(Long, Long, Long)
      */
     @Test
-    public void getArtistItems_EmptyList(){
+    public void getArtistItems_EmptyList() {
         // Add testArtist's 2 items to DB
         itemDao.addItem(testArtist.getId(), testItem);
         itemDao.addItem(testArtist.getId(), tempItem);

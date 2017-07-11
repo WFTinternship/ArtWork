@@ -7,7 +7,7 @@
 
 
 <c:set var="user" value='<%=request.getSession().getAttribute("user")%>' />
-<c:set var="message" value='<%=request.getSession().getAttribute("message")%>' />
+<%--<c:set var="message" value='<%=session.getAttribute("message")%>' />--%>
 
 
 
@@ -70,7 +70,7 @@
                     <h2>Product <span>Detail</span></h2>
                     <div class="user-summary">
                     	<div class="account-links">
-                        	<a href="/account">My Account</a>
+                        	<a href="${pageContext.request.contextPath}/account">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
@@ -115,25 +115,31 @@
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
 												<!-- edit personal details -->
-												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
+												<form role="form" action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group" >
 														<label for="exampleInput1">First Name</label>
-														<input type="text" name="firstname" class="form-control" id="exampleInput1" placeholder="Brennan Doe">
+														<input type="text" name="firstname" class="form-control" id="exampleInput1" value="${user.firstName}">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput111">Last Name</label>
-														<input type="text" name="lastname" class="form-control" id="exampleInput111" placeholder="Brennan Doe">
+														<input type="text" name="lastname" class="form-control" id="exampleInput111" value="${user.lastName}">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput4">Age</label>
-														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="26">
+														<input type="text" name="age" class="form-control" id="exampleInput4" value="${user.age}">
 													</div>
+
+													<input type="hidden" id="thisField1" name="editBlock" value="persInfo">
+
+
 												<c:if test="${user['class'].simpleName eq 'Artist'}">
 													<div class="form-group">
 														<select class="shop-dropdown" name="specialization">
-															<option value="-1" selected>Choose artist specialization</option>
+															<option value="${user.specialization}" selected class="fa fa-eyedropper">${user.specialization}</option>
 															<c:forEach items="${artistSpecTypes}" var="element">
-																<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''} class="fa fa-eyedropper">${element.type}</option>
+																<c:if test="${element.type != user.specialization}">
+																	<option value="${element.type}" class="fa fa-eyedropper">${element.type}</option>
+																</c:if>
 															</c:forEach>
 														</select>
 													</div>
@@ -144,10 +150,12 @@
 										<c:if test="${user['class'].simpleName eq 'Artist'}">
 											<div class="col-md-6 col-sm-6">
 												<div class="form-group">
-													<form action="/edit-profile" method="post" enctype="multipart/form-data">
+													<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 														<label for="imageUpload">Choose Avatar</label>
 														<input type="file" id="imageUpload" name="image"  />
 														<img src="" id="imagePreview" alt="" width="200px"/><br/>
+
+														<input type="hidden" id="thisField2" name="editBlock" value="avatar">
 														<button type="submit" class="btn btn-warning">Apply</button>
 													</form>
 												</div>
@@ -155,7 +163,7 @@
 										</c:if>
 											<div class="col-md-6 col-sm-6">
 												<!-- Password details -->
-												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
+												<form role="form" action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
 														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password">
@@ -168,6 +176,7 @@
 														<label for="exampleInput33">Re - Type Password</label>
 														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password">
 													</div>
+													<input type="hidden" id="thisField3" name="editBlock" value="password">
 													<button type="submit" class="btn btn-warning">Update Password</button>
 												</form>
 											</div>

@@ -11,7 +11,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.SQLException;
+
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.Assert.assertNotSame;
@@ -28,6 +30,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     @Autowired
     private UserDaoImpl userDao;
+
     private User testUser;
 
     public UserDAOIntegrationTest() throws SQLException, ClassNotFoundException {
