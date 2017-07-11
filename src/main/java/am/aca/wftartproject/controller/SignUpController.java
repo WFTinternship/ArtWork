@@ -33,7 +33,7 @@ public class SignUpController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
+    public ModelAndView showRegister(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("signUp");
         request.getSession().setAttribute("artistSpecTypes", ArtistSpecialization.values());
         mav.addObject("user", new User());
@@ -99,7 +99,7 @@ public class SignUpController {
 //            return new ModelAndView("signUp");
         }
 
-        String page = "";
+        String page;
         try {
 
             artistService.addArtist(artistFromRequest);

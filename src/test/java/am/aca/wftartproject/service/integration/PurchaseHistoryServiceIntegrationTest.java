@@ -25,6 +25,7 @@ import static am.aca.wftartproject.util.TestObjectTemplate.*;
 @Transactional
 public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     private User testUser;
+    private Artist testArtist;
     private Item testItem;
     private PurchaseHistory testPurchaseHistory;
 
@@ -48,7 +49,7 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Before
     public void setUp() {
-        Artist testArtist = createTestArtist();
+        testArtist = createTestArtist();
         testItem = createTestItem();
         testUser = createTestUser();
         testPurchaseHistory = new PurchaseHistory();
@@ -69,15 +70,26 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         if (testItem.getId() != null)
             itemService.deleteItem(testItem.getId());
 
-        if (testUser.getShoppingCard() != null) {
-            shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+        if (testArtist.getShoppingCard() != null) {
+            if (testArtist.getShoppingCard().getId() != null)
+                shoppingCardService.deleteShoppingCardByBuyerId(testArtist.getId());
         }
+
+        if (testArtist.getId() != null)
+            artistService.deleteArtist(testArtist.getId());
+
+        if (testUser.getShoppingCard() != null) {
+            if (testUser.getShoppingCard().getId() != null)
+                shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+        }
+
         if (testUser.getId() != null)
             userService.deleteUser(testUser.getId());
 
         testPurchaseHistory = null;
         testItem = null;
         testUser = null;
+        testArtist = null;
     }
 
     // region<TEST CASE>

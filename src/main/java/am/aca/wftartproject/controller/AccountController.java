@@ -213,9 +213,9 @@ public class AccountController {
     }
 
     @RequestMapping(value = {"additem"}, method = RequestMethod.POST)
-    public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "files", required = false) MultipartFile [] image) throws IOException {
+    public ModelAndView addItemProcess(HttpServletRequest request, @RequestParam(value = "files", required = false) MultipartFile [] image) throws IOException {
         HttpSession session = request.getSession();
-        String message = "";
+        String message;
         List<String> photoUrl = new ArrayList<>();
         item = new Item();
         if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
@@ -223,7 +223,11 @@ public class AccountController {
             findArtist = artistService.findArtist(artist.getId());
             if (findArtist != null) {
                 request.setAttribute("user", findArtist);
-                if(image != null && !request.getParameter("title").isEmpty() && !request.getParameter("description").isEmpty() && !request.getParameter("type").isEmpty() && !request.getParameter("price").isEmpty() && !request.getParameter("type").equals("-1") ){
+                if(image != null && !request.getParameter("title").isEmpty() &&
+                        !request.getParameter("description").isEmpty() &&
+                        !request.getParameter("type").isEmpty() &&
+                        /*!request.getParameter("type").equals("-1") &&*/
+                        !request.getParameter("price").isEmpty() ) {
                     item.setTitle(request.getParameter("title"));
                     item.setDescription(request.getParameter("description"));
                     item.setItemType(ItemType.valueOf(request.getParameter("type")));

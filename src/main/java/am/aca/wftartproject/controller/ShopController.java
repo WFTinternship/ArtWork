@@ -87,7 +87,7 @@ public class ShopController {
 
     @RequestMapping(value = "item-detail/*", method = RequestMethod.POST)
     public ModelAndView itemDetailProcess(HttpServletRequest request) {
-        String page = "";
+        String page;
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             return new ModelAndView("logIn");

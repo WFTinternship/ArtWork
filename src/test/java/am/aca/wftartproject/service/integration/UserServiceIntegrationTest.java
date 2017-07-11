@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
@@ -19,6 +20,7 @@ import static junit.framework.TestCase.assertNull;
 /**
  * Created by ASUS on 30-Jun-17
  */
+@Transactional
 public class UserServiceIntegrationTest extends BaseIntegrationTest {
 
     private User testUser;
@@ -42,11 +44,15 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @After
     public void tearDown() {
-        if (testUser.getShoppingCard() != null)
-            shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+        if (testUser.getShoppingCard() != null) {
+            if (testUser.getShoppingCard().getId() != null)
+                shoppingCardService.deleteShoppingCardByBuyerId(testUser.getId());
+        }
 
         if (testUser.getId() != null)
             userService.deleteUser(testUser.getId());
+
+        testUser = null;
     }
 
     // region<TEST CASE>
@@ -72,7 +78,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     @Test(expected = InvalidEntryException.class)
     public void addUser_Failure() {
         // Create invalid user
-        testUser = new User();
+        testUser.setShoppingCard(null);
 
         // Test method
         userService.addUser(testUser);
@@ -95,13 +101,15 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see UserServiceImpl#findUser(java.lang.Long)
      */
-    @Test(expected = InvalidEntryException.class)
+    @Test
     public void findUser_Failure() {
-        // Create invalid user
-        testUser = new User();
+        testUser.setId(2000L);
 
         // Test method
-        userService.findUser(testUser.getId());
+        User user = userService.findUser(testUser.getId());
+
+        assertNull(user);
+        testUser.setId(null);
     }
 
     /**
@@ -124,11 +132,11 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void findUserByEmail_Failure() {
         // Create invalid user
-        testUser = new User();
         testUser.setEmail("email@email.com");
 
         // Test method
-        assertNull(userService.findUser(testUser.getEmail()));
+        User user = userService.findUser(testUser.getEmail());
+        assertNull(user);
     }
 
     /**
@@ -151,13 +159,13 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
      */
-    @Test(expected = InvalidEntryException.class)
+    @Test(expected = ServiceException.class)
     public void updateUser_Failure() {
-        // Create invalid user
-        testUser = new User();
+        // Create fake id
+        Long id = 2000L;
 
         // Test method
-        userService.updateUser(testUser.getId(), testUser);
+        userService.updateUser(id, testUser);
     }
 
     /**
@@ -185,9 +193,6 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void deleteUser_Failure() {
-        // Create invalid testUser
-        testUser = new User();
-
         // Test method
         userService.deleteUser(testUser.getId());
     }

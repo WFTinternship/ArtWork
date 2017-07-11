@@ -47,13 +47,13 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     private ShoppingCardDaoImpl shoppingCardDaoMock;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(shoppingCardService, "shoppingCardDao", shoppingCardDaoMock);
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
     }
 
     // region <TEST CASE>
@@ -122,24 +122,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
      */
-    @Test(expected = ServiceException.class)
-    public void addShoppingCard_addFailure() {
-        // Create userId and testShoppingCard
-        Long userId = 5L;
-        testShoppingCard = createTestShoppingCard();
-        testShoppingCard.setId(userId);
-
-        // Setup mocks
-        doThrow(DAOException.class).when(shoppingCardDaoMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
-
-        // Test method
-        shoppingCardService.addShoppingCard(userId, testShoppingCard);
-    }
-
-
-    /**
-     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
-     */
     @Test
     public void addShoppingCard_addSuccess() {
         //Create argument capture
@@ -160,6 +142,24 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         // Check input argument
         assertEquals(userId, argumentCaptor.getValue());
         assertEquals(testShoppingCard, argumentCaptor1.getValue());
+    }
+
+
+    /**
+     * @see ShoppingCardServiceImpl#addShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+     */
+    @Test(expected = ServiceException.class)
+    public void addShoppingCard_addFailure() {
+        // Create userId and testShoppingCard
+        Long userId = 5L;
+        testShoppingCard = createTestShoppingCard();
+        testShoppingCard.setId(userId);
+
+        // Setup mocks
+        doThrow(DAOException.class).when(shoppingCardDaoMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
+
+        // Test method
+        shoppingCardService.addShoppingCard(userId, testShoppingCard);
     }
 
 
@@ -195,22 +195,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#getShoppingCard(java.lang.Long)
      */
-    @Test(expected = ServiceException.class)
-    public void getShoppingCard_getFailure() {
-        // Create id
-        Long id = 5L;
-
-        // Setup mock
-        doThrow(DAOException.class).when(shoppingCardDaoMock).getShoppingCard(anyLong());
-
-        // Test method
-        shoppingCardService.getShoppingCard(id);
-    }
-
-
-    /**
-     * @see ShoppingCardServiceImpl#getShoppingCard(java.lang.Long)
-     */
     @Test
     public void getShoppingCard_getSuccess() {
         //Create argument capture
@@ -228,6 +212,22 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(id, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see ShoppingCardServiceImpl#getShoppingCard(java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void getShoppingCard_getFailure() {
+        // Create id
+        Long id = 5L;
+
+        // Setup mock
+        doThrow(DAOException.class).when(shoppingCardDaoMock).getShoppingCard(anyLong());
+
+        // Test method
+        shoppingCardService.getShoppingCard(id);
     }
 
     /**
@@ -257,18 +257,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#getShoppingCardByBuyerId(Long)
      */
-    @Test(expected = ServiceException.class)
-    public void getShoppingCardByBuyerId_getFailed() {
-        // Setup mock
-        doThrow(DAOException.class).when(shoppingCardDaoMock).getShoppingCardByBuyerId(anyLong());
-
-        // Test method
-        shoppingCardService.getShoppingCardByBuyerId(5L);
-    }
-
-    /**
-     * @see ShoppingCardServiceImpl#getShoppingCardByBuyerId(Long)
-     */
     @Test
     public void getShoppingCardByBuyerId_getSuccess() {
         //Create argument capture
@@ -284,6 +272,18 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         assertEqualShoppingCards(testShoppingCard, shoppingCardService.getShoppingCardByBuyerId(buyerId));
 
         assertEquals(buyerId, argumentCaptor.getValue());
+    }
+
+    /**
+     * @see ShoppingCardServiceImpl#getShoppingCardByBuyerId(Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void getShoppingCardByBuyerId_getFailed() {
+        // Setup mock
+        doThrow(DAOException.class).when(shoppingCardDaoMock).getShoppingCardByBuyerId(anyLong());
+
+        // Test method
+        shoppingCardService.getShoppingCardByBuyerId(5L);
     }
 
     /**
@@ -350,24 +350,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
      */
-    @Test(expected = ServiceException.class)
-    public void updateShoppingCard_updateFailed() {
-        // Create id and valid shopping card
-        Long id = 5L;
-        testShoppingCard = createTestShoppingCard();
-        testShoppingCard.setId(id);
-
-        // Setup mocks
-        doThrow(DAOException.class).when(shoppingCardDaoMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
-
-        // Test method
-        shoppingCardService.updateShoppingCard(id, testShoppingCard);
-    }
-
-
-    /**
-     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
-     */
     @Test
     public void updateShoppingCard_updateSuccess() {
         //Create argument capture
@@ -388,6 +370,24 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         // Check input argument
         assertEquals(id, argumentCaptor.getValue());
         assertEquals(testShoppingCard, argumentCaptor1.getValue());
+    }
+
+
+    /**
+     * @see ShoppingCardServiceImpl#updateShoppingCard(java.lang.Long, am.aca.wftartproject.model.ShoppingCard)
+     */
+    @Test(expected = ServiceException.class)
+    public void updateShoppingCard_updateFailed() {
+        // Create id and valid shopping card
+        Long id = 5L;
+        testShoppingCard = createTestShoppingCard();
+        testShoppingCard.setId(id);
+
+        // Setup mocks
+        doThrow(DAOException.class).when(shoppingCardDaoMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
+
+        // Test method
+        shoppingCardService.updateShoppingCard(id, testShoppingCard);
     }
 
     /**
@@ -419,17 +419,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#debitBalanceForItemBuying(Long, Double)
      */
-    @Test(expected = ServiceException.class)
-    public void debitBalanceForItemBuying_debitFailed() {
-        // Setup mock
-        doThrow(NotEnoughMoneyException.class).when(shoppingCardDaoMock).debitBalanceForItemBuying(anyLong(), anyDouble());
-
-        shoppingCardService.debitBalanceForItemBuying(5L, 5.0);
-    }
-
-    /**
-     * @see ShoppingCardServiceImpl#debitBalanceForItemBuying(Long, Double)
-     */
     @Test
     public void debitBalanceForItemBuying_debitSuccess() {
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
@@ -444,6 +433,17 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
 
         assertEquals(buyerId, argumentCaptor.getValue());
         assertEquals(itemPrice, argumentCaptor1.getValue());
+    }
+
+    /**
+     * @see ShoppingCardServiceImpl#debitBalanceForItemBuying(Long, Double)
+     */
+    @Test(expected = ServiceException.class)
+    public void debitBalanceForItemBuying_debitFailed() {
+        // Setup mock
+        doThrow(NotEnoughMoneyException.class).when(shoppingCardDaoMock).debitBalanceForItemBuying(anyLong(), anyDouble());
+
+        shoppingCardService.debitBalanceForItemBuying(5L, 5.0);
     }
 
     /**
@@ -478,22 +478,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
      */
-    @Test(expected = ServiceException.class)
-    public void deleteShoppingCard_deleteFailure() {
-        // Create id
-        Long id = 5L;
-
-        // Setup mocks
-        doThrow(DAOException.class).when(shoppingCardDaoMock).deleteShoppingCard(anyLong());
-
-        // Test method
-        shoppingCardService.deleteShoppingCard(id);
-    }
-
-
-    /**
-     * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
-     */
     @Test
     public void deleteShoppingCard_deleteSuccess() {
         //Create argument capture
@@ -510,6 +494,22 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(id, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see ShoppingCardServiceImpl#deleteShoppingCard(java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void deleteShoppingCard_deleteFailure() {
+        // Create id
+        Long id = 5L;
+
+        // Setup mocks
+        doThrow(DAOException.class).when(shoppingCardDaoMock).deleteShoppingCard(anyLong());
+
+        // Test method
+        shoppingCardService.deleteShoppingCard(id);
     }
 
     /**
@@ -539,18 +539,6 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
     /**
      * @see ShoppingCardServiceImpl#deleteShoppingCardByBuyerId(Long)
      */
-    @Test(expected = ServiceException.class)
-    public void deleteShoppingCardByBuyerId_deleteFailed() {
-        // Setup mock
-        doReturn(false).when(shoppingCardDaoMock).deleteShoppingCardByBuyerId(anyLong());
-
-        // Test method
-        shoppingCardService.deleteShoppingCardByBuyerId(5L);
-    }
-
-    /**
-     * @see ShoppingCardServiceImpl#deleteShoppingCardByBuyerId(Long)
-     */
     @Test
     public void deleteShoppingCardByBuyerId_deleteSuccess() {
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
@@ -564,6 +552,18 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
         shoppingCardService.deleteShoppingCardByBuyerId(buyerId);
 
         assertEquals(buyerId, argumentCaptor.getValue());
+    }
+
+    /**
+     * @see ShoppingCardServiceImpl#deleteShoppingCardByBuyerId(Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void deleteShoppingCardByBuyerId_deleteFailed() {
+        // Setup mock
+        doReturn(false).when(shoppingCardDaoMock).deleteShoppingCardByBuyerId(anyLong());
+
+        // Test method
+        shoppingCardService.deleteShoppingCardByBuyerId(5L);
     }
 
     // endregion

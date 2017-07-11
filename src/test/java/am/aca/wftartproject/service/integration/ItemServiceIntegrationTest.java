@@ -55,8 +55,6 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     public void setUp() {
         testArtist = createTestArtist();
         testItem = createTestItem();
-        /*testShoppingCard = createTestShoppingCard();
-        testArtist.setShoppingCard(testShoppingCard);*/
         artistService.addArtist(testArtist);
         testShoppingCard = testArtist.getShoppingCard();
         tempItem = createTestItem();
@@ -84,8 +82,9 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         }
 
         testItem = null;
-        testArtist = null;
         tempItem = null;
+        testArtist = null;
+        testShoppingCard = null;
     }
 
     // region<TEST CASE>
@@ -114,8 +113,10 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void addItem_Failure() {
+        testItem.setTitle(null);
+
         // Test method
-        itemService.addItem(testArtist.getId(), null);
+        itemService.addItem(testArtist.getId(), testItem);
     }
 
     /**
@@ -137,10 +138,13 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see ItemServiceImpl#findItem(java.lang.Long)
      */
-    @Test(expected = InvalidEntryException.class)
+    @Test
     public void findItem_Failure() {
+        Long id = 50000L;
+
         // Test method
-        itemService.findItem(-5L);
+        Item item = itemService.findItem(id);
+        assertNull(item);
     }
 
     /**
@@ -162,8 +166,11 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void getRecentlyAddedItems_EmptyList() {
+        int limit = 0;
+
         // Test method
-        itemService.getRecentlyAddedItems(-1);
+        List<Item> items = itemService.getRecentlyAddedItems(limit);
+        assertTrue(items.isEmpty());
     }
 
     /**
@@ -223,8 +230,8 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         itemService.addItem(testArtist.getId(), testItem);
 
         // Test method
-        List<Item> items = itemService.getItemsForGivenPriceRange(testItem.getPrice() - 100.0, testItem.getPrice() + 100.0);
-        assertFalse(items.isEmpty());
+        List<Item> items = itemService.getItemsForGivenPriceRange(testItem.getPrice() - 10.0, testItem.getPrice() + 10.0);
+        assertEqualItems(testItem, items.get(0));
     }
 
     /**

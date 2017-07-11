@@ -85,21 +85,6 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
     /**
      * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
      */
-    @Test(expected = ServiceException.class)
-    public void addPurchase_addFailed() {
-        // Create testPurchaseHistory
-        testPurchaseHistory = createTestPurchaseHistory();
-
-        // Setup mocks
-        doThrow(DAOException.class).when(purchaseHistoryDaoMock).addPurchase(any(PurchaseHistory.class));
-
-        // Test method
-        purchaseHistoryService.addPurchase(testPurchaseHistory);
-    }
-
-    /**
-     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
-     */
     @Test
     public void addPurchase_addSuccess() {
         //Create argument capture
@@ -116,6 +101,21 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEqualPurchaseHistory(testPurchaseHistory, argumentCaptor.getValue());
+    }
+
+    /**
+     * @see PurchaseHistoryServiceImpl#addPurchase(am.aca.wftartproject.model.PurchaseHistory)
+     */
+    @Test(expected = ServiceException.class)
+    public void addPurchase_addFailed() {
+        // Create testPurchaseHistory
+        testPurchaseHistory = createTestPurchaseHistory();
+
+        // Setup mocks
+        doThrow(DAOException.class).when(purchaseHistoryDaoMock).addPurchase(any(PurchaseHistory.class));
+
+        // Test method
+        purchaseHistoryService.addPurchase(testPurchaseHistory);
     }
 
 
@@ -180,21 +180,6 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long, java.lang.Long)
      */
-    @Test(expected = ServiceException.class)
-    public void getPurchase_getFailed() {
-        // Create userId and itemId
-        Long userId = 5L, itemId = 5L;
-
-        // Setup mocks
-        doThrow(DAOException.class).when(purchaseHistoryDaoMock).getPurchase(userId, itemId);
-
-        // Test method
-        purchaseHistoryService.getPurchase(userId, itemId);
-    }
-
-    /**
-     * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long, java.lang.Long)
-     */
     @Test
     public void getPurchase_getSuccess() {
         //Create argument capture
@@ -215,6 +200,21 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         // Check input arguments
         assertEquals(userId, argumentCaptor.getAllValues().get(0));
         assertEquals(itemId, argumentCaptor.getAllValues().get(1));
+    }
+
+    /**
+     * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long, java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void getPurchase_getFailed() {
+        // Create userId and itemId
+        Long userId = 5L, itemId = 5L;
+
+        // Setup mocks
+        doThrow(DAOException.class).when(purchaseHistoryDaoMock).getPurchase(userId, itemId);
+
+        // Test method
+        purchaseHistoryService.getPurchase(userId, itemId);
     }
 
 
@@ -250,23 +250,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
      */
     @Test
-    public void getPurchaseHistory_gottenListIsNull() {
-        // Create userId
-        Long userId = 5L;
-
-        // Setup mocks
-        doReturn(null).when(purchaseHistoryDaoMock).getPurchase(anyLong());
-
-        // Test method
-        assertEquals(null, purchaseHistoryService.getPurchase(userId));
-    }
-
-
-    /**
-     * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
-     */
-    @Test
-    public void getPurchaseHistory_getSuccess() {
+    public void getPurchaseHistory_gottenListIsNotNull() {
         //Create argument capture
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
@@ -282,6 +266,22 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(userId, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
+     */
+    @Test
+    public void getPurchaseHistory_gottenListIsNull() {
+        // Create userId
+        Long userId = 5L;
+
+        // Setup mocks
+        doReturn(null).when(purchaseHistoryDaoMock).getPurchase(anyLong());
+
+        // Test method
+        assertEquals(null, purchaseHistoryService.getPurchase(userId));
     }
 
 
@@ -340,22 +340,6 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
     /**
      * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
      */
-    @Test(expected = ServiceException.class)
-    public void deletePurchase_deleteFailed() {
-        // Create userId and itemId
-        Long userId = 5L, itemId = 5L;
-
-        // Setup mocks
-        doThrow(DAOException.class).when(purchaseHistoryDaoMock).deletePurchase(anyLong(), anyLong());
-
-        // Test method
-        purchaseHistoryService.deletePurchase(userId, itemId);
-    }
-
-
-    /**
-     * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
-     */
     @Test
     public void deletePurchase_deleteSuccess() {
         //Create argument capture
@@ -373,6 +357,22 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         // Check input arguments
         assertEquals(userId, argumentCaptor.getAllValues().get(0));
         assertEquals(itemId, argumentCaptor.getAllValues().get(1));
+    }
+
+
+    /**
+     * @see PurchaseHistoryServiceImpl#deletePurchase(java.lang.Long, java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void deletePurchase_deleteFailed() {
+        // Create userId and itemId
+        Long userId = 5L, itemId = 5L;
+
+        // Setup mocks
+        doThrow(DAOException.class).when(purchaseHistoryDaoMock).deletePurchase(anyLong(), anyLong());
+
+        // Test method
+        purchaseHistoryService.deletePurchase(userId, itemId);
     }
 
     // endregion

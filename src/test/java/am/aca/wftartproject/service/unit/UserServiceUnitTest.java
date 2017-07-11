@@ -127,23 +127,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
-     */
-    @Test(expected = ServiceException.class)
-    public void addUser_addFailed() {
-        // Create testUser
-        testUser = createTestUser();
-
-        // Setup mocks
-        doThrow(DAOException.class).when(userDaoMock).addUser(any(User.class));
-
-        // Test method
-        userService.addUser(testUser);
-    }
-
-
-    /**
-     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
-     */
+     *//*
     @Test
     public void addUser_addSuccess() {
         // Create argument capture
@@ -165,6 +149,22 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(testUser, argument1.getValue());
         assertEquals(testUser.getId(), argument.getValue());
         assertEqualShoppingCards(testUser.getShoppingCard(), argument2.getValue());
+    }*/
+
+
+    /**
+     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
+     */
+    @Test(expected = ServiceException.class)
+    public void addUser_addFailed() {
+        // Create testUser
+        testUser = createTestUser();
+
+        // Setup mocks
+        doThrow(DAOException.class).when(userDaoMock).addUser(any(User.class));
+
+        // Test method
+        userService.addUser(testUser);
     }
 
     /**
@@ -235,22 +235,6 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserServiceImpl#findUser(java.lang.Long)
      */
-    @Test(expected = ServiceException.class)
-    public void findUser_findFailed() {
-        // Create test id and initialize it with not exists number
-        Long id = 516498484L;
-
-        // Setup mocks
-        doThrow(DAOException.class).when(userDaoMock).findUser(anyLong());
-
-        // Test method
-        userService.findUser(id);
-    }
-
-
-    /**
-     * @see UserServiceImpl#findUser(java.lang.Long)
-     */
     @Test
     public void findUser_findSuccess() {
         //Create argument capture
@@ -268,6 +252,22 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(id, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see UserServiceImpl#findUser(java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void findUser_findFailed() {
+        // Create test id and initialize it with not exists number
+        Long id = 516498484L;
+
+        // Setup mocks
+        doThrow(DAOException.class).when(userDaoMock).findUser(anyLong());
+
+        // Test method
+        userService.findUser(id);
     }
 
 
@@ -303,22 +303,6 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserServiceImpl#findUser(java.lang.String)
      */
-    @Test(expected = ServiceException.class)
-    public void findUserByEmail_findFailed() {
-        // Create not empty email
-        String email = "email@gmail.com";
-
-        // Setup mocks
-        doThrow(DAOException.class).when(userDaoMock).findUser(anyString());
-
-        // Test methods
-        userService.findUser(email);
-    }
-
-
-    /**
-     * @see UserServiceImpl#findUser(java.lang.String)
-     */
     @Test
     public void findUserByEmail_findSuccess() {
         //Create argument capture
@@ -337,6 +321,22 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(email, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see UserServiceImpl#findUser(java.lang.String)
+     */
+    @Test(expected = ServiceException.class)
+    public void findUserByEmail_findFailed() {
+        // Create not empty email
+        String email = "email@gmail.com";
+
+        // Setup mocks
+        doThrow(DAOException.class).when(userDaoMock).findUser(anyString());
+
+        // Test methods
+        userService.findUser(email);
     }
 
 
@@ -404,23 +404,6 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
      */
-    @Test(expected = ServiceException.class)
-    public void updateUser_updateFailed() {
-        // Create id and testUser
-        Long id = 5L;
-        testUser = createTestUser();
-
-        // Setup mocks
-        doThrow(DAOException.class).when(userDaoMock).updateUser(anyLong(), any(User.class));
-
-        // Test method
-        userService.updateUser(id, testUser);
-    }
-
-
-    /**
-     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
-     */
     @Test
     public void updateUser_updateSuccess() {
         // Create argument capture
@@ -440,6 +423,23 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Check input arguments
         assertEquals(id, argumentCaptor.getValue());
         assertEquals(testUser, argumentCaptor1.getValue());
+    }
+
+
+    /**
+     * @see UserServiceImpl#updateUser(java.lang.Long, am.aca.wftartproject.model.User)
+     */
+    @Test(expected = ServiceException.class)
+    public void updateUser_updateFailed() {
+        // Create id and testUser
+        Long id = 5L;
+        testUser = createTestUser();
+
+        // Setup mocks
+        doThrow(DAOException.class).when(userDaoMock).updateUser(anyLong(), any(User.class));
+
+        // Test method
+        userService.updateUser(id, testUser);
     }
 
 
@@ -475,19 +475,6 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserServiceImpl#deleteUser(java.lang.Long)
      */
-    @Test(expected = ServiceException.class)
-    public void deleteUser_deleteFailed() {
-        // Setup mocks
-        doThrow(DAOException.class).when(userDaoMock).deleteUser(anyLong());
-
-        // Test method
-        userService.deleteUser(5L);
-    }
-
-
-    /**
-     * @see UserServiceImpl#deleteUser(java.lang.Long)
-     */
     @Test
     public void deleteUser_Success() {
         //Create argument capture
@@ -504,6 +491,19 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(id, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see UserServiceImpl#deleteUser(java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void deleteUser_deleteFailed() {
+        // Setup mocks
+        doThrow(DAOException.class).when(userDaoMock).deleteUser(anyLong());
+
+        // Test method
+        userService.deleteUser(5L);
     }
 
 
@@ -558,27 +558,6 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserServiceImpl#login(java.lang.String, java.lang.String)
      */
-
-    @Test(expected = ServiceException.class)
-    public void login_loginPasswordNotMatch() {
-        // Create email and password
-        String email = "email";
-        String password = "wrongPassword";
-
-        // Create user with same email
-        User testUser = createTestUser();
-        testUser.setEmail(email);
-
-        // Setup mock
-        doReturn(testUser).when(userDaoMock).findUser(anyString());
-
-        // Test method
-        userService.login(email, password);
-    }
-
-    /**
-     * @see UserServiceImpl#login(java.lang.String, java.lang.String)
-     */
     @Test
     public void login_Success() {
         //Create argument capture
@@ -597,6 +576,27 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(email, argumentCaptor.getValue());
+    }
+
+    /**
+     * @see UserServiceImpl#login(java.lang.String, java.lang.String)
+     */
+
+    @Test(expected = ServiceException.class)
+    public void login_loginPasswordNotMatch() {
+        // Create email and password
+        String email = "email";
+        String password = "wrongPassword";
+
+        // Create user with same email
+        User testUser = createTestUser();
+        testUser.setEmail(email);
+
+        // Setup mock
+        doReturn(testUser).when(userDaoMock).findUser(anyString());
+
+        // Test method
+        userService.login(email, password);
     }
 
     // endregion

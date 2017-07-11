@@ -92,7 +92,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
         try {
             return shoppingCardDao.getShoppingCardByBuyerId(buyerId);
         }catch (DAOException e){
-            String error = "Failed to get ShoppingCard by buyerID: %d %s";
+            String error = "Failed to get ShoppingCard by buyerID: %s";
             LOGGER.error(String.format(error, buyerId, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
@@ -134,8 +134,8 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      */
     @Override
     @Transactional
-    public void debitBalanceForItemBuying(Long buyerId,Double itemPrice){
-        if(itemPrice== null || itemPrice<0 || buyerId==null||buyerId<0){
+    public void debitBalanceForItemBuying(Long buyerId,Double itemPrice) {
+        if (itemPrice == null || itemPrice < 0 || buyerId == null || buyerId < 0) {
             LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId,itemPrice));
             throw new InvalidEntryException("Invalid id");
         }

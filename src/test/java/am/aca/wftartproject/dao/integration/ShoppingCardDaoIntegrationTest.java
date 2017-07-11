@@ -51,7 +51,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        // Create test user and shoppingCard, add user into db
+        // Create test user and shoppingCard, add user to db
         testUser = createTestUser();
         userDao.addUser(testUser);
         testShoppingCard = createTestShoppingCard();
@@ -129,7 +129,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         // Check testUser id for null
         assertNotNull(testUser.getId());
 
-        // Set testShoppingCard object into DB
+        // Set testShoppingCard object to DB
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
 
         // Check testShoppingCard object and testShoppingCard id for null
@@ -151,7 +151,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         // Check testUser id for null
         assertNotNull(testUser.getId());
 
-        // Add shopping card into DB and check its id for null
+        // Add shopping card to DB and check its id for null
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard.getId());
 
@@ -167,7 +167,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         // Check testUser id for null
         assertNotNull(testUser.getId());
 
-        // Add shopping card into DB
+        // Add shopping card to DB
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
 
         // Check testShoppingCard and its id for null
@@ -189,7 +189,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
         // Check testUser id for null
         assertNotNull(testUser.getId());
 
-        // Add shopping card into DB
+        // Add shopping card to DB
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
         assertNotNull(testShoppingCard.getId());
 
@@ -202,7 +202,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void updateShoppingCard_Success() {
-        // Check testUser for not null and add shoppingCard into DB
+        // Check testUser for not null and add shoppingCard to DB
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
 
@@ -225,7 +225,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test(expected = DAOException.class)
     public void updateShoppingCard_Failure() {
-        // Check testUser for not null and add shoppingCard into DB
+        // Check testUser for not null and add shoppingCard to DB
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
 
@@ -246,7 +246,7 @@ public class ShoppingCardDaoIntegrationTest extends BaseDAOIntegrationTest{
      */
     @Test
     public void debitBalanceForItemBuying_Success() {
-        // Check testUser for not null and add shoppingCard into DB
+        // Check testUser for not null and add shoppingCard to DB
         assertNotNull(testUser.getId());
         shoppingCardDao.addShoppingCard(testUser.getId(), testShoppingCard);
 

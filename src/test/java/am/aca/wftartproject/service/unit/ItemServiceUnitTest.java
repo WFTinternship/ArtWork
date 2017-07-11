@@ -146,24 +146,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     /**
      * @see ItemService#addItem(Long, Item)
      */
-    @Test(expected = ServiceException.class)
-    public void addItem_addFail() {
-        // Create test id and test Item
-        Long id = 5L;
-        testItem = createTestItem();
-        testItem.setArtistId(id);
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).addItem(id, testItem);
-
-        // Test method
-        itemService.addItem(id, testItem);
-    }
-
-
-    /**
-     * @see ItemService#addItem(Long, Item)
-     */
     @Test
     public void addItem_addSuccess() {
         // Create test id and test item
@@ -173,6 +155,24 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Setup mock
         doNothing().when(itemDaoMock).addItem(id, testItem);
+
+        // Test method
+        itemService.addItem(id, testItem);
+    }
+
+
+    /**
+     * @see ItemService#addItem(Long, Item)
+     */
+    @Test(expected = ServiceException.class)
+    public void addItem_addFail() {
+        // Create test id and test Item
+        Long id = 5L;
+        testItem = createTestItem();
+        testItem.setArtistId(id);
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).addItem(id, testItem);
 
         // Test method
         itemService.addItem(id, testItem);
@@ -211,22 +211,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     /**
      * @see ItemService#findItem(Long)
      */
-    @Test(expected = ServiceException.class)
-    public void findItem_findFail() {
-        // Create test id
-        Long id = 5L;
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).findItem(anyLong());
-
-        // Test method
-        itemService.findItem(id);
-    }
-
-
-    /**
-     * @see ItemService#findItem(Long)
-     */
     @Test
     public void findItem_findSuccess() {
         // Create Argument Capture
@@ -248,6 +232,22 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
 
     /**
+     * @see ItemService#findItem(Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void findItem_findFail() {
+        // Create test id
+        Long id = 5L;
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).findItem(anyLong());
+
+        // Test method
+        itemService.findItem(id);
+    }
+
+
+    /**
      * @see ItemService#getRecentlyAddedItems(int)
      */
     @Test
@@ -262,22 +262,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-    }
-
-
-    /**
-     * @see ItemService#getRecentlyAddedItems(int)
-     */
-    @Test(expected = ServiceException.class)
-    public void getRecentlyAddedItems_getFail() {
-        // Create test limit
-        int testLimit = 20;
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).getRecentlyAddedItems(anyInt());
-
-        // Test method
-        itemService.getRecentlyAddedItems(testLimit);
     }
 
 
@@ -305,6 +289,22 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
 
     /**
+     * @see ItemService#getRecentlyAddedItems(int)
+     */
+    @Test(expected = ServiceException.class)
+    public void getRecentlyAddedItems_getFail() {
+        // Create test limit
+        int testLimit = 20;
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).getRecentlyAddedItems(anyInt());
+
+        // Test method
+        itemService.getRecentlyAddedItems(testLimit);
+    }
+
+
+    /**
      * @see ItemService#getItemsByTitle(String)
      */
     @Test
@@ -319,22 +319,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-    }
-
-
-    /**
-     * @see ItemService#getItemsByTitle(String)
-     */
-    @Test(expected = ServiceException.class)
-    public void getItemsByTitle_getFail() {
-        // Create test title
-        String title = "Title 1";
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).getItemsByTitle(anyString());
-
-        // Test method
-        itemService.getItemsByTitle(title);
     }
 
 
@@ -362,6 +346,22 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
 
     /**
+     * @see ItemService#getItemsByTitle(String)
+     */
+    @Test(expected = ServiceException.class)
+    public void getItemsByTitle_getFail() {
+        // Create test title
+        String title = "Title 1";
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).getItemsByTitle(anyString());
+
+        // Test method
+        itemService.getItemsByTitle(title);
+    }
+
+
+    /**
      * @see ItemService#getItemsByType(String)
      */
     @Test
@@ -376,22 +376,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
-    }
-
-
-    /**
-     * @see ItemService#getItemsByType(String)
-     */
-    @Test(expected = ServiceException.class)
-    public void getItemsByType_getFail() {
-        // Create test type
-        String type = "TestArtType";
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).getItemsByType(anyString());
-
-        //Test method
-        itemService.getItemsByType(type);
     }
 
 
@@ -415,6 +399,22 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(type, argument.getValue());
+    }
+
+
+    /**
+     * @see ItemService#getItemsByType(String)
+     */
+    @Test(expected = ServiceException.class)
+    public void getItemsByType_getFail() {
+        // Create test type
+        String type = "TestArtType";
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).getItemsByType(anyString());
+
+        //Test method
+        itemService.getItemsByType(type);
     }
 
 
@@ -470,31 +470,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      */
     @Test
-    public void getItemsForGivenPriceRange_gottenListIsNull() {
-        // Create Argument Capture
-        ArgumentCaptor<Double> argument = ArgumentCaptor.forClass(Double.class);
-
-        // Creates test min and max price values
-        Double testMinPrice = 100.0;
-        Double testMaxPrice = 1000.0;
-        List<Item> itemList = null;
-
-        // Setup mock
-        doReturn(null).when(itemDaoMock).getItemsForGivenPriceRange(argument.capture(),argument.capture());
-
-        // Test method
-        assertEquals(itemList,itemService.getItemsForGivenPriceRange(testMinPrice,testMaxPrice));
-
-        // Check input argument
-        assertEquals(testMinPrice,argument.getAllValues().get(0));
-        assertEquals(testMaxPrice,argument.getAllValues().get(1));
-    }
-
-
-    /**
-     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
-     */
-    @Test
     public void getItemsForGivenPriceRange_getSuccess() {
         // Create Argument Capture
         ArgumentCaptor<Double> argument = ArgumentCaptor.forClass(Double.class);
@@ -505,14 +480,39 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         List<Item> itemList = new ArrayList<>();
 
         // Setup mock
-        doReturn(itemList).when(itemDaoMock).getItemsForGivenPriceRange(argument.capture(),argument.capture());
+        doReturn(itemList).when(itemDaoMock).getItemsForGivenPriceRange(argument.capture(), argument.capture());
 
         // Test method
-        assertEquals(itemList,itemService.getItemsForGivenPriceRange(testMinPrice,testMaxPrice));
+        assertEquals(itemList, itemService.getItemsForGivenPriceRange(testMinPrice, testMaxPrice));
 
         // Check input argument
-        assertEquals(testMinPrice,argument.getAllValues().get(0));
-        assertEquals(testMaxPrice,argument.getAllValues().get(1));
+        assertEquals(testMinPrice, argument.getAllValues().get(0));
+        assertEquals(testMaxPrice, argument.getAllValues().get(1));
+    }
+
+
+    /**
+     * @see ItemService#getItemsForGivenPriceRange(Double, Double)
+     */
+    @Test
+    public void getItemsForGivenPriceRange_gottenListIsNull() {
+        // Create Argument Capture
+        ArgumentCaptor<Double> argument = ArgumentCaptor.forClass(Double.class);
+
+        // Creates test min and max price values
+        Double testMinPrice = 100.0;
+        Double testMaxPrice = 1000.0;
+        List<Item> itemList = null;
+
+        // Setup mock
+        doReturn(null).when(itemDaoMock).getItemsForGivenPriceRange(argument.capture(), argument.capture());
+
+        // Test method
+        assertEquals(itemList, itemService.getItemsForGivenPriceRange(testMinPrice, testMaxPrice));
+
+        // Check input argument
+        assertEquals(testMinPrice, argument.getAllValues().get(0));
+        assertEquals(testMaxPrice, argument.getAllValues().get(1));
     }
 
 
@@ -520,7 +520,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#getArtistItems(Long, Long, Long)
      */
     @Test
-    public void getArtistItems_artistIdOrItemIdOrLimitNotValid(){
+    public void getArtistItems_artistIdOrItemIdOrLimitNotValid() {
         // Create test itemId, artistId, and limit
         Long testItemId = null;
         Long testArtistId = null;
@@ -528,7 +528,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -538,7 +538,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -548,7 +548,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -558,7 +558,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -568,7 +568,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -578,7 +578,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -589,7 +589,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -601,7 +601,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.getArtistItems(testArtistId,testItemId,testLimit);
+            itemService.getArtistItems(testArtistId, testItemId, testLimit);
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
@@ -612,33 +612,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#getArtistItems(Long, Long, Long)
      */
     @Test
-    public void getArtistItems_gottenListIsNull(){
-        // Create Argument Capture
-        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-
-        // Creates test iteId, artistId and limit
-        Long testArtistId = 7L;
-        Long testItemId = 5L;
-        Long testLimit = 3L;
-
-        // Setup mock
-        doReturn(null).when(itemDaoMock).getArtistItems(argument.capture(),argument.capture(),argument.capture());
-
-        // Test method
-        assertEquals(null,itemService.getArtistItems(testArtistId,testItemId,testLimit));
-
-        // Check input argument
-        assertEquals(testArtistId,argument.getAllValues().get(0));
-        assertEquals(testItemId,argument.getAllValues().get(1));
-        assertEquals(testLimit,argument.getAllValues().get(2));
-    }
-
-
-    /**
-     * @see ItemService#getArtistItems(Long, Long, Long)
-     */
-    @Test
-    public void getArtistItems_getSuccess(){
+    public void getArtistItems_getSuccess() {
         // Create Argument Capture
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
 
@@ -650,15 +624,41 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         List<Item> itemList = new ArrayList<>();
 
         // Setup mock
-        doReturn(itemList).when(itemDaoMock).getArtistItems(argument.capture(),argument.capture(),argument.capture());
+        doReturn(itemList).when(itemDaoMock).getArtistItems(argument.capture(), argument.capture(), argument.capture());
 
         // Test method
-        assertEquals(itemList,itemService.getArtistItems(testArtistId,testItemId,testLimit));
+        assertEquals(itemList, itemService.getArtistItems(testArtistId, testItemId, testLimit));
 
         // Check input argument
-        assertEquals(testArtistId,argument.getAllValues().get(0));
-        assertEquals(testItemId,argument.getAllValues().get(1));
-        assertEquals(testLimit,argument.getAllValues().get(2));
+        assertEquals(testArtistId, argument.getAllValues().get(0));
+        assertEquals(testItemId, argument.getAllValues().get(1));
+        assertEquals(testLimit, argument.getAllValues().get(2));
+    }
+
+
+    /**
+     * @see ItemService#getArtistItems(Long, Long, Long)
+     */
+    @Test
+    public void getArtistItems_gottenListIsNull() {
+        // Create Argument Capture
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+
+        // Creates test iteId, artistId and limit
+        Long testArtistId = 7L;
+        Long testItemId = 5L;
+        Long testLimit = 3L;
+
+        // Setup mock
+        doReturn(null).when(itemDaoMock).getArtistItems(argument.capture(), argument.capture(), argument.capture());
+
+        // Test method
+        assertEquals(null, itemService.getArtistItems(testArtistId, testItemId, testLimit));
+
+        // Check input argument
+        assertEquals(testArtistId, argument.getAllValues().get(0));
+        assertEquals(testItemId, argument.getAllValues().get(1));
+        assertEquals(testLimit, argument.getAllValues().get(2));
     }
 
     /**
@@ -689,19 +689,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
      */
     @Test
-    public void getAvailableItemsForGivenArtist_gottenListIsNull() {
-        // Setup mock
-        doReturn(null).when(itemDaoMock).getAvailableItemsForGivenArtist(anyLong());
-
-        List<Item> availableItems = itemService.getAvailableItemsForGivenArtist(5L);
-
-        assertNull(availableItems);
-    }
-
-    /**
-     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
-     */
-    @Test
     public void getAvailableItemsForGivenArtist_gottenListNotNull() {
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
@@ -714,6 +701,20 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         assertEquals(availableItems, itemService.getAvailableItemsForGivenArtist(artistId));
 
         assertEquals(artistId, argumentCaptor.getValue());
+    }
+
+
+    /**
+     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
+     */
+    @Test
+    public void getAvailableItemsForGivenArtist_gottenListIsNull() {
+        // Setup mock
+        doReturn(null).when(itemDaoMock).getAvailableItemsForGivenArtist(anyLong());
+
+        List<Item> availableItems = itemService.getAvailableItemsForGivenArtist(5L);
+
+        assertNull(availableItems);
     }
 
 
@@ -782,30 +783,8 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     /**
      * @see ItemService#updateItem(Long, Item)
      */
-    @Test(expected = ServiceException.class)
-    public void updateItem_updateFail(){
-        // Create Argument Capture
-        ArgumentCaptor<Long> argument1 = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Item> argument2 = ArgumentCaptor.forClass(Item.class);
-
-        // Create test id and test item
-        Long id = 343534536L;
-        testItem = createTestItem();
-        testItem.setArtistId(id);
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).updateItem(argument1.capture(),argument2.capture());
-
-        // Test method
-        itemService.updateItem(id,testItem);
-    }
-
-
-    /**
-     * @see ItemService#updateItem(Long, Item)
-     */
     @Test
-    public void updateItem_updateSuccess(){
+    public void updateItem_updateSuccess() {
         // Create Argument Capture
         ArgumentCaptor<Long> argument1 = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Item> argument2 = ArgumentCaptor.forClass(Item.class);
@@ -816,14 +795,36 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         testItem.setArtistId(id);
 
         // Setup mock
-        doNothing().when(itemDaoMock).updateItem(argument1.capture(),argument2.capture());
+        doNothing().when(itemDaoMock).updateItem(argument1.capture(), argument2.capture());
 
         // Test method
-        itemService.updateItem(id,testItem);
+        itemService.updateItem(id, testItem);
 
         // Check input arguments
-        assertEquals(id,argument1.getValue());
-        AssertTemplates.assertEqualItems(testItem,argument2.getValue());
+        assertEquals(id, argument1.getValue());
+        AssertTemplates.assertEqualItems(testItem, argument2.getValue());
+    }
+
+
+    /**
+     * @see ItemService#updateItem(Long, Item)
+     */
+    @Test(expected = ServiceException.class)
+    public void updateItem_updateFail() {
+        // Create Argument Capture
+        ArgumentCaptor<Long> argument1 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Item> argument2 = ArgumentCaptor.forClass(Item.class);
+
+        // Create test id and test item
+        Long id = 343534536L;
+        testItem = createTestItem();
+        testItem.setArtistId(id);
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).updateItem(argument1.capture(), argument2.capture());
+
+        // Test method
+        itemService.updateItem(id, testItem);
     }
 
 
@@ -831,7 +832,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#deleteItem(Long)
      */
     @Test
-    public void deleteItem_idIsNullOrNotValid(){
+    public void deleteItem_idIsNullOrNotValid() {
         // Create test id with null value
         Long id = null;
 
@@ -859,24 +860,8 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     /**
      * @see ItemService#deleteItem(Long)
      */
-    @Test(expected = ServiceException.class)
-    public void deleteItem_deleteFail(){
-        // Create test id and test item
-        Long id = 343534536L;
-
-        // Setup mock
-        doThrow(DAOException.class).when(itemDaoMock).deleteItem(anyLong());
-
-        // Test method
-        itemService.deleteItem(id);
-    }
-
-
-    /**
-     * @see ItemService#deleteItem(Long)
-     */
     @Test
-    public void deleteItem_deleteSuccess(){
+    public void deleteItem_deleteSuccess() {
         // Create Argument Capture
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
 
@@ -890,7 +875,23 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         itemService.deleteItem(id);
 
         // Check input argument
-        assertEquals(id,argument.getValue());
+        assertEquals(id, argument.getValue());
+    }
+
+
+    /**
+     * @see ItemService#deleteItem(Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void deleteItem_deleteFail() {
+        // Create test id and test item
+        Long id = 343534536L;
+
+        // Setup mock
+        doThrow(DAOException.class).when(itemDaoMock).deleteItem(anyLong());
+
+        // Test method
+        itemService.deleteItem(id);
     }
 
 
@@ -898,16 +899,16 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#itemBuying(Item, Long)
      */
     @Test
-    public void itemBuying_idIsNotValid(){
+    public void itemBuying_idIsNotValid() {
         // Create test item and test buyerId with null value
         Long buyerId = null;
         testItem = createTestItem();
 
         // Test method
-        try{
+        try {
             itemService.itemBuying(testItem, buyerId);
             fail();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
@@ -916,9 +917,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.itemBuying(testItem,buyerId);
+            itemService.itemBuying(testItem, buyerId);
             fail();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
     }
@@ -928,16 +929,16 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#itemBuying(Item, Long)
      */
     @Test
-    public void itemBuying_itemIsNotValid(){
+    public void itemBuying_itemIsNotValid() {
         // Create test buyerId and test item with null value
         Long buyerId = 5L;
         testItem = null;
 
         // Test method
-        try{
-            itemService.itemBuying(testItem,buyerId);
+        try {
+            itemService.itemBuying(testItem, buyerId);
             fail();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException || ex instanceof NotEnoughMoneyException);
         }
 
@@ -947,9 +948,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Test method
         try {
-            itemService.itemBuying(testItem,buyerId);
+            itemService.itemBuying(testItem, buyerId);
             fail();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             assertTrue(ex instanceof InvalidEntryException);
         }
     }
@@ -972,7 +973,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
      * @see ItemService#itemBuying(Item, Long)
      */
     @Test(expected = NotEnoughMoneyException.class)
-    public void itemBuying_notEnoughMoneyOnAccount(){
+    public void itemBuying_notEnoughMoneyOnAccount() {
         // Create test item, shoppingCard and test buyerId
         Long buyerId = 5L;
         shoppingCard = createTestShoppingCard();
@@ -991,30 +992,8 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     /**
      * @see ItemService#itemBuying(Item, Long)
      */
-    @Test(expected = ServiceException.class)
-    public void itemBuying_withdrawFail(){
-        // Create test shoppingCard and test item
-        Long id = 5L;
-        shoppingCard = createTestShoppingCard();
-        shoppingCard.setBalance(1000);
-        testItem = createTestItem();
-        testItem.setArtistId(5L);
-        testItem.setPrice(100.0);
-
-        // Setup mock
-        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(anyLong());
-        doThrow(DAOException.class).when(shoppingCardServiceMock).updateShoppingCard(anyLong(),any(ShoppingCard.class));
-
-        // Test method
-        itemService.itemBuying(testItem, id);
-    }
-
-
-    /**
-     * @see ItemService#itemBuying(Item, Long)
-     */
     @Test
-    public void itemBuying_withdrawSuccess(){
+    public void itemBuying_withdrawSuccess() {
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
 
         // Create test shoppingCard and test item
@@ -1029,36 +1008,33 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
 
         // Test method
-        itemService.itemBuying(testItem,id);
+        itemService.itemBuying(testItem, id);
 
-        verify(shoppingCardServiceMock).updateShoppingCard(shoppingCard.getId(),shoppingCard);
+        verify(shoppingCardServiceMock).updateShoppingCard(shoppingCard.getId(), shoppingCard);
 
         assertEquals(id, argument.getValue());
     }
+
 
     /**
      * @see ItemService#itemBuying(Item, Long)
      */
     @Test(expected = ServiceException.class)
-    public void itemBuying_addPurchaseHistoryFail(){
-        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-
-        // Create test item and test shopping card
-        Long buyerId = 5L;
-        testItem = createTestItem();
+    public void itemBuying_withdrawFail() {
+        // Create test shoppingCard and test item
+        Long id = 5L;
         shoppingCard = createTestShoppingCard();
+        shoppingCard.setBalance(1000);
+        testItem = createTestItem();
+        testItem.setArtistId(5L);
         testItem.setPrice(100.0);
-        shoppingCard.setBalance(100000.0);
 
-        // Setup mocks
-        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
-        doNothing().when(shoppingCardServiceMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
-        doThrow(DAOException.class).when(purchaseHistoryServiceMock).addPurchase(any(PurchaseHistory.class));
+        // Setup mock
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(anyLong());
+        doThrow(DAOException.class).when(shoppingCardServiceMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
 
         // Test method
-        itemService.itemBuying(testItem, buyerId);
-
-        assertEquals(buyerId, argument.getValue());
+        itemService.itemBuying(testItem, id);
     }
 
     /**
@@ -1097,37 +1073,28 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+     * @see ItemService#itemBuying(Item, Long)
      */
     @Test(expected = ServiceException.class)
-    public void itemBuying_updateItemFailed() {
+    public void itemBuying_addPurchaseHistoryFail() {
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<ShoppingCard> argument1 = ArgumentCaptor.forClass(ShoppingCard.class);
-        ArgumentCaptor<PurchaseHistory> argument2 = ArgumentCaptor.forClass(PurchaseHistory.class);
 
-        // Create testItem, testShoppingCard and purchaseHistory
+        // Create test item and test shopping card
         Long buyerId = 5L;
         testItem = createTestItem();
         shoppingCard = createTestShoppingCard();
-        testItem.setPrice(1000.0);
-        testItem.setArtistId(5L);
-        shoppingCard.setBalance(10000.0);
-        purchaseHistory = createTestPurchaseHistory();
-        purchaseHistory.setItemId(testItem.getId());
-        purchaseHistory.setUserId(buyerId);
+        testItem.setPrice(100.0);
+        shoppingCard.setBalance(100000.0);
 
-        // Setup mock
+        // Setup mocks
         doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
-        doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
-        doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
-        doThrow(DAOException.class).when(itemDaoMock).updateItem(anyLong(), any(Item.class));
+        doNothing().when(shoppingCardServiceMock).updateShoppingCard(anyLong(), any(ShoppingCard.class));
+        doThrow(DAOException.class).when(purchaseHistoryServiceMock).addPurchase(any(PurchaseHistory.class));
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
         assertEquals(buyerId, argument.getValue());
-        assertEqualShoppingCards(shoppingCard, argument1.getValue());
-        assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
     }
 
     /**
@@ -1166,6 +1133,40 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
         assertEquals(testItem.getArtistId(), argument.getAllValues().get(2));
         assertEqualItems(testItem, argument3.getValue());
+    }
+
+    /**
+     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.model.Item, java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void itemBuying_updateItemFailed() {
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<ShoppingCard> argument1 = ArgumentCaptor.forClass(ShoppingCard.class);
+        ArgumentCaptor<PurchaseHistory> argument2 = ArgumentCaptor.forClass(PurchaseHistory.class);
+
+        // Create testItem, testShoppingCard and purchaseHistory
+        Long buyerId = 5L;
+        testItem = createTestItem();
+        shoppingCard = createTestShoppingCard();
+        testItem.setPrice(1000.0);
+        testItem.setArtistId(5L);
+        shoppingCard.setBalance(10000.0);
+        purchaseHistory = createTestPurchaseHistory();
+        purchaseHistory.setItemId(testItem.getId());
+        purchaseHistory.setUserId(buyerId);
+
+        // Setup mock
+        doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCardByBuyerId(argument.capture());
+        doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
+        doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
+        doThrow(DAOException.class).when(itemDaoMock).updateItem(anyLong(), any(Item.class));
+
+        // Test method
+        itemService.itemBuying(testItem, buyerId);
+
+        assertEquals(buyerId, argument.getValue());
+        assertEqualShoppingCards(shoppingCard, argument1.getValue());
+        assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
     }
 
     // endregion
