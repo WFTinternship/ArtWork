@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
      * @see UserService#addUser(User)
      */
     @Override
-    @Transactional
     public void addUser(User user) {
         if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
             String error = "Incorrect data or Empty fields ";
@@ -119,7 +118,6 @@ public class UserServiceImpl implements UserService {
      * @see UserService#updateUser( User)
      */
     @Override
-    @Transactional
     public void updateUser(User user) {
 
         if (user == null || !user.isValidUser() || user.getId() == null || user.getId() < 0) {
@@ -144,7 +142,6 @@ public class UserServiceImpl implements UserService {
      * @see UserService#deleteUser(User)
      */
     @Override
-    @Transactional
     public void deleteUser(User user) {
         if (user == null || !user.isValidUser()) {
             LOGGER.error(String.format("User is not valid: %s", user));

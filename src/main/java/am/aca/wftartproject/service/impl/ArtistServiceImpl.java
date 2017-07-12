@@ -21,7 +21,6 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
  * Created by surik on 6/3/17
  */
 @Service
-@Transactional(readOnly = true)
 public class ArtistServiceImpl implements ArtistService {
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
@@ -50,7 +49,6 @@ public class ArtistServiceImpl implements ArtistService {
      */
 
     @Override
-    @Transactional(readOnly = false)
     public void addArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || !isValidEmailAddressForm(artist.getEmail())) {
             String error = "Incorrect data or Empty fields ";
@@ -128,7 +126,6 @@ public class ArtistServiceImpl implements ArtistService {
      */
 
     @Override
-    @Transactional(readOnly = false)
     public void updateArtist( Artist artist) {
 
         if (artist == null || !artist.isValidArtist() || artist.getId() == null || artist.getId()<0) {
@@ -149,7 +146,7 @@ public class ArtistServiceImpl implements ArtistService {
     /**
      * @see ArtistService#deleteArtist(Artist)
      */
-    @Transactional(readOnly = false)
+
     @Override
     public void deleteArtist(Artist artist) {
         if (artist == null || !artist.isValidArtist() || artist.getId() == null || artist.getId()<0) {
@@ -172,7 +169,7 @@ public class ArtistServiceImpl implements ArtistService {
      * @param password
      * @see ArtistService#login(String, String)
      */
-    @Transactional(readOnly = false)
+
     public Artist login(String email, String password) {
         Artist artist = null;
         if (isEmptyString(password) || isEmptyString(email)) {

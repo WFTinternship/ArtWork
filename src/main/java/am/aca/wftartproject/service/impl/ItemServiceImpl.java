@@ -28,7 +28,6 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
  * Created by surik on 6/1/17
  */
 @Service
-@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
@@ -49,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#addItem(Item)
      */
-    @Transactional(readOnly = false)
+    
     @Override
     public void addItem(Item item) {
 
@@ -209,7 +208,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#updateItem(Item)
      */
-    @Transactional(readOnly = false)
+    
     @Override
     public void updateItem(Item item) {
         if (item == null || !item.isValidItem()) {
@@ -231,7 +230,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#deleteItem(Item)
      */
-    @Transactional(readOnly = false)
+    
     @Override
     public void deleteItem(Item item) {
         if (item == null || !item.isValidItem()) {

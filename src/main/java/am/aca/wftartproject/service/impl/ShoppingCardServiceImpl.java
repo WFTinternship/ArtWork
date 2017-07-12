@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by ASUS on 03-Jun-17
  */
 @Service
-@Transactional(readOnly = true)
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
@@ -27,7 +26,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param shoppingCard
      */
     @Override
-    @Transactional
     public void addShoppingCard(ShoppingCard shoppingCard) {
         if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
@@ -68,7 +66,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param shoppingCard
      */
     @Override
-    @Transactional
     public void updateShoppingCard(ShoppingCard shoppingCard) {
         if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
@@ -92,7 +89,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param buyerId
      */
     @Override
-    @Transactional
     public void debitBalanceForItemBuying(Long buyerId,Double itemPrice){
         if(itemPrice== null || itemPrice<0 || buyerId==null||buyerId<0){
             LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId,itemPrice));
@@ -114,7 +110,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
      * @param shoppingCard
      */
     @Override
-    @Transactional
     public void deleteShoppingCard(ShoppingCard shoppingCard) {
         if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
             LOGGER.error(String.format("Id is not valid: %s", shoppingCard));
