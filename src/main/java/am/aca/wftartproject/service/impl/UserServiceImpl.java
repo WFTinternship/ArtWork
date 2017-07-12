@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userDao.findUser(user.getEmail()) != null) {
-            String error = "User has already exists";
+            String error = "User already exists";
             LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
             throw new DuplicateEntryException(error);
         }

@@ -5,6 +5,6 @@
 
     <import resource="classpath:spring-config/spring-database.xml"/>
     <import resource="classpath:spring-config/spring-mvc-servlet.xml"/>
-    <import resource="classpath:spring-config/spring-security.xml"/>
+    <!--<import resource="classpath:spring-config/spring-security.xml"/>-->
 
 </beans>

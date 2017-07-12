@@ -10,7 +10,6 @@ import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +54,7 @@ public class ArtistServiceImpl implements ArtistService {
             throw new InvalidEntryException("Invalid artist");
         }
         if (artistDao.findArtist(artist.getEmail()) != null) {
-            String error = "User has already exists";
+            String error = "Artist already exists";
             LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
             throw new DuplicateEntryException(error);
         }

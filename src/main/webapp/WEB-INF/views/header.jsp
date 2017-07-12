@@ -9,10 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
+
+
 <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
     <div id="header" class="header">
         <div class="container menu-container">
-            <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+            <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
 
             <a href="#" class="menu-trigger">
                 <span></span>
@@ -71,7 +73,7 @@
                         <a href="<%--progressbar.html--%>"> Account <span class="fa fa-paint-brush"></span></a>
                     </c:when>
                     <c:otherwise>
-                        <a href="<%--progressbar.html--%>"> Hi ${user.firstName} <span class="fa fa-paint-brush"></span></a>
+                        <a href="${pageContext.request.contextPath}/account"> Hi ${user.firstName} <span class="fa fa-paint-brush"></span></a>
                     </c:otherwise>
                 </c:choose>
 
@@ -83,12 +85,12 @@
                     <li><a href="columns.html"> columns </a></li>--%>
                     <c:choose>
                         <c:when test="${user==null}">
-                            <li><a href="/login">Log in  </a> </li>
-                            <li><a href="/signup">Sign up </a> </li>
+                            <li><a href="${pageContext.request.contextPath}/login">Log in  </a> </li>
+                            <li><a href="${pageContext.request.contextPath}/signup">Sign up </a> </li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="/account">My Account </a> </li>
-                            <li><a href="/logoutProcess">Log out  </a> </li>
+                            <li><a href="${pageContext.request.contextPath}/account">My Account </a> </li>
+                            <li><a href="${pageContext.request.contextPath}/logoutProcess">Log out  </a> </li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

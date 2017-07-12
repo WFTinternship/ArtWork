@@ -2,10 +2,19 @@
 package am.aca.wftartproject;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
+
+
+        List<String> listString = new ArrayList<>();
+        List<String> listString2 = new ArrayList<>();
+        listString.add("Valod");
+        listString.add("Hayk");
+        System.out.println("listString = " + listString);
 
 //        int i = 0;
 //        while (i < 10) {

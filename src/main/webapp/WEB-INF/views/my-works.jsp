@@ -131,7 +131,8 @@
                                                         </a>
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
-                                                            <a href="#" class="type1 dt-sc-button"> <span
+                                                            <c:url var="editItem" value="/edit-item/${itemElement.id}" context="/"/>
+                                                            <a href="${editItem}" class="type1 dt-sc-button"> <span
                                                                     class="fa fa-shopping-cart"></span> Edit </a>
                                                             <a href="/deleteItem/${itemElement.id}"
                                                                class="type1 dt-sc-button"> <span
