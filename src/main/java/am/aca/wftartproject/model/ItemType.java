@@ -10,7 +10,6 @@ public enum ItemType {
     PAINTING(3, "PAINTING"),
     OTHER(4, "OTHER");
 
-
     private final int typeId;
     private final String type;
 

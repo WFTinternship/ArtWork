@@ -302,7 +302,7 @@
                                         <%--</li>                                                                                                                                                --%>
                                     </ul>
                                 </div>
-                                <c:if test="${itemDetail.status==true}">
+                                <c:if test="${itemDetail.status==false}">
                                     <div class="dt-sc-one-fifth column">
                                         <div class="container">
                                             <button type="submit" class="button">Buy Art Work!</button>

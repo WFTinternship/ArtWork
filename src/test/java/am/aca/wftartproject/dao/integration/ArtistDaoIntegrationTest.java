@@ -26,16 +26,13 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
 
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
+    private Artist testArtist;
+
     @Autowired
     private ArtistDao artistDao;
 
-    private Artist testArtist;
-
-    public ArtistDaoIntegrationTest() throws SQLException,ClassNotFoundException{}
-
-
-
-    private ArtistSpecializationLkpDao artistSpecialization; //= new ArtistSpecializationLkpDaoImpl(dataSource);
+    public ArtistDaoIntegrationTest() {
+    }
 
     /**
      * Creates artist for test

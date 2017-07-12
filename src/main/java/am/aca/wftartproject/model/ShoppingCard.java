@@ -37,7 +37,6 @@ public class ShoppingCard {
         return this;
     }
 
-
     public ShoppingCardType getShoppingCardType() {
         return shoppingCardType;
     }
@@ -50,9 +49,7 @@ public class ShoppingCard {
     public ShoppingCard() {
     }
 
-    public ShoppingCard(/*Long id, Long buyerId, */double balance, ShoppingCardType shoppingCardType) {
-//        this.id = id;
-//        this.buyerId = buyerId;
+    public ShoppingCard(double balance, ShoppingCardType shoppingCardType) {
         this.balance = balance;
         this.shoppingCardType = shoppingCardType;
     }
@@ -67,6 +64,6 @@ public class ShoppingCard {
     }
 
     public boolean isValidShoppingCard() {
-        return (/*id != null && balance != 0 && */shoppingCardType != null);
+        return (shoppingCardType != null);
     }
 }

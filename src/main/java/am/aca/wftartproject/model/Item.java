@@ -15,17 +15,11 @@ public class Item {
     private String title;
     private String description;
     private List<String> photoURL;
- //   private String photoURL;
     private Double price;
     private Long artistId;
     private Boolean status;
     private ItemType itemType;
     private LocalDateTime additionDate;
-
-//    public Item setPhotoURL(String photoURL) {
-//        this.photoURL = photoURL;
-//        return this;
-//    }
 
     public Boolean getStatus() {
         return status;
@@ -106,12 +100,11 @@ public class Item {
     public LocalDateTime getAdditionDate() {
         return additionDate;
     }
+
     public Item setAdditionDate(LocalDateTime additionDate) {
         this.additionDate = additionDate;
         return this;
     }
-
-
 
     public Item() {
 
@@ -127,7 +120,6 @@ public class Item {
         this.itemType = itemType;
         this.additionDate = additionDate;
     }
-
 
     @Override
     public String toString() {
@@ -145,8 +137,6 @@ public class Item {
     }
 
     public boolean isValidItem() {
-//        return id != null &&
-//                id > 0 &&
         return
                 !isEmptyString(title) &&
                 !isEmptyString(photoURL.get(0)) &&
@@ -154,8 +144,6 @@ public class Item {
                 artistId > 0 &&*/
                 price != 0 &&
                 itemType != null ;
-        //        && additionDate != null;
-
     }
 
     @Override
@@ -189,5 +177,4 @@ public class Item {
         result = 31 * result + getAdditionDate().hashCode();
         return result;
     }
-
 }

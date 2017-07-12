@@ -143,7 +143,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
     /**
      * @see ArtistServiceImpl#addArtist(Artist)
-     */
+     *//*
     @Test
     public void addArtist_addSuccess() {
         ArgumentCaptor<Artist> artistArgumentCaptor = ArgumentCaptor.forClass(Artist.class);
@@ -164,22 +164,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         assertEquals(testArtist.getId(), artistArgumentCaptor1.getValue());
         assertEquals(testArtist.getShoppingCard(), artistArgumentCaptor2.getValue());
 
-    }
-
-    /**
-     * @see ArtistServiceImpl#addArtist(Artist)
-     */
-    @Test(expected = ServiceException.class)
-    public void addArtist_addShoppingCardFailed() {
-        // Create testArtist
-        testArtist = createTestArtist();
-
-        // Setup mocks
-        doNothing().when(artistDaoMock).addArtist(any(Artist.class));
-        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
-
-        artistService.addArtist(testArtist);
-    }
+    }*/
 
     /**
      * @see ArtistServiceImpl#addArtist(Artist)
@@ -203,6 +188,23 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         assertEqualShoppingCards(testArtist.getShoppingCard(), argumentCaptor1.getValue());
         assertEquals(testArtist, argumentCaptor2.getValue());
     }
+
+
+    /**
+     * @see ArtistServiceImpl#addArtist(Artist)
+     */
+    @Test(expected = ServiceException.class)
+    public void addArtist_addShoppingCardFailed() {
+        // Create testArtist
+        testArtist = createTestArtist();
+
+        // Setup mocks
+        doNothing().when(artistDaoMock).addArtist(any(Artist.class));
+        doThrow(DAOException.class).when(shoppingCardServiceMock).addShoppingCard(anyLong(), any(ShoppingCard.class));
+
+        artistService.addArtist(testArtist);
+    }
+
 
     /**
      * @see ArtistServiceImpl#findArtist(java.lang.Long)
@@ -234,22 +236,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
 
     /**
-     * @see ArtistServiceImpl#findArtist(java.lang.Long)
-     */
-    @Test(expected = ServiceException.class)
-    public void findArtist_findFailed() {
-        // Create test id
-        Long id = 516498484L;
-
-        // Setup mocks
-        doThrow(DAOException.class).when(artistDaoMock).findArtist(anyLong());
-
-        // Test method
-        artistService.findArtist(id);
-    }
-
-
-    /**
      * @see UserServiceImpl#findUser(java.lang.Long)
      */
     @Test
@@ -269,6 +255,22 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(id,argument.getValue());
+    }
+
+
+    /**
+     * @see ArtistServiceImpl#findArtist(java.lang.Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void findArtist_findFailed() {
+        // Create test id
+        Long id = 516498484L;
+
+        // Setup mocks
+        doThrow(DAOException.class).when(artistDaoMock).findArtist(anyLong());
+
+        // Test method
+        artistService.findArtist(id);
     }
 
 
@@ -304,22 +306,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     /**
      * @see ArtistServiceImpl#findArtist(java.lang.String)
      */
-    @Test(expected = ServiceException.class)
-    public void findArtistByEmail_findFailed() {
-        // Create not empty email
-        String email = "email@gmail.com";
-
-        // Try to find artist by this email
-        // Setup mocks
-        doThrow(DAOException.class).when(artistDaoMock).findArtist(anyString());
-
-        // Test methods
-        artistService.findArtist(email);
-    }
-
-    /**
-     * @see ArtistServiceImpl#findArtist(java.lang.String)
-     */
     @Test
     public void findArtistByEmail_findSuccess() {
         // Create testArtist
@@ -333,6 +319,22 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         // Test method
         assertEquals(testArtist, artistService.findArtist(email));
+    }
+
+    /**
+     * @see ArtistServiceImpl#findArtist(java.lang.String)
+     */
+    @Test(expected = ServiceException.class)
+    public void findArtistByEmail_findFailed() {
+        // Create not empty email
+        String email = "email@gmail.com";
+
+        // Try to find artist by this email
+        // Setup mocks
+        doThrow(DAOException.class).when(artistDaoMock).findArtist(anyString());
+
+        // Test methods
+        artistService.findArtist(email);
     }
 
 
@@ -398,6 +400,22 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
 
     /**
+     * @see ArtistServiceImpl#updateArtist(Long, Artist)
+     */
+    @Test
+    public void updateArtist_updateSuccess() {
+        // Create test id and test artist
+        Long id = 5L;
+        testArtist = createTestArtist();
+
+        // Test method
+        artistService.updateArtist(id, testArtist);
+
+        verify(artistDaoMock).updateArtist(id, testArtist);
+    }
+
+
+    /**
      * @see ArtistService#updateArtist(Long, Artist)
      */
     @Test(expected = ServiceException.class)
@@ -411,22 +429,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         // Test method
         artistService.updateArtist(id, testArtist);
-    }
-
-
-    /**
-     * @see ArtistServiceImpl#updateArtist(Long, Artist)
-     */
-    @Test
-    public void updateArtist_updateSuccess() {
-        // Create test id and test artist
-        Long id = 5L;
-        testArtist = createTestArtist();
-
-        // Test method
-        artistService.updateArtist(id, testArtist);
-
-        verify(artistDaoMock).updateArtist(id, testArtist);
     }
 
 
@@ -462,22 +464,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
     /**
      * @see ArtistServiceImpl#deleteArtist(Long)
      */
-    @Test(expected = ServiceException.class)
-    public void deleteArtist_deleteFail(){
-        // Create test id;
-        Long id = 5L;
-
-        // Setup mock
-        doThrow(DAOException.class).when(artistDaoMock).deleteArtist(anyLong());
-
-        // Test method
-        artistService.deleteArtist(id);
-    }
-
-
-    /**
-     * @see ArtistServiceImpl#deleteArtist(Long)
-     */
     @Test
     public void deleteArtist_deleteSuccess(){
         // Create test id
@@ -488,6 +474,22 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
         // Check invocation
         verify(artistDaoMock).deleteArtist(id);
+    }
+
+
+    /**
+     * @see ArtistServiceImpl#deleteArtist(Long)
+     */
+    @Test(expected = ServiceException.class)
+    public void deleteArtist_deleteFail(){
+        // Create test id;
+        Long id = 5L;
+
+        // Setup mock
+        doThrow(DAOException.class).when(artistDaoMock).deleteArtist(anyLong());
+
+        // Test method
+        artistService.deleteArtist(id);
     }
 
     // endregion

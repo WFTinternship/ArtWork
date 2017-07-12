@@ -115,7 +115,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUser_Success() {
-        // Add user into DB
+        // Add user to DB
         userDao.addUser(testUser);
 
         // Test method
@@ -130,7 +130,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUser_Failure() {
-        // Add user into DB
+        // Add user to DB
         userDao.addUser(testUser);
 
         // Test method
@@ -145,7 +145,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUserByEmail_Success() {
-        // Add user into DB
+        // Add user to DB
         userDao.addUser(testUser);
 
         // Test method
@@ -160,7 +160,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void findUserByEmail_Failure() {
-        // Add user into DB
+        // Add user to DB
         userDao.addUser(testUser);
 
         // Test method
@@ -175,7 +175,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void updateUser_Success() {
-        // Add user into DB and check for not null
+        // Add user to DB and check for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
@@ -197,7 +197,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void updateUser_Failure() {
-        // Add user into DB and check it for not null
+        // Add user to DB and check it for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
@@ -222,7 +222,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void deleteUser_Success() {
-        // Add user into DB and check it for not null
+        // Add user to DB and check it for not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 
@@ -238,7 +238,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test(expected = DAOException.class)
     public void deleteUser_Failure() {
-        // Add user into DB and check it fro not null
+        // Add user to DB and check it fro not null
         userDao.addUser(testUser);
         assertNotNull(testUser);
 

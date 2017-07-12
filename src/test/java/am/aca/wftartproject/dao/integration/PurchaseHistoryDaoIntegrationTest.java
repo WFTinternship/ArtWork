@@ -44,6 +44,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
     private PurchaseHistoryDao purchaseHistoryDao;
 
     private User testUser;
+    private Artist testArtist;
     private Item testItem;
     private PurchaseHistory purchaseHistory;
 
@@ -58,7 +59,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        Artist testArtist = createTestArtist();
+        testArtist = createTestArtist();
 
         ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
         if (artistSpecialization.getArtistSpecialization(1) == null) {
@@ -95,9 +96,15 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
         if (purchaseHistory.getUserId() != null) {
             purchaseHistoryDao.deletePurchase(testUser.getId(), testItem.getId());
         }
+
         if (testItem.getId() != null) {
             itemDao.deleteItem(testItem.getId());
         }
+
+        if (testArtist.getId() != null) {
+            artistDao.deleteArtist(testArtist.getId());
+        }
+
         if (testUser.getId() != null) {
             userDao.deleteUser(testUser.getId());
         }
@@ -105,6 +112,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
         // Set temp objects ref  to null
         purchaseHistoryDao = null;
         testUser = null;
+        testArtist = null;
         testItem = null;
 
         // Print busy connections quantity
@@ -179,7 +187,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
      * @see PurchaseHistoryDao#getPurchase(Long)
      */
     @Test
-    public void getPurchaseHistoryNotEmptyList() {
+    public void getPurchaseHistory_NotEmptyList(){
         // Add purchaseHistory into DB
         purchaseHistoryDao.addPurchase(purchaseHistory);
 
@@ -193,7 +201,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
      * @see PurchaseHistoryDao#getPurchase(Long)
      */
     @Test
-    public void getPurchaseHistoryEmptyList() {
+    public void getPurchaseHistory_EmptyList(){
         // Add purchaseHistory into DB
         purchaseHistoryDao.addPurchase(purchaseHistory);
 

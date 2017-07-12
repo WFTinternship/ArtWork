@@ -50,7 +50,6 @@ public class Artist extends AbstractUser {
     }
 
     public Artist() {
-
     }
 
     public Artist(ArtistSpecialization specialization, byte[] artistPhoto, List<Item> itemList) {

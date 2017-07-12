@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.sql.DataSource;
 
 /**
  * @author surik
  */
+@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= {"classpath:spring-root.xml"})
 abstract class BaseDAOIntegrationTest {
@@ -37,7 +39,7 @@ abstract class BaseDAOIntegrationTest {
         return jdbcTemplate;
     }
 
-
+    @Autowired
     public void setJdbcTemplate(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

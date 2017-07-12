@@ -30,16 +30,17 @@ public class ShopController {
         this.artistService = artistService;
     }
 
-    @RequestMapping(value = "/shop",method = RequestMethod.GET)
-    public ModelAndView shopPageView(){
+    @RequestMapping(value = "/shop", method = RequestMethod.GET)
+    public ModelAndView shopPageView() {
         ModelAndView mav = new ModelAndView("shop");
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
         mav.addObject("itemTypes", ItemType.values());
         mav.addObject("itemList", itemService.getRecentlyAddedItems(100));
         return mav;
     }
-    @RequestMapping(value = "/shop",method = RequestMethod.POST)
-    public ModelAndView shopProcessor(HttpServletRequest request){
+
+    @RequestMapping(value = "/shop", method = RequestMethod.POST)
+    public ModelAndView shopProcessor(HttpServletRequest request) {
         String itemTypeStr = request.getParameter("itemType");
         String sortingType = request.getParameter("sortType");
 
@@ -48,25 +49,28 @@ public class ShopController {
             if (!"-1".equals(itemTypeStr)) {
                 itemList = itemService.getItemsByType(itemTypeStr);
             }
-            if(!"-1".equals(sortingType)){
-                itemList = ItemComparator.getSortedItemList(sortingType,itemList);
+
+            if (!"-1".equals(sortingType)) {
+                itemList = ItemComparator.getSortedItemList(sortingType, itemList);
             }
+
             request.setAttribute("itemList", itemList);
             request.setAttribute("itemTypes", ItemType.values());
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
+
         return new ModelAndView("shop");
     }
 
-    @RequestMapping(value = "shop-cart",method = RequestMethod.GET)
-    public ModelAndView shopCartView(){
+    @RequestMapping(value = "shop-cart", method = RequestMethod.GET)
+    public ModelAndView shopCartView() {
         return new ModelAndView("shop-cart");
     }
 
 
     @RequestMapping(value = "/item-detail/*",method = RequestMethod.GET)
-    public ModelAndView itemDetailView(HttpServletRequest request){
+    public ModelAndView itemDetailView(HttpServletRequest request) {
         String[] pathInfo = request.getServletPath().split("/");
         Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
 
@@ -82,40 +86,26 @@ public class ShopController {
     }
 
     @RequestMapping(value = "/item-detail/*", method = RequestMethod.POST)
-    public ModelAndView itemDetailProcess(HttpServletRequest request){
-        String page = "";
+    public ModelAndView itemDetailProcess(HttpServletRequest request) {
+        String page;
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             return new ModelAndView("logIn");
         }
-        if(session.getAttribute("user").getClass() == Artist.class){
-            Artist artist = (Artist) session.getAttribute("user");
-            try {
-                Item item = (Item) session.getAttribute("itemDetail");
-                itemService.itemBuying(item, artist.getId());
-                page = "thank-you";
-            } catch (NotEnoughMoneyException ex) {
-                session.setAttribute("msgNotEnoughMoney",
-                        "You don't have enough money. Please top-up your account and try again.");
-                page = "redirect:/shop";
-            } catch (RuntimeException ex) {
-                page = "redirect:/index";
-            }
+
+        AbstractUser user = (AbstractUser) session.getAttribute("user");
+        try {
+            Item item = (Item) session.getAttribute("itemDetail");
+            itemService.itemBuying(item, user.getId());
+            page = "thank-you";
+        } catch (NotEnoughMoneyException ex) {
+            session.setAttribute("msgNotEnoughMoney",
+                    "You don't have enough money. Please top-up your account and try again.");
+            page = "redirect:/shop";
+        } catch (RuntimeException ex) {
+            page = "redirect:/index";
         }
-        if(session.getAttribute("user").getClass() == User.class){
-            User user = (User)session.getAttribute("user");
-            try {
-                Item item = (Item) session.getAttribute("itemDetail");
-                itemService.itemBuying(item, user.getId());
-                page = "thank-you";
-            } catch (NotEnoughMoneyException ex) {
-                session.setAttribute("msgNotEnoughMoney",
-                        "You don't have enough money. Please top-up your account and try again.");
-                page = "redirect:/shop";
-            } catch (RuntimeException ex) {
-                page = "redirect:/index";
-            }
-        }
+
         return new ModelAndView(page);
     }
 }

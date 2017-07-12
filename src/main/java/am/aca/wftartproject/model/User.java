@@ -1,7 +1,5 @@
 package am.aca.wftartproject.model;
 
-import org.springframework.context.annotation.Bean;
-
 /**
  * Created by ASUS on 24-May-17
  */
@@ -41,8 +39,6 @@ public class User extends AbstractUser {
                 ", shoppingCard='" + shoppingCard + '\'' +
                 '}';
     }
-
-
 //    public User(UserInfoBuilder userinfo) {
 //        this.firstName = userinfo.firstName;
 //        this.lastName = userinfo.lastName;

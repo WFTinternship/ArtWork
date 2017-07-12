@@ -33,6 +33,7 @@ public class HomeController {
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
+
         if (cookies != null) {
             for (Cookie ckElement : cookies) {
                 if (ckElement.getName().equals("userEmail")) {
