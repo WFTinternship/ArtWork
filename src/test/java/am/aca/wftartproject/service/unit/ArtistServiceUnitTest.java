@@ -36,10 +36,8 @@ import static org.mockito.Mockito.*;
 public class ArtistServiceUnitTest extends BaseUnitTest {
 
     private Artist testArtist;
-
     @InjectMocks
-    @Autowired
-    private ArtistService artistService;
+    private ArtistService artistService = new ArtistServiceImpl();
 
     @Mock
     private ArtistDao artistDaoMock;

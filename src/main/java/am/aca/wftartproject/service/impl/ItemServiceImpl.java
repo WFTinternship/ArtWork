@@ -12,11 +12,14 @@ import am.aca.wftartproject.entity.Item;
 import am.aca.wftartproject.entity.PurchaseHistory;
 import am.aca.wftartproject.entity.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.PurchaseHistoryService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -32,9 +35,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemDao itemDao;
     @Autowired
-    private PurchaseHistoryDao purchaseHistoryDao; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
+    private PurchaseHistoryService purchaseHistoryService;
     @Autowired
-    private ShoppingCardDao shoppingCardDao; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+    private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
 /*
     public void setItemDao(ItemDao itemDao) {
@@ -233,7 +236,7 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Item item) {
         if (item == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new InvalidEntryException("Invalid Id");
+            throw new InvalidEntryException("Invalid Item");
         }
         try {
             itemDao.deleteItem(item);
@@ -265,10 +268,10 @@ public class ItemServiceImpl implements ItemService {
 
         // Withdraw money from payment method
         try {
-            ShoppingCard shoppingCard = shoppingCardDao.getShoppingCard(buyerId);
+            ShoppingCard shoppingCard = shoppingCardService.getShoppingCard(buyerId);
             if (shoppingCard.getBalance() >= item.getPrice()) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
-                shoppingCardDao.updateShoppingCard(shoppingCard);
+                shoppingCardService.updateShoppingCard(shoppingCard);
             } else {
                 throw new NotEnoughMoneyException("Not enough money on the account.");
             }
@@ -284,7 +287,8 @@ public class ItemServiceImpl implements ItemService {
             purchaseHistory.setItemId(item.getId());
             purchaseHistory.setUserId(buyerId);
             purchaseHistory.setItem(item);
-            purchaseHistoryDao.addPurchase(purchaseHistory);
+            purchaseHistory.setPurchaseDate(Calendar.getInstance().getTime());
+            purchaseHistoryService.addPurchase(purchaseHistory);
         } catch (DAOException e) {
             String error = "Failed to add item in purchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));

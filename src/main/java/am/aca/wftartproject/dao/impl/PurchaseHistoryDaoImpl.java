@@ -1,15 +1,11 @@
 package am.aca.wftartproject.dao.impl;
 
 import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.dao.rowmappers.PurchaseHistoryMapper;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.entity.PurchaseHistory;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -28,7 +24,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
         try {
-            purchaseHistory.setPurchaseDate(getCurrentDateTime());
             entityManager.persist(purchaseHistory);
             entityManager.flush();
         } catch (Exception e) {
@@ -67,7 +62,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public List<PurchaseHistory> getPurchaseList(Long userId) {
-        List<PurchaseHistory> purchaseHistoryList;
+        List<PurchaseHistory> purchaseHistoryList ;
         try{
             purchaseHistoryList = (List<PurchaseHistory>)entityManager.createQuery(
                     "SELECT c FROM PurchaseHistory c WHERE c.userId = :user_id")

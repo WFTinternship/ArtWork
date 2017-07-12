@@ -2,6 +2,7 @@ package am.aca.wftartproject.web;
 
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.entity.User;
+import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,20 @@ public class LogInController {
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = null;
+        Artist artistFromDB = null;
+        User userFromDB = null;
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
         try {
+            try{
+               userFromDB = userService.login(userEmailStr, userPasswordStr);
+            }catch (Exception e){
+            }
+            try{
+                artistFromDB = artistService.login(userEmailStr,userPasswordStr);
+            }catch (Exception e){
+            }
 
-            User userFromDB = userService.login(userEmailStr, userPasswordStr);
-            Artist artistFromDB = artistService.login(userEmailStr,userPasswordStr);
             if (artistFromDB != null) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", artistFromDB);

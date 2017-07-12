@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.SQLException;
+import java.util.Calendar;
+
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
@@ -62,6 +64,7 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest{
         itemDao.addItem(testItem);
         purchaseHistory.setItemId(testItem.getId());
         purchaseHistory.setUserId(testUser.getId());
+        purchaseHistory.setPurchaseDate(Calendar.getInstance().getTime());
 
 //        // Print busy connections quantity
 //        if (jdbcTemplate.getDataSource() instanceof ComboPooledDataSource) {

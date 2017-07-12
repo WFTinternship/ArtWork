@@ -48,9 +48,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     private ShoppingCard shoppingCard;
     private PurchaseHistory purchaseHistory;
 
+
     @InjectMocks
-    @Autowired
-    private ItemService itemService;
+    private ItemService itemService = new ItemServiceImpl();
 
     @Mock
     private ItemDao itemDaoMock;
@@ -610,8 +610,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Creates test iteId, artistId and limit
         Long testArtistId = 7L;
-        Long testItemId = 5L;
-        Long testLimit = 3L;
+
 
         // Setup mock
         doReturn(null).when(itemDaoMock).getArtistItems(argument.capture());
@@ -621,8 +620,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(testArtistId,argument.getAllValues().get(0));
-        assertEquals(testItemId,argument.getAllValues().get(1));
-        assertEquals(testLimit,argument.getAllValues().get(2));
     }
 
 
@@ -636,8 +633,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Creates test iteId, artistId and limit
         Long testArtistId = 7L;
-        Long testItemId = 5L;
-        Long testLimit = 3L;
 
         List<Item> itemList = new ArrayList<>();
 
@@ -649,8 +644,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Check input argument
         assertEquals(testArtistId,argument.getAllValues().get(0));
-        assertEquals(testItemId,argument.getAllValues().get(1));
-        assertEquals(testLimit,argument.getAllValues().get(2));
+
     }
 
 //    /**
@@ -807,7 +801,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         testItem.setId(444L);
 
         // Setup mock
-        doNothing().when(itemDaoMock).updateItem(any(Item.class));
+        doReturn(true).when(itemDaoMock).updateItem(argument.capture());
 
         // Test method
         itemService.updateItem(testItem);
@@ -876,7 +870,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Create test id
         Long id = 10L;
+        testItem = createTestItem();
         testItem.setId(id);
+        testItem.setArtist_id(55L);
 
         // Setup mock
         doReturn(true).when(itemDaoMock).deleteItem(argument.capture());
@@ -885,7 +881,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         itemService.deleteItem(testItem);
 
         // Check input argument
-        assertEquals(id,argument.getValue());
+        assertEquals(testItem,argument.getValue());
     }
 
 
@@ -1020,7 +1016,9 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         Long id = 5L;
         shoppingCard = createTestShoppingCard();
         shoppingCard.setBalance(100000);
+        shoppingCard.setBuyer_id(77L);
         testItem = createTestItem();
+        testItem.setId(777L);
         testItem.setArtist_id(5L);
         testItem.setPrice(100.0);
 
@@ -1057,7 +1055,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doThrow(DAOException.class).when(purchaseHistoryServiceMock).addPurchase(any(PurchaseHistory.class));
 
         // Test method
-        itemService.itemBuying(testItem, buyerId);
+         itemService.itemBuying(testItem, buyerId);
 
         assertEquals(buyerId, argument.getValue());
     }
@@ -1075,6 +1073,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         Long buyerId = 5L;
         testItem = createTestItem();
         shoppingCard = createTestShoppingCard();
+        shoppingCard.setId(5L);
         testItem.setPrice(100.0);
         testItem.setArtist_id(5L);
         shoppingCard.setBalance(10000.0);
@@ -1086,13 +1085,13 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCard(argument.capture());
         doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument1.capture());
         doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
-        doNothing().when(itemDaoMock).updateItem(any(Item.class));
+        doReturn(true).when(itemDaoMock).updateItem(any(Item.class));
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
         assertEquals(buyerId, argument.getAllValues().get(0));
-        assertEquals(shoppingCard.getId(), argument.getAllValues().get(1));
+        assertEquals(shoppingCard.getId(), argument.getAllValues().get(0));
         assertEqualShoppingCards(shoppingCard, argument1.getValue());
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
     }
@@ -1143,10 +1142,11 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
         // Create testItem, testShoppingCard and purchaseHistory
         Long buyerId = 5L;
+        Long artist_id = 5L;
         testItem = createTestItem();
         shoppingCard = createTestShoppingCard();
         testItem.setPrice(1000.0);
-        testItem.setArtist_id(5L);
+        testItem.setArtist_id(artist_id);
         shoppingCard.setBalance(10000.0);
         purchaseHistory = createTestPurchaseHistory();
         purchaseHistory.setItemId(testItem.getId());
@@ -1156,17 +1156,17 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doReturn(shoppingCard).when(shoppingCardServiceMock).getShoppingCard(argument.capture());
         doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument1.capture());
         doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
-        doNothing().when(itemDaoMock).updateItem(argument3.capture());
+        doReturn(true).when(itemDaoMock).updateItem(argument3.capture());
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
-        assertEquals(buyerId, argument.getAllValues().get(0));
-        assertEquals(shoppingCard.getId(), argument.getAllValues().get(1));
+        assertEquals(buyerId, argument.getAllValues().get(0));;
         assertEqualShoppingCards(shoppingCard, argument1.getValue());
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
-        assertEquals(testItem.getArtist_id(), argument.getAllValues().get(2));
+        assertEquals(testItem.getArtist_id(), argument.getAllValues().get(0));
         assertEqualItems(testItem, argument3.getValue());
+        System.out.println(argument.getAllValues());
     }
 
     // endregion

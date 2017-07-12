@@ -7,6 +7,7 @@ import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.User;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,13 @@ public class UserServiceImpl implements UserService {
     private  UserDao userDao;
     @Autowired
     private ShoppingCardDao shoppingCardDao;
+
+    private ShoppingCardService shoppingCardService;
+
+    @Autowired
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
+    }
 
     /**
      * @param user
@@ -114,7 +122,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(User user) {
 
-        if (user == null || !user.isValidUser()) {
+        if (user == null || !user.isValidUser() || user.getId() == null || user.getId() < 0) {
             LOGGER.error(String.format("User is not valid: %s", user));
             throw new InvalidEntryException("Invalid user");
         }
@@ -176,7 +184,7 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-//            throw new ServiceException(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
         } catch (RuntimeException e) {
             String error = "Failed to login: %s";
             LOGGER.error(String.format(error, e.getMessage()));

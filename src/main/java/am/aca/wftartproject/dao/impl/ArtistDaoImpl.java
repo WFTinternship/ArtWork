@@ -118,8 +118,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         Boolean result = false;
 
         try {
-            entityManager.find(Artist.class,artist.getId());
-            entityManager.remove(artist);
+            Artist artist1 = entityManager.find(Artist.class,artist.getId());
+            entityManager.remove(entityManager.merge(artist1));
             result = true;
         } catch (Exception e) {
             String error = "Failed to delete Artist: %s";

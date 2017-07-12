@@ -31,12 +31,18 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     private ShoppingCardDao shoppingCardDao;
 
+
     private ShoppingCardService shoppingCardService;
 
     @Autowired
     public void setShoppingCardService(ShoppingCardService shoppingCardService) {
         this.shoppingCardService = shoppingCardService;
     }
+
+    public void setArtistDao(ArtistDao artistDao) {
+        this.artistDao = artistDao;
+    }
+
 
     /**
      * @param artist
