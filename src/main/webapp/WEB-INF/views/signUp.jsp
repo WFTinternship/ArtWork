@@ -135,7 +135,7 @@
 
 							<li>
 								<input type="radio" name="payment-method" id="card" value="card" checked>
-								<label for="card">Card</label>
+								<label for="card">Mastercard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
 					</div>
@@ -227,7 +227,7 @@
 
 							<li>
 								<input type="radio" name="payment-method" id="card1" value="card" checked>
-								<label for="card">Card</label>
+								<label for="card">Mastercard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
 					</div>

@@ -4,6 +4,7 @@ import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.servlet.ItemComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,13 @@ import java.util.List;
 public class ShopController {
 
     private final ItemService itemService;
+    private final UserService userService;
     private final ArtistService artistService;
 
     @Autowired
-    public ShopController(ItemService itemService, ArtistService artistService) {
+    public ShopController(ItemService itemService, UserService userService, ArtistService artistService) {
         this.itemService = itemService;
+        this.userService = userService;
         this.artistService = artistService;
     }
 
@@ -98,6 +101,10 @@ public class ShopController {
             Item item = (Item) session.getAttribute("itemDetail");
             itemService.itemBuying(item, user.getId());
             page = "thank-you";
+            if (user instanceof User){
+                userService.sendEmailAfterBuyingItem((User) user);
+            }
+
         } catch (NotEnoughMoneyException ex) {
             session.setAttribute("msgNotEnoughMoney",
                     "You don't have enough money. Please top-up your account and try again.");

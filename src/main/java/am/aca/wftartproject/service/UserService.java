@@ -48,10 +48,17 @@ public interface UserService {
 
     /**
      * Authenticates user info.
+     *
      * @param email
      * @param password
      * @return
      */
     User login(String email, String password);
 
+    /**
+     * Sends email to user with further instructions after buying item
+     *
+     * @param user
+     */
+    void sendEmailAfterBuyingItem(User user);
 }

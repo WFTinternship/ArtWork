@@ -349,12 +349,14 @@ public class ItemDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Test
     public void getAvailableItemsForGivenArtist_EmptyList() {
-        testItem.setStatus(true);
-        tempItem.setStatus(true);
-
         // Add testArtist's 2 items to DB
         itemDao.addItem(testArtist.getId(), testItem);
         itemDao.addItem(testArtist.getId(), tempItem);
+
+        testItem.setStatus(true);
+        tempItem.setStatus(true);
+        itemDao.updateItem(testItem.getId(), testItem);
+        itemDao.updateItem(tempItem.getId(), tempItem);
 
         //Test method
         List availableItems = itemDao.getAvailableItemsForGivenArtist(testArtist.getId());

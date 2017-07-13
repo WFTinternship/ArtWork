@@ -293,8 +293,11 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void getAvailableItemsForGivenArtist_EmptyList() {
         assertNotNull(testArtist.getId());
-        testItem.setStatus(true);
+
         itemService.addItem(testArtist.getId(), testItem);
+
+        testItem.setStatus(true);
+        itemService.updateItem(testItem.getId(), testItem);
 
         assertNotNull(testItem.getId());
 

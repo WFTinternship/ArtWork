@@ -8,6 +8,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.util.EmailUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            shoppingCardService.addShoppingCard(user.getId(),user.getShoppingCard());
+            shoppingCardService.addShoppingCard(user.getId(), user.getShoppingCard());
         } catch (DAOException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -204,5 +205,22 @@ public class UserServiceImpl implements UserService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
+    }
+
+    /**
+     * @param user
+     * @see UserService#sendEmailAfterBuyingItem(User)
+     */
+    @Override
+    public void sendEmailAfterBuyingItem(User user) {
+        if (user == null || !user.isValidUser()) {
+            LOGGER.error(String.format("Not valid user %s", user));
+            throw new InvalidEntryException("Invalid user");
+        }
+
+        String subject = "Hi :)";
+        String emailText = "Easy~";
+
+        EmailUtil.sendEmail(user, subject, emailText);
     }
 }
