@@ -55,7 +55,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
                 ps.setString(2, item.getDescription());
                 ps.setDouble(3, item.getPrice());
                 ps.setLong(4, artistID);
-                ps.setString(5, item.getPhotoURL().toString().substring(1,item.getPhotoURL().toString().length()-1));
+                ps.setString(5, item.getPhotoURL().toString().substring(1, item.getPhotoURL().toString().length() - 1));
                 //ps.setString(5,item.getPhotoURL());
                 ps.setBoolean(6, item.getStatus());
                 ps.setString(7, item.getItemType().getType());
@@ -264,8 +264,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     public void updateItem(Long id, Item item) {
 
         try {
-            String query = "UPDATE item SET title=?, description=?, price=?, type=?, status=? WHERE id=?";
-            Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(), item.getStatus(), item.getId()};
+            String query = "UPDATE item SET title=?, description=?, price=?, type=?, status=?, photo_url=? WHERE id=?";
+            Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(),
+                    item.getStatus(), item.getPhotoURL().toString().substring(1,item.getPhotoURL().toString().length()-1), item.getId()};
 
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {

@@ -1,5 +1,6 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
@@ -9,12 +10,11 @@ import am.aca.wftartproject.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Created by Armen on 6/26/2017
  */
+@MultipartConfig
 @Controller
 public class AccountController {
 
@@ -149,7 +150,7 @@ public class AccountController {
     @RequestMapping(value = {"/additem"}, method = RequestMethod.POST)
     public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response,
                                        @RequestParam(value = "files", required = false) MultipartFile[] image
-                                        ) throws IOException {
+    ) throws IOException {
         session = request.getSession();
         String message;
         List<String> photoUrl = new ArrayList<>();
@@ -210,6 +211,62 @@ public class AccountController {
         modelAndView.setViewName(page);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/edit-item/{id}", method = RequestMethod.GET)
+    public ModelAndView editItemGet(HttpServletRequest request,@PathVariable("id") Long id) {
+        ModelAndView mv = new ModelAndView("edit-item");
+        Item item = itemService.findItem(id);
+        request.getSession().setAttribute("item",item);
+        mv.addObject("itemTypes", ItemType.values());
+        return mv;
+    }
+
+    @RequestMapping(value = "/edit-item/{id}", method = RequestMethod.POST)
+    public ModelAndView editItemPost(HttpServletRequest request,
+                                     @PathVariable("id") Integer id,
+                                     @RequestParam("title") String title,
+                                     @RequestParam("description") String description,
+                                     @RequestParam("price") Double price,
+                                     @RequestParam("itemType") String itemType,
+                                     @RequestParam(value = "image", required = false) MultipartFile image,
+                                     @SessionAttribute("item") Item item) throws IOException {
+        ModelAndView mv = new ModelAndView("edit-item");
+        List<String> photoUrlList = new ArrayList<>();
+        String message;
+        String page = null;
+        item.setTitle(title)
+                .setDescription(description)
+                .setItemType(ItemType.valueOf(itemType))
+                .setPrice(price);
+
+        if (image != null) {
+            byte[] imageBytes = image.getBytes();
+            String uploadPath = "resources/images/artists/" + item.getArtistId();
+            String realPath = request.getServletContext().getRealPath("resources/images/artists/" + item.getArtistId());
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String fileName = image.getOriginalFilename();
+            String filePath = realPath + File.separator + fileName + ".jpg";
+            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+            photoUrlList.add(uploadPath + File.separator + fileName + ".jpg");
+        }
+
+        try {
+            item.setPhotoURL(photoUrlList);
+            itemService.updateItem(item.getId(), item);
+            message = "The Item info was successfully updated";
+        } catch (InvalidEntryException e) {
+            message = "The entered info is not correct";
+        }catch (ServiceException e){
+            message = "Failed to update item info. Please try again";
+        }
+        mv.addObject("message", message);
+        mv.addObject("item", item);
+        return mv;
+    }
+
 
     @RequestMapping(value = {"/deleteItem/*"}, method = RequestMethod.GET)
     public ModelAndView deleteItem(HttpServletRequest request, HttpServletResponse response) {

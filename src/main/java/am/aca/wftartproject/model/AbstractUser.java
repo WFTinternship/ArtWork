@@ -15,7 +15,7 @@ public abstract class AbstractUser {
     String password;
     String userPasswordRepeat;
     ShoppingCard shoppingCard;
-
+//    Set<UserProfile> userProfiles;
 
 
 //    @NotEmpty

@@ -24,6 +24,7 @@
         <spring-security-version>4.2.3.RELEASE</spring-security-version>
         <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
         <validation-api-verison>1.1.0.Final</validation-api-verison>
+        <javax-mail-version>1.4.3</javax-mail-version>
     </properties>
 
 
@@ -77,11 +78,11 @@
             <version>${log4j-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring-framework-version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-context</artifactId>-->
+            <!--<version>${spring-framework-version}</version>-->
+        <!--</dependency>-->
         <!-- Spring Transaction -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -112,11 +113,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>4.3.7.RELEASE</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-web</artifactId>-->
+            <!--<version>4.3.7.RELEASE</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -146,6 +147,18 @@
             <version>${hibernate-validator-version}</version>
         </dependency>
 
+        <!-- Java Mail API -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax-mail-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->

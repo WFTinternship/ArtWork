@@ -54,7 +54,7 @@ public class ArtistServiceImpl implements ArtistService {
             throw new InvalidEntryException("Invalid artist");
         }
         if (artistDao.findArtist(artist.getEmail()) != null) {
-            String error = "User has already exists";
+            String error = "Artist already exists";
             LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
             throw new DuplicateEntryException(error);
         }

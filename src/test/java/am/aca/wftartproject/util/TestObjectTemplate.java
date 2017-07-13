@@ -2,7 +2,6 @@ package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class TestObjectTemplate {
 
     public static Artist createTestArtist() {
         Artist testArtist = new Artist();
-        testArtist.setArtistPhoto(null)
+        testArtist.setArtistPhoto(new byte[10])
                 .setSpecialization(ArtistSpecialization.PAINTER)
                 .setAge(26)
                 .setEmail("test" + getRandomNumber() + "@test.com")

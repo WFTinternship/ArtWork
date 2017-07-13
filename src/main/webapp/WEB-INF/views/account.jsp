@@ -115,7 +115,11 @@
     <!-- user account details -->
                                     <div class="account-details">
                                         <!-- heading -->
-                                        <h3>${user.firstName}  ${user.lastName}</h3>
+                                        <h3>${user.firstName}  ${user.lastName}
+                                            <c:if test="${user['class'].simpleName eq 'Artist'}">
+                                                (${user.specialization})
+                                            </c:if>
+                                        </h3>
 
                                         <%--<span class="a-phone"><i class="fa fa-phone-square"></i>: </span>--%>
                                         <span class="a-phone"><i class="fa fa-envelope-o"></i>: <a href="#">${user.email}</a></span>
