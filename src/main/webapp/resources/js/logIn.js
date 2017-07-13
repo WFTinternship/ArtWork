@@ -66,7 +66,7 @@ function supportsHTML5Storage() {
 }
 
 /**
- * Test data. This data will be safe by the web app
+ * Test data. This data will be safe by the controller app
  * in the first successful login of a auth user.
  * To Test the scripts, delete the localstorage data
  * and comment this call.

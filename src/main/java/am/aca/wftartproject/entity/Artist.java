@@ -13,17 +13,17 @@ import java.util.List;
 @Entity
 @DynamicUpdate
 @Table(name = "artist")
-
 public class Artist extends AbstractUser implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private ArtistSpecialization specialization;
-    @Column(length=10000000,name = "photo")
+    @Lob
+    @Column(length = 10000000, name = "photo")
     private byte[] artistPhoto;
-    @Transient
+    @OneToMany(targetEntity = am.aca.wftartproject.entity.Item.class, cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Item> itemList;
     @Transient
-    private String base64;
+    private String base64; //TODO: rename
 
     public String getBase64() {
         return base64;
@@ -78,18 +78,16 @@ public class Artist extends AbstractUser implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", artistPhoto=" + Arrays.toString(artistPhoto) +
                 ", lastName='" + lastName + '\'' +
-                ", itemList=" + itemList +
                 ", base64='" + base64 + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", userPasswordRepeat='" + userPasswordRepeat + '\'' +
-                ", shoppingCard=" + shoppingCard +
                 '}';
     }
 
 
     public boolean isValidArtist() {
-        return super.isValidUser() ;
+        return super.isValidUser();
     }
 }

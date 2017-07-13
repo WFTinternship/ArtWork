@@ -64,8 +64,8 @@ public class TestObjectTemplate {
     public static PurchaseHistory createTestPurchaseHistory() {
         PurchaseHistory purchaseHistory = new PurchaseHistory();
 
-        purchaseHistory.setItemId(getRandomNumber() + 1L)
-                .setUserId(getRandomNumber() + 1L)
+        purchaseHistory.setItem(createTestItem())
+                .setAbsUser(createTestUser())
                 .setPurchaseDate(getCurrentDateTime());
 
         return purchaseHistory;

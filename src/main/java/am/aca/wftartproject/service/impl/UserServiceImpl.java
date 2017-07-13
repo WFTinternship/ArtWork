@@ -1,7 +1,8 @@
 package am.aca.wftartproject.service.impl;
 
-import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.dao.UserDao;
+import am.aca.wftartproject.repository.ArtistRepo;
+import am.aca.wftartproject.repository.ShoppingCardRepo;
+import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -11,8 +12,8 @@ import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
@@ -20,15 +21,17 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidE
 /**
  * Created by surik on 6/3/17
  */
+
 @Service
-@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     @Autowired
-    private  UserDao userDao;
+    private UserRepo userRepo;
     @Autowired
-    private ShoppingCardDao shoppingCardDao;
+    private ArtistRepo artistRepo;
+    @Autowired
+    private ShoppingCardRepo shoppingCardRepo;
 
     private ShoppingCardService shoppingCardService;
 
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try{
-            if (userDao.findUser(user.getEmail()) != null) {
+            if (userRepo.findUserByEmail(user.getEmail()) != null || artistRepo.findArtistByEmail(user.getEmail())!= null) {
                 String error = "User has already exists";
                 LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
                 throw new DuplicateEntryException(error);
@@ -59,7 +62,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            userDao.addUser(user);
+            userRepo.saveAndFlush(user);
         } catch (DAOException e) {
             String error = "Failed to add User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -82,7 +85,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            return userDao.findUser(id);
+            return userRepo.findOne(id);
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -104,7 +107,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            return userDao.findUser(email);
+            return userRepo.findUserByEmail(email);
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -126,7 +129,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            if (!userDao.updateUser(user)) {
+            if (userRepo.saveAndFlush(user) == null) {
                 throw new DAOException("Failed to update user");
             }
         } catch (DAOException e) {
@@ -149,9 +152,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            if (!userDao.deleteUser(user)) {
-                throw new DAOException("Failed to delete user");
-            }
+             userRepo.delete(user);
         } catch (DAOException e) {
             String error = "Failed to delete User: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -174,7 +175,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            User user = userDao.findUser(email);
+            User user = userRepo.findUserByEmail(email);
             if (user != null && user.getPassword().equals(password)) {
                user1 = user;
             }

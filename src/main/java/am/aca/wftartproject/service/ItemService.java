@@ -1,5 +1,6 @@
 package am.aca.wftartproject.service;
 
+import am.aca.wftartproject.entity.AbstractUser;
 import am.aca.wftartproject.entity.Item;
 import am.aca.wftartproject.entity.ItemType;
 
@@ -87,8 +88,8 @@ public interface ItemService {
     /**
      * Makes buying processes.
      * @param item
-     * @param buyerId
+     * @param buyer
      */
-    void itemBuying(Item item, Long buyerId);
+    void itemBuying(Item item, AbstractUser buyer);
 
 }

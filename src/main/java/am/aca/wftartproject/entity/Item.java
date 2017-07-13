@@ -16,31 +16,41 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "title", nullable = false,length = 30)
+    @Column(name = "title", nullable = false, length = 30)
     private String title;
-
+    @ManyToOne
+    @JoinColumn(name = "artist_id", nullable = false)
+    private Artist artist;
     @Column(name = "description", nullable = false)
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photoURL;
-    @Column(name = "price", nullable = false,length = 10)
+    @Column(name = "price", nullable = false, length = 10)
     private Double price;
-    @Column(name = "artist_id", nullable = false,length = 10)
-    private Long artist_id;
     @Column(nullable = false)
     private Boolean status;
-    @Column(name = "type",nullable = false)
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
-    @Column(name = "addition_date",nullable= false)
-    private Date additionDate;
+    @Column(name = "addition_date", nullable = false)
+    private java.util.Date additionDate;
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "purchaseItem", cascade = CascadeType.ALL)
+    private PurchaseHistory purchaseHistory;
 
-    public Long getArtist_id() {
-        return artist_id;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtist_id(Long artist_id) {
-        this.artist_id = artist_id;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public PurchaseHistory getPurchaseHistory() {
+        return purchaseHistory;
+    }
+
+    public void setPurchaseHistory(PurchaseHistory purchaseHistory) {
+        this.purchaseHistory = purchaseHistory;
     }
 
     public Boolean getStatus() {
@@ -93,7 +103,6 @@ public class Item implements Serializable {
     }
 
 
-
     public Boolean isStatus() {
         return status;
     }
@@ -112,11 +121,11 @@ public class Item implements Serializable {
         return this;
     }
 
-    public Date getAdditionDate() {
+    public java.util.Date getAdditionDate() {
         return additionDate;
     }
 
-    public void setAdditionDate(Date additionDate) {
+    public void setAdditionDate(java.util.Date additionDate) {
         this.additionDate = additionDate;
     }
 
@@ -143,7 +152,6 @@ public class Item implements Serializable {
                 ", description='" + description + '\'' +
                 ", photoURL=" + photoURL +
                 ", price=" + price +
-                ", artistId ="  +
                 ", status=" + status +
                 ", itemType=" + itemType +
                 ", additionDate=" + additionDate +
@@ -155,11 +163,10 @@ public class Item implements Serializable {
 //                id > 0 &&
         return
                 !isEmptyString(title) &&
-                !isEmptyString(photoURL.get(0)) &&
-                artist_id != null &&
-                artist_id > 0 &&
-                price != 0 &&
-                itemType != null ;
+                        !isEmptyString(photoURL.get(0)) &&
+                        artist != null &&
+                        price != 0 &&
+                        itemType != null;
         //        && additionDate != null;
 
     }

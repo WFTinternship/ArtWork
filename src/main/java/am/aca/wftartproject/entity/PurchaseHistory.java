@@ -1,5 +1,7 @@
 package am.aca.wftartproject.entity;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -11,19 +13,20 @@ import java.util.Date;
 @Table(name = "purchase_history")
 public class PurchaseHistory implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "buyer_id",nullable = false)
-    private Long userId;
-    @Column(nullable = false)
-    private Long item_id;
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", nullable = false)
+    private AbstractUser absUser;
     @Column(nullable = false)
     private Date purchase_date;
-    @Column(length = 1000000)
-    private Item item;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item purchaseItem;
+
+
     public Long getId() {
         return id;
     }
@@ -31,33 +34,16 @@ public class PurchaseHistory implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Item getItem() {
-        return item;
+        return purchaseItem;
     }
 
     public PurchaseHistory setItem(Item item) {
-        this.item = item;
+        this.purchaseItem = item;
         return this;
     }
 
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public PurchaseHistory setUserId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    public Long getItemId() {
-        return item_id;
-    }
-
-    public PurchaseHistory setItemId(Long itemId) {
-        this.item_id = itemId;
-        return this;
-    }
 
     public Date getPurchaseDate() {
         return purchase_date;
@@ -72,25 +58,47 @@ public class PurchaseHistory implements Serializable {
     }
 
     public PurchaseHistory(Long userId, Long itemId) {
-        this.userId = userId;
-        this.item_id = itemId;
+
+    }
+
+    public AbstractUser getAbsUser() {
+        return absUser;
+    }
+
+    public PurchaseHistory setAbsUser(AbstractUser absUser) {
+        this.absUser = absUser;
+        return this;
+    }
+
+    public Date getPurchase_date() {
+        return purchase_date;
+    }
+
+    public void setPurchase_date(Date purchase_date) {
+        this.purchase_date = purchase_date;
+    }
+
+    public Item getPurchaseItem() {
+        return purchaseItem;
+    }
+
+    public void setPurchaseItem(Item purchaseItem) {
+        this.purchaseItem = purchaseItem;
     }
 
 
     @Override
     public String toString() {
         return "PurchaseHistory{" +
-                "userId=" + userId +
-                ", itemId=" + item_id +
+                "user=" + absUser +
+                ", item=" + purchaseItem +
                 ", purchaseDate=" + purchase_date +
                 '}';
     }
 
     public boolean isValidPurchaseHistory() {
-        return userId != null &&
-                userId > 0 &&
-                item_id != null &&
-                item_id > 0 &&
+        return absUser != null &&
+                purchaseItem != null &&
                 purchase_date != null;
     }
 

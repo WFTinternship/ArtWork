@@ -53,9 +53,9 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         testPurchaseHistory = TestObjectTemplate.createTestPurchaseHistory();
         userService.addUser(testUser);
         artistService.addArtist(testArtist);
-        testItem.setArtist_id(testArtist.getId());
+        testItem.setArtist(testArtist);
         itemService.addItem(testItem);
-        testPurchaseHistory.setUserId(testUser.getId());
+        testPurchaseHistory.setAbsUser(testUser);
         testPurchaseHistory.setItem(testItem);
 
     }
@@ -65,7 +65,7 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
      */
     @After
     public void tearDown() {
-        if (testPurchaseHistory.getUserId() != null)
+        if (testPurchaseHistory.getAbsUser() != null)
             purchaseHistoryService.deletePurchase(testPurchaseHistory);
 
         if (testItem.getId() != null)
@@ -87,8 +87,8 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void addPurchase_Success() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(testUser.getId());
-        testPurchaseHistory.setItemId(testItem.getId());
+        testPurchaseHistory.setAbsUser(testUser);
+        testPurchaseHistory.setItem(testItem);
 
         // Test method
         purchaseHistoryService.addPurchase(testPurchaseHistory);
@@ -104,8 +104,8 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test(expected = InvalidEntryException.class)
     public void addPurchase_Failure() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(null);
-        testPurchaseHistory.setItemId(testItem.getId());
+        testPurchaseHistory.setAbsUser(null);
+        testPurchaseHistory.setItem(testItem);
 
         // Test method
         purchaseHistoryService.addPurchase(testPurchaseHistory);
@@ -117,15 +117,15 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void getPurchase_Success() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(testUser.getId());
-        testPurchaseHistory.setItemId(testItem.getId());
+        testPurchaseHistory.setAbsUser(testUser);
+        testPurchaseHistory.setItem(testItem);
 
         // Add purchase item into DB
         purchaseHistoryService.addPurchase(testPurchaseHistory);
 
         // Test method
         PurchaseHistory foundedPurchaseHistory =
-                purchaseHistoryService.getPurchase(testPurchaseHistory.getItemId());
+                purchaseHistoryService.getPurchase(testPurchaseHistory.getId());
         assertEqualPurchaseHistory(foundedPurchaseHistory, testPurchaseHistory);
     }
 
@@ -134,16 +134,13 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void getPurchase_Failure() {
-        long temp = testPurchaseHistory.getItemId();
         // Set userId and ItemId
         purchaseHistoryService.addPurchase(testPurchaseHistory);
-        testPurchaseHistory.setItemId(null);
         try{
             // Test method
-            purchaseHistoryService.getPurchase(testPurchaseHistory.getItemId());
+            purchaseHistoryService.getPurchase(testPurchaseHistory.getId());
         }
-        catch (InvalidEntryException e){
-            testPurchaseHistory.setItemId(temp);
+        catch (Exception e){
             throw new InvalidEntryException(e.getMessage());
         }
 
@@ -155,15 +152,15 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void getPurchase_NotEmptyList() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(testUser.getId());
-        testPurchaseHistory.setItemId(testItem.getId());
+        testPurchaseHistory.setAbsUser(testUser);
+        testPurchaseHistory.setItem(testItem);
 
         // Add purchase history into Db
         purchaseHistoryService.addPurchase(testPurchaseHistory);
 
         // Test method
         List<PurchaseHistory> purchaseHistories =
-                purchaseHistoryService.getPurchaseList(testPurchaseHistory.getUserId());
+                purchaseHistoryService.getPurchaseList(testPurchaseHistory.getAbsUser().getId());
         assertEqualPurchaseHistory(purchaseHistories.get(0), testPurchaseHistory);
 
     }
@@ -174,10 +171,10 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test(expected = InvalidEntryException.class)
     public void getPurchase_EmptyList() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(null);
+        testPurchaseHistory.setAbsUser(null);
 
         // Test method
-        purchaseHistoryService.getPurchaseList(testPurchaseHistory.getUserId());
+        purchaseHistoryService.getPurchaseList(testPurchaseHistory.getAbsUser().getId());
     }
 
     /**
@@ -186,15 +183,15 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void deletePurchase_Success() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(testUser.getId());
-        testPurchaseHistory.setItemId(testItem.getId());
+        testPurchaseHistory.setAbsUser(testUser);
+        testPurchaseHistory.setItem(testItem);
 
         // Add purchase history into DB
         purchaseHistoryService.addPurchase(testPurchaseHistory);
 
         // Test method
         purchaseHistoryService.deletePurchase(testPurchaseHistory);
-        testPurchaseHistory.setUserId(null);
+        testPurchaseHistory.setAbsUser(null);
     }
 
     /**
@@ -203,8 +200,8 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     @Test(expected = InvalidEntryException.class)
     public void deletePurchase_Failure() {
         // Set userId and ItemId
-        testPurchaseHistory.setUserId(null);
-        testPurchaseHistory.setItemId(testItem.getId());
+        testPurchaseHistory.setAbsUser(null);
+        testPurchaseHistory.setItem(testItem);
 
         // Test method
         purchaseHistoryService.deletePurchase(testPurchaseHistory);

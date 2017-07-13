@@ -1,14 +1,10 @@
 package am.aca.wftartproject.service.integration;
 
 import am.aca.wftartproject.entity.*;
-import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
-import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.service.*;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import am.aca.wftartproject.util.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
@@ -57,10 +53,10 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         testShoppingCard = TestObjectTemplate.createTestShoppingCard();
         testArtist.setShoppingCard(testShoppingCard);
         artistService.addArtist(testArtist);
-        testItem.setArtist_id(testArtist.getId());
+        testItem.setArtist(testArtist);
         tempItem = createTestItem();
-        tempItem.setArtist_id(testArtist.getId());
-        testShoppingCard.setBuyer_id(testArtist.getId());
+        tempItem.setArtist(testArtist);
+        testShoppingCard.setAbstractUser(testArtist);
     }
 
     /**
@@ -92,7 +88,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     // region<TEST CASE>
 
     /**
-     * @see ItemServiceImpl#addItem(Item)
+     * @see am.aca.wftartproject.service.impl.ItemServiceImpl#addItem(Item) (Item)
      */
     @Test
     public void addItem_Success() {
@@ -325,14 +321,11 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     @Test(expected = InvalidEntryException.class)
     public void updateItem_Failure() {
         // Test method
-
-       long temp = testItem.getArtist_id();
-       testItem.setArtist_id(null);
+       testItem.setArtist(null);
         try{
             itemService.updateItem(testItem);
         }
         catch (InvalidEntryException e){
-            testItem.setArtist_id(temp);
             throw new InvalidEntryException("");
         }
 
@@ -362,13 +355,13 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.entity.Item, java.lang.Long)
+     * @see ItemServiceImpl#itemBuying(Item, AbstractUser)
      */
     @Test
     public void itemBuying_Success() {
         // Create testShoppingCard and testPurchaseHistory
         testItem.setPrice(1000.0);
-        testItem.setArtist_id(testArtist.getId());
+        testItem.setArtist(testArtist);
         testShoppingCard.setBalance(10000.0);
         shoppingCardService.addShoppingCard(testShoppingCard);
 
@@ -376,7 +369,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         itemService.addItem(testItem);
 
         // Test method
-        itemService.itemBuying(testItem, testArtist.getId());
+        itemService.itemBuying(testItem, testArtist);
 
         testPurchaseHistory = purchaseHistoryService.getPurchase(testItem.getId());
 
@@ -384,20 +377,20 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
 
         assertEqualItems(testItem, purchaseItems.get(purchaseItems.size() - 1));
 
-        if (testPurchaseHistory.getItemId() != null)
+        if (testPurchaseHistory.getItem() != null)
             purchaseHistoryService.deletePurchase(testPurchaseHistory);
 
         testPurchaseHistory = null;
     }
 
     /**
-     * @see ItemServiceImpl#itemBuying(am.aca.wftartproject.entity.Item, java.lang.Long)
+     * @see ItemServiceImpl#itemBuying(Item, AbstractUser)
      */
     @Test(expected = NotEnoughMoneyException.class)
     public void itemBuying_Failure() {
         // Create testShoppingCard and testPurchaseHistory
         testItem.setPrice(1000000000.0);
-        testItem.setArtist_id(testArtist.getId());
+        testItem.setArtist(testArtist );
 
         shoppingCardService.addShoppingCard(testShoppingCard);
 
@@ -405,7 +398,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         itemService.addItem(testItem);
 
         // Test method
-        itemService.itemBuying(testItem, testArtist.getId());
+        itemService.itemBuying(testItem, testArtist);
     }
 
     // endregion

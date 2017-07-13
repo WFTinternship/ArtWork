@@ -39,7 +39,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
         testShoppingCard = createTestShoppingCard();
         testUser = createTestUser();
         userService.addUser(testUser);
-        testShoppingCard.setBuyer_id(testUser.getId());
+        testShoppingCard.setAbstractUser(testUser);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
     @After
     public void tearDown() {
         // delete inserted test users,shoppingCards from db
-        if (testShoppingCard.getId() != null)
+        if (testShoppingCard != null && testShoppingCard.getId() != null)
             shoppingCardService.deleteShoppingCard(testShoppingCard);
 
         if (testUser.getId() != null)
@@ -75,7 +75,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
         shoppingCardService.addShoppingCard(testShoppingCard);
 
         // Get added shoppingCard and check its sameness with testShoppingCard
-        ShoppingCard addedCard = shoppingCardService.getShoppingCard(testShoppingCard.getBuyer_id());
+        ShoppingCard addedCard = shoppingCardService.getShoppingCard(testShoppingCard.getId());
 
         assertEqualShoppingCards(addedCard, testShoppingCard);
     }
@@ -98,7 +98,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
         shoppingCardService.addShoppingCard(testShoppingCard);
 
         // Test method
-        ShoppingCard foundedShoppingCard = shoppingCardService.getShoppingCard(testShoppingCard.getBuyer_id());
+        ShoppingCard foundedShoppingCard = shoppingCardService.getShoppingCard(testShoppingCard.getId());
         assertEqualShoppingCards(foundedShoppingCard, testShoppingCard);
     }
 
@@ -147,13 +147,11 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
     @Test(expected = InvalidEntryException.class)
     public void updateShoppingCard_Failure() {
         // Test method
-        long temp = testShoppingCard.getBuyer_id();
-        testShoppingCard.setBuyer_id(null);
+        testShoppingCard.setAbstractUser(null);
         try{
             shoppingCardService.updateShoppingCard(testShoppingCard);
         }
-        catch (InvalidEntryException e){
-            testShoppingCard.setBuyer_id(temp);
+        catch (Exception e){
             throw new InvalidEntryException(e.getMessage());
         }
     }
@@ -189,14 +187,12 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidEntryException.class)
     public void deleteShoppingCard_Failure() {
+        testShoppingCard = null;
         // Test method
-        long temp = testShoppingCard.getBuyer_id();
-        testShoppingCard.setBuyer_id(-8L);
         try{
             shoppingCardService.deleteShoppingCard(testShoppingCard);
         }
-        catch (InvalidEntryException e){
-            testShoppingCard.setBuyer_id(temp);
+        catch (Exception e){
             throw new InvalidEntryException(e.getMessage());
         }
 

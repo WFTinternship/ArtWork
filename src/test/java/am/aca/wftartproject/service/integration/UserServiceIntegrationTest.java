@@ -129,7 +129,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see UserServiceImpl#findUser(java.lang.String)
      */
-    @Test(expected = ServiceException.class)
+    @Test
     public void findUserByEmail_Failure() {
         // Create invalid user
         testUser = new User();
@@ -172,7 +172,7 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see UserServiceImpl#deleteUser(User)
      */
-    @Test(expected = ServiceException.class)
+    @Test
     public void deleteUser_Success() {
         // Add testUser into DB
         userService.addUser(testUser);

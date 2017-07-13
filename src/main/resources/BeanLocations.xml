@@ -5,7 +5,6 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <!-- Beans Declaration -->
     <import resource="database/spring-db.xml"/>
-    <import resource="beans/spring-dao-integration.xml"/>
-    <import resource="beans/spring-service-integration.xml"/>
+    <import resource="application-context.xml"/>
 
 </beans>

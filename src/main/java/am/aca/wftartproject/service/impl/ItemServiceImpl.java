@@ -1,20 +1,16 @@
 package am.aca.wftartproject.service.impl;
 
-import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.entity.ItemType;
+import am.aca.wftartproject.entity.*;
+import am.aca.wftartproject.repository.ItemRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.entity.Item;
-import am.aca.wftartproject.entity.PurchaseHistory;
-import am.aca.wftartproject.entity.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,16 +27,16 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
-    @Autowired
-    private ItemDao itemDao;
-    @Autowired
+    @Autowired(required = false)
+    private ItemRepo itemRepo;
+    @Autowired(required = false)
     private PurchaseHistoryService purchaseHistoryService;
-    @Autowired
+    @Autowired(required = false)
     private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
 /*
-    public void setItemDao(ItemDao itemDao) {
-        this.itemDao = itemDao;
+    public void setItemDao(ItemRepo itemRepo) {
+        this.itemRepo = itemRepo;
     }*/
 
 
@@ -48,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#addItem(Item)
      */
-    
+
     @Override
     public void addItem(Item item) {
 
@@ -58,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            itemDao.addItem(item);
+            itemRepo.saveAndFlush(item);
         } catch (DAOException e) {
             String error = "Failed to add Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -80,7 +76,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemDao.findItem(id);
+            return itemRepo.findOne(id);
         } catch (DAOException e) {
             String error = "Failed to find Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -103,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemDao.getRecentlyAddedItems(limit);
+            return itemRepo.findFirst10ByOrderByAdditionDate();
         } catch (DAOException e) {
             String error = "Failed to get recently added Items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -126,7 +122,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemDao.getItemsByTitle(title);
+            return itemRepo.getAllByTitle(title);
         } catch (DAOException e) {
             String error = "Failed to get items by title: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -149,7 +145,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemDao.getItemsByType(itemType);
+            return itemRepo.getAllByItemType(itemType);
         } catch (DAOException e) {
             String error = "Failed to get items by type: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -173,7 +169,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemDao.getItemsForGivenPriceRange(minPrice, maxPrice);
+            return itemRepo.getAllByPriceBetween(minPrice, maxPrice);
         } catch (DAOException e) {
             String error = "Failed to get items for mentioned price range: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -195,7 +191,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemDao.getArtistItems(artistId);
+            return itemRepo.getAllByArtistId(artistId);
         } catch (DAOException e) {
             String error = "Failed to get items for the given artistId: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -208,7 +204,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#updateItem(Item)
      */
-    
+
     @Override
     public void updateItem(Item item) {
         if (item == null || !item.isValidItem()) {
@@ -217,7 +213,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            itemDao.updateItem(item);
+            itemRepo.saveAndFlush(item);
         } catch (DAOException e) {
             String error = "Failed to update Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -230,7 +226,7 @@ public class ItemServiceImpl implements ItemService {
      * @param item
      * @see ItemService#deleteItem(Item)
      */
-    
+
     @Override
     public void deleteItem(Item item) {
         if (item == null || !item.isValidItem()) {
@@ -238,7 +234,7 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidEntryException("Invalid Item");
         }
         try {
-            itemDao.deleteItem(item);
+            itemRepo.delete(item);
         } catch (DAOException e) {
             String error = "Failed to delete Item: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -249,14 +245,13 @@ public class ItemServiceImpl implements ItemService {
 
     /**
      * @param item
-     * @param buyerId
-     * @see ItemService#itemBuying(Item, Long)
+     * @param buyer
+     * @see ItemService#itemBuying(Item, AbstractUser)
      */
     @Override
-    @Transactional
-    public void itemBuying(Item item, Long buyerId) {
-        if (buyerId == null || buyerId < 0) {
-            LOGGER.error(String.format("buyerId is not valid: %s", buyerId));
+    public void itemBuying(Item item, AbstractUser buyer) {
+        if (buyer == null || !buyer.isValidUser()) {
+            LOGGER.error(String.format("buyerId is not valid: %s", buyer));
             throw new InvalidEntryException("Invalid Id");
         }
 
@@ -267,7 +262,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Withdraw money from payment method
         try {
-            ShoppingCard shoppingCard = shoppingCardService.getShoppingCard(buyerId);
+            ShoppingCard shoppingCard = shoppingCardService.getShoppingCard(buyer.getId());
             if (shoppingCard.getBalance() >= item.getPrice()) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - item.getPrice());
                 shoppingCardService.updateShoppingCard(shoppingCard);
@@ -283,9 +278,8 @@ public class ItemServiceImpl implements ItemService {
         // Add item to the buyer's purchase history
         try {
             PurchaseHistory purchaseHistory = new PurchaseHistory();
-            purchaseHistory.setItemId(item.getId());
-            purchaseHistory.setUserId(buyerId);
             purchaseHistory.setItem(item);
+            purchaseHistory.setAbsUser(buyer);
             purchaseHistory.setPurchaseDate(Calendar.getInstance().getTime());
             purchaseHistoryService.addPurchase(purchaseHistory);
         } catch (DAOException e) {
@@ -297,7 +291,7 @@ public class ItemServiceImpl implements ItemService {
         // Change item status to sold
         try {
             item.setStatus(false);
-            itemDao.updateItem(item);
+            itemRepo.saveAndFlush(item);
 
         } catch (DAOException e) {
             String error = "Failed to change item status to sold: %s";

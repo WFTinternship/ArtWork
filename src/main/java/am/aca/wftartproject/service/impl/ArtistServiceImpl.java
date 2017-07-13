@@ -1,18 +1,20 @@
 package am.aca.wftartproject.service.impl;
 
-import am.aca.wftartproject.dao.ArtistDao;
-import am.aca.wftartproject.dao.ShoppingCardDao;
+import am.aca.wftartproject.repository.ArtistRepo;
+import am.aca.wftartproject.repository.ShoppingCardRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.Artist;
+import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
@@ -25,10 +27,12 @@ public class ArtistServiceImpl implements ArtistService {
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
 
     @Autowired
-    private  ArtistDao artistDao;
+    private ArtistRepo artistRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
-    private ShoppingCardDao shoppingCardDao;
+    private ShoppingCardRepo shoppingCardRepo;
 
 
     private ShoppingCardService shoppingCardService;
@@ -37,12 +41,6 @@ public class ArtistServiceImpl implements ArtistService {
     public void setShoppingCardService(ShoppingCardService shoppingCardService) {
         this.shoppingCardService = shoppingCardService;
     }
-
-    public void setArtistDao(ArtistDao artistDao) {
-        this.artistDao = artistDao;
-    }
-
-
     /**
      * @param artist
      * @see ArtistService#addArtist(Artist)
@@ -56,18 +54,16 @@ public class ArtistServiceImpl implements ArtistService {
             throw new InvalidEntryException(error);
         }
         try{
-            if (artistDao.findArtist(artist.getEmail()) != null) {
+            if (artistRepo.findArtistByEmail(artist.getEmail()) != null || userRepo.findUserByEmail(artist.getEmail()) != null) {
                 String error = "User has already exists";
                 LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
                 throw new DuplicateEntryException(error);
             }
         }catch (DAOException e){
         }
-
-
         try {
-            artistDao.addArtist(artist);
-        } catch (DAOException e) {
+            artistRepo.saveAndFlush(artist);
+        } catch (RuntimeException e) {
             String error = "Failed to add Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -89,7 +85,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            return artistDao.findArtist(id);
+            return artistRepo.findOne(id);
         } catch (DAOException e) {
             String error = "Failed to find Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -111,7 +107,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            return artistDao.findArtist(email);
+            return artistRepo.findArtistByEmail(email);
         } catch (DAOException e) {
             String error = "Failed to find Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -134,7 +130,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            artistDao.updateArtist(artist);
+            artistRepo.saveAndFlush(artist);
         } catch (DAOException e) {
             String error = "Failed to update Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -155,7 +151,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            artistDao.deleteArtist(artist);
+            artistRepo.delete(artist);
         } catch (DAOException e) {
             String error = "Failed to delete Artist: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -178,7 +174,7 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
-            Artist user = artistDao.findArtist(email);
+            Artist user = artistRepo.findArtistByEmail(email);
             if (user != null && user.getPassword().equals(password)) {
                 artist = user;
             }

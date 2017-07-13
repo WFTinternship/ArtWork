@@ -46,8 +46,8 @@ public class AssertTemplates {
     }
 
     public static void assertEqualPurchaseHistory(PurchaseHistory expectedPurchaseHistory, PurchaseHistory actualPurchaseHistory) {
-        assertEquals(expectedPurchaseHistory.getItemId(), actualPurchaseHistory.getItemId());
-        assertEquals(expectedPurchaseHistory.getUserId(), actualPurchaseHistory.getUserId());
+        assertEquals(expectedPurchaseHistory.getItem(), actualPurchaseHistory.getItem());
+        assertEquals(expectedPurchaseHistory.getAbsUser(), actualPurchaseHistory.getAbsUser());
     //    assertTrue(dateComparison(expectedPurchaseHistory.getPurchaseDate(), actualPurchaseHistory.getPurchaseDate()));
 //        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 1000000000, actualPurchaseHistory.getPurchaseDate().getTime() / 1000000000);
     }

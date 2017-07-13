@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualArtists;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
@@ -23,7 +24,6 @@ import static junit.framework.TestCase.assertNull;
  * Created by ASUS on 30-Jun-17
  */
 public class ArtistServiceIntegrationTest extends BaseIntegrationTest {
-
     private Artist testArtist;
 
     @Autowired

@@ -1,10 +1,13 @@
 package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.entity.Artist;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by surik on 6/3/17
  */
+@Repository
 public interface ArtistService {
 
     /**

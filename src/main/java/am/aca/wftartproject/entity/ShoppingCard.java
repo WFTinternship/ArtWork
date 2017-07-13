@@ -10,26 +10,19 @@ public class ShoppingCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private Long buyer_id;
     @Column(nullable = false)
     private double balance;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ShoppingCardType shoppingCardType;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AbstractUser abstractUser;
 
     public Long getId() {
         return id;
     }
 
-    public Long getBuyer_id() {
-        return buyer_id;
-    }
-
-    public void setBuyer_id(Long buyer_id) {
-        this.buyer_id = buyer_id;
-    }
 
     public ShoppingCard setId(Long id) {
         this.id = id;
@@ -73,7 +66,15 @@ public class ShoppingCard {
                 '}';
     }
 
+    public AbstractUser getAbstractUser() {
+        return abstractUser;
+    }
+
+    public void setAbstractUser(AbstractUser abstractUser) {
+        this.abstractUser = abstractUser;
+    }
+
     public boolean isValidShoppingCard() {
-        return (/*id != null && */this.balance != 0 && this.shoppingCardType != null  && this.getBuyer_id() != null && this.getBuyer_id() >=0);
+        return (/*id != null && */this.balance != 0 && this.shoppingCardType != null && this.abstractUser != null);
     }
 }
