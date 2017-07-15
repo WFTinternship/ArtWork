@@ -1,5 +1,6 @@
 package am.aca.wftartproject.service.impl;
 
+import am.aca.wftartproject.repository.AbstractUserRepo;
 import am.aca.wftartproject.repository.ArtistRepo;
 import am.aca.wftartproject.repository.ShoppingCardRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
@@ -12,16 +13,11 @@ import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
 
-/**
- * Created by surik on 6/3/17
- */
 @Service
 public class ArtistServiceImpl implements ArtistService {
     private static final Logger LOGGER = Logger.getLogger(ArtistServiceImpl.class);
@@ -29,18 +25,10 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     private ArtistRepo artistRepo;
     @Autowired
+    private AbstractUserRepo abstractUserRepo;
+    @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private ShoppingCardRepo shoppingCardRepo;
-
-
-    private ShoppingCardService shoppingCardService;
-
-    @Autowired
-    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
-        this.shoppingCardService = shoppingCardService;
-    }
     /**
      * @param artist
      * @see ArtistService#addArtist(Artist)
@@ -54,7 +42,7 @@ public class ArtistServiceImpl implements ArtistService {
             throw new InvalidEntryException(error);
         }
         try{
-            if (artistRepo.findArtistByEmail(artist.getEmail()) != null || userRepo.findUserByEmail(artist.getEmail()) != null) {
+            if (abstractUserRepo.findByEmail(artist.getEmail()) != null) {
                 String error = "User has already exists";
                 LOGGER.error(String.format("Failed to add User: %s: %s", error, artist));
                 throw new DuplicateEntryException(error);

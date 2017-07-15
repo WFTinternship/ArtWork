@@ -166,27 +166,27 @@ public class ItemRepoIntegrationTest extends BaseDAOIntegrationTest {
 
 
     /**
-     * @see ItemRepo#findFirst10ByOrderByAdditionDate()
+     * @see ItemRepo#findTop10By()
      */
     @Test
     public void getRecentlyAddedItems_Success() {
         // Add items into DB
         itemDao.saveAndFlush(tempItem);
         // Get items list and check for not empty when limit is positive
-        List<Item> itemList = itemDao.findFirst10ByOrderByAdditionDate();
+        List<Item> itemList = itemDao.findTop10By();
 
         assertEqualItems(tempItem, itemList.get(itemList.size()-1));
     }
 
 
     /**
-     * @see ItemRepo#findFirst10ByOrderByAdditionDate()
+     * @see ItemRepo#findTop10By()
      */
     @Test
     public void getRecentlyAddedItems_Failure() {
         itemDao.deleteAll();
         // Get recently added items with 0 limit and check list for empty
-        assertTrue(itemDao.findFirst10ByOrderByAdditionDate().isEmpty());
+        assertTrue(itemDao.findTop10By().isEmpty());
     }
 
     /**

@@ -1,10 +1,12 @@
 package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.entity.User;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by surik on 6/3/17
  */
+@Repository
 public interface UserService {
 
     /**

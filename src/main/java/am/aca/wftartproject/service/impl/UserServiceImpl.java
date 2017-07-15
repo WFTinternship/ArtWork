@@ -1,6 +1,6 @@
 package am.aca.wftartproject.service.impl;
 
-import am.aca.wftartproject.repository.ArtistRepo;
+import am.aca.wftartproject.repository.AbstractUserRepo;
 import am.aca.wftartproject.repository.ShoppingCardRepo;
 import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
@@ -12,7 +12,6 @@ import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -29,16 +28,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    private ArtistRepo artistRepo;
-    @Autowired
-    private ShoppingCardRepo shoppingCardRepo;
+    private AbstractUserRepo abstractUserRepo;
 
-    private ShoppingCardService shoppingCardService;
-
-    @Autowired
-    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
-        this.shoppingCardService = shoppingCardService;
-    }
 
     /**
      * @param user
@@ -53,7 +44,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try{
-            if (userRepo.findUserByEmail(user.getEmail()) != null || artistRepo.findArtistByEmail(user.getEmail())!= null) {
+            if (abstractUserRepo.findByEmail(user.getEmail()) != null) {
                 String error = "User has already exists";
                 LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
                 throw new DuplicateEntryException(error);

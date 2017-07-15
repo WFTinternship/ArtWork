@@ -27,11 +27,11 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
-    @Autowired(required = false)
+    @Autowired
     private ItemRepo itemRepo;
-    @Autowired(required = false)
+    @Autowired
     private PurchaseHistoryService purchaseHistoryService;
-    @Autowired(required = false)
+    @Autowired
     private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
 
 /*
@@ -99,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemRepo.findFirst10ByOrderByAdditionDate();
+            return itemRepo.findTop10By();
         } catch (DAOException e) {
             String error = "Failed to get recently added Items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
@@ -207,7 +207,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void updateItem(Item item) {
-        if (item == null || !item.isValidItem()) {
+        if (item == null || item.getId() == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
             throw new InvalidEntryException("Invalid item");
         }

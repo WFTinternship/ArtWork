@@ -87,7 +87,7 @@
                             <li><a href="/signup">Sign up </a> </li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="/account">My Account </a> </li>
+                            <li><a href="/account-details">My Account </a> </li>
                             <li><a href="/logoutProcess">Log out  </a> </li>
                         </c:otherwise>
                     </c:choose>

@@ -1,10 +1,12 @@
 package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.entity.ShoppingCard;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by ASUS on 03-Jun-17
  */
+@Repository
 public interface ShoppingCardService {
 
     /**

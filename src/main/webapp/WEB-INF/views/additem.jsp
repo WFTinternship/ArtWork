@@ -7,7 +7,7 @@
 
 
 <c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
-<c:set var="Message" value='<%=request.getAttribute("errorMessage")%>'/>
+<c:set var="Message" value='<%=request.getSession().getAttribute("errorMessage")%>'/>
 
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->

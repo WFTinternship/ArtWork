@@ -4,6 +4,7 @@ import am.aca.wftartproject.entity.Item;
 import am.aca.wftartproject.entity.ItemType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Lob;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by ASUS on 27-May-17
  */
+@Repository
 public interface ItemRepo extends JpaRepository<Item,Long> {
 
     /**
@@ -20,7 +22,7 @@ public interface ItemRepo extends JpaRepository<Item,Long> {
      * @return
      */
 
-    List<Item> findFirst10ByOrderByAdditionDate();
+    List<Item> findTop10By();
 
 
     /**

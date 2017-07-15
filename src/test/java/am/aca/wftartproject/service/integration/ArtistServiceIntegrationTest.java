@@ -7,14 +7,10 @@ import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.BaseIntegrationTest;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
-import am.aca.wftartproject.util.TestObjectTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualArtists;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
 import static junit.framework.TestCase.assertNotNull;

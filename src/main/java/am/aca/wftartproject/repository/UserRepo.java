@@ -1,5 +1,6 @@
 package am.aca.wftartproject.repository;
 
+import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
