@@ -9,7 +9,7 @@
 <c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
 <c:set var="artistSpecTypes" value='<%=request.getSession().getAttribute("artistSpecTypes")%>'/>
 <c:set var="artistItems" value='<%=request.getSession().getAttribute("artistItems")%>'/>
-<c:set var="message" value='<%=request.getSession().getAttribute("message")%>'/>
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
 
 
 
@@ -57,7 +57,19 @@
 
     <!-- **Font Awesome** -->
     <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
+    <script type="application/javascript">
+        deleteItem = function(itemId) {
+            if (confirm("Want to delete?")) {
+                jQuery.ajax({url: "/deleteItem/" + itemId, success: function(){
+                    document.getElementById(itemId).remove();
+                    jQuery(window).resize();
+                    //$(itemId).remove();
+                }});
+                //window.location.replace ("/deleteItem/" + itemId);
+            }
+        }
 
+    </script>
 </head>
 
 <body>
@@ -121,7 +133,7 @@
                                     <ul class="products isotope">
                                         <c:forEach items="${artistItems}" var="itemElement">
                                             <c:if test="${itemElement.status eq true}">
-                                                <li class="product-wrapper dt-sc-one-fifth">
+                                                <li class="product-wrapper dt-sc-one-fifth" id="${itemElement.id}">
                                                     <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->
                                                     <div class="product-container">
@@ -133,8 +145,8 @@
                                                         <div class="product-title">
                                                             <a href="#" class="type1 dt-sc-button"> <span
                                                                     class="fa fa-shopping-cart"></span> Edit </a>
-                                                            <a href="/deleteItem/${itemElement.id}"
-                                                               class="type1 dt-sc-button"> <span
+                                                            <a href="javascript:void(0)"
+                                                               class="type1 dt-sc-button" onclick="deleteItem(${itemElement.id})"> <span
                                                                     class="fa fa-unlink"></span> Delete </a>
                                                             <p>You don't take a photograph, Just make it</p>
                                                         </div> <!-- **product-title - Ends** -->

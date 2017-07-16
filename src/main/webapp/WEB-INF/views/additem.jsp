@@ -7,7 +7,8 @@
 
 
 <c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
-<c:set var="Message" value='<%=request.getSession().getAttribute("errorMessage")%>'/>
+<c:set var="Message" value='<%=request.getAttribute("message")%>'/>
+
 
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -63,6 +64,11 @@
 
     <!-- **Font Awesome** -->
     <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
+    <style type="text/css" >
+        .shop-dropdown ul li span:hover{
+            background: #f5f5f5;
+        }
+    </style>
 
 </head>
 
@@ -112,7 +118,7 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <c:choose>
-                                        <c:when test="${Message!=null}">
+                                        <c:when test="${message!=null}">
                                                 <h4 style="color:red;">${Message}</h4>
                                         </c:when>
                                         <c:otherwise>
@@ -129,19 +135,8 @@
                                                 <%----%>
                                                 <%--</div>--%>
 
-                                                <form action="/additem" method="post" id="form2"
+                                                <form action="/add-item" method="post" id="form2"
                                                       enctype="multipart/form-data">
-                                                    <%--<div class="form-group">--%>
-                                                    <%--<label for="imageUpload">Choose Image</label>--%>
-                                                    <%--<input type="file" id="imageUpload" name="image"  />--%>
-                                                    <%--<img src="" id="imagePreview" alt="" width="200px"/><br/>--%>
-                                                    <%--</div>--%>
-
-                                                    <%--Upload File 1: <input type="file" name="file"> <br/>--%>
-                                                    <%--Upload File 2: <input type="file" name="file"> <br/>--%>
-                                                    <%--Upload File 3: <input type="file" name="file"> <br/>--%>
-                                                    <%--Upload File 4: <input type="file" name="file"> <br/>--%>
-
                                                     <table border="2" align="left">
                                                         <tr>
 
@@ -161,15 +156,15 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
                                                         <input type="text" name="title" class="form-control"
-                                                               id="exampleInput1" placeholder="Brennan Doe">
+                                                               id="exampleInput1" placeholder="Brennan Doe" required autofocus>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput2">Description</label>
                                                         <input type="text" name="description" class="form-control"
-                                                               id="exampleInput2" placeholder=" write descritpion ">
+                                                               id="exampleInput2" placeholder=" write descritpion " required autofocus>
                                                     </div>
                                                     <label for="exampleInput171">Art Type</label>
-                                                    <select class="shop-dropdown" name="type" id="exampleInput171">
+                                                    <select class="shop-dropdown" name="type" id="exampleInput171" required autofocus>
                                                         <option value="-1" selected>Choose art type</option>
                                                         <c:forEach items="${itemTypes}" var="element">
                                                             <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''}
@@ -179,7 +174,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
                                                         <input type="text" name="price" class="form-control"
-                                                               id="exampleInput3" placeholder="100$">
+                                                               id="exampleInput3" required autofocus>
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
                                                 </form>

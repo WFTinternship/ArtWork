@@ -57,7 +57,6 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
         itemService.addItem(testItem);
         testPurchaseHistory.setAbsUser(testUser);
         testPurchaseHistory.setItem(testItem);
-
     }
 
     /**

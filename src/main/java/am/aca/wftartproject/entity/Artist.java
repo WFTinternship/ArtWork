@@ -13,13 +13,12 @@ import java.util.List;
 @Entity
 @DynamicUpdate
 @Table(name = "artist")
-public class Artist extends AbstractUser implements Serializable {
+public class Artist extends AbstractUser implements Serializable,Cloneable {
 
     @Enumerated(EnumType.STRING)
     private ArtistSpecialization specialization;
-    @Lob
     @Column(length = 10000000, name = "photo")
-    private byte[] artistPhoto;
+    private byte[] artistPhoto = null;
     @OneToMany(targetEntity = am.aca.wftartproject.entity.Item.class, cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Item> itemList;
     @Transient
@@ -89,5 +88,16 @@ public class Artist extends AbstractUser implements Serializable {
 
     public boolean isValidArtist() {
         return super.isValidUser();
+    }
+
+    public boolean equals(Artist other){
+        if(other.firstName.equals(this.firstName) && other.lastName.equals(this.lastName) && other.age == this.age && other.password.equals(this.password) && other.specialization.equals(this.specialization) && other.artistPhoto.equals(this.artistPhoto) )
+        {
+            return true;
+        }
+        else return false;
+    }
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

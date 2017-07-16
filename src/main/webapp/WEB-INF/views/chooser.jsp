@@ -13,6 +13,6 @@
     <li><a href="purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
     <c:if test="${user['class'].simpleName eq 'Artist'}">
         <li><a href="my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-        <li><a href="additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+        <li><a href="add-item"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
     </c:if>
 </ul>

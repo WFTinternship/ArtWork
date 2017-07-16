@@ -74,7 +74,7 @@
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
-                        	<a href="#">Shopping Bag: 0 items</a> 
+                        	<a href="#">Shopping Bag: 0 items</a>
                             <a href="#">($0.00)</a>
                         </div>
                     </div>

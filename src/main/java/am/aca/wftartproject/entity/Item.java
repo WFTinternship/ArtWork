@@ -159,16 +159,17 @@ public class Item implements Serializable {
     }
 
     public boolean isValidItem() {
-//        return id != null &&
-//                id > 0 &&
         return
-                !isEmptyString(title) &&
-                        !isEmptyString(photoURL.get(0)) &&
-                        artist != null &&
-                        price != 0 &&
-                        itemType != null;
-        //        && additionDate != null;
-
+                !isEmptyString(title)
+                        && title != null
+                        && description != null
+                        && !description.isEmpty()
+                        && photoURL != null
+                        && !isEmptyString(photoURL.get(0))
+                        && artist != null
+                        && price != 0
+                        && itemType != null
+                        && additionDate != null;
     }
 
     @Override

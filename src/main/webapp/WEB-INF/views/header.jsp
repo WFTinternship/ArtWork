@@ -7,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<script src="../../resources/js/jquery.js"></script> <!-- JQuery -->
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
 <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
@@ -87,8 +88,8 @@
                             <li><a href="/signup">Sign up </a> </li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="/account-details">My Account </a> </li>
-                            <li><a href="/logoutProcess">Log out  </a> </li>
+                            <li><a href="account-details">My Account </a> </li>
+                            <li><a href="logoutProcess">Log out  </a> </li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

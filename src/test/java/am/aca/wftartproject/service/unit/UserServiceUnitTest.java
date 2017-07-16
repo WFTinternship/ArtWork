@@ -5,6 +5,7 @@ import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.User;
+import am.aca.wftartproject.repository.AbstractUserRepo;
 import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.ShoppingCardService;
@@ -17,6 +18,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
@@ -42,6 +44,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private ShoppingCardService shoppingCardServiceMock;
+
+    @Mock
+    AbstractUserRepo abstractUserRepoMock ;
 
     @Before
     public void beforeTest() {
@@ -149,7 +154,8 @@ public class UserServiceUnitTest extends BaseUnitTest {
         testUser.setId(5L);
 
         // Setup mocks
-        doNothing().when(userRepoMock).saveAndFlush(argument1.capture());
+        doReturn(null).when(abstractUserRepoMock).findByEmail(any(String.class));
+        doReturn(testUser).when(userRepoMock).saveAndFlush(argument1.capture());
 
         // Test method
         userService.addUser(testUser);
