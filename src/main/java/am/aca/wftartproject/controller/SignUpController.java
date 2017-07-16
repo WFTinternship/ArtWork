@@ -23,8 +23,8 @@ import java.io.IOException;
 @Controller
 public class SignUpController {
 
-    private final UserService userService;
-    private final ArtistService artistService;
+    private UserService userService;
+    private ArtistService artistService;
 
     @Autowired
     public SignUpController(UserService userService, ArtistService artistService) {
@@ -33,8 +33,10 @@ public class SignUpController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView showRegister(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("signUp");
+    public ModelAndView showRegistrationPage(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("sign-up");
+
+        // Get required information and add attributes for view page
         request.getSession().setAttribute("artistSpecTypes", ArtistSpecialization.values());
         mav.addObject("user", new User());
         mav.addObject("artist", new Artist());
@@ -94,7 +96,7 @@ public class SignUpController {
             mv.addObject("user", artistFromRequest);
 //            request.setAttribute("errorMessage", message);
 //            request.setAttribute("user", artistFromRequest);
-            mv.setViewName("signUp");
+            mv.setViewName("sign-up");
             return mv;
 //            return new ModelAndView("signUp");
         }

@@ -8,8 +8,10 @@
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
 <c:set var="itemList" value='<%=request.getAttribute("itemList")%>'/>
+<c:set var="message" value='<%=session.getAttribute("message")%>'/>
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
 <c:set var="artist" value='<%=session.getAttribute("artist")%>'/>
+
 
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -63,7 +65,7 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
     <div class="inner-wrapper">
-        <jsp:include page="header.jsp" />
+        <jsp:include page="header.jsp"/>
         <div id="main">
             <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
@@ -86,77 +88,81 @@
                         <h3> Shop </h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
                     </div>
+                    <c:if test="${message!=null}">
+                        <h5 style="color:red;" >${message}</h5>
+                        ${message=null}
+                    </c:if>
                 </div>
                 <div class="fullwidth-section shop-grid"><!-- Full-width section Starts Here -->
                     <div class="sorting-products"><!-- sorting-products Starts Here -->
-                        <form action="/shop" method="post">
-                        <%--<div class="dt-sc-one-fifth column first">--%>
+                        <form action="${pageContext.request.contextPath}/shop" method="post">
+                            <%--<div class="dt-sc-one-fifth column first">--%>
                             <%--<div class="categories">--%>
-                                <%--<h5>Artist Specialization</h5>--%>
-                                <%--<div class="selection-box">--%>
-                                    <%--<select name="artSpec" class="shop-dropdown">--%>
-                                        <%--<option value="-1" selected>Choose artist spec.</option>--%>
-                                        <%--<c:forEach items="${artistSpecTypes}" var="element">--%>
-                                            <%--<option value="${element.type}"--%>
-                                                    <%--class="fa fa-eyedropper">${element.type}</option>--%>
-                                        <%--</c:forEach>--%>
-                                        <%--&lt;%&ndash;<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="3" class="fa fa-pencil">${itemTypes[2].getType()}</option>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="4" class="fa fa-eyedropper">${itemTypes[3].getType()}</option>&ndash;%&gt;--%>
+                            <%--<h5>Artist Specialization</h5>--%>
+                            <%--<div class="selection-box">--%>
+                            <%--<select name="artSpec" class="shop-dropdown">--%>
+                            <%--<option value="-1" selected>Choose artist spec.</option>--%>
+                            <%--<c:forEach items="${artistSpecTypes}" var="element">--%>
+                            <%--<option value="${element.type}"--%>
+                            <%--class="fa fa-eyedropper">${element.type}</option>--%>
+                            <%--</c:forEach>--%>
+                            <%--&lt;%&ndash;<option value="1" class="fa fa-fire-extinguisher">${itemTypes[0].getType()}</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="2" class="fa fa-camera-retro">${itemTypes[1].getType()}</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="3" class="fa fa-pencil">${itemTypes[2].getType()}</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="4" class="fa fa-eyedropper">${itemTypes[3].getType()}</option>&ndash;%&gt;--%>
 
 
-                                        <%--&lt;%&ndash;<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="2" class="fa fa-camera-retro">Photogenic Art</option>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="3" class="fa fa-pencil">Sketches</option>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<option value="4" class="fa fa-eyedropper">Dropper Painting</option>&ndash;%&gt;--%>
-                                    <%--</select>--%>
-                                <%--</div>--%>
+                            <%--&lt;%&ndash;<option value="1" class="fa fa-fire-extinguisher">Canvas Print</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="2" class="fa fa-camera-retro">Photogenic Art</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="3" class="fa fa-pencil">Sketches</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="4" class="fa fa-eyedropper">Dropper Painting</option>&ndash;%&gt;--%>
+                            <%--</select>--%>
                             <%--</div>--%>
-                        <%--</div>--%>
-                        <div class="dt-sc-one-fifth column">
-                            <div class="categories">
-                                <h5>Art Type</h5>
-                                <div class="selection-box">
-                                    <select name="itemType" class="shop-dropdown">
-                                        <option value="-1" selected>Choose art type</option>
-                                        <c:forEach items="${itemTypes}" var="element">
-                                            <option value="${element.type}"
-                                                    class="fa fa-flask">${element.type}</option>
-                                        </c:forEach>
-                                        <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
-                                        <%--<option value="2" class="fa fa-paint-brush">Oil Painting</option>--%>
-                                        <%--<option value="2" class="fa fa-scissors">Sculpture</option>--%>
-                                        <%--<option value="3" class="fa fa-tint">Water Painting</option>--%>
-                                    </select>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <div class="dt-sc-one-fifth column">
+                                <div class="categories">
+                                    <h5>Art Type</h5>
+                                    <div class="selection-box">
+                                        <select name="itemType" class="shop-dropdown">
+                                            <option value="-1" selected>Choose art type</option>
+                                            <c:forEach items="${itemTypes}" var="element">
+                                                <option value="${element.type}"
+                                                        class="fa fa-flask">${element.type}</option>
+                                            </c:forEach>
+                                            <%--<option value="1" class="fa fa-flask">Acrylic</option>--%>
+                                            <%--<option value="2" class="fa fa-paint-brush">Oil Painting</option>--%>
+                                            <%--<option value="2" class="fa fa-scissors">Sculpture</option>--%>
+                                            <%--<option value="3" class="fa fa-tint">Water Painting</option>--%>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="dt-sc-one-fifth column">
-                            <div class="categories">
-                                <h5>Sort By</h5>
-                                <div class="selection-box">
-                                    <select name="sortType" class="shop-dropdown">
-                                        <option value="-1" selected>Sort by</option>
-                                        <option value="1" class="fa fa-mortar-board">Price</option>
-                                        <option value="2" class="fa fa-mortar-board">Title</option>
-                                        <option value="3" class="fa fa-mortar-board">Available Items</option>
-                                        <option value="4" class="fa fa-mortar-board">Sold Items</option>
-                                        <%--<option value="1" class="fa fa-mortar-board">Popular Artist</option>--%>
-                                        <%--<option value="2" class="fa fa-money">Best Seller</option>--%>
-                                        <%--<option value="3" class="fa fa-thumb-tack">Featured Art</option>--%>
-                                        <%--<option value="4" class="fa fa-child">New Artist</option>--%>
-                                    </select>
+                            <div class="dt-sc-one-fifth column">
+                                <div class="categories">
+                                    <h5>Sort By</h5>
+                                    <div class="selection-box">
+                                        <select name="sortType" class="shop-dropdown">
+                                            <option value="-1" selected>Sort by</option>
+                                            <option value="1" class="fa fa-mortar-board">Price</option>
+                                            <option value="2" class="fa fa-mortar-board">Title</option>
+                                            <option value="3" class="fa fa-mortar-board">Available Items</option>
+                                            <option value="4" class="fa fa-mortar-board">Sold Items</option>
+                                            <%--<option value="1" class="fa fa-mortar-board">Popular Artist</option>--%>
+                                            <%--<option value="2" class="fa fa-money">Best Seller</option>--%>
+                                            <%--<option value="3" class="fa fa-thumb-tack">Featured Art</option>--%>
+                                            <%--<option value="4" class="fa fa-child">New Artist</option>--%>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                             <div class="dt-sc-one-fifth column">
                                 <h5>Search</h5>
                                 <div class="container">
                                     <button type="submit" class="button">Click Here!</button>
                                 </div>
-                            <%--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Search</button>--%>
+                                <%--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Search</button>--%>
                             </div>
                         </form>
                         <%--<div class="dt-sc-one-fifth column">--%>
@@ -201,10 +207,14 @@
                                     <div class="product-title">
 
                                         <c:if test="${itemElement.status==true}">
-                                            <p><h1><div style="text-align: center;">SOLD</div></h1></p>
+                                            <p>
+                                            <h1>
+                                                <div style="text-align: center;">SOLD</div>
+                                            </h1>
+                                            </p>
                                         </c:if>
 
-                                        <a href="/shop-cart" class="type1 dt-sc-button"> <span
+                                        <a href="${pageContext.request.contextPath}/shop-cart" class="type1 dt-sc-button"> <span
                                                 class="fa fa-shopping-cart"></span> Add to Cart </a>
                                         <a href="#" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>
                                             Options </a>

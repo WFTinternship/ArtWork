@@ -1,7 +1,6 @@
 package am.aca.wftartproject.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by ASUS on 27-May-17
@@ -67,7 +66,7 @@ public class PurchaseHistory {
     }
 
     public boolean isValidPurchaseHistory() {
-        return userId != null &&
+        return  userId != null &&
                 userId > 0 &&
                 itemId != null &&
                 itemId > 0 &&

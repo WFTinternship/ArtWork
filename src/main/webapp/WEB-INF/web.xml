@@ -45,13 +45,13 @@
 
 
     <!--<listener>-->
-        <!--<listener-clam.aca.wftartproject.servletr.CtxListener</listener-class>-->
+        <!--<listener-clam.aca.wftartproject.servlet.CtxListener</listener-class>-->
     <!--</listener>-->
     <!---->
 
     <!--<filter>-->
         <!--<filter-name>AuthenticationFilter</filter-name>-->
-        <!--<filter-clam.aca.wftartproject.servletr.AuthenticationFilter</filter-class>-->
+        <!--<filter-clam.aca.wftartproject.servlet.AuthenticationFilter</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
         <!--<filter-name>AuthenticationFilter</filter-name>-->
@@ -61,7 +61,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ShopServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.ShopServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.ShopServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>ShopServlet</servlet-name>-->
@@ -70,7 +70,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>UploadServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.FileUploadServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.FileUploadServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
@@ -80,7 +80,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>HomeServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.HomeServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.HomeServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>HomeServlet</servlet-name>-->
@@ -90,7 +90,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>LoginServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.LoginServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.LoginServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>LoginServlet</servlet-name>-->
@@ -100,7 +100,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>LogOutServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.LogOutServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.LogOutServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>LogOutServlet</servlet-name>-->
@@ -109,7 +109,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>SignUp</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.SignUpServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.SignUpServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>SignUp</servlet-name>-->
@@ -118,7 +118,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>My Account</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.AccountServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.AccountServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>My Account</servlet-name>-->
@@ -132,7 +132,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>Edit Profile</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.EditProfileServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.EditProfileServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>Edit Profile</servlet-name>-->
@@ -141,7 +141,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>Purchase History</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.PurchaseHistoryServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.PurchaseHistoryServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>Purchase History</servlet-name>-->
@@ -150,7 +150,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ItemDetail</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.ItemDetailServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.ItemDetailServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>ItemDetail</servlet-name>-->
@@ -164,7 +164,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ContactServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.ContactServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.ContactServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>ContactServlet</servlet-name>-->
@@ -173,7 +173,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>AboutServlet</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.AboutServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.AboutServlet</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>AboutServlet</servlet-name>-->
@@ -182,7 +182,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>MyArtWorks</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.MyWorksServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.MyWorksServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
@@ -192,7 +192,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>AddItem</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.AddItemsServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.AddItemsServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
@@ -202,7 +202,7 @@
 
     <!--<servlet>-->
         <!--<servlet-name>ShopCart</servlet-name>-->
-        <!--<servlet-clam.aca.wftartproject.servletr.ShopCartServlet</servlet-class>-->
+        <!--<servlet-clam.aca.wftartproject.servlet.ShopCartServlet</servlet-class>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->

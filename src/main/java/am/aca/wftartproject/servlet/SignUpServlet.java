@@ -26,7 +26,7 @@ public class SignUpServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.setAttribute("artistSpecTypes", ArtistSpecialization.values());
-        request.getRequestDispatcher("/WEB-INF/views/signUp.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/sign-up.jsp")
                 .forward(request, response);
     }
 

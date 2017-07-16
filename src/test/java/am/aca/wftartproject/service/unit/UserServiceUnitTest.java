@@ -17,11 +17,9 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
 import static junit.framework.TestCase.*;
@@ -49,7 +47,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+//        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(userService, "userDao", userDaoMock);
         ((UserServiceImpl) userService).setShoppingCardService(shoppingCardServiceMock);
     }

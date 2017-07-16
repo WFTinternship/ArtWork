@@ -33,7 +33,7 @@ public class LogInController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
-        return new ModelAndView("logIn");
+        return new ModelAndView("login");
     }
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
@@ -48,18 +48,18 @@ public class LogInController {
             Artist artistFromDB = artistService.findArtist(userFromDB.getId());
 
             if (artistFromDB != null) {
-                setAttributeInSessionAndCreateCookie(artistFromDB, request, response, session);
+                setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
             } else if (userFromDB != null) {
-                setAttributeInSessionAndCreateCookie(userFromDB, request, response, session);
+                setAttributeInSessionAndCreateCookie(userFromDB, response, session);
             } else {
                 throw new RuntimeException();
             }
 
-            mav = new ModelAndView("index");
+            mav = new ModelAndView("redirect:/index");
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("errorMessage", userNotExists);
-            mav = new ModelAndView("logIn");
+            mav = new ModelAndView("login");
         }
 
         return mav;
@@ -80,7 +80,8 @@ public class LogInController {
         return new ModelAndView("index");
     }
 
-    void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+    private void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletResponse response, HttpSession session) {
         session.setAttribute("user", abstractUser);
         Cookie userEmail = new Cookie("userEmail", abstractUser.getEmail());
         userEmail.setMaxAge(3600);    // 60 minutes

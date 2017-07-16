@@ -1,13 +1,12 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
-import am.aca.wftartproject.exception.service.DuplicateEntryException;
-import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
+import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.ShoppingCard;
+import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.ShoppingCardServiceImpl;
 import org.junit.After;
@@ -16,21 +15,16 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
+import static junit.framework.TestCase.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 
 /**
  * @author surik
@@ -48,7 +42,7 @@ public class ShoppingCardServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+//        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(shoppingCardService, "shoppingCardDao", shoppingCardDaoMock);
     }
 

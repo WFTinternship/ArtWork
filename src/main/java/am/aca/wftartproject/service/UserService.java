@@ -1,5 +1,6 @@
 package am.aca.wftartproject.service;
 
+import am.aca.wftartproject.model.AbstractUser;
 import am.aca.wftartproject.model.User;
 
 /**
@@ -58,7 +59,7 @@ public interface UserService {
     /**
      * Sends email to user with further instructions after buying item
      *
-     * @param user
+     * @param abstractUser
      */
-    void sendEmailAfterBuyingItem(User user);
+    void sendEmailAfterBuyingItem(AbstractUser abstractUser);
 }

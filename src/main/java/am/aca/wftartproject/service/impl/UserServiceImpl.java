@@ -5,6 +5,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
+import am.aca.wftartproject.model.AbstractUser;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
@@ -208,19 +209,19 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param user
-     * @see UserService#sendEmailAfterBuyingItem(User)
+     * @param abstractUser
+     * @see UserService#sendEmailAfterBuyingItem(AbstractUser)
      */
     @Override
-    public void sendEmailAfterBuyingItem(User user) {
-        if (user == null || !user.isValidUser()) {
-            LOGGER.error(String.format("Not valid user %s", user));
+    public void sendEmailAfterBuyingItem(AbstractUser abstractUser) {
+        if (abstractUser == null || !abstractUser.isValidUser()) {
+            LOGGER.error(String.format("Not valid user %s", abstractUser));
             throw new InvalidEntryException("Invalid user");
         }
 
-        String subject = "Hi :)";
+        String subject = "Order Confirmation";
         String emailText = "Easy~";
 
-        EmailUtil.sendEmail(user, subject, emailText);
+        EmailUtil.sendEmail(abstractUser, subject, emailText);
     }
 }

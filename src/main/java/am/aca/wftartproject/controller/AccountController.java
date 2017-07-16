@@ -119,7 +119,6 @@ public class AccountController {
         return modelAndView;
     }
 
-
     @RequestMapping(value = {"/purchase-history"}, method = RequestMethod.GET)
     public ModelAndView purchaseHistory(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
@@ -194,7 +193,7 @@ public class AccountController {
                 request.setAttribute("errorMessage", message);
             }
         }
-        return new ModelAndView("additem");
+        return new ModelAndView("add-item");
     }
 
     @RequestMapping(value = {"/my-works"}, method = RequestMethod.GET)
@@ -278,6 +277,7 @@ public class AccountController {
         modelAndView.setViewName("redirect:/my-works");
         return modelAndView;
     }
+
 
 
     private void changePersonalInfo(AbstractUser abstractUser, HttpServletRequest request, ModelAndView modelAndView) {

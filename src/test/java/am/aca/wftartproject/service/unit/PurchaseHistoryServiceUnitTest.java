@@ -1,11 +1,11 @@
 package am.aca.wftartproject.service.unit;
 
-import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl;
 import org.junit.After;
@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -23,9 +22,7 @@ import java.util.List;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestPurchaseHistory;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
+import static junit.framework.TestCase.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -45,7 +42,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+//        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(purchaseHistoryService, "purchaseHistoryDao", purchaseHistoryDaoMock);
     }
 

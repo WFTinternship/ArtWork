@@ -6,10 +6,10 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemDetail" value='<%=request.getSession().getAttribute("itemDetail")%>'/>
-<c:set var="artistItems" value='<%=request.getSession().getAttribute("artistItems")%>'/>
-<c:set var="artistInfo" value='<%=request.getSession().getAttribute("artistInfo")%>'/>
-<c:set var="user" value='<%=request.getSession().getAttribute("user")%>'/>
+<c:set var="itemDetail" value='<%=session.getAttribute("itemDetail")%>'/>
+<c:set var="artistItems" value='<%=session.getAttribute("artistItems")%>'/>
+<c:set var="artistInfo" value='<%=session.getAttribute("artistInfo")%>'/>
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
 
 
 
