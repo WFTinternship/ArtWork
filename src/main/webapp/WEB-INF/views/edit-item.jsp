@@ -149,18 +149,19 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <div class="form-group">
+                                                    <c:forEach items="${item.photoURL}" var="element">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
                                                             <%--<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">--%>
-                                                            <label for="imageUpload">Change Item</label>
-                                                            <input type="file" id="imageUpload" name="image"/>
+                                                                <label for="imageUpload">Change Item</label>
+                                                                <input type="file" id="imageUpload" name="image"/>
                                                                 <%--<img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>--%>
-                                                            <img src="../../${item.photoURL.get(0)}" id="imagePreview" alt="" width="200px"/><br/>
+                                                                <img src="../../${element}" id="imagePreview" alt="" width="200px"/><br/>
                                                             <%--<button type="submit" class="btn btn-warning">Apply</button>--%>
                                                             <%--</form>--%>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </c:forEach>
                                                     <button type="submit" class="btn btn-warning">Update Personal
                                                         Details
                                                     </button>

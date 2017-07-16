@@ -216,8 +216,8 @@
 
                                         <a href="${pageContext.request.contextPath}/shop-cart" class="type1 dt-sc-button"> <span
                                                 class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                        <a href="#" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>
-                                            Options </a>
+                                        <a href="item-detail/${itemElement.id}" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>
+                                            Details </a>
 
                                     </div> <!-- **product-title - Ends** -->
                                 </div> <!-- **product-container - Ends** -->

@@ -6,8 +6,8 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<c:set var="artistSpecTypes" value='<%=request.getSession().getAttribute("artistSpecTypes")%>'/>
-<c:set var="errormessage" value='<%=request.getAttribute("errorMessage")%>'/>
+<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
+<c:set var="message" value='<%=session.getAttribute("message")%>'/>
 
 
 
@@ -30,9 +30,9 @@
 <body>
 
 <c:choose>
-	<c:when test="${errormessage!=null}">
+	<c:when test="${message!=null}">
 		<header class="cd-main-header">
-			<h2 style="color:red;">${errorMessage}</h2>
+			<h2 style="color:red;">${message}</h2>
 		</header>
 	</c:when>
 	<c:otherwise>
@@ -129,12 +129,12 @@
 					<div>
 						<ul class="cd-payment-gateways">
 							<li>
-								<input type="radio" name="payment-method" id="paypal" value="paypal">
+								<input type="radio" name="paymentType" id="paypal" value="PAYPAL">
 								<label for="paypal">Paypal</label>
 							</li>
 
 							<li>
-								<input type="radio" name="payment-method" id="card" value="card" checked>
+								<input type="radio" name="paymentType" id="card" value="MASTERCARD" checked>
 								<label for="card">Mastercard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
@@ -179,7 +179,7 @@
 
 				<div class="half-width">
 					<label for="artistAge">Age</label>
-					<input type="text" id="artistAge" name="age">
+					<input type="text" id="artistAge" name="age" value="0">
 				</div>
 
 				<div class="half-width">
@@ -201,7 +201,7 @@
 					<label for="artistSpec">Specialization</label>
 					<br/>
 					<select name="artistSpec" id="artistSpec">
-						<option value="PAINTER" selected>Choose Specialization</option>
+						<option value="-1" selected>Choose Specialization</option>
 						<c:forEach items="${artistSpecTypes}" var="element">
 							<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''}>${element.type}</option>
 						</c:forEach>
@@ -221,13 +221,13 @@
 					<div>
 						<ul class="cd-payment-gateways">
 							<li>
-								<input type="radio" name="payment-method" id="paypal1" value="paypal">
-								<label for="paypal">Paypal</label>
+								<input type="radio" name="paymentType" id="paypal1" value="PAYPAL">
+								<label for="paypal1">Paypal</label>
 							</li>
 
 							<li>
-								<input type="radio" name="payment-method" id="card1" value="card" checked>
-								<label for="card">Mastercard</label>
+								<input type="radio" name="paymentType" id="card1" value="MASTERCARD" checked>
+								<label for="card1">Mastercard</label>
 							</li>
 						</ul> <!-- .cd-payment-gateways -->
 					</div>

@@ -98,13 +98,13 @@
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
                                 <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
-                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[1]}" alt="" title="Acrylic">
+                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}" alt="" title="Acrylic">
                                 </a>
                             </div>
                             <ul class="thumblist">
-                                <c:forEach items="${itemDetail.photoURL}" var="itemElement">
+                                <c:forEach items="${itemDetail.photoURL}" var="itemElement" begin="1">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/${itemElement}" class="product">
+                                        <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemElement}" class="product">
                                             <img src="${pageContext.request.contextPath}/${itemElement}"
                                                 alt="" height="150" width="150" title=""></a>
                                     </li>

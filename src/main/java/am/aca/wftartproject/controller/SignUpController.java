@@ -1,5 +1,6 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.model.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
@@ -23,6 +24,7 @@ import java.io.IOException;
 @Controller
 public class SignUpController {
 
+    private HttpSession session;
     private UserService userService;
     private ArtistService artistService;
 
@@ -34,91 +36,110 @@ public class SignUpController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView showRegistrationPage(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("sign-up");
+        ModelAndView mv = new ModelAndView("sign-up");
 
         // Get required information and add attributes for view page
-        request.getSession().setAttribute("artistSpecTypes", ArtistSpecialization.values());
-        mav.addObject("user", new User());
-        mav.addObject("artist", new Artist());
-        mav.addObject("artistSpecTypes", ArtistSpecialization.values());
-        return mav;
+        mv.addObject("user", new User());
+        mv.addObject("artist", new Artist());
+        mv.addObject("artistSpecTypes", ArtistSpecialization.values());
+
+        return mv;
     }
 
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
-                                @ModelAttribute("user") User user) {
-        HttpSession session = request.getSession(true);
+                                @ModelAttribute("user") User user,
+                                @RequestParam("paymentType") String paymentType,
+                                @RequestParam("userPasswordRepeat") String userPasswordRepeat) {
         ModelAndView mv = new ModelAndView();
-        String page;
+        session = request.getSession(true);
+        String page = "index";
+
         try {
-            user.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
-            user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
+            // Get new user info from UI
+            ShoppingCard shoppingCardFromRequest = new ShoppingCard(ShoppingCardType.valueOf(paymentType));
+            user.setShoppingCard(shoppingCardFromRequest);
+            user.setUserPasswordRepeat(userPasswordRepeat);
+
+            // Add user in database
             userService.addUser(user);
-            page = "index";
-            session.setAttribute("message", "Hi " + user.getFirstName());
+
+            // Set user info in session attribute and in cookie
             session.setAttribute("user", user);
             Cookie userEmail = new Cookie("userEmail", user.getEmail());
-            userEmail.setMaxAge(3600);             // 60 minutes
+            userEmail.setMaxAge(3600);    // 60 minutes
             response.addCookie(userEmail);
+        } catch (InvalidEntryException e) {
+            request.getSession().setAttribute("message", "There are invalid fields, please fill them all correctly and try again.");
+            page = "redirect:/signup";
         } catch (RuntimeException e) {
-            mv.addObject("errorMessage", e.getMessage());
-//            request.setAttribute("errorMessage", e.getMessage());
-            page = "/signUp";
+            request.getSession().setAttribute("message", e.getMessage());
+            page = "redirect:/signup";
         }
         mv.setViewName(page);
+
         return mv;
     }
 
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
+                                  @ModelAttribute("user") User user,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         ModelAndView mv = new ModelAndView();
+        session = request.getSession();
         Artist artistFromRequest = new Artist();
-        String message;
-        artistFromRequest.setShoppingCard(new ShoppingCard(5000, ShoppingCardType.PAYPAL));
-        if (!image.isEmpty() &&
-                request.getParameter("artistSpec") != null &&
-                !request.getParameter("artistSpec").equals("-1") &&
-                !request.getParameter("password").isEmpty() &&
-                request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
-            byte[] imageBytes = image.getBytes();
-            artistFromRequest
-                    .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
-                    .setArtistPhoto(imageBytes)
-                    .setFirstName(request.getParameter("firstName"))
-                    .setLastName(request.getParameter("lastName"))
-                    .setAge(Integer.parseInt(request.getParameter("age")))
-                    .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password")).setUserPasswordRepeat(request.getParameter("passwordRepeat"));
-        } else {
-            message = "No changes, empty fields or Incorrect Data";
-            mv.addObject("errorMessage", message);
-            mv.addObject("user", artistFromRequest);
-//            request.setAttribute("errorMessage", message);
-//            request.setAttribute("user", artistFromRequest);
-            mv.setViewName("sign-up");
-            return mv;
-//            return new ModelAndView("signUp");
-        }
+        String page = "index";
 
-        String page;
         try {
+            // Check artist info validation and
+            // get profile details from UI
+            if (isValidArtistFromRequest(request, image)) {
+                artistFromRequest = getArtistFromRequest(request, artistFromRequest, image);
+            }
 
+            // Add artist in database
             artistService.addArtist(artistFromRequest);
-            page = "/index";
-            request.setAttribute("message", "Hi " + artistFromRequest.getFirstName());
-            HttpSession session = request.getSession(true);
+
+            // Set user info in session attribute and in cookie
             session.setAttribute("user", artistFromRequest);
             Cookie userEmail = new Cookie("userEmail", artistFromRequest.getEmail());
-            userEmail.setMaxAge(3600);             // 60 minutes
+            userEmail.setMaxAge(3600);     // 60 minutes
             response.addCookie(userEmail);
+        } catch (InvalidEntryException e) {
+            request.getSession().setAttribute("message", "There are invalid fields, please fill them all correctly and try again.");
+            page = "redirect:/signup";
         } catch (RuntimeException e) {
-            mv.addObject("errorMessage", e.getMessage());
-//            request.setAttribute("errorMessage", e.getMessage());
-            page = "/signUp";
+            request.getSession().setAttribute("message", e.getMessage());
+            page = "redirect:/signup";
         }
         mv.setViewName(page);
+
         return mv;
-//        return new ModelAndView(page, "user", artistFromRequest);
     }
+
+
+    private boolean isValidArtistFromRequest(HttpServletRequest request, MultipartFile image) {
+        return !image.isEmpty() &&
+                !request.getParameter("artistSpec").equals("-1") &&
+                !request.getParameter("password").isEmpty() &&
+                request.getParameter("password").equals(request.getParameter("passwordRepeat"));
+    }
+
+    private Artist getArtistFromRequest(HttpServletRequest request, Artist artist, MultipartFile image) throws IOException {
+        ShoppingCard shoppingCard = new ShoppingCard(ShoppingCardType.valueOf(request.getParameter("paymentType")));
+        byte[] imageBytes = image.getBytes();
+
+        artist.setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
+                .setArtistPhoto(imageBytes)
+                .setFirstName(request.getParameter("firstName"))
+                .setLastName(request.getParameter("lastName"))
+                .setAge(Integer.parseInt(request.getParameter("age")))
+                .setEmail(request.getParameter("email"))
+                .setPassword(request.getParameter("password"))
+                .setUserPasswordRepeat(request.getParameter("passwordRepeat"));
+        artist.setShoppingCard(shoppingCard);
+
+        return artist;
+    }
+
 }

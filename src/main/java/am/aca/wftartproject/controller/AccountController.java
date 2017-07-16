@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -155,58 +154,47 @@ public class AccountController {
         // Get item types and add appropriate attribute to ModelAndView object
         modelAndView.addObject("itemTypes", ItemType.values());
         modelAndView.setViewName("add-item");
+
         return modelAndView;
     }
 
     @RequestMapping(value = {"/additem"}, method = RequestMethod.POST)
-    public ModelAndView addItemProcess(HttpServletRequest request, HttpServletResponse response,
+    public ModelAndView addItemProcess(HttpServletRequest request,
                                        @RequestParam(value = "files", required = false) MultipartFile[] image) throws IOException {
-        //TODO to be fixed
-
+        ModelAndView modelAndView = new ModelAndView();
         session = request.getSession();
+        AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
+        String page = "add-item";
         String message;
-        List<String> photoUrl = new ArrayList<>();
-        Item item = new Item();
-        if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class) {
-            Artist artist = (Artist) session.getAttribute("user");
-            Artist findArtist = artistService.findArtist(artist.getId());
-            if (findArtist != null) {
-                if (image != null && !request.getParameter("title").isEmpty()
-                        && !request.getParameter("description").isEmpty()
-                        && !request.getParameter("type").isEmpty()
-                        && !request.getParameter("price").isEmpty()
-                        && !request.getParameter("type").equals("-1")) {
-                    item.setTitle(request.getParameter("title"));
-                    item.setDescription(request.getParameter("description"));
-                    item.setItemType(ItemType.valueOf(request.getParameter("type")));
-                    item.setPrice(Double.parseDouble(request.getParameter("price")));
+        Item item = null;
 
-                    for (MultipartFile multipartFile : image) {
-                        byte[] imageBytes = multipartFile.getBytes();
-                        String uploadPath = "resources/images/artists/" + artist.getId();
-                        String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
-                        File uploadDir = new File(realPath);
-                        if (!uploadDir.exists()) {
-                            uploadDir.mkdir();
-                        }
-                        String fileName = multipartFile.getOriginalFilename();
-                        String filePath = realPath + File.separator + fileName + ".jpg";
-                        FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-                        photoUrl.add(uploadPath + File.separator + fileName + ".jpg");
-                    }
-                    try {
-                        item.setPhotoURL(photoUrl);
-                        itemService.addItem(artist.getId(), item);
-                        message = "Your ArtWork has been successfully added, Now you can see it in 'My ArtWork' page";
-                    } catch (ServiceException e) {
-                        message = "The entered info is not correct";
-                        request.setAttribute("errorMessage", message);
-                    }
-                } else message = "Warning !!! You have an empty fields, Please Try again";
-                request.setAttribute("errorMessage", message);
-            }
+        // Check whether the user is authenticated
+        if (abstractUser == null) {
+            return new ModelAndView("redirect:/login");
         }
-        return new ModelAndView("add-item");
+
+        try {
+            // Get Item from request parameters
+            Artist findArtist = artistService.findArtist(abstractUser.getId());
+            if (findArtist != null) {
+                if (isValidItemFromRequest(request, image)) {
+                    item = getItemFromRequest(request, image, abstractUser);
+                }
+            }
+            // Save item in database
+            itemService.addItem(abstractUser.getId(), item);
+            message = "Your ArtWork has been successfully added, Now you can see it in 'My ArtWork' page";
+        }catch (InvalidEntryException e){
+            message = "There are invalid fields, please fill them correctly and try again!!!";
+            page = "redirect:/additem";
+        } catch (RuntimeException e) {
+            message = "There is problem in item addition";
+            page = "redirect:/additem";
+        }
+        request.getSession().setAttribute("message", message);
+        modelAndView.setViewName(page);
+
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/my-works"}, method = RequestMethod.GET)
@@ -235,7 +223,7 @@ public class AccountController {
         AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
 
         // Check whether the user is authenticated
-        if(abstractUser==null){
+        if (abstractUser == null) {
             return new ModelAndView("redirect:/login");
         }
 
@@ -250,41 +238,27 @@ public class AccountController {
 
     @RequestMapping(value = "/edit-item/{id}", method = RequestMethod.POST)
     public ModelAndView editItemProcess(HttpServletRequest request,
-                                     @PathVariable("id") Integer id,
-                                     @RequestParam("title") String title,
-                                     @RequestParam("description") String description,
-                                     @RequestParam("price") Double price,
-                                     @RequestParam("itemType") String itemType,
-                                     @RequestParam(value = "image", required = false) MultipartFile image,
-                                     @SessionAttribute("item") Item item) throws IOException {
-        //TODO to be fixed
-
-
+                                        @PathVariable("id") Integer id,
+                                        @RequestParam("title") String title,
+                                        @RequestParam("description") String description,
+                                        @RequestParam("price") Double price,
+                                        @RequestParam("itemType") String itemType,
+                                        @RequestParam(value = "image", required = false) MultipartFile image,
+                                        @ModelAttribute("item") Item item) throws IOException {
         ModelAndView mv = new ModelAndView("edit-item");
-        List<String> photoUrlList = new ArrayList<>();
-        String message;
         String page = null;
+        String message;
+
+        // Change item details
         item.setTitle(title)
                 .setDescription(description)
                 .setItemType(ItemType.valueOf(itemType))
                 .setPrice(price);
+        //TODO item photo editing should be fixed
+        item.setPhotoURL(getItemFromRequest(request, item, image));
 
-        if (image != null) {
-            byte[] imageBytes = image.getBytes();
-            String uploadPath = "resources/images/artists/" + item.getArtistId();
-            String realPath = request.getServletContext().getRealPath("resources/images/artists/" + item.getArtistId());
-            File uploadDir = new File(realPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String fileName = image.getOriginalFilename();
-            String filePath = realPath + File.separator + fileName + ".jpg";
-            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-            photoUrlList.add(uploadPath + File.separator + fileName + ".jpg");
-        }
-
+        // Update item details in database
         try {
-            item.setPhotoURL(photoUrlList);
             itemService.updateItem(item.getId(), item);
             message = "The Item info was successfully updated";
         } catch (InvalidEntryException e) {
@@ -292,8 +266,10 @@ public class AccountController {
         } catch (ServiceException e) {
             message = "Failed to update item info. Please try again";
         }
+
         mv.addObject("message", message);
         mv.addObject("item", item);
+
         return mv;
     }
 
@@ -306,18 +282,17 @@ public class AccountController {
         AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
 
         // Check whether the user is authenticated
-        if(abstractUser==null){
+        if (abstractUser == null) {
             return new ModelAndView("redirect:/login");
         }
-//        String[] pathInfo = request.getServletPath().split("/");
-//        Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
 
+        // Delete item from artist list
         try {
             itemService.deleteItem(id);
             session.setAttribute("message", "Your ArtWork has been successfully deleted");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             String errorMessage = "There is problem with item deletion. Please try again";
-            session.setAttribute("message",errorMessage);
+            session.setAttribute("message", errorMessage);
         }
         return modelAndView;
     }
@@ -400,5 +375,59 @@ public class AccountController {
             String errorMessage = "The entered info is not correct";
             modelAndView.addObject("message", errorMessage);
         }
+    }
+
+    private boolean isValidItemFromRequest(HttpServletRequest request, MultipartFile[] image) {
+        return image != null
+                && !request.getParameter("title").isEmpty()
+                && !request.getParameter("description").isEmpty()
+                && !request.getParameter("type").isEmpty()
+                && !request.getParameter("price").isEmpty()
+                && !request.getParameter("type").equals("-1");
+    }
+
+    private Item getItemFromRequest(HttpServletRequest request, MultipartFile[] image, AbstractUser abstractUser) throws IOException {
+        Item item = new Item();
+        List<String> photoUrl = new ArrayList<>();
+
+        item.setTitle(request.getParameter("title"));
+        item.setDescription(request.getParameter("description"));
+        item.setItemType(ItemType.valueOf(request.getParameter("type")));
+        item.setPrice(Double.parseDouble(request.getParameter("price")));
+
+        for (MultipartFile multipartFile : image) {
+            byte[] imageBytes = multipartFile.getBytes();
+            String uploadPath = "resources/images/artists/" + abstractUser.getId();
+            String realPath = request.getServletContext().getRealPath("resources/images/artists/" + abstractUser.getId());
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String fileName = multipartFile.getOriginalFilename();
+            String filePath = realPath + File.separator + fileName + ".jpg";
+            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+            photoUrl.add(uploadPath + File.separator + fileName + ".jpg");
+        }
+        item.setPhotoURL(photoUrl);
+
+        return item;
+    }
+
+    private List<String> getItemFromRequest(HttpServletRequest request, Item item, MultipartFile image) throws IOException {
+        List<String> photoUrlList = new ArrayList<>();
+        if (image != null) {
+            byte[] imageBytes = image.getBytes();
+            String uploadPath = "resources/images/artists/" + item.getArtistId();
+            String realPath = request.getServletContext().getRealPath("resources/images/artists/" + item.getArtistId());
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String fileName = image.getOriginalFilename();
+            String filePath = realPath + File.separator + fileName + ".jpg";
+            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+            photoUrlList.add(uploadPath + File.separator + fileName + ".jpg");
+        }
+        return photoUrlList;
     }
 }
