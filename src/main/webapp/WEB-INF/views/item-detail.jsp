@@ -178,7 +178,7 @@
                             <%--</div><!-- *commententries Ends here** -->--%>
                         </div>
                         <div class="dt-sc-two-fifth column">
-                            <form action="/item-detail/*" method="post">
+                            <form action="/item-detail/${itemDetail.id}" method="post">
                                 <!-- Author Detail Starts Here -->
                                 <%--<div class="post-author-details">--%>
                                 <%--<div class="entry-author-image">--%>

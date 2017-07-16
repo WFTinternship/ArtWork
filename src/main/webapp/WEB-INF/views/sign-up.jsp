@@ -163,7 +163,7 @@
 			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
 		<%--</div>--%>
 
-		<form action="/artistRegister"  method="post" enctype="multipart/form-data">
+		<form action="${pageContext.request.contextPath}/artistRegister"  method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>Account Info</legend>
 

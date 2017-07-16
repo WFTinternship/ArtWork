@@ -6,7 +6,8 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="user" value='<%=request.getSession().getAttribute("user")%>' />
+<c:set var="user" value='<%=session.getAttribute("user")%>' />
+<c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
 <%--<c:set var="message" value='<%=session.getAttribute("message")%>' />--%>
 
 

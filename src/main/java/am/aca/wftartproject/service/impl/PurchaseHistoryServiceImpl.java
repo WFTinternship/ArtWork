@@ -5,6 +5,7 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.PurchaseHistory;
+import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,16 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
 
     private PurchaseHistoryDao purchaseHistoryDao;
+    private ItemService itemService;
 
     @Autowired
     public PurchaseHistoryServiceImpl(PurchaseHistoryDao purchaseHistoryDao) {
         this.purchaseHistoryDao = purchaseHistoryDao;
+    }
+
+    @Autowired
+    public void setItemService(ItemService itemService) {
+        this.itemService = itemService;
     }
 
     public void setPurchaseHistoryDao(PurchaseHistoryDao purchaseHistoryDao) {
@@ -95,7 +102,13 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
         }
 
         try {
-            return purchaseHistoryDao.getPurchase(userId);
+            List<PurchaseHistory> purchaseHistories = purchaseHistoryDao.getPurchase(userId);
+            if(purchaseHistories!=null) {
+                for (PurchaseHistory element : purchaseHistories) {
+                    element.setItem(itemService.findItem(element.getItemId()));
+                }
+            }
+            return purchaseHistories;
         }catch (DAOException e) {
             String error = "Failed to get purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));

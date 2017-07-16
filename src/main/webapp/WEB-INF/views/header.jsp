@@ -38,7 +38,7 @@
                 <%--<a class="dt-menu-expand">+</a>--%>
             </li>
             <li class="menu-item-simple-parent">
-                <a href="/about">About us <span class="fa fa-user-secret"></span></a>
+                <a href="${pageContext.request.contextPath}/about">About us <span class="fa fa-user-secret"></span></a>
             </li>
             <li class="menu-item-simple-parent"><a href="gallery.tml">Gallery <span class="fa fa-camera-retro"></span></a>
                 <%--<ul class="sub-menu">--%>
@@ -70,7 +70,7 @@
             <li class="menu-item-simple-parent">
                 <c:choose>
                     <c:when test="${user==null}">
-                        <a href="<%--progressbar.html--%>"> Account <span class="fa fa-paint-brush"></span></a>
+                        <a href="${pageContext.request.contextPath}/login"> Account <span class="fa fa-paint-brush"></span></a>
                     </c:when>
                     <c:otherwise>
                         <a href="${pageContext.request.contextPath}/account"> Hi ${user.firstName} <span class="fa fa-paint-brush"></span></a>
