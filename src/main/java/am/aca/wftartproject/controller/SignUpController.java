@@ -1,11 +1,13 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,13 +23,7 @@ import java.io.IOException;
  */
 @MultipartConfig
 @Controller
-public class SignUpController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ShoppingCardService shoppingCardService;
-    @Autowired
-    private ArtistService artistService;
+public class SignUpController extends ControllerHelper {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
@@ -38,77 +34,50 @@ public class SignUpController {
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
         return mav;
     }
-
+    @Transactional
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
                                 @ModelAttribute("user") User user) {
         String page = "";
-        try {
-            ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
-            shoppingCard.setAbstractUser(user);
-            user.setShoppingCard(shoppingCard);
-            if(!user.getPassword().equals(request.getParameter("userPasswordRepeat"))){
-                throw new RuntimeException("Password don't match");
-            }
-            user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
-            userService.addUser(user);
-            user.getShoppingCard().setAbstractUser(user);
-            shoppingCardService.addShoppingCard(user.getShoppingCard());
+        if(!user.getPassword().equals(request.getParameter("userPasswordRepeat")))
+        {
+            throw new RuntimeException("Password don't match");
+        }
+        try
+        {
+            userSaver(user,request);
             page = "index";
-            request.getSession().setAttribute("message","Hi " + user.getFirstName());
-            HttpSession session = request.getSession(true);
-            request.getSession().setAttribute("user", user);
-            Cookie userEmail = new Cookie("userEmail", user.getEmail());
-            userEmail.setMaxAge(3600);             // 60 minutes
-            response.addCookie(userEmail);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+        {
             request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }
         return new ModelAndView(page, "user", user);
     }
-
+    @Transactional
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        String page = "";
         Artist artistFromRequest = new Artist();
-        String message;
-        ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
-        artistFromRequest.setShoppingCard(shoppingCard );
-        artistFromRequest.getShoppingCard().setAbstractUser(artistFromRequest);
-        if (!image.isEmpty() && request.getParameter("artistSpec")!=null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
-            byte[] imageBytes = image.getBytes();
-            artistFromRequest
-                    .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
-                    .setArtistPhoto(imageBytes)
-                    .setFirstName(request.getParameter("firstName"))
-                    .setLastName(request.getParameter("lastName"))
-                    .setAge(Integer.parseInt(request.getParameter("age")))
-                    .setEmail(request.getParameter("email"))
-                    .setPassword(request.getParameter("password"))
-                    .setUserPasswordRepeat(request.getParameter("passwordRepeat"));
+
+        if (!image.isEmpty() && request.getParameter("artistSpec")!=null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat")))
+        {
+            createArtistFromRequest(artistFromRequest,image,request);
         }
-        else{
-            message = "No chages, empty fields or Incorrect Data";
-            request.setAttribute("errorMessage",message);
-            request.setAttribute("user",artistFromRequest);
+        else
+        {
+            setErrorMessage(request);
             return new ModelAndView("signUp");
         }
-
-        String page = "";
-        try {
-
-            artistService.addArtist(artistFromRequest);
-            artistFromRequest.getShoppingCard().setAbstractUser(artistFromRequest);
-            shoppingCardService.addShoppingCard(artistFromRequest.getShoppingCard());
+        try
+        {
+            artistSaver(artistFromRequest,request);
             page = "/index";
-            request.setAttribute("message","Hi " + artistFromRequest.getFirstName());
-            HttpSession session = request.getSession(true);
-            session.setAttribute("user", artistFromRequest);
-            Cookie userEmail = new Cookie("userEmail", artistFromRequest.getEmail());
-            userEmail.setMaxAge(3600);             // 60 minutes
-            response.addCookie(userEmail);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+        {
             request.setAttribute("errorMessage", e.getMessage());
             page = "/signUp";
         }

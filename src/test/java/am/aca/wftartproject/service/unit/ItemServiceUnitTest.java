@@ -260,7 +260,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         int testLimit = 20;
 
         // Setup mock
-        doThrow(DAOException.class).when(itemRepoMock).findTop10By();
+        doThrow(DAOException.class).when(itemRepoMock).findTop20By();
 
         // Test method
         itemService.getRecentlyAddedItems(testLimit);
@@ -279,7 +279,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         itemList.add(testItem);
 
         // Setup mock
-        doReturn(itemList).when(itemRepoMock).findTop10By();
+        doReturn(itemList).when(itemRepoMock).findTop20By();
 
         // Test method
         itemService.getRecentlyAddedItems(10);
@@ -639,63 +639,6 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         assertEquals(testArtistId,argument.getAllValues().get(0));
 
     }
-
-//    /**
-//     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
-//     */
-//    @Test
-//    public void getAvailableItemsForGivenArtist_artistIdNullOrNegative() {
-//        Long artistId = null;
-//
-//        try {
-//            itemService.getAvailableItemsForGivenArtist(artistId);
-//            fail();
-//        } catch (Exception e) {
-//            assertTrue(e instanceof InvalidEntryException);
-//        }
-//
-//        artistId = -5L;
-//
-//        try {
-//            itemService.getAvailableItemsForGivenArtist(artistId);
-//            fail();
-//        } catch (Exception e) {
-//            assertTrue(e instanceof InvalidEntryException);
-//        }
-//    }
-//
-//    /**
-//     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
-//     */
-//    @Test
-//    public void getAvailableItemsForGivenArtist_gottenListIsNull() {
-//        // Setup mock
-//        doReturn(null).when(itemRepoMock).getAvailableItemsForGivenArtist(anyLong());
-//
-//        List<Item> availableItems = itemService.getAvailableItemsForGivenArtist(5L);
-//
-//        assertNull(availableItems);
-//    }
-//
-//    /**
-//     * @see ItemServiceImpl#getAvailableItemsForGivenArtist(Long)
-//     */
-//    @Test
-//    public void getAvailableItemsForGivenArtist_gottenListNotNull() {
-//        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-//
-//        Long artistId = 5L;
-//
-//        List<Item> availableItems = new ArrayList<>();
-//
-//        doReturn(availableItems).when(itemRepoMock).getAvailableItemsForGivenArtist(argumentCaptor.capture());
-//
-//        assertEquals(availableItems, itemService.getAvailableItemsForGivenArtist(artistId));
-//
-//        assertEquals(artistId, argumentCaptor.getValue());
-//    }
-
-
     /**
      * @see ItemService#updateItem(Item)
      */

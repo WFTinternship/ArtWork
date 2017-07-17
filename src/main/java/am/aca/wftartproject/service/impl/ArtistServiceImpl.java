@@ -2,7 +2,6 @@ package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.repository.AbstractUserRepo;
 import am.aca.wftartproject.repository.ArtistRepo;
-import am.aca.wftartproject.repository.ShoppingCardRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -10,7 +9,6 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.service.ShoppingCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -166,6 +164,7 @@ public class ArtistServiceImpl implements ArtistService {
             if (user != null && user.getPassword().equals(password)) {
                 artist = user;
             }
+            else throw new DAOException("");
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));

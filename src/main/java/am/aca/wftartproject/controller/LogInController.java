@@ -33,44 +33,32 @@ public class LogInController {
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
+        String userEmailStr = request.getParameter("email");
+        String userPasswordStr = request.getParameter("password");
         ModelAndView mav = null;
         Artist artistFromDB = null;
         User userFromDB = null;
-        String userEmailStr = request.getParameter("email");
-        String userPasswordStr = request.getParameter("password");
-        try {
-            try{
+            try
+            {
                userFromDB = userService.login(userEmailStr, userPasswordStr);
-            }catch (Exception e){
+               request.getSession(true).setAttribute("user", userFromDB);
+               return new ModelAndView("index");
             }
+            catch (Exception e){}
             try{
-                artistFromDB = artistService.login(userEmailStr,userPasswordStr);
-            }catch (Exception e){
+                if(userFromDB==null)
+                {
+                    artistFromDB = artistService.login(userEmailStr,userPasswordStr);
+                    request.getSession(true).setAttribute("user", artistFromDB);
+                    return new ModelAndView("index");
+                }
             }
-
-            if (artistFromDB != null) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", artistFromDB);
-                Cookie userEmail = new Cookie("userEmail", artistFromDB.getEmail());
-                userEmail.setMaxAge(3600);    // 60 minutes
-                response.addCookie(userEmail);
-                mav = new ModelAndView("index");
-            } else if (userFromDB != null) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", userFromDB);
-                Cookie userEmail = new Cookie("userEmail", userFromDB.getEmail());
-                userEmail.setMaxAge(3600);    // 60 minutes
-                response.addCookie(userEmail);
-                mav = new ModelAndView("index");
-            } else {
-                throw new RuntimeException();
+            catch (Exception e)
+            {
+                String userNotExists = "The user with the entered username and password does not exists.";
+                request.setAttribute("errorMessage", userNotExists);
+                mav = new ModelAndView("logIn");
             }
-        } catch (RuntimeException e) {
-            String userNotExists = "The user with the entered username and password does not exists.";
-            request.setAttribute("errorMessage", userNotExists);
-            mav = new ModelAndView("logIn");
-        }
-
         return mav;
     }
 
@@ -78,9 +66,6 @@ public class LogInController {
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            Cookie cookie = new Cookie("userEmail", "");
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
             session.setAttribute("user", null);
             session.invalidate();
         }

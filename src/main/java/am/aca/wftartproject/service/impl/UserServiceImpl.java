@@ -170,6 +170,7 @@ public class UserServiceImpl implements UserService {
             if (user != null && user.getPassword().equals(password)) {
                user1 = user;
             }
+            else throw new DAOException("");
         } catch (DAOException e) {
             String error = "Failed to find User: %s";
             LOGGER.error(String.format(error, e.getMessage()));

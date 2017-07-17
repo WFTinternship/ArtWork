@@ -99,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         try {
-            return itemRepo.findTop10By();
+            return itemRepo.findTop20By();
         } catch (DAOException e) {
             String error = "Failed to get recently added Items: %s";
             LOGGER.error(String.format(error, e.getMessage()));

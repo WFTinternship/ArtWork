@@ -186,7 +186,7 @@ public class AccountControllerUnitTest extends BaseUnitTest {
                 .andExpect(request().sessionAttribute("item", hasProperty("title", is("aaa"))))
                 .andExpect(request().sessionAttribute("item", hasProperty("description", is("bbb"))))
                 .andExpect(request().sessionAttribute("item", hasProperty("itemType", is(ItemType.valueOf("PAINTING")))))
-                .andExpect(request().sessionAttribute("message", is("Your ArtWork has been successfully added, Now you can see it in My ArtWork page")))
+                .andExpect(request().attribute("message", is("Your ArtWork has been successfully added, Now you can see it in My ArtWork page")))
                 .andExpect(forwardedUrl("additem"));
     }
 

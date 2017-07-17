@@ -4,6 +4,7 @@ import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ItemService;
+import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,15 @@ import java.util.List;
 /**
  * Created by Armen on 7/15/2017.
  */
-public class AccountControllerHelper {
+public class ControllerHelper {
     @Autowired
     private UserService userService;
     @Autowired
     private ArtistService artistService;
     @Autowired
     private ItemService itemService;
+    @Autowired
+    ShoppingCardService shoppingCardService;
 
     protected User updateUserParameters(User findUser, HttpServletRequest request){
         int counter = 0;
@@ -113,6 +116,29 @@ public class AccountControllerHelper {
         }
     }
 
+    protected void artistSaver(Artist artistFromRequest, HttpServletRequest request){
+        ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
+        artistFromRequest.setShoppingCard(shoppingCard );
+        artistService.addArtist(artistFromRequest);
+        artistFromRequest.getShoppingCard().setAbstractUser(artistFromRequest);
+        shoppingCardService.addShoppingCard(artistFromRequest.getShoppingCard());
+        request.setAttribute("message","Hi " + artistFromRequest.getFirstName());
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", artistFromRequest);
+    }
+
+    protected void userSaver(User user,HttpServletRequest request){
+        ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
+        shoppingCard.setAbstractUser(user);
+        user.setShoppingCard(shoppingCard);
+        user.setUserPasswordRepeat(request.getParameter("userPasswordRepeat"));
+        userService.addUser(user);
+        user.getShoppingCard().setAbstractUser(user);
+        shoppingCardService.addShoppingCard(user.getShoppingCard());
+        request.getSession(true).setAttribute("message","Hi " + user.getFirstName());
+        request.getSession().setAttribute("user", user);
+    }
+
     protected void itemServiceSaver(Item item,HttpServletRequest request){
         itemService.addItem(item);
         request.getSession().setAttribute("item", item);
@@ -159,6 +185,17 @@ public class AccountControllerHelper {
         }
         else throw new ServiceException("The entered info is not correct or empty fields");
 
+    }
+    protected void createArtistFromRequest(Artist artistFromRequest,MultipartFile image,HttpServletRequest request) throws IOException {
+        artistFromRequest
+                .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
+                .setArtistPhoto(image.getBytes())
+                .setFirstName(request.getParameter("firstName"))
+                .setLastName(request.getParameter("lastName"))
+                .setAge(Integer.parseInt(request.getParameter("age")))
+                .setEmail(request.getParameter("email"))
+                .setPassword(request.getParameter("password"))
+                .setUserPasswordRepeat(request.getParameter("passwordRepeat"));
     }
     protected void artistImageUploader(Artist artist, MultipartFile[] image, List<String> photoUrl,HttpServletRequest request) throws IOException {
         for (MultipartFile multipartFile : image) {

@@ -22,7 +22,7 @@ public interface ItemRepo extends JpaRepository<Item,Long> {
      * @return
      */
 
-    List<Item> findTop10By();
+    List<Item> findTop20By();
 
 
     /**

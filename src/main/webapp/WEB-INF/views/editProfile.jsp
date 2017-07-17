@@ -158,15 +158,15 @@
 												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
-														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password">
+														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password" required autofocus>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput32">New Password</label>
-														<input type="password" name="newpassword" class="form-control" id="exampleInput32" placeholder="New Password">
+														<input type="password" name="newpassword" class="form-control" id="exampleInput32" placeholder="New Password" required autofocus>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput33">Re - Type Password</label>
-														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password">
+														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password" required autofocus>
 													</div>
 													<button type="submit" class="btn btn-warning">Update Password</button>
 												</form>
