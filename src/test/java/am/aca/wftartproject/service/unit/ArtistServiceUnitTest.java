@@ -143,31 +143,6 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
     /**
      * @see ArtistServiceImpl#addArtist(Artist)
-     *//*
-    @Test
-    public void addArtist_addSuccess() {
-        ArgumentCaptor<Artist> artistArgumentCaptor = ArgumentCaptor.forClass(Artist.class);
-        ArgumentCaptor<Long> artistArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<ShoppingCard> artistArgumentCaptor2 = ArgumentCaptor.forClass(ShoppingCard.class);
-
-        // Create test artist
-        testArtist = createTestArtist();
-
-        // Setup mocks
-        doNothing().when(artistDaoMock).addArtist(artistArgumentCaptor.capture());
-        doNothing().when(shoppingCardServiceMock).addShoppingCard(artistArgumentCaptor1.capture(), artistArgumentCaptor2.capture());
-
-        // Test method
-        artistService.addArtist(testArtist);
-
-        assertEquals(testArtist, artistArgumentCaptor.getValue());
-        assertEquals(testArtist.getId(), artistArgumentCaptor1.getValue());
-        assertEquals(testArtist.getShoppingCard(), artistArgumentCaptor2.getValue());
-
-    }*/
-
-    /**
-     * @see ArtistServiceImpl#addArtist(Artist)
      */
     @Test
     public void addArtist_addShoppingCardSuccess() {
@@ -320,6 +295,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Test method
         assertEquals(testArtist, artistService.findArtist(email));
     }
+
 
     /**
      * @see ArtistServiceImpl#findArtist(java.lang.String)

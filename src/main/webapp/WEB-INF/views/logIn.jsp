@@ -27,10 +27,14 @@
 </head>
 <body>
 <header class="cd-main-header">
-    <c:if test="${errorMessage!=null}">
-        <h2 style="color:red;">${errorMessage}</h2>
-    </c:if>
-    <h1>Log In</h1>
+    <c:choose>
+        <c:when test="${errorMessage!=null}">
+            <h2 style="color:red;">${errorMessage}</h2>
+        </c:when>
+        <c:otherwise>
+            <h1>Log In</h1>
+        </c:otherwise>
+    </c:choose>
 </header>
 <!--
     you can substitue the span of reauth email for a input with the email and
@@ -39,12 +43,14 @@
 <div class="container">
     <div class="card card-container">
         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
-        <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
         <p id="profile-name" class="profile-name-card"></p>
         <form class="form-signin" action="/loginProcess" method="post">
             <span id="reauth-email" class="reauth-email"></span>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required autofocus>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required
+                   autofocus>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password"
+                   required>
             <div id="remember" class="checkbox">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
@@ -62,16 +68,23 @@
 <script src="../../resources/js/signUp-velocity.min.js"></script>
 <script src="../../resources/js/signUp-main-min.js"></script> <!-- Resource jQuery -->
 <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '../../../www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', 'UA-48014931-1', 'codyhouse.co');
     ga('send', 'pageview');
 
-    jQuery(document).ready(function($){
-        $('.close-carbon-adv').on('click', function(event){
+    jQuery(document).ready(function ($) {
+        $('.close-carbon-adv').on('click', function (event) {
             event.preventDefault();
             $('#carbonads-container').hide();
         });

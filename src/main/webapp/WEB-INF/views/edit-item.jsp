@@ -149,8 +149,8 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-
-                                                    <div class="col-md-6 col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
                                                         <div class="form-group">
                                                             <%--<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">--%>
                                                             <label for="imageUpload">Change Item</label>
@@ -161,9 +161,14 @@
                                                             <%--</form>--%>
                                                         </div>
                                                     </div>
-                                                    <button type="submit" class="btn btn-warning">Update Personal
-                                                        Details
-                                                    </button>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <button type="submit" class="btn btn-warning">
+                                                                Update Personal Details
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </form>
                                             </div>
 

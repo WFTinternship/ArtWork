@@ -127,33 +127,6 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
-     *//*
-    @Test
-    public void addUser_addSuccess() {
-        // Create argument capture
-        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<User> argument1 = ArgumentCaptor.forClass(User.class);
-        ArgumentCaptor<ShoppingCard> argument2 = ArgumentCaptor.forClass(ShoppingCard.class);
-
-        // Create testUser and testShoppingCard
-        testUser = createTestUser();
-
-        // Setup mocks
-        doNothing().when(userDaoMock).addUser(argument1.capture());
-        doNothing().when(shoppingCardServiceMock).addShoppingCard(argument.capture(), argument2.capture());
-
-        // Test method
-        userService.addUser(testUser);
-
-        // Check input argument
-        assertEquals(testUser, argument1.getValue());
-        assertEquals(testUser.getId(), argument.getValue());
-        assertEqualShoppingCards(testUser.getShoppingCard(), argument2.getValue());
-    }*/
-
-
-    /**
-     * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
      */
     @Test(expected = ServiceException.class)
     public void addUser_addFailed() {
@@ -166,6 +139,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test method
         userService.addUser(testUser);
     }
+
 
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
@@ -181,6 +155,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Test method
         userService.addUser(testUser);
     }
+
 
     /**
      * @see UserServiceImpl#addUser(am.aca.wftartproject.model.User)
@@ -203,6 +178,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(testUser.getId(), argumentCaptor.getValue());
         assertEquals(testUser.getShoppingCard(), argumentCaptor1.getValue());
     }
+
 
     /**
      * @see UserServiceImpl#findUser(java.lang.Long)
@@ -577,6 +553,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         // Check input argument
         assertEquals(email, argumentCaptor.getValue());
     }
+
 
     /**
      * @see UserServiceImpl#login(java.lang.String, java.lang.String)

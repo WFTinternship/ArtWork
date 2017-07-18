@@ -22,8 +22,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LogInController {
 
-    private final UserService userService;
-    private final ArtistService artistService;
+    private UserService userService;
+    private ArtistService artistService;
 
     @Autowired
     public LogInController(UserService userService, ArtistService artistService) {
@@ -32,7 +32,7 @@ public class LogInController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView showLogin() {
         return new ModelAndView("logIn");
     }
 
@@ -48,14 +48,13 @@ public class LogInController {
             Artist artistFromDB = artistService.findArtist(userFromDB.getId());
 
             if (artistFromDB != null) {
-                setAttributeInSessionAndCreateCookie(artistFromDB, request, response, session);
-            } else if (userFromDB != null) {
-                setAttributeInSessionAndCreateCookie(userFromDB, request, response, session);
+                setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
             } else {
-                throw new RuntimeException();
+                setAttributeInSessionAndCreateCookie(userFromDB, response, session);
             }
 
             mav = new ModelAndView("index");
+
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("errorMessage", userNotExists);
@@ -80,7 +79,7 @@ public class LogInController {
         return new ModelAndView("index");
     }
 
-    void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    private void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletResponse response, HttpSession session) {
         session.setAttribute("user", abstractUser);
         Cookie userEmail = new Cookie("userEmail", abstractUser.getEmail());
         userEmail.setMaxAge(3600);    // 60 minutes
