@@ -2,55 +2,50 @@ package am.aca.wftartproject.service;
 
 import am.aca.wftartproject.entity.Artist;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
-/**
- * Created by surik on 6/3/17
- */
+
 @Repository
 public interface ArtistService {
 
     /**
      * Adds artist into the springconfig.database
      *
-     * @param artist
+     * @param artist *
      */
     void addArtist(Artist artist);
 
     /**
      * Finds artist from springconfig.database by id
      *
-     * @param id
-     * @return
+     * @param id *
      */
     Artist findArtist(Long id);
 
     /**
      * Finds artist from springconfig.database by email
      *
-     * @param email
-     * @return
+     * @param email *
      */
     Artist findArtist(String email);
 
     /**
      * Updates artist info in springconfig.database
-     * @param artist
+     * @param artist *
      */
     void updateArtist(Artist artist);
 
     /**
      * Deletes artist from springconfig.database
      *
-     * @param artist
+     * @param artist *
      */
     void deleteArtist(Artist artist);
 
     /**
      * LogIn for Artist
      *
-     * @param email
-     * @param password
+     * @param email *
+     * @param password *
      */
     Artist login(String email, String password);
 

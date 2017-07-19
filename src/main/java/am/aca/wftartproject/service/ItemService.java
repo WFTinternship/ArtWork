@@ -13,7 +13,7 @@ public interface ItemService {
 
     /**
      * Adds Item info for appropriate artist
-     * @param item
+     * @param item *
      */
     void addItem(Item item);
 
@@ -21,8 +21,7 @@ public interface ItemService {
     /**
      * Finds Item by id
      *
-     * @param id
-     * @return
+     * @param id *
      */
     Item findItem(Long id);
 
@@ -30,17 +29,14 @@ public interface ItemService {
     /**
      * Gets recently added items
      *
-     * @param limit
-     * @return
      */
-    List<Item> getRecentlyAddedItems(int limit);
+    List<Item> getRecentlyAddedItems();
 
 
     /**
      * Gets all items with the following title.
      *
-     * @param title
-     * @return
+     * @param title *
      */
     List<Item> getItemsByTitle(String title);
 
@@ -48,24 +44,22 @@ public interface ItemService {
     /**
      * Gets all items with the following type.
      *
-     * @param itemType
-     * @return
+     * @param itemType *
      */
     List<Item> getItemsByType(ItemType itemType);
 
     /**
      * Gets all items for the given price range.
      *
-     * @param minPrice
-     * @param maxPrice
-     * @return
+     * @param minPrice *
+     * @param maxPrice *
      */
     List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
 
 
     /**
      * Gets artist items for the given limit.
-     * @param artistId
+     * @param artistId *
      */
     List<Item> getArtistItems(Long artistId);
 
@@ -73,7 +67,7 @@ public interface ItemService {
     /**
      * Updates Item price by id
      *
-     * @param item
+     * @param item *
      */
     void updateItem(Item item);
 
@@ -81,14 +75,14 @@ public interface ItemService {
     /**
      * Deletes Item by id
      *
-     * @param item
+     * @param item *
      */
     void deleteItem(Item item);
 
     /**
      * Makes buying processes.
-     * @param item
-     * @param buyer
+     * @param item *
+     * @param buyer *
      */
     void itemBuying(Item item, AbstractUser buyer);
 

@@ -10,11 +10,9 @@ import java.util.Date;
 @Entity
 @Table(name = "purchase_history")
 public class PurchaseHistory implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "buyer_id", nullable = false)
     private AbstractUser absUser;

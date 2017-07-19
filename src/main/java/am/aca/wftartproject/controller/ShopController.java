@@ -27,7 +27,7 @@ public class ShopController extends ControllerHelper {
         ModelAndView mav = new ModelAndView("shop");
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
         mav.addObject("itemTypes", ItemType.values());
-        mav.addObject("itemList", itemService.getRecentlyAddedItems(100));
+        mav.addObject("itemList", itemService.getRecentlyAddedItems());
 
         return mav;
     }
@@ -38,7 +38,7 @@ public class ShopController extends ControllerHelper {
         //get item type and sort type parameters for items sorting in shop page
         String itemTypeStr = request.getParameter("itemType");
         String sortingType = request.getParameter("sortType");
-        List<Item> itemList = itemService.getRecentlyAddedItems(100);
+        List<Item> itemList = itemService.getRecentlyAddedItems();
 
         //check attribute parameters for valid value
         try {

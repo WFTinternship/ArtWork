@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.sql.SQLException;
 
 import static junit.framework.TestCase.*;
@@ -114,7 +115,7 @@ public class ArtistRepoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * @see ArtistRepo#findOne(Long)
+     * @see ArtistRepo#findOne(Serializable)
      */
     @Test
     public void findOne_Success() {
@@ -127,7 +128,7 @@ public class ArtistRepoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * @see ArtistRepo#findOne(Long)
+     * @see ArtistRepo#findOne(Serializable)
      */
     @Test
     public void findOne_Failure() {
@@ -200,7 +201,7 @@ public class ArtistRepoIntegrationTest extends BaseDAOIntegrationTest {
     }
 
     /**
-     * @see ArtistRepo#delete(Artist)
+     * @see ArtistRepo#delete(Object)
      */
     @Test
     public void deleteArtist_Success() {

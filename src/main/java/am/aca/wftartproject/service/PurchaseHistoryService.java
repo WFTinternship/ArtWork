@@ -12,30 +12,30 @@ public interface PurchaseHistoryService {
     /**
      * Adds purchased item to the springconfig.database.
      *
-     * @param purchaseHistory
+     * @param purchaseHistory *
      */
     void addPurchase(PurchaseHistory purchaseHistory);
 
     /**
      * Gets purchase item by userId and itemId
      *
-     * @param itemId
-     * @return
+     * @param itemId *
+     * @return PurchaseHistory
      */
     PurchaseHistory getPurchase(Long itemId);
 
     /**
      * Gets all purchase items by userId
      *
-     * @param userId
-     * @return
+     * @param userId *
+     * @return List<PurchaseHistory>
      */
     List<PurchaseHistory> getPurchaseList(Long userId);
 
     /**
      * Deletes purchase item by userId and itemId
      *
-     * @param purchaseHistory
+     * @param purchaseHistory *
      */
     void deletePurchase(PurchaseHistory purchaseHistory);
 

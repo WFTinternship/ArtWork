@@ -233,26 +233,24 @@ public class ItemServiceUnitTest extends BaseUnitTest {
     }
 
 
-    /**
-     * @see ItemService#getRecentlyAddedItems(int)
-     */
-    @Test
-    public void getRecentlyAddedItems_limitIsNegative() {
-        // Create test limit
-        int testLimit = -20;
-
-        // Test method
-        try {
-            itemService.getRecentlyAddedItems(testLimit);
-            fail();
-        } catch (Exception ex) {
-            assertTrue(ex instanceof InvalidEntryException);
-        }
-    }
+//    /**
+//     * @see ItemService#getRecentlyAddedItems
+//     */
+//    @Test
+//    public void getRecentlyAddedItems_limitIsNegative() {
+//
+//        // Test method
+//        try {
+//            itemService.getRecentlyAddedItems();
+//            fail();
+//        } catch (Exception ex) {
+//            assertTrue(ex instanceof InvalidEntryException);
+//        }
+//    }
 
 
     /**
-     * @see ItemService#getRecentlyAddedItems(int)
+     * @see ItemService#getRecentlyAddedItems()
      */
     @Test(expected = ServiceException.class)
     public void getRecentlyAddedItems_getFail() {
@@ -263,12 +261,12 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doThrow(DAOException.class).when(itemRepoMock).findTop20By();
 
         // Test method
-        itemService.getRecentlyAddedItems(testLimit);
+        itemService.getRecentlyAddedItems();
     }
 
 
     /**
-     * @see ItemService#getRecentlyAddedItems(int)
+     * @see ItemService#getRecentlyAddedItems
      */
     @Test
     public void getRecentlyAddedItems_getSuccess() {
@@ -282,7 +280,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doReturn(itemList).when(itemRepoMock).findTop20By();
 
         // Test method
-        itemService.getRecentlyAddedItems(10);
+        itemService.getRecentlyAddedItems();
 
         // Check input argument
         assertEquals(itemList.get(0), testItem);

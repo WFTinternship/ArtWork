@@ -3,53 +3,50 @@ package am.aca.wftartproject.service;
 import am.aca.wftartproject.entity.ShoppingCard;
 import org.springframework.stereotype.Repository;
 
-/**
- * Created by ASUS on 03-Jun-17
- */
+
 @Repository
 public interface ShoppingCardService {
 
     /**
      * Adds shoppingCard to the database.
      *
-     * @param shoppingCard
+     * @param shoppingCard *
      */
     void addShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Gets shoppingCard from database.
      *
-     * @param id
-     * @return
+     * @param id *
+     * @return ShoppingCard
      */
     ShoppingCard getShoppingCard(Long id);
 
     /**
      * Updates shoppingCard in database.
-     * @param shoppingCard
+     * @param shoppingCard *
      */
     void updateShoppingCard(ShoppingCard shoppingCard);
 
     /**
      * Debits balance for item buying
      *
-     * @param buyerId
-     * @param itemPrice
-     * @return
+     * @param buyerId *
+     * @param itemPrice *
      */
     void debitBalanceForItemBuying(Long buyerId, Double itemPrice);
 
     /**
      * Deletes shoppingCard by id.
      *
-     * @param shoppingCard
+     * @param shoppingCard *
      */
     void deleteShoppingCard(ShoppingCard shoppingCard);
 
-    /**
-     * Deletes shoppingCard by buyerId.
+    /*
+     * Deletes shoppingCard
      *
-     * @param buyerId
+     * @param buyerId *
      */
 //    void deleteShoppingCardByBuyerId(Long buyerId);
 }

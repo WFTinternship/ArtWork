@@ -9,11 +9,10 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.ShoppingCardService;
+import am.aca.wftartproject.util.ServiceHelper;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
@@ -24,35 +23,41 @@ import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyS
  * Created by surik on 6/1/17
  */
 @Service
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl extends ServiceHelper implements ItemService {
 
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
-    @Autowired
+
     private ItemRepo itemRepo;
-    @Autowired
+
     private PurchaseHistoryService purchaseHistoryService;
+
+    private ShoppingCardService shoppingCardService;
+
     @Autowired
-    private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
-
-/*
-    public void setItemDao(ItemRepo itemRepo) {
+    public void setItemRepo(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
-    }*/
-
+    }
+    @Autowired
+    public void setPurchaseHistoryService(PurchaseHistoryService purchaseHistoryService) {
+        this.purchaseHistoryService = purchaseHistoryService;
+    }
+    @Autowired
+    public void setShoppingCardService(ShoppingCardService shoppingCardService) {
+        this.shoppingCardService = shoppingCardService;
+    }
 
     /**
-     * @param item
+     * @param item *
      * @see ItemService#addItem(Item)
      */
 
     @Override
     public void addItem(Item item) {
 
-        if (item == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new InvalidEntryException("Invalid item");
-        }
+        //  check for item validity
+        itemValidateAndProcess(item);
 
+        //save item into db
         try {
             itemRepo.saveAndFlush(item);
         } catch (DAOException e) {
@@ -62,19 +67,17 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-
     /**
-     * @param id
-     * @return
+     * @param id *
      * @see ItemService#findItem(Long)
      */
     @Override
     public Item findItem(Long id) {
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid Id");
-        }
 
+        //check items id for validity
+       idValidateAndProcess(id);
+
+        //find item from db by id
         try {
             return itemRepo.findOne(id);
         } catch (DAOException e) {
@@ -86,18 +89,12 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param limit
-     * @return
-     * @see ItemService#getRecentlyAddedItems(int)
+     * @see ItemService#getRecentlyAddedItems
      */
     @Override
-    public List<Item> getRecentlyAddedItems(int limit) {
+    public List<Item> getRecentlyAddedItems() {
 
-        if (limit <= 0) {
-            LOGGER.error(String.format("limit is not valid: %s", limit));
-            throw new InvalidEntryException("Invalid limit");
-        }
-
+        //get recently added 20 items list from db
         try {
             return itemRepo.findTop20By();
         } catch (DAOException e) {
@@ -109,8 +106,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param title
-     * @return
+     * @param title *
      * @see ItemService#getItemsByTitle(String)
      */
     @Override
@@ -132,15 +128,14 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param itemType
-     * @return
+     * @param itemType the item type
      * @see ItemService#getItemsByType(ItemType)
      */
     @Override
     public List<Item> getItemsByType(ItemType itemType) {
 
         if (itemType == null) {
-            LOGGER.error(String.format("itemType is not valid: %s", itemType));
+            LOGGER.error("itemType is not valid");
             throw new InvalidEntryException("Invalid itemType");
         }
 
@@ -155,19 +150,20 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param minPrice
-     * @param maxPrice
-     * @return
+     * @param minPrice is the min price
+     * @param maxPrice is the max price
      * @see ItemService#getItemsForGivenPriceRange(Double, Double)
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
 
+        //check minprice and maxprice for validity
         if (minPrice == null || minPrice < 0 || maxPrice == null || maxPrice < 0) {
             LOGGER.error(String.format("price is not valid: %s , %s", minPrice, maxPrice));
             throw new InvalidEntryException("Invalid price");
         }
 
+        //get specific list by price range from db
         try {
             return itemRepo.getAllByPriceBetween(minPrice, maxPrice);
         } catch (DAOException e) {
@@ -179,17 +175,16 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param artistId
-     * @return
+     * @param artistId is artis id
      * @see ItemService#getArtistItems(Long)
      */
     @Override
     public List<Item> getArtistItems(Long artistId) {
-        if (artistId == null || artistId < 0 ) {
-            LOGGER.error(String.format("artistId or itemId or limit is not valid"));
-            throw new InvalidEntryException("Invalid artistId or limit");
-        }
 
+        //check artists id for validity
+       idValidateAndProcess(artistId);
+
+        // try to get all artist items by id
         try {
             return itemRepo.getAllByArtistId(artistId);
         } catch (DAOException e) {
@@ -201,17 +196,17 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param item
+     * @param item is item
      * @see ItemService#updateItem(Item)
      */
 
     @Override
     public void updateItem(Item item) {
-        if (item == null || item.getId() == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new InvalidEntryException("Invalid item");
-        }
 
+        //check item for validity
+       dbItemValidateAndProcess(item);
+
+        //try to update item
         try {
             itemRepo.saveAndFlush(item);
         } catch (DAOException e) {
@@ -223,16 +218,17 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param item
+     * @param item *
      * @see ItemService#deleteItem(Item)
      */
 
     @Override
     public void deleteItem(Item item) {
-        if (item == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new InvalidEntryException("Invalid Item");
-        }
+
+        //check item for validity
+        dbItemValidateAndProcess(item);
+
+        //try to delete item from db
         try {
             itemRepo.delete(item);
         } catch (DAOException e) {
@@ -244,17 +240,20 @@ public class ItemServiceImpl implements ItemService {
 
 
     /**
-     * @param item
-     * @param buyer
+     * @param item is item
+     * @param buyer is user
      * @see ItemService#itemBuying(Item, AbstractUser)
      */
     @Override
     public void itemBuying(Item item, AbstractUser buyer) {
+
+        //check buyer for validity
         if (buyer == null || !buyer.isValidUser()) {
             LOGGER.error(String.format("buyerId is not valid: %s", buyer));
             throw new InvalidEntryException("Invalid Id");
         }
 
+        //check item for validity
         if (item == null || !item.isValidItem()) {
             LOGGER.error(String.format("Item is not valid: %s", item));
             throw new InvalidEntryException("Invalid item");

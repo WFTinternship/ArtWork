@@ -8,8 +8,8 @@ public enum ShoppingCardType {
     PAYPAL(1, "PAYPAL"),
     MASTERCARD(2, "MASTERCARD");
 
-    private final int id;
-    private final String type;
+    final int id;
+    final String type;
 
     ShoppingCardType(int id, String type) {
         this.id = id;
@@ -19,18 +19,6 @@ public enum ShoppingCardType {
 
     public String getType() {
         return type;
-    }
-
-    public int getTypeId() {
-        return this.id;
-    }
-
-    public static int getIdByType(String type) {
-        return ShoppingCardType.valueOf(type).getTypeId();
-    }
-
-    public static ShoppingCardType getItemType(String type) {
-        return ShoppingCardType.valueOf(type);
     }
 
 

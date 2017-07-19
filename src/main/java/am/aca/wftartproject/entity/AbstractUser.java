@@ -1,8 +1,6 @@
 package am.aca.wftartproject.entity;
 
-
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,23 +17,22 @@ public abstract class AbstractUser implements Serializable {
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     @Column(name = "firstname", nullable = false, length = 30)
-    String firstName;
+    protected String firstName;
     @Column(name = "lastname", nullable = false, length = 30)
-    String lastName;
+    protected String lastName;
     @Column(name = "age", nullable = false, length = 20)
-    int age;
+    protected int age;
     @Column(name = "email", nullable = false)
-    String email;
+    protected String email;
     @Column(name = "password", nullable = false, length = 200)
-    String password;
+    protected String password;
     @Transient
-    String userPasswordRepeat;
+    protected String userPasswordRepeat;
     @Transient
-    ShoppingCard shoppingCard;
+    protected ShoppingCard shoppingCard;
     @OneToMany(targetEntity = am.aca.wftartproject.entity.PurchaseHistory.class, cascade = CascadeType.ALL, mappedBy = "absUser")
-    List<PurchaseHistory> purchaseHistory;
+    protected List<PurchaseHistory> purchaseHistory;
 
 
     public String getUserPasswordRepeat() {
@@ -124,9 +121,9 @@ public abstract class AbstractUser implements Serializable {
                         !isEmptyString(lastName) && lastName != null &&
                         age > 0 && age < 150 &&
                         !isEmptyString(email) && email != null &&
-                        !isEmptyString(password) && password != null;
-//                        password.equals(userPasswordRepeat);
-//                &&
-//                shoppingCard.isValidShoppingCard();
+                        !isEmptyString(password) && password != null ;
+//                        password.equals(userPasswordRepeat)
+//                        &&
+//                        shoppingCard.isValidShoppingCard();
     }
 }

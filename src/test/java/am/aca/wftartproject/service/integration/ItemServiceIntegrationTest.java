@@ -141,7 +141,7 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see ItemServiceImpl#getRecentlyAddedItems(int)
+     * @see ItemServiceImpl#getRecentlyAddedItems
      */
     @Test
     public void getRecentlyAddedItems_NotEmptyList() {
@@ -150,18 +150,19 @@ public class ItemServiceIntegrationTest extends BaseIntegrationTest {
         itemService.addItem(tempItem);
 
         // Test method and check
-        List<Item> recentlyAddedItems = itemService.getRecentlyAddedItems(10);
+        List<Item> recentlyAddedItems = itemService.getRecentlyAddedItems();
         assertEqualItems(tempItem, recentlyAddedItems.get(recentlyAddedItems.size()-1));
     }
 
     /**
-     * @see ItemServiceImpl#getRecentlyAddedItems(int)
+     * @see ItemServiceImpl#getRecentlyAddedItems
      */
-    @Test(expected = InvalidEntryException.class)
-    public void getRecentlyAddedItems_EmptyList() {
-        // Test method
-        itemService.getRecentlyAddedItems(-1);
-    }
+//    @Test
+//    public void getRecentlyAddedItems_EmptyList() {
+//        // Test method
+//        assertTrue(itemService.getRecentlyAddedItems().size() == 0);
+//
+//    }
 
     /**
      * @see ItemServiceImpl#getItemsByTitle(java.lang.String)

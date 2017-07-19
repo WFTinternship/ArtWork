@@ -12,30 +12,34 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by surik on 6/1/17
- */
 @Service
 public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
-    @Autowired
+
+
     private PurchaseHistoryRepo purchaseHistoryRepo;
 
-
+    @Autowired
+    public void setPurchaseHistoryRepo(PurchaseHistoryRepo purchaseHistoryRepo) {
+        this.purchaseHistoryRepo = purchaseHistoryRepo;
+    }
 
     /**
+     * @param purchaseHistory is purchase history
      * @see PurchaseHistoryService#addPurchase(PurchaseHistory)
-     * @param purchaseHistory
      */
 
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
+
+        //check purchase history for validity
         if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
             LOGGER.error(String.format("PurchaseHistory is not valid: %s", purchaseHistory));
             throw new InvalidEntryException("Invalid purchaseHistory");
         }
 
+        //try to save purchase history into db
         try {
             purchaseHistoryRepo.saveAndFlush(purchaseHistory);
         } catch (DAOException e) {
@@ -47,20 +51,22 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
+     * @param itemId is items id
      * @see PurchaseHistoryService#getPurchase(Long)
-     * @param itemId
-     * @return
      */
     @Override
     public PurchaseHistory getPurchase(Long itemId) {
+
+        //check item id for validity
         if (itemId == null || itemId < 0) {
             LOGGER.error(String.format("ItemId is not valid: %s", itemId));
             throw new InvalidEntryException("Invalid itemId");
         }
 
+        //find purchase from db by item id
         try {
             return purchaseHistoryRepo.findByPurchaseItem_Id(itemId);
-        }catch (DAOException e) {
+        } catch (DAOException e) {
             String error = "Failed to get purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -69,21 +75,22 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
+     * @param userId*
      * @see PurchaseHistoryService#getPurchase(Long)
-     * @param userId
-     * @return
      */
     @Override
     public List<PurchaseHistory> getPurchaseList(Long userId) {
 
-        if (userId == null || userId < 0){
+        //check user id for validity
+        if (userId == null || userId < 0) {
             LOGGER.error(String.format("UserId is not valid: %s", userId));
             throw new InvalidEntryException("Invalid userId");
         }
 
+        //get purchase list from db by user id
         try {
             return purchaseHistoryRepo.getAllByAbsUser_Id(userId);
-        }catch (DAOException e) {
+        } catch (DAOException e) {
             String error = "Failed to get purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -92,20 +99,23 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
 
 
     /**
+     * @param purchaseHistory is purchase history
      * @see PurchaseHistoryService#deletePurchase(PurchaseHistory)
-     * @param purchaseHistory
      */
 
     @Override
     public void deletePurchase(PurchaseHistory purchaseHistory) {
-        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()){
+
+        //check purchase history for validity
+        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
             LOGGER.error(String.format("UserId is not valid: %s", purchaseHistory));
             throw new InvalidEntryException("Invalid userId");
         }
 
+        //try to delete purchase history from db
         try {
             purchaseHistoryRepo.delete(purchaseHistory);
-        }catch (DAOException e) {
+        } catch (DAOException e) {
             String error = "Failed to delete purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));

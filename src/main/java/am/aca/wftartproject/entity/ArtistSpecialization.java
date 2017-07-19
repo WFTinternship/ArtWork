@@ -27,14 +27,4 @@ public enum ArtistSpecialization {
         return this.type;
     }
 
-    public int getSpecId() {
-        return ArtistSpecialization.valueOf(type).getId();
-    }
-
-//    @Override
-//    public String toString() {
-//        return this.id + " " + this.type;
-//    }
-
-
 }

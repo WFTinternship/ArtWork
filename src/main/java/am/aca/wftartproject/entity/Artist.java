@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @DynamicUpdate
 @Table(name = "artist")
-public class Artist extends AbstractUser implements Serializable,Cloneable {
+public class Artist extends AbstractUser implements Serializable, Cloneable {
 
     @Enumerated(EnumType.STRING)
     private ArtistSpecialization specialization;
@@ -21,16 +21,6 @@ public class Artist extends AbstractUser implements Serializable,Cloneable {
     private byte[] artistPhoto = null;
     @OneToMany(targetEntity = am.aca.wftartproject.entity.Item.class, cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Item> itemList;
-    @Transient
-    private String base64; //TODO: rename
-
-    public String getBase64() {
-        return base64;
-    }
-
-    public void setBase64(String base64) {
-        this.base64 = base64;
-    }
 
     public ArtistSpecialization getSpecialization() {
         return specialization;
@@ -54,10 +44,6 @@ public class Artist extends AbstractUser implements Serializable,Cloneable {
         return itemList;
     }
 
-    public Artist setItemList(List<Item> itemList) {
-        this.itemList = itemList;
-        return this;
-    }
 
     public Artist() {
 
@@ -69,6 +55,18 @@ public class Artist extends AbstractUser implements Serializable,Cloneable {
         this.itemList = itemList;
     }
 
+    public boolean isValidArtist() {
+        return super.isValidUser();
+    }
+
+    public boolean equals(Artist other) {
+        return (other.firstName.equals(this.firstName) && other.lastName.equals(this.lastName) && other.age == this.age && other.password.equals(this.password) && other.specialization.equals(this.specialization) && Arrays.equals(this.artistPhoto, other.artistPhoto));
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     @Override
     public String toString() {
         return "Artist{" +
@@ -77,27 +75,10 @@ public class Artist extends AbstractUser implements Serializable,Cloneable {
                 ", firstName='" + firstName + '\'' +
                 ", artistPhoto=" + Arrays.toString(artistPhoto) +
                 ", lastName='" + lastName + '\'' +
-                ", base64='" + base64 + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", userPasswordRepeat='" + userPasswordRepeat + '\'' +
                 '}';
-    }
-
-
-    public boolean isValidArtist() {
-        return super.isValidUser();
-    }
-
-    public boolean equals(Artist other){
-        if(other.firstName.equals(this.firstName) && other.lastName.equals(this.lastName) && other.age == this.age && other.password.equals(this.password) && other.specialization.equals(this.specialization) && other.artistPhoto.equals(this.artistPhoto) )
-        {
-            return true;
-        }
-        else return false;
-    }
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }

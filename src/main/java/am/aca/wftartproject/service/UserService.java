@@ -12,15 +12,15 @@ public interface UserService {
     /**
      * Adds User to the springconfig.database
      *
-     * @param user
+     * @param user *
      */
     void addUser(User user);
 
     /**
      * Finds User with the following id.
      *
-     * @param id
-     * @return
+     * @param id *
+     * @return User
      */
     User findUser(Long id);
 
@@ -28,30 +28,30 @@ public interface UserService {
     /**
      * Finds User with the following email.
      *
-     * @param email
-     * @return
+     * @param email *
+     * @return User
      */
     User findUser(String email);
 
     /**
      * Updates user info
      *
-     * @param user
+     * @param user *
      */
     void updateUser(User user);
 
     /**
      * Deletes user with the following id.
      *
-     * @param user
+     * @param user *
      */
     void deleteUser(User user);
 
     /**
      * Authenticates user info.
-     * @param email
-     * @param password
-     * @return
+     * @param email *
+     * @param password *
+     * @return User
      */
     User login(String email, String password);
 

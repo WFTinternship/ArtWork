@@ -18,21 +18,31 @@ import org.springframework.stereotype.Service;
 public class ShoppingCardServiceImpl implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
-    @Autowired
+
     private ShoppingCardRepo shoppingCardRepo;
+
+    @Autowired
+    public void setShoppingCardRepo(ShoppingCardRepo shoppingCardRepo) {
+        this.shoppingCardRepo = shoppingCardRepo;
+    }
+
     /**
+     * @param shoppingCard *
      * @see ShoppingCardService#addShoppingCard(ShoppingCard)
-     * @param shoppingCard
      */
     @Override
     public void addShoppingCard(ShoppingCard shoppingCard) {
-        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
+
+        //check shoppingCard for validity
+        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()) {
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid shoppingCard");
         }
+
+        //try to save shoppingcCard into db
         try {
             shoppingCardRepo.saveAndFlush(shoppingCard);
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to add ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -40,19 +50,22 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     }
 
     /**
+     * @param id*
      * @see ShoppingCardService#getShoppingCard(Long)
-     * @param id
-     * @return
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
-        if (id == null || id < 0){
+
+        //check user id for validity
+        if (id == null || id < 0) {
             LOGGER.error(String.format("Id is not valid: %s", id));
             throw new InvalidEntryException("Invalid id");
         }
+
+        //try to find shoppingCard frpom db by user id
         try {
             return shoppingCardRepo.findByAbstractUser_Id(id);
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to get ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -61,20 +74,24 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
-     * @see ShoppingCardService#updateShoppingCard( ShoppingCard)
-     * @param shoppingCard
+     * @param shoppingCard*
+     * @see ShoppingCardService#updateShoppingCard(ShoppingCard)
      */
     @Override
     public void updateShoppingCard(ShoppingCard shoppingCard) {
-        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
+
+        //check shoppingCard for validity
+        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()) {
             LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid shoppingCard");
         }
+
+        //try to update shoppingCard in db
         try {
             if (shoppingCardRepo.saveAndFlush(shoppingCard) == null) {
                 throw new DAOException("Failed update shopping card");
             }
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -83,25 +100,27 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
+     * @param itemPrice*
+     * @param buyerId*
      * @see ShoppingCardService#debitBalanceForItemBuying(Long, Double)
-     * @param itemPrice
-     * @param buyerId
      */
     @Override
-    public void debitBalanceForItemBuying(Long buyerId,Double itemPrice){
-        if(itemPrice== null || itemPrice<0 || buyerId==null||buyerId<0){
-            LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId,itemPrice));
+    public void debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
+
+        //check item price and buyer id for validity
+        if (itemPrice == null || itemPrice < 0 || buyerId == null || buyerId < 0) {
+            LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId, itemPrice));
             throw new InvalidEntryException("Invalid id");
         }
 
-        try{
-            debitBalance(buyerId,itemPrice);
-        }catch (NotEnoughMoneyException e){
+        //debit balance for item buying
+        try {
+            debitBalance(buyerId, itemPrice);
+        } catch (NotEnoughMoneyException e) {
             String error = "Failed to update ShoppingCard";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             String error = "Incorrect data";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -110,20 +129,22 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 
 
     /**
+     * @param shoppingCard*
      * @see ShoppingCardService#deleteShoppingCard(ShoppingCard)
-     * @param shoppingCard
      */
     @Override
     public void deleteShoppingCard(ShoppingCard shoppingCard) {
-        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()){
+
+        //check shoppingCard for validity
+        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()) {
             LOGGER.error(String.format("Id is not valid: %s", shoppingCard));
             throw new InvalidEntryException("Invalid id");
         }
+
+        //try to delete shoppingCard
         try {
-
             shoppingCardRepo.delete(shoppingCard);
-
-        }catch (DAOException e){
+        } catch (DAOException e) {
             String error = "Failed to delete ShoppingCard: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
@@ -148,10 +169,13 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 //        }
 //    }
 
-    public Boolean debitBalance(Long buyerId, Double itemPrice) {
-
+    private Boolean debitBalance(Long buyerId, Double itemPrice) {
         Boolean isEnoughBalance;
+
+        //get shoppingCard from db by user id
         ShoppingCard shoppingCard = getShoppingCard(buyerId);
+
+        //check if user has enough money , process item buying and update shoppingCard for balance
         try {
             if (shoppingCard.getBalance() >= itemPrice) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
@@ -169,7 +193,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
 
         return isEnoughBalance;
     }

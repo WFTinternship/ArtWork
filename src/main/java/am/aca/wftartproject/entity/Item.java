@@ -102,11 +102,6 @@ public class Item implements Serializable {
         return this;
     }
 
-
-    public Boolean isStatus() {
-        return status;
-    }
-
     public Item setStatus(Boolean status) {
         this.status = status;
         return this;
@@ -121,7 +116,7 @@ public class Item implements Serializable {
         return this;
     }
 
-    public java.util.Date getAdditionDate() {
+    private java.util.Date getAdditionDate() {
         return additionDate;
     }
 
@@ -133,7 +128,7 @@ public class Item implements Serializable {
 
     }
 
-    public Item(String title, String description, List<String> photoURL, Double price, Long artistId, Boolean status, ItemType itemType, Date additionDate) {
+    public Item(String title, String description, List<String> photoURL, Double price, Boolean status, ItemType itemType, Date additionDate) {
         this.title = title;
         this.description = description;
         this.photoURL = photoURL;
@@ -143,25 +138,9 @@ public class Item implements Serializable {
         this.additionDate = additionDate;
     }
 
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", photoURL=" + photoURL +
-                ", price=" + price +
-                ", status=" + status +
-                ", itemType=" + itemType +
-                ", additionDate=" + additionDate +
-                '}';
-    }
-
     public boolean isValidItem() {
         return
                 !isEmptyString(title)
-                        && title != null
                         && description != null
                         && !description.isEmpty()
                         && photoURL != null
@@ -179,14 +158,14 @@ public class Item implements Serializable {
 
         Item item = (Item) o;
 
-        if (!getId().equals(item.getId())) return false;
-        if (!getTitle().equals(item.getTitle())) return false;
-        if (!getDescription().equals(item.getDescription())) return false;
-        if (!getPhotoURL().equals(item.getPhotoURL())) return false;
-        if (!getPrice().equals(item.getPrice())) return false;
-        if (!getStatus().equals(item.getStatus())) return false;
-        if (getItemType() != item.getItemType()) return false;
-        return getAdditionDate().getDate() / 100000000 == item.getAdditionDate().getDate() / 100000000;
+        return getId().equals(item.getId())
+                && getTitle().equals(item.getTitle())
+                && getDescription().equals(item.getDescription())
+                && getPhotoURL().equals(item.getPhotoURL())
+                && getPrice().equals(item.getPrice())
+                && getStatus().equals(item.getStatus())
+                && getItemType() == item.getItemType()
+                && getAdditionDate().getTime() / 100000000 == item.getAdditionDate().getTime() / 100000000;
     }
 
     @Override
@@ -197,6 +176,20 @@ public class Item implements Serializable {
         result = 31 * result + getStatus().hashCode();
         result = 31 * result + getItemType().hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", photoURL=" + photoURL +
+                ", price=" + price +
+                ", status=" + status +
+                ", itemType=" + itemType +
+                ", additionDate=" + additionDate +
+                '}';
     }
 
 }

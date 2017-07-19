@@ -28,7 +28,7 @@ public class User extends AbstractUser implements Serializable,Cloneable {
         this.age = age;
         this.email = email;
         this.password = password;
-//        this.shoppingCard = shoppingCard;
+        this.shoppingCard = shoppingCard;
         this.userPasswordRepeat = userPasswordRepeat;
     }
 
