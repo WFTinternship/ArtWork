@@ -3,36 +3,23 @@ package am.aca.wftartproject.controller;
 import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.*;
-import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.service.PurchaseHistoryService;
-import am.aca.wftartproject.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Armen on 6/26/2017.
+ * Created by Armen on 6/26/2017
  */
 @Controller
 public class AccountController extends ControllerHelper {
 
-    @Autowired
-    private ArtistService artistService;
-    @Autowired
-    private PurchaseHistoryService purchaseHistoryService;
-    @Autowired
-    private ItemService itemService;
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AccountController.class);
 
     @RequestMapping(value = {"account-details"}, method = RequestMethod.GET)
@@ -45,8 +32,9 @@ public class AccountController extends ControllerHelper {
             retrieveUserDetailsFromSession(session);
             page = ACCOUNT;
         } catch (Exception e) {
-            LOGGER.error(String.format(e.getMessage()));
+            LOGGER.error(e.getMessage());
         }
+
         return new ModelAndView(page);
     }
 
@@ -58,6 +46,7 @@ public class AccountController extends ControllerHelper {
         if (request.getSession().getAttribute(USER) == null) {
             page = REDIRECT_SIGNUP;
         }
+
         //set attribute "artist specialization types" attribute into session
         request.getSession().setAttribute("artistSpecTypes", ArtistSpecialization.values());
 
@@ -71,17 +60,17 @@ public class AccountController extends ControllerHelper {
         // get User attribute from session, check User type , and update fields
         if (session.getAttribute(USER) != null) {
             if (session.getAttribute(USER).getClass() == User.class && session.getAttribute(USER) != null) {
-                User finduser = (User) getUserFromSession(session);
+                User finduser = getUserFromSession(session);
                 finduser.setUserPasswordRepeat(finduser.getPassword());
                 try {
                     updateUserParameters(finduser, request);
                     userServiceUpdater(finduser, request);
                 } catch (Exception e) {
                     setErrorMessage(request);
-                    LOGGER.error(String.format(e.getMessage()));
+                    LOGGER.error(e.getMessage());
                 }
             } else if (session.getAttribute(USER).getClass() == Artist.class && session.getAttribute(USER) != null) {
-                Artist findArtist = (Artist) getArtistFromSession(session);
+                Artist findArtist = getArtistFromSession(session);
                 findArtist.setUserPasswordRepeat(findArtist.getPassword());
                 try {
                     updateArtistParameters(findArtist, request, image);
@@ -157,6 +146,7 @@ public class AccountController extends ControllerHelper {
         } catch (ServiceException e) {
             request.setAttribute("message", "The entered info is not correct or empty fields");
         }
+
         return new ModelAndView(ADD_ITEM);
     }
 
@@ -177,7 +167,7 @@ public class AccountController extends ControllerHelper {
     @RequestMapping(value = {"deleteItem/*"}, method = RequestMethod.GET)
     public ModelAndView deleteItem(HttpServletRequest request, HttpServletResponse response) {
 
-        //get item id from serletpath
+        //get item id from servlet path
         String[] pathInfo = request.getServletPath().split("/");
         Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
 

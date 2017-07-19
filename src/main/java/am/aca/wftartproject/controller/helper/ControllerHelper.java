@@ -2,10 +2,7 @@ package am.aca.wftartproject.controller.helper;
 
 import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.exception.service.ServiceException;
-import am.aca.wftartproject.service.ArtistService;
-import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.service.ShoppingCardService;
-import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.service.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,13 +20,15 @@ import java.util.List;
  */
 public class ControllerHelper {
     @Autowired
-    private UserService userService;
+    protected UserService userService;
     @Autowired
-    private ArtistService artistService;
+    protected ArtistService artistService;
     @Autowired
-    private ItemService itemService;
+    protected ItemService itemService;
     @Autowired
     ShoppingCardService shoppingCardService;
+    @Autowired
+    protected PurchaseHistoryService purchaseHistoryService;
 
     //page location constants
     public static final String HOME = "/index";
@@ -54,7 +53,7 @@ public class ControllerHelper {
     public static final String USER = "user";
     public static final String ATTRIBUTE_PURCHASE_HISTORY = "purchaseHistory";
 
-    protected User updateUserParameters(User findUser, HttpServletRequest request){
+    protected User updateUserParameters(User findUser, HttpServletRequest request) {
         int counter = 0;
         findUser.setUserPasswordRepeat(findUser.getPassword());
         if (request.getParameter("firstName") != null && !request.getParameter("firstName").isEmpty()) {
@@ -74,12 +73,13 @@ public class ControllerHelper {
             findUser.setUserPasswordRepeat(request.getParameter("retypepassword"));
             counter++;
         }
-        if(counter==0){
+        if (counter == 0) {
             throw new RuntimeException("Nothing Was Changed");
         }
         return findUser;
     }
-    protected  Artist updateArtistParameters(Artist findArtist, HttpServletRequest request, MultipartFile image) throws IOException {
+
+    protected Artist updateArtistParameters(Artist findArtist, HttpServletRequest request, MultipartFile image) throws IOException {
         int count = 0;
         findArtist.setUserPasswordRepeat(findArtist.getPassword());
         if (request.getParameter("firstName") != null && !request.getParameter("firstName").isEmpty()) {
@@ -108,7 +108,7 @@ public class ControllerHelper {
             findArtist.setArtistPhoto(imageBytes);
             count++;
         }
-        if(count == 0){
+        if (count == 0) {
             throw new RuntimeException();
         }
         return findArtist;
@@ -116,7 +116,7 @@ public class ControllerHelper {
     }
 
 
-    protected void userServiceUpdater(User findUser,HttpServletRequest request){
+    protected void userServiceUpdater(User findUser, HttpServletRequest request) {
         try {
             userService.updateUser(findUser);
             String message = "User updated successfully";
@@ -128,7 +128,7 @@ public class ControllerHelper {
         }
     }
 
-    protected void artistServiceUpdater(Artist findArtist,HttpServletRequest request){
+    protected void artistServiceUpdater(Artist findArtist, HttpServletRequest request) {
         try {
             artistService.updateArtist(findArtist);
             request.setAttribute("message", "You have successfully updated your profile");
@@ -139,18 +139,18 @@ public class ControllerHelper {
         }
     }
 
-    protected void artistSaver(Artist artistFromRequest, HttpServletRequest request){
+    protected void artistSaver(Artist artistFromRequest, HttpServletRequest request) {
         ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
-        artistFromRequest.setShoppingCard(shoppingCard );
+        artistFromRequest.setShoppingCard(shoppingCard);
         artistService.addArtist(artistFromRequest);
         artistFromRequest.getShoppingCard().setAbstractUser(artistFromRequest);
         shoppingCardService.addShoppingCard(artistFromRequest.getShoppingCard());
-        request.setAttribute("message","Hi " + artistFromRequest.getFirstName());
+        request.setAttribute("message", "Hi " + artistFromRequest.getFirstName());
         HttpSession session = request.getSession(true);
         session.setAttribute("user", artistFromRequest);
     }
 
-    protected void userSaver(User user,HttpServletRequest request){
+    protected void userSaver(User user, HttpServletRequest request) {
         ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
         shoppingCard.setAbstractUser(user);
         user.setShoppingCard(shoppingCard);
@@ -158,18 +158,18 @@ public class ControllerHelper {
         userService.addUser(user);
         user.getShoppingCard().setAbstractUser(user);
         shoppingCardService.addShoppingCard(user.getShoppingCard());
-        request.getSession(true).setAttribute("message","Hi " + user.getFirstName());
+        request.getSession(true).setAttribute("message", "Hi " + user.getFirstName());
         request.getSession().setAttribute("user", user);
     }
 
-    protected void itemServiceSaver(Item item,HttpServletRequest request){
+    protected void itemServiceSaver(Item item, HttpServletRequest request) {
         itemService.addItem(item);
         request.getSession().setAttribute("item", item);
-        String  message = "Your ArtWork has been successfully added, Now you can see it in My ArtWorks page";
+        String message = "Your ArtWork has been successfully added, Now you can see it in My ArtWorks page";
         request.setAttribute("message", message);
     }
 
-    protected void retrieveUserDetailsFromSession(HttpSession session){
+    protected void retrieveUserDetailsFromSession(HttpSession session) {
         if (session.getAttribute("user") != null) {
             if (session.getAttribute("user").getClass() == User.class) {
                 User user = (User) session.getAttribute("user");
@@ -183,20 +183,14 @@ public class ControllerHelper {
                 Artist artist = (Artist) session.getAttribute("user");
                 Artist findArtist = artistService.findArtist(artist.getId());
                 String image = Base64.getEncoder().encodeToString(findArtist.getArtistPhoto());
-                if (findArtist != null) {
-                    session.setAttribute("image", image);
-                    session.setAttribute("user", findArtist);
-                } else {
-                    throw new RuntimeException("Incorrect program logic");
-                }
+                session.setAttribute("image", image);
+                session.setAttribute("user", findArtist);
             }
-        }
-        else throw new RuntimeException("");
+        } else throw new RuntimeException("");
     }
 
-    protected void createItemFromRequest(Item item,Artist findArtist, List<String> photoUrl, HttpServletRequest request){
-        if( !request.getParameter("title").isEmpty() && !request.getParameter("description").isEmpty() && !request.getParameter("type").isEmpty() && !request.getParameter("price").isEmpty() && !request.getParameter("type").equals("-1"))
-        {
+    protected void createItemFromRequest(Item item, Artist findArtist, List<String> photoUrl, HttpServletRequest request) {
+        if (!request.getParameter("title").isEmpty() && !request.getParameter("description").isEmpty() && !request.getParameter("type").isEmpty() && !request.getParameter("price").isEmpty() && !request.getParameter("type").equals("-1")) {
             item.setTitle(request.getParameter("title"));
             item.setDescription(request.getParameter("description"));
             item.setItemType(ItemType.valueOf(request.getParameter("type")));
@@ -205,11 +199,11 @@ public class ControllerHelper {
             item.setPhotoURL(photoUrl);
             item.setArtist(findArtist);
             item.setAdditionDate(Calendar.getInstance().getTime());
-        }
-        else throw new ServiceException("The entered info is not correct or empty fields");
+        } else throw new ServiceException("The entered info is not correct or empty fields");
 
     }
-    protected void createArtistFromRequest(Artist artistFromRequest,MultipartFile image,HttpServletRequest request) throws IOException {
+
+    protected void createArtistFromRequest(Artist artistFromRequest, MultipartFile image, HttpServletRequest request) throws IOException {
         artistFromRequest
                 .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
                 .setArtistPhoto(image.getBytes())
@@ -220,7 +214,8 @@ public class ControllerHelper {
                 .setPassword(request.getParameter("password"))
                 .setUserPasswordRepeat(request.getParameter("passwordRepeat"));
     }
-    protected void artistImageUploader(Artist artist, MultipartFile[] image, List<String> photoUrl,HttpServletRequest request) throws IOException {
+
+    protected void artistImageUploader(Artist artist, MultipartFile[] image, List<String> photoUrl, HttpServletRequest request) throws IOException {
         for (MultipartFile multipartFile : image) {
             byte[] imageBytes = multipartFile.getBytes();
             String uploadPath = "/resources/images/artists/" + artist.getId();
@@ -235,20 +230,22 @@ public class ControllerHelper {
             photoUrl.add(uploadPath + File.separator + fileName + ".jpg");
         }
     }
-    protected User getUserFromSession(HttpSession session){
+
+    protected User getUserFromSession(HttpSession session) {
         User user = (User) session.getAttribute("user");
         user = userService.findUser(user.getId());
         session.setAttribute("user", user);
         return user;
     }
 
-    protected Artist getArtistFromSession(HttpSession session){
+    protected Artist getArtistFromSession(HttpSession session) {
         Artist artist = (Artist) session.getAttribute("user");
         artist = artistService.findArtist(artist.getId());
         return artist;
     }
-    protected void setErrorMessage(HttpServletRequest request){
-       String message = "No changes ,empty field or The entered info is not correct";
+
+    protected void setErrorMessage(HttpServletRequest request) {
+        String message = "No changes ,empty field or The entered info is not correct";
         request.setAttribute("message", message);
     }
 
