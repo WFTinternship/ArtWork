@@ -59,7 +59,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
         }
 
         try {
-            return purchaseHistoryRepo.findOne(itemId);
+            return purchaseHistoryRepo.findByPurchaseItem_Id(itemId);
         }catch (DAOException e) {
             String error = "Failed to get purchase history: %s";
             LOGGER.error(String.format(error, e.getMessage()));

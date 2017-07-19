@@ -105,7 +105,7 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         testPurchaseHistory = createTestPurchaseHistory();
 
         // Setup mock
-        doNothing().when(purchaseHistoryRepoMock).saveAndFlush(argumentCaptor.capture());
+        doReturn(testPurchaseHistory).when(purchaseHistoryRepoMock).saveAndFlush(argumentCaptor.capture());
 
         // Test method
         purchaseHistoryService.addPurchase(testPurchaseHistory);
@@ -360,10 +360,11 @@ public class PurchaseHistoryServiceUnitTest extends BaseUnitTest {
         testPurchaseHistory = createTestPurchaseHistory();
         // Create userId and itemId
         Long itemId = 5L;
-        testPurchaseHistory.setItem(createTestItem());
+        testPurchaseHistory.setItem(createTestItem().setId(itemId));
+
 
         // Setup mock
-        doReturn(true).when(purchaseHistoryRepoMock).delete(argumentCaptor.capture());
+        doNothing().when(purchaseHistoryRepoMock).delete(argumentCaptor.capture());
 
         // Test method
         purchaseHistoryService.deletePurchase(testPurchaseHistory);

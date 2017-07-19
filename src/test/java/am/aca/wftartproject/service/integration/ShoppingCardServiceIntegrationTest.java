@@ -75,7 +75,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
         shoppingCardService.addShoppingCard(testShoppingCard);
 
         // Get added shoppingCard and check its sameness with testShoppingCard
-        ShoppingCard addedCard = shoppingCardService.getShoppingCard(testShoppingCard.getId());
+        ShoppingCard addedCard = shoppingCardService.getShoppingCard(testShoppingCard.getAbstractUser().getId());
 
         assertEqualShoppingCards(addedCard, testShoppingCard);
     }
@@ -98,7 +98,7 @@ public class ShoppingCardServiceIntegrationTest extends BaseIntegrationTest {
         shoppingCardService.addShoppingCard(testShoppingCard);
 
         // Test method
-        ShoppingCard foundedShoppingCard = shoppingCardService.getShoppingCard(testShoppingCard.getId());
+        ShoppingCard foundedShoppingCard = shoppingCardService.getShoppingCard(testShoppingCard.getAbstractUser().getId());
         assertEqualShoppingCards(foundedShoppingCard, testShoppingCard);
     }
 

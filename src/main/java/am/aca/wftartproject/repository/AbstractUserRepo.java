@@ -16,6 +16,4 @@ public interface AbstractUserRepo extends JpaRepository<AbstractUser,Long> {
      * @return
      */
     AbstractUser findByEmail(String email);
-
-    AbstractUser findOne(Long id);
 }

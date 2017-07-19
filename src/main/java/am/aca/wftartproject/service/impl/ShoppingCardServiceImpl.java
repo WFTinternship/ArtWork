@@ -101,6 +101,11 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
+        catch (ServiceException e){
+            String error = "Incorrect data";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
     }
 
 
@@ -160,9 +165,9 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new NotEnoughMoneyException(String.format(error, e.getMessage()));
         } catch (Exception e) {
-            String error = "Not enough money on the account: %s";
+            String error = "Incorrect Data: %s";
             LOGGER.error(String.format(error, e.getMessage()));
-            throw new DAOException(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
         }
 
 

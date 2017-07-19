@@ -20,6 +20,12 @@ public interface PurchaseHistoryRepo extends JpaRepository<PurchaseHistory,Long>
      */
     List<PurchaseHistory> getAllByAbsUser_Id(Long userId);
 
+    /**
+     * find purchase by item id
+     *
+     * @param id
+     * @return
+     */
     PurchaseHistory findByPurchaseItem_Id (Long id);
 
 }

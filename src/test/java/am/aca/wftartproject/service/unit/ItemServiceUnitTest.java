@@ -714,6 +714,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         // Create test id and test item
         testArtist = createTestArtist();
         testItem = createTestItem();
+        testItem.setId(55L);
         testItem.setArtist(testArtist);
 
         // Setup mock

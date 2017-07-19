@@ -11,6 +11,7 @@ import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
+import am.aca.wftartproject.util.HashGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -112,7 +113,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         User fakeDbUser = new User();
 
         // Setup mock
-        doReturn(fakeDbUser).when(userRepoMock).findUserByEmail(testUser.getEmail());
+        doReturn(fakeDbUser).when(abstractUserRepoMock).findByEmail(testUser.getEmail());
 
         // Try to add user into db
         // Test method
@@ -455,7 +456,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         testUser = createTestUser();
         testUser.setId(5L);
         // Setup mocks
-        doReturn(true).when(userRepoMock).delete(argumentCaptor.capture());
+        doNothing().when(userRepoMock).delete(argumentCaptor.capture());
 
         // Test method
         userService.deleteUser(testUser);
@@ -560,7 +561,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
         // Setup mock
         doReturn(testUser).when(userRepoMock).findUserByEmail(argumentCaptor.capture());
-
+        testUser.setPassword(HashGenerator.generateHashString(password));
         // Test method
         assertEqualUsers(testUser, userService.login(email, password));
 

@@ -28,7 +28,7 @@ public abstract class AbstractUser implements Serializable {
     int age;
     @Column(name = "email", nullable = false)
     String email;
-    @Column(name = "password", nullable = false, length = 20)
+    @Column(name = "password", nullable = false, length = 200)
     String password;
     @Transient
     String userPasswordRepeat;

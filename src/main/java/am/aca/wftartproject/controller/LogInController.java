@@ -1,5 +1,6 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.entity.User;
 import am.aca.wftartproject.service.ArtistService;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * Created by Armen on 6/26/2017.
  */
 @Controller
-public class LogInController {
+public class LogInController extends ControllerHelper {
     @Autowired
     private UserService userService;
 
@@ -27,7 +28,7 @@ public class LogInController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("logIn");
+        ModelAndView mav = new ModelAndView(LOGIN);
         return mav;
     }
 
@@ -41,23 +42,23 @@ public class LogInController {
             try
             {
                userFromDB = userService.login(userEmailStr, userPasswordStr);
-               request.getSession(true).setAttribute("user", userFromDB);
-               return new ModelAndView("index");
+               request.getSession(true).setAttribute(USER, userFromDB);
+               return new ModelAndView(HOME);
             }
             catch (Exception e){}
             try{
                 if(userFromDB==null)
                 {
                     artistFromDB = artistService.login(userEmailStr,userPasswordStr);
-                    request.getSession(true).setAttribute("user", artistFromDB);
-                    return new ModelAndView("index");
+                    request.getSession(true).setAttribute(USER, artistFromDB);
+                    return new ModelAndView(HOME);
                 }
             }
             catch (Exception e)
             {
                 String userNotExists = "The user with the entered username and password does not exists.";
                 request.setAttribute("errorMessage", userNotExists);
-                mav = new ModelAndView("logIn");
+                mav = new ModelAndView(LOGIN);
             }
         return mav;
     }
@@ -66,10 +67,10 @@ public class LogInController {
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.setAttribute("user", null);
+            session.setAttribute(USER, null);
             session.invalidate();
         }
-        return new ModelAndView("index");
+        return new ModelAndView(HOME);
     }
 
 }

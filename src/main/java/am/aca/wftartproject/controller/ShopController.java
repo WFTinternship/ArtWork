@@ -1,5 +1,6 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.util.ItemComparator;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.entity.*;
@@ -21,7 +22,7 @@ import java.util.List;
  * Created by Armen on 6/26/2017.
  */
 @Controller
-public class ShopController {
+public class ShopController extends ControllerHelper {
     @Autowired
     private ItemService itemService;
     @Autowired
@@ -60,7 +61,7 @@ public class ShopController {
         {
             e.printStackTrace();
         }
-        return new ModelAndView("shop");
+        return new ModelAndView(SHOP);
     }
 
     @RequestMapping(value = "shop-cart",method = RequestMethod.GET)
@@ -78,7 +79,7 @@ public class ShopController {
         session.setAttribute("itemDetail", itemById);
         session.setAttribute("artistItems", itemService.getArtistItems(itemById.getArtist().getId()));
         session.setAttribute("artistInfo", artistService.findArtist(itemById.getArtist().getId()));
-        return new ModelAndView("item-detail");
+        return new ModelAndView(ITEM_DETAIL);
     }
 
     @RequestMapping(value = "item-detail/*", method = RequestMethod.POST)
@@ -86,26 +87,26 @@ public class ShopController {
         HttpSession session = request.getSession();
         Item item = (Item) session.getAttribute("itemDetail");
         String page = "";
-        if(session.getAttribute("user")!=null)
+        if(session.getAttribute(USER)!=null)
         {
-            AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
+            AbstractUser abstractUser = (AbstractUser) session.getAttribute(USER);
             try
             {
                 itemService.itemBuying(item, abstractUser);
-                page = "thank-you";
+                page = THANK_YOU;
             }
             catch (NotEnoughMoneyException ex)
             {
                 session.setAttribute("msgNotEnoughMoney", "You don't have enough money. Please top-up your account and try again.");
-                page = "redirect:/shop";
+                page = REDIRECT_SHOP;
             }
             catch (RuntimeException ex)
             {
                 System.out.println(ex.getMessage());
-                page = "index";
+                page = HOME;
             }
         }
-        else page = "logIn";
+        else page = LOGIN;
         return new ModelAndView(page);
     }
 }

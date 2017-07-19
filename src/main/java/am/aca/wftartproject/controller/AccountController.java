@@ -32,17 +32,17 @@ public class AccountController extends ControllerHelper {
     private PurchaseHistoryService purchaseHistoryService;
     @Autowired
     private ItemService itemService;
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Controller.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AccountController.class);
 
     @RequestMapping(value = {"account-details"}, method = RequestMethod.GET)
     public ModelAndView accountInfo(HttpServletRequest request) 
     {
         HttpSession session = request.getSession();
-        String page = "redirect:/signup";
+        String page = REDIRECT_SIGNUP;
         try
         {
             retrieveUserDetailsFromSession(session);
-            page = "account";
+            page = ACCOUNT;
         }
         catch (Exception e)
         {
@@ -54,10 +54,10 @@ public class AccountController extends ControllerHelper {
     @RequestMapping(value = {"edit-profile"}, method = RequestMethod.GET)
     public ModelAndView editProfile(HttpServletRequest request)
     {
-        String page = "editProfile";
-        if (request.getSession().getAttribute("user") == null)
+        String page = EDIT_PROFILE;
+        if (request.getSession().getAttribute(USER) == null)
         {
-            page = "redirect:/signup";
+            page = REDIRECT_SIGNUP;
         }
         request.getSession().setAttribute("artistSpecTypes", ArtistSpecialization.values());
         return new ModelAndView(page);
@@ -67,9 +67,9 @@ public class AccountController extends ControllerHelper {
     public ModelAndView editProfileProcess(HttpServletRequest request, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException, CloneNotSupportedException 
     {
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null)
+        if (session.getAttribute(USER) != null)
         {
-            if (session.getAttribute("user").getClass() == User.class && session.getAttribute("user") != null)
+            if (session.getAttribute(USER).getClass() == User.class && session.getAttribute(USER) != null)
             {
                 User  finduser = (User)getUserFromSession(session);
                 finduser.setUserPasswordRepeat(finduser.getPassword());
@@ -84,7 +84,7 @@ public class AccountController extends ControllerHelper {
                     LOGGER.error(String.format(e.getMessage()));
                 }
             }
-            else if (session.getAttribute("user").getClass() == Artist.class && session.getAttribute("user") != null)
+            else if (session.getAttribute(USER).getClass() == Artist.class && session.getAttribute(USER) != null)
             {
                 Artist findArtist = (Artist)getArtistFromSession(session);
                 findArtist.setUserPasswordRepeat(findArtist.getPassword());
@@ -95,43 +95,43 @@ public class AccountController extends ControllerHelper {
                 catch (RuntimeException e)
                 {
                     setErrorMessage(request);
-                    return new ModelAndView("editProfile");
+                    return new ModelAndView(EDIT_PROFILE);
                 }
                 artistServiceUpdater(findArtist,request);
             }
         }
-        return new ModelAndView("editProfile");
+        return new ModelAndView(EDIT_PROFILE);
     }
 
     @RequestMapping(value = {"purchase-history"}, method = RequestMethod.GET)
     public ModelAndView purchaseHistory(HttpServletRequest request)
     {
-        String page = "purchaseHistory";
+        String page = PURCHASE_HISTORY;
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null)
+        if (session.getAttribute(USER) != null)
         {
-            if (session.getAttribute("user").getClass() == User.class)
+            if (session.getAttribute(USER).getClass() == User.class)
             {
-                User user = (User) session.getAttribute("user");
-                session.setAttribute("purchaseHistory", purchaseHistoryService.getPurchaseList(user.getId()));
+                User user = (User) session.getAttribute(USER);
+                session.setAttribute(ATTRIBUTE_PURCHASE_HISTORY, purchaseHistoryService.getPurchaseList(user.getId()));
             }
-            if (session.getAttribute("user").getClass() == Artist.class)
+            if (session.getAttribute(USER).getClass() == Artist.class)
             {
-                Artist artist = (Artist) session.getAttribute("user");
-                session.setAttribute("purchaseHistory", purchaseHistoryService.getPurchaseList(artist.getId()));
+                Artist artist = (Artist) session.getAttribute(USER);
+                session.setAttribute(ATTRIBUTE_PURCHASE_HISTORY, purchaseHistoryService.getPurchaseList(artist.getId()));
             }
         }
-        else page = "redirect:/signup";
+        else page = REDIRECT_SIGNUP;;
         return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"add-item"}, method = RequestMethod.GET)
     public ModelAndView addItem(HttpServletRequest request)
     {
-        String page = "additem";
-        if (request.getSession().getAttribute("user") == null)
+        String page = ADD_ITEM;
+        if (request.getSession().getAttribute(USER) == null)
         {
-            page = "redirect:/signup";
+            page =  REDIRECT_SIGNUP;
         }
         request.getSession().setAttribute("itemTypes", ItemType.values());
         return new ModelAndView(page);
@@ -144,13 +144,13 @@ public class AccountController extends ControllerHelper {
         List<String> photoUrl = new ArrayList<>();
         Item item = new Item();
         try {
-            if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class)
+            if (session.getAttribute(USER) != null && session.getAttribute(USER).getClass() == Artist.class)
             {
-                Artist artist = (Artist) session.getAttribute("user");
+                Artist artist = (Artist) session.getAttribute(USER);
                 Artist findArtist = artistService.findArtist(artist.getId());
                 if (findArtist != null && image != null)
                 {
-                    session.setAttribute("user", findArtist);
+                    session.setAttribute(USER, findArtist);
                     artistImageUploader(findArtist, image, photoUrl, request);
                     createItemFromRequest(item, findArtist, photoUrl, request);
                     itemServiceSaver(item,request);
@@ -158,7 +158,7 @@ public class AccountController extends ControllerHelper {
                 else
                 {
                     setErrorMessage(request);
-                    return new ModelAndView("additem");
+                    return new ModelAndView(ADD_ITEM);
                 }
             }
         }
@@ -166,21 +166,21 @@ public class AccountController extends ControllerHelper {
         {
             request.setAttribute("message", "The entered info is not correct or empty fields");
         }
-        return new ModelAndView("additem");
+        return new ModelAndView(ADD_ITEM);
     }
 
     @RequestMapping(value = {"my-works"}, method = RequestMethod.GET)
     public ModelAndView myWorks(HttpServletRequest request)
     {
-        String page = "my-works";
+        String page = MY_WORKS;
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null && session.getAttribute("user").getClass() == Artist.class)
+        if (session.getAttribute(USER) != null && session.getAttribute(USER).getClass() == Artist.class)
         {
-            Artist artist = (Artist) request.getSession().getAttribute("user");
+            Artist artist = (Artist) request.getSession().getAttribute(USER);
             request.getSession().setAttribute("artistItems", itemService.getArtistItems(artist.getId()));
         }
-        else page = "redirect:/signup";
-        return new ModelAndView("my-works");
+        else page = REDIRECT_SIGNUP;
+        return new ModelAndView(MY_WORKS);
     }
 
     @RequestMapping(value = {"deleteItem/*"}, method = RequestMethod.GET)
@@ -193,7 +193,7 @@ public class AccountController extends ControllerHelper {
         itemService.deleteItem(itemForRemove);
         response.setStatus(HttpServletResponse.SC_OK);
         request.setAttribute("message", "Your ArtWork has been successfully deletet");
-        return new ModelAndView("redirect:/my-works");
+        return new ModelAndView(REDIRECT_MY_WORKS);
     }
 
 }

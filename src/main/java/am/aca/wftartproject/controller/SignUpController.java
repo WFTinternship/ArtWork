@@ -27,9 +27,9 @@ public class SignUpController extends ControllerHelper {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse respons) {
-        ModelAndView mav = new ModelAndView("signUp");
+        ModelAndView mav = new ModelAndView(SIGNUP);
         request.getSession().setAttribute("artistSpecTypes",ArtistSpecialization.values());
-        mav.addObject("user", new User());
+        mav.addObject(USER, new User());
         mav.addObject("artist", new Artist());
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
         return mav;
@@ -37,7 +37,7 @@ public class SignUpController extends ControllerHelper {
     @Transactional
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
-                                @ModelAttribute("user") User user) {
+                                @ModelAttribute(USER) User user) {
         String page = "";
         if(!user.getPassword().equals(request.getParameter("userPasswordRepeat")))
         {
@@ -46,14 +46,14 @@ public class SignUpController extends ControllerHelper {
         try
         {
             userSaver(user,request);
-            page = "index";
+            page = HOME;
         }
         catch (RuntimeException e)
         {
             request.setAttribute("errorMessage", e.getMessage());
-            page = "/signUp";
+            page = SIGNUP;
         }
-        return new ModelAndView(page, "user", user);
+        return new ModelAndView(page, USER, user);
     }
     @Transactional
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
@@ -69,20 +69,20 @@ public class SignUpController extends ControllerHelper {
         else
         {
             setErrorMessage(request);
-            return new ModelAndView("signUp");
+            return new ModelAndView(SIGNUP);
         }
         try
         {
             artistSaver(artistFromRequest,request);
-            page = "/index";
+            page = HOME;
         }
         catch (RuntimeException e)
         {
             request.setAttribute("errorMessage", e.getMessage());
-            page = "/signUp";
+            page = SIGNUP;
         }
 
-        return new ModelAndView(page, "user", artistFromRequest);
+        return new ModelAndView(page, USER, artistFromRequest);
     }
 
 }

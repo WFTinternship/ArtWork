@@ -31,6 +31,29 @@ public class ControllerHelper {
     @Autowired
     ShoppingCardService shoppingCardService;
 
+    //page location constants
+    public static final String HOME = "/index";
+    public static final String SIGNUP = "/signUp";
+    public static final String REDIRECT_SIGNUP = "redirect:/signUp";
+    public static final String MY_WORKS = "my-works";
+    public static final String REDIRECT_MY_WORKS = "redirect:/my-works";
+    public static final String PURCHASE_HISTORY = "purchaseHistory";
+    public static final String SHOP = "shop";
+    public static final String REDIRECT_SHOP = "shop";
+    public static final String THANK_YOU = "thank-you";
+    public static final String LOGIN = "logIn";
+    public static final String ITEM_DETAIL = "item-detail";
+    public static final String EDIT_PROFILE = "editProfile";
+    public static final String REDIRECT_EDIT_PROFILE = "redirect:/editProfile";
+    public static final String CONTACT = "contact";
+    public static final String ADD_ITEM = "additem";
+    public static final String ACCOUNT = "account";
+    public static final String ABOUT = "about";
+
+    //model attribute constants
+    public static final String USER = "user";
+    public static final String ATTRIBUTE_PURCHASE_HISTORY = "purchaseHistory";
+
     protected User updateUserParameters(User findUser, HttpServletRequest request){
         int counter = 0;
         findUser.setUserPasswordRepeat(findUser.getPassword());
@@ -200,8 +223,8 @@ public class ControllerHelper {
     protected void artistImageUploader(Artist artist, MultipartFile[] image, List<String> photoUrl,HttpServletRequest request) throws IOException {
         for (MultipartFile multipartFile : image) {
             byte[] imageBytes = multipartFile.getBytes();
-            String uploadPath = "resources/images/artists/" + artist.getId();
-            String realPath = request.getServletContext().getRealPath("resources/images/artists/" + artist.getId());
+            String uploadPath = "/resources/images/artists/" + artist.getId();
+            String realPath = request.getServletContext().getRealPath(uploadPath);
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();

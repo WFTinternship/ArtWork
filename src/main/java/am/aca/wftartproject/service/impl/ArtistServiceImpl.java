@@ -9,6 +9,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.util.HashGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,9 @@ public class ArtistServiceImpl implements ArtistService {
         }catch (DAOException e){
         }
         try {
+            //encrypt artist password and save into db
+            String encryptedPassword = HashGenerator.generateHashString(artist.getPassword());
+            artist.setPassword(encryptedPassword);
             artistRepo.saveAndFlush(artist);
         } catch (RuntimeException e) {
             String error = "Failed to add Artist: %s";
@@ -116,6 +120,9 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         try {
+            //encrypt artist password and update
+            String encryptedPassword = HashGenerator.generateHashString(artist.getPassword());
+            artist.setPassword(encryptedPassword);
             artistRepo.saveAndFlush(artist);
         } catch (DAOException e) {
             String error = "Failed to update Artist: %s";
@@ -161,7 +168,8 @@ public class ArtistServiceImpl implements ArtistService {
 
         try {
             Artist user = artistRepo.findArtistByEmail(email);
-            if (user != null && user.getPassword().equals(password)) {
+            String hashedPassword = HashGenerator.generateHashString(password);
+            if (user != null && user.getPassword().equals(hashedPassword)) {
                 artist = user;
             }
             else throw new DAOException("");

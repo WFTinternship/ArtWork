@@ -10,6 +10,7 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.User;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.util.HashGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,9 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
+            //encrypt user password
+            String encryptedPassword = HashGenerator.generateHashString(user.getPassword());
+            user.setPassword(encryptedPassword);
             userRepo.saveAndFlush(user);
         } catch (DAOException e) {
             String error = "Failed to add User: %s";
@@ -120,6 +124,9 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
+            //encrypt user password
+            String encryptedPassword = HashGenerator.generateHashString(user.getPassword());
+            user.setPassword(encryptedPassword);
             if (userRepo.saveAndFlush(user) == null) {
                 throw new DAOException("Failed to update user");
             }
@@ -167,7 +174,8 @@ public class UserServiceImpl implements UserService {
 
         try {
             User user = userRepo.findUserByEmail(email);
-            if (user != null && user.getPassword().equals(password)) {
+            String hashedPassword = HashGenerator.generateHashString(password);
+            if (user != null && user.getPassword().equals(hashedPassword)) {
                user1 = user;
             }
             else throw new DAOException("");

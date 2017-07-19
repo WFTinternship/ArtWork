@@ -1,5 +1,6 @@
 package am.aca.wftartproject.controller;
 
+import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,10 @@ import javax.servlet.http.HttpServletResponse;
  * Created by Armen on 6/26/2017.
  */
 @Controller
-public class HomeController {
-
-    @Autowired
-    UserService userService;
-    @Autowired
-    ArtistService artistService;
-    Cookie[] cookies;
+public class HomeController extends ControllerHelper {
 
     @RequestMapping(value = {"/", "index"})
     public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
-        return new ModelAndView("index");
+        return new ModelAndView(HOME);
     }
 }

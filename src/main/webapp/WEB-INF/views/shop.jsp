@@ -204,10 +204,10 @@
                                             <p><h1><div style="text-align: center;">SOLD</div></h1></p>
                                         </c:if>
 
-                                        <a href="/shop-cart" class="type1 dt-sc-button"> <span
-                                                class="fa fa-shopping-cart"></span> Add to Cart </a>
-                                        <a href="#" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>
-                                            Options </a>
+                                        <%--<a href="/shop-cart" class="type1 dt-sc-button"> <span--%>
+                                                <%--class="fa fa-shopping-cart"></span> Add to Cart </a>--%>
+                                        <%--<a href="#" class="type1 dt-sc-button"><span class="fa fa-unlink"></span>--%>
+                                            <%--Options </a>--%>
 
                                     </div> <!-- **product-title - Ends** -->
                                 </div> <!-- **product-container - Ends** -->

@@ -203,17 +203,18 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     public void login_Success() {
         // Add testUser into DB
+        String pass = testUser.getPassword();
         userService.addUser(testUser);
 
         // Test method
-        User loginUser = userService.login(testUser.getEmail(), testUser.getPassword());
+        User loginUser = userService.login(testUser.getEmail(), pass);
         assertEqualUsers(loginUser, testUser);
     }
 
     /**
      * @see UserServiceImpl#login(java.lang.String, java.lang.String)
      */
-    @Test
+    @Test(expected = ServiceException.class)
     public void login_Failure() {
         // Add testUser into DB
         userService.addUser(testUser);

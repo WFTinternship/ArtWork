@@ -6,6 +6,7 @@ import am.aca.wftartproject.service.*;
 import am.aca.wftartproject.service.impl.*;
 import am.aca.wftartproject.util.TestObjectTemplate;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,24 +125,19 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
 
         // Test method
         PurchaseHistory foundedPurchaseHistory =
-                purchaseHistoryService.getPurchase(testPurchaseHistory.getId());
+                purchaseHistoryService.getPurchase(testPurchaseHistory.getItem().getId());
         assertEqualPurchaseHistory(foundedPurchaseHistory, testPurchaseHistory);
     }
 
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(Long)
      */
-    @Test(expected = InvalidEntryException.class)
+    @Test
     public void getPurchase_Failure() {
-        // Set userId and ItemId
-        purchaseHistoryService.addPurchase(testPurchaseHistory);
-        try{
+        testPurchaseHistory.setId(777L);
             // Test method
-            purchaseHistoryService.getPurchase(testPurchaseHistory.getId());
-        }
-        catch (Exception e){
-            throw new InvalidEntryException(e.getMessage());
-        }
+            Assert.assertNull(purchaseHistoryService.getPurchase(testPurchaseHistory.getId()));
+
 
     }
 
@@ -167,13 +163,14 @@ public class PurchaseHistoryServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see PurchaseHistoryServiceImpl#getPurchase(java.lang.Long)
      */
-    @Test(expected = InvalidEntryException.class)
+    @Test
     public void getPurchase_EmptyList() {
         // Set userId and ItemId
-        testPurchaseHistory.setAbsUser(null);
+        testPurchaseHistory.setAbsUser(testUser);
+
 
         // Test method
-        purchaseHistoryService.getPurchaseList(testPurchaseHistory.getAbsUser().getId());
+        Assert.assertTrue(purchaseHistoryService.getPurchaseList(testPurchaseHistory.getAbsUser().getId()).size() == 0);
     }
 
     /**
