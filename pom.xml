@@ -111,14 +111,12 @@
             <artifactId>spring-webmvc</artifactId>
             <version>4.3.7.RELEASE</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <!--<dependency>-->
             <!--<groupId>org.springframework</groupId>-->
             <!--<artifactId>spring-web</artifactId>-->
             <!--<version>4.3.7.RELEASE</version>-->
         <!--</dependency>-->
-
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
@@ -134,7 +132,6 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${spring-security-version}</version>
         </dependency>
-
         <!-- jsr303 validation dependencies-->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -146,21 +143,17 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator-version}</version>
         </dependency>
-
         <!-- Java Mail API -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>${javax-mail-version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
             <version>3.0.5.RELEASE</version>
         </dependency>
-
-
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -168,8 +161,7 @@
             <version>${mokito-version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/javax.mail/mail &ndash;&gt;-->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>

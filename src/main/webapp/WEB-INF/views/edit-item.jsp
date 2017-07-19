@@ -7,7 +7,7 @@
 
 
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
-<c:set var="item" value='<%=session.getAttribute("item")%>'/>
+<c:set var="item" value='<%=request.getAttribute("item")%>'/>
 <c:set var="message" value='<%=request.getAttribute("message")%>'/>
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 
@@ -138,36 +138,41 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <select class="shop-dropdown" name="itemType">
-                                                            <option value="${item.itemType}" selected
-                                                                    class="fa fa-eyedropper">${item.itemType}</option>
-                                                            <c:forEach items="${itemTypes}" var="element">
-                                                                <c:if test="${element.type != item.itemType}">
-                                                                    <option value="${element.type}"
-                                                                            class="fa fa-eyedropper">${element.type}</option>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                        </select>
+                                                        <label>
+                                                            <select class="shop-dropdown" name="itemType">
+                                                                <option value="${item.itemType}" selected
+                                                                        class="fa fa-eyedropper">${item.itemType}
+                                                                </option>
+                                                                <c:forEach items="${itemTypes}" var="element">
+                                                                    <c:if test="${element.type != item.itemType}">
+                                                                        <option value="${element.type}"
+                                                                                class="fa fa-eyedropper">${element.type}
+                                                                        </option>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </label>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-6 col-sm-6">
-                                                        <div class="form-group">
-                                                            <%--<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">--%>
-                                                            <label for="imageUpload">Change Item</label>
-                                                            <input type="file" id="imageUpload" name="image"/>
-                                                                <%--<img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>--%>
-                                                            <img src="../../${item.photoURL.get(0)}" id="imagePreview" alt="" width="200px"/><br/>
-                                                            <%--<button type="submit" class="btn btn-warning">Apply</button>--%>
-                                                            <%--</form>--%>
-                                                        </div>
+                                                        <c:forEach items="${item.photoURL}" var="element">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <div class="form-group">
+                                                                        <%--<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">--%>
+                                                                    <label for="imageUpload">Change Item</label>
+                                                                    <input type="file" id="imageUpload" name="image"/>
+                                                                        <%--<img class="img-responsive user" src="data:image/jpeg;base64,${image}" alt=""/>--%>
+                                                                    <img src="../../${element}" id="imagePreview" alt="" width="200px"/><br/>
+                                                                        <%--<button type="submit" class="btn btn-warning">Apply</button>--%>
+                                                                        <%--</form>--%>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
                                                     </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <button type="submit" class="btn btn-warning">
-                                                                Update Personal Details
-                                                            </button>
-                                                        </div>
+
+                                                    <div class="row col-md-6 col-sm-6">
+                                                        <button type="submit" class="btn btn-warning">
+                                                            Update Personal Details
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

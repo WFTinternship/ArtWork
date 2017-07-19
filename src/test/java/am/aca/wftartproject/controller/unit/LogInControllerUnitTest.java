@@ -1,6 +1,6 @@
 package am.aca.wftartproject.controller.unit;
 
-import am.aca.wftartproject.controller.BaseTest;
+import am.aca.wftartproject.controller.BaseUnitTest;
 import am.aca.wftartproject.controller.LogInController;
 import am.aca.wftartproject.controller.util.TestHttpSession;
 import am.aca.wftartproject.exception.service.ServiceException;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author surik
  */
-public class LogInControllerUnitTest extends BaseTest {
+public class LogInControllerUnitTest extends BaseUnitTest {
 
     private User testUser;
     private Artist testArtist;

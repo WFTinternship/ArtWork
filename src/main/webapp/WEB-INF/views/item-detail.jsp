@@ -6,10 +6,10 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
-<c:set var="itemDetail" value='<%=request.getSession().getAttribute("itemDetail")%>'/>
-<c:set var="artistItems" value='<%=request.getSession().getAttribute("artistItems")%>'/>
-<c:set var="artistInfo" value='<%=request.getSession().getAttribute("artistInfo")%>'/>
-<c:set var="user" value='<%=request.getSession().getAttribute("user")%>'/>
+<c:set var="itemDetail" value='<%=session.getAttribute("itemDetail")%>'/>
+<c:set var="artistItems" value='<%=session.getAttribute("artistItems")%>'/>
+<c:set var="artistInfo" value='<%=session.getAttribute("artistInfo")%>'/>
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
 
 
 
@@ -98,13 +98,13 @@
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
                                 <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
-                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[1]}" alt="" title="Acrylic">
+                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}" alt="" title="Acrylic">
                                 </a>
                             </div>
                             <ul class="thumblist">
-                                <c:forEach items="${itemDetail.photoURL}" var="itemElement">
+                                <c:forEach items="${itemDetail.photoURL}" var="itemElement" begin="1">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/${itemElement}" class="product">
+                                        <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemElement}" class="product">
                                             <img src="${pageContext.request.contextPath}/${itemElement}"
                                                 alt="" height="150" width="150" title=""></a>
                                     </li>
@@ -178,7 +178,7 @@
                             <%--</div><!-- *commententries Ends here** -->--%>
                         </div>
                         <div class="dt-sc-two-fifth column">
-                            <form action="/item-detail/*" method="post">
+                            <form action="/item-detail/${itemDetail.id}" method="post">
                                 <!-- Author Detail Starts Here -->
                                 <%--<div class="post-author-details">--%>
                                 <%--<div class="entry-author-image">--%>

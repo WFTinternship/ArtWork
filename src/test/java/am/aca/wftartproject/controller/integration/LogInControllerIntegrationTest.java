@@ -1,6 +1,6 @@
 package am.aca.wftartproject.controller.integration;
 
-import am.aca.wftartproject.controller.BaseTest;
+import am.aca.wftartproject.controller.BaseIntegrationTest;
 import am.aca.wftartproject.controller.LogInController;
 import am.aca.wftartproject.controller.util.TestHttpServletRequest;
 import am.aca.wftartproject.controller.util.TestHttpServletResponse;
@@ -31,7 +31,7 @@ import static junit.framework.TestCase.assertTrue;
 /**
  * @author surik
  */
-public class LogInControllerIntegrationTest extends BaseTest {
+public class LogInControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private LogInController logInController;

@@ -1,9 +1,6 @@
 package am.aca.wftartproject.util;
 
-import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.model.AbstractUser;
-
-import org.apache.log4j.Logger;
 
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -17,9 +14,10 @@ import java.util.Properties;
  * @author surik
  */
 public class EmailUtil {
+    private static final String EMAIL = "workfront.internship@gmail.com";
+    private static final String PASSWORD = "project2017";
+
     public static void sendEmail(AbstractUser abstractUser, String subject, String mailText) {
-        String EMAIL = "workfront.internship@gmail.com";
-        String PASSWORD = "project2017";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

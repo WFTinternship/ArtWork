@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -30,10 +29,12 @@ public class HomeController {
     }
 
     @RequestMapping(value = {"/", "index"})
-    public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView welcome(HttpServletRequest request) {
+        HttpSession session;
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
 
+        // Check and get cookie info, if any
         if (cookies != null) {
             for (Cookie ckElement : cookies) {
                 if (ckElement.getName().equals("userEmail")) {
@@ -42,15 +43,16 @@ public class HomeController {
             }
         }
 
+        // Get or create session and set attribute with user/artist object
         if (userEmailFromCookie != null) {
             if (artistService.findArtist(userEmailFromCookie) != null) {
                 Artist artist = artistService.findArtist(userEmailFromCookie);
-                HttpSession session = request.getSession(true);
+                session = request.getSession(true);
                 session.setAttribute("user", artist);
             } else {
                 if (userService.findUser(userEmailFromCookie) != null) {
                     User user = userService.findUser(userEmailFromCookie);
-                    HttpSession session = request.getSession(true);
+                    session = request.getSession(true);
                     session.setAttribute("user", user);
                 }
             }

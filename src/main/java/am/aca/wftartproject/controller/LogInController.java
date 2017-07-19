@@ -33,7 +33,7 @@ public class LogInController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView showLogin() {
-        return new ModelAndView("logIn");
+        return new ModelAndView("login");
     }
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
@@ -49,16 +49,18 @@ public class LogInController {
 
             if (artistFromDB != null) {
                 setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
-            } else {
+            } else if (userFromDB != null) {
                 setAttributeInSessionAndCreateCookie(userFromDB, response, session);
+            } else {
+                throw new RuntimeException();
             }
 
-            mav = new ModelAndView("index");
+            mav = new ModelAndView("redirect:/index");
 
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("errorMessage", userNotExists);
-            mav = new ModelAndView("logIn");
+            mav = new ModelAndView("login");
         }
 
         return mav;
@@ -78,6 +80,7 @@ public class LogInController {
 
         return new ModelAndView("index");
     }
+
 
     private void setAttributeInSessionAndCreateCookie(AbstractUser abstractUser, HttpServletResponse response, HttpSession session) {
         session.setAttribute("user", abstractUser);

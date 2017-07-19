@@ -11,6 +11,7 @@ import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ItemService;
 import am.aca.wftartproject.service.PurchaseHistoryService;
 import am.aca.wftartproject.service.ShoppingCardService;
+import am.aca.wftartproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,10 @@ public class ItemServiceImpl implements ItemService {
     private static final Logger LOGGER = Logger.getLogger(ItemServiceImpl.class);
 
     private ItemDao itemDao;
-    private PurchaseHistoryService purchaseHistoryService; //= CtxListener.getBeanFromSpring(SpringBeanType.PURCHUSEHISTORYSERVICE, PurchaseHistoryDaoImpl.class);
-    private ShoppingCardService shoppingCardService; //= CtxListener.getBeanFromSpring(SpringBeanType.SHOPPINGCARDSERVICE, ShoppingCardDaoImpl.class);
+    private UserService userService;
+    private PurchaseHistoryService purchaseHistoryService;
+    private ShoppingCardService shoppingCardService;
+
 
     @Autowired
     public ItemServiceImpl(ItemDao itemDao) {
@@ -53,6 +56,11 @@ public class ItemServiceImpl implements ItemService {
         this.shoppingCardService = shoppingCardService;
     }
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     /*
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
@@ -67,7 +75,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public void addItem(Long artistID, Item item) {
-
         if (artistID == null || artistID < 0) {
             LOGGER.error(String.format("ArtistId is not valid: %s", artistID));
             throw new InvalidEntryException("Invalid artistId");
@@ -116,7 +123,6 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
-
         if (limit <= 0) {
             LOGGER.error(String.format("limit is not valid: %s", limit));
             throw new InvalidEntryException("Invalid limit");
@@ -139,7 +145,6 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
-
         if (isEmptyString(title)) {
             LOGGER.error(String.format("title is not valid: %s", title));
             throw new InvalidEntryException("Invalid title");
@@ -162,7 +167,6 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
-
         if (isEmptyString(itemType)) {
             LOGGER.error(String.format("itemType is not valid: %s", itemType));
             throw new InvalidEntryException("Invalid itemType");
@@ -186,7 +190,6 @@ public class ItemServiceImpl implements ItemService {
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
-
         if (minPrice == null || minPrice < 0 || maxPrice == null || maxPrice < 0) {
             LOGGER.error(String.format("price is not valid: %s , %s", minPrice, maxPrice));
             throw new InvalidEntryException("Invalid price");
@@ -342,6 +345,15 @@ public class ItemServiceImpl implements ItemService {
             updateItem(item.getArtistId(), item);
         } catch (DAOException e) {
             String error = "Failed to change item status to sold: %s";
+            LOGGER.error(String.format(error, e.getMessage()));
+            throw new ServiceException(String.format(error, e.getMessage()));
+        }
+
+        // Send confirmation e-mail
+        try{
+            userService.sendEmailAfterBuyingItem(userService.findUser(buyerId));
+        }catch (DAOException e) {
+            String error = "Failed to send confirmation e-mail %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }

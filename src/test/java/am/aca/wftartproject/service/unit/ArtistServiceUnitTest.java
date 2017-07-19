@@ -1,16 +1,14 @@
 package am.aca.wftartproject.service.unit;
 
 import am.aca.wftartproject.dao.ArtistDao;
-import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
-import am.aca.wftartproject.model.ShoppingCard;
-import am.aca.wftartproject.service.BaseUnitTest;
-import am.aca.wftartproject.dao.impl.ArtistDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.service.DuplicateEntryException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Artist;
+import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.service.ArtistService;
+import am.aca.wftartproject.service.BaseUnitTest;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.impl.ArtistServiceImpl;
 import am.aca.wftartproject.service.impl.UserServiceImpl;
@@ -20,7 +18,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -49,7 +46,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+//        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(artistService, "artistDao", artistDaoMock);
         ((ArtistServiceImpl) artistService).setShoppingCardService(shoppingCardServiceMock);
     }

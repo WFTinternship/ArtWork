@@ -9,7 +9,7 @@
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
 <c:set var="artistItems" value='<%=request.getAttribute("artistItems")%>'/>
-<c:set var="message" value='<%=request.getAttribute("message")%>'/>
+<c:set var="message" value='<%=session.getAttribute("message")%>'/>
 
 
 
@@ -120,7 +120,7 @@
                                     </c:choose>
                                     <ul class="products isotope">
                                         <c:forEach items="${artistItems}" var="itemElement">
-                                            <c:if test="${itemElement.status eq false}">
+
                                                 <li class="product-wrapper dt-sc-one-fifth">
                                                     <!-- **product-wrapper - Starts** -->
                                                     <!-- **product-container - Starts** -->
@@ -131,13 +131,22 @@
                                                         </a>
                                                         <!-- **product-title - Starts** -->
                                                         <div class="product-title">
-                                                            <c:url var="editItem" value="/edit-item/${itemElement.id}" context="/"/>
-                                                            <a href="${editItem}" class="type1 dt-sc-button"> <span
-                                                                    class="fa fa-shopping-cart"></span> Edit </a>
-                                                            <a href="/deleteItem/${itemElement.id}"
-                                                               class="type1 dt-sc-button"> <span
-                                                                    class="fa fa-unlink"></span> Delete </a>
-                                                            <p>You don't take a photograph, Just make it</p>
+                                                            <c:if test="${itemElement.status eq true}">
+                                                                <p>
+                                                                <h1>
+                                                                    <div style="text-align: center;" >SOLD</div>
+                                                                </h1>
+                                                                </p>
+                                                            </c:if>
+                                                            <c:if test="${itemElement.status eq false}">
+                                                                <c:url var="editItem" value="/edit-item/${itemElement.id}" context="/"/>
+                                                                <a href="${editItem}" class="type1 dt-sc-button"> <span
+                                                                       class="fa fa-shopping-cart"></span> Edit </a>
+                                                                <a href="/deleteItem/${itemElement.id}"
+                                                                 class="type1 dt-sc-button"> <span
+                                                                      class="fa fa-unlink"></span> Delete </a>
+                                                                <p>You don't take a photograph, Just make it</p>
+                                                            </c:if>
                                                         </div> <!-- **product-title - Ends** -->
                                                     </div> <!-- **product-container - Ends** -->
                                                     <!-- **product-details - Starts** -->
@@ -147,7 +156,7 @@
                                                     </div> <!-- **product-details - Ends** -->
                                                 </li>
                                                 <!-- **product-wrapper - Ends** -->
-                                            </c:if>
+
                                         </c:forEach>
                                     </ul>
                                 </div>

@@ -13,5 +13,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= {"classpath:spring-root.xml"})
 @ActiveProfiles("Test")
-public class BaseTest {
+public abstract class BaseTest {
 }

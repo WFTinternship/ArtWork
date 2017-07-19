@@ -10,6 +10,19 @@ public class ShoppingCard {
     private double balance;
     private ShoppingCardType shoppingCardType;
 
+
+    public ShoppingCard() {
+    }
+
+    public ShoppingCard(double balance, ShoppingCardType shoppingCardType) {
+        this.balance = balance;
+        this.shoppingCardType = shoppingCardType;
+    }
+
+    public ShoppingCard(ShoppingCardType shoppingCardType) {
+        this.shoppingCardType = shoppingCardType;
+    }
+
     public Long getId() {
         return id;
     }
@@ -44,14 +57,6 @@ public class ShoppingCard {
     public ShoppingCard setShoppingCardType(ShoppingCardType shoppingCardType) {
         this.shoppingCardType = shoppingCardType;
         return this;
-    }
-
-    public ShoppingCard() {
-    }
-
-    public ShoppingCard(double balance, ShoppingCardType shoppingCardType) {
-        this.balance = balance;
-        this.shoppingCardType = shoppingCardType;
     }
 
     @Override

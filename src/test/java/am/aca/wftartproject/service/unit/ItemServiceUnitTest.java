@@ -1,11 +1,6 @@
 package am.aca.wftartproject.service.unit;
 
 import am.aca.wftartproject.dao.ItemDao;
-import am.aca.wftartproject.dao.PurchaseHistoryDao;
-import am.aca.wftartproject.dao.ShoppingCardDao;
-import am.aca.wftartproject.dao.impl.ItemDaoImpl;
-import am.aca.wftartproject.dao.impl.PurchaseHistoryDaoImpl;
-import am.aca.wftartproject.dao.impl.ShoppingCardDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.exception.service.InvalidEntryException;
@@ -25,19 +20,14 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static am.aca.wftartproject.util.AssertTemplates.assertEqualItems;
-import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
-import static am.aca.wftartproject.util.AssertTemplates.assertEqualShoppingCards;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestPurchaseHistory;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestShoppingCard;
+import static am.aca.wftartproject.util.AssertTemplates.*;
+import static am.aca.wftartproject.util.TestObjectTemplate.*;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
@@ -69,7 +59,7 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+//        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(itemService, "itemDao", itemDaoMock);
         ((ItemServiceImpl) itemService).setPurchaseHistoryService(purchaseHistoryServiceMock);
         ((ItemServiceImpl) itemService).setShoppingCardService(shoppingCardServiceMock);

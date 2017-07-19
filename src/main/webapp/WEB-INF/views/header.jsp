@@ -28,27 +28,27 @@
             <span class="dt-menu-toggle-icon"></span>
         </div>
         <ul class="menu type1"><!-- Menu Starts -->
-            <li class="current_page_item menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>
-                <ul class="sub-menu">
-                    <li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
-                    <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
-                    <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
-                    <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
-                </ul>
-                <a class="dt-menu-expand">+</a>
+            <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
+                <%--<ul class="sub-menu">--%>
+                    <%--<li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>--%>
+                    <%--<li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>--%>
+                    <%--<li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>--%>
+                    <%--<li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>--%>
+                <%--</ul>--%>
+                <%--<a class="dt-menu-expand">+</a>--%>
             </li>
             <li class="menu-item-simple-parent">
-                <a href="/about">About us <span class="fa fa-user-secret"></span></a>
+                <a href="${pageContext.request.contextPath}/about">About us <span class="fa fa-user-secret"></span></a>
             </li>
             <li class="menu-item-simple-parent"><a href="gallery.tml">Gallery <span class="fa fa-camera-retro"></span></a>
-                <ul class="sub-menu">
-                    <li><a href="gallery-detail.html">Gallery detail</a></li>
-                    <li><a href="gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>
-                    <li><a href="gallery-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>
-                </ul>
-                <a class="dt-menu-expand">+</a>
+                <%--<ul class="sub-menu">--%>
+                    <%--<li><a href="gallery-detail.html">Gallery detail</a></li>--%>
+                    <%--<li><a href="gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>--%>
+                    <%--<li><a href="gallery-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>--%>
+                <%--</ul>--%>
+                <%--<a class="dt-menu-expand">+</a>--%>
             </li>
-            <li class="menu-item-simple-parent"><a href="/shop">Shop <span class="fa fa-cart-plus"></span></a>
+            <li class="menu-item-simple-parent"><a href="${pageContext.request.contextPath}/shop">Shop <span class="fa fa-cart-plus"></span></a>
                 <%--<ul class="sub-menu">--%>
                 <%--<li><a href="item-detail.jsp">Shop Detail</a></li>--%>
                 <%--<li><a href="shop-cart.jsp">Cart Page</a></li>--%>
@@ -65,12 +65,12 @@
                 <a class="dt-menu-expand">+</a>
             </li>--%>
             <li class="menu-item-simple-parent">
-                <a href="/contact">Contact<span class="fa fa-map-marker"></span></a>
+                <a href="${pageContext.request.contextPath}/contact">Contact<span class="fa fa-map-marker"></span></a>
             </li>
             <li class="menu-item-simple-parent">
                 <c:choose>
                     <c:when test="${user==null}">
-                        <a href="<%--progressbar.html--%>"> Account <span class="fa fa-paint-brush"></span></a>
+                        <a href="${pageContext.request.contextPath}/login"> Account <span class="fa fa-paint-brush"></span></a>
                     </c:when>
                     <c:otherwise>
                         <a href="${pageContext.request.contextPath}/account"> Hi ${user.firstName} <span class="fa fa-paint-brush"></span></a>

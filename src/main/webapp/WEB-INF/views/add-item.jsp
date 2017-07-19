@@ -7,9 +7,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
-<c:set var="itemTypes" value='<%=session.getAttribute("itemTypes")%>'/>
+<c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 <c:set var="item" value='<%=request.getAttribute("item")%>'/>
-<c:set var="Message" value='<%=request.getAttribute("errorMessage")%>'/>
+<c:set var="message" value='<%=session.getAttribute("message")%>'/>
 
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -114,9 +114,9 @@
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
                                     <c:choose>
-                                        <c:when test="${Message!=null}">
+                                        <c:when test="${message!=null}">
                                             <header class="cd-main-header">
-                                                <h3 style="color:red;">${Message}</h3>
+                                                <h3 style="color:red;">${message}</h3>
                                             </header>
                                         </c:when>
                                         <c:otherwise>
