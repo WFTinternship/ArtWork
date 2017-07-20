@@ -3,7 +3,6 @@ package am.aca.wftartproject.service.impl;
 import am.aca.wftartproject.repository.AbstractUserRepo;
 import am.aca.wftartproject.repository.ArtistRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.Artist;
 import am.aca.wftartproject.service.ArtistService;
@@ -12,9 +11,6 @@ import am.aca.wftartproject.util.ServiceHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
-import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
 
 @Service
 public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
@@ -44,7 +40,7 @@ public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
     public void addArtist(Artist artist) {
 
         // check artist validity
-        artistValidateAndProcess(artist);
+        checkArtistForValidity(artist);
 
         //find user from db and if exist throw an exception
         findAbsUser(abstractUserRepo, artist);
@@ -71,7 +67,7 @@ public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
     public Artist findArtist(Long id) {
 
         //check id for validity
-        idValidateAndProcess(id);
+        checkIdForValidity(id);
 
         //get artist from db if exist, by id
         try {
@@ -92,7 +88,7 @@ public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
     public Artist findArtist(String email) {
 
         //check email for validity
-        emailValidateAndProcess(email);
+        checkEmailForValidity(email);
 
         //find artist from db by email
         try {
@@ -114,7 +110,7 @@ public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
     public void updateArtist(Artist artist) {
 
         //check artist validity
-        dbArtistValidateAndProcess(artist);
+        checkDbArtistForValidity(artist);
 
         //encrypt artist password and update
         try {
@@ -140,7 +136,7 @@ public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
         Artist artist;
 
         //check email and password for validity
-        emailAdnPasswordValidateAndProcess(email, password);
+        checkEmailAndPasswordForValidity(email, password);
 
         //try to find an artist by email, check passwords equality
         try {
@@ -165,7 +161,7 @@ public class ArtistServiceImpl extends ServiceHelper implements ArtistService {
     public void deleteArtist(Artist artist) {
 
         //check artist for validity
-        dbArtistValidateAndProcess(artist);
+        checkDbArtistForValidity(artist);
 
         //try to delete artist from db
         try {

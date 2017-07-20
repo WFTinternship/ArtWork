@@ -3,7 +3,6 @@ package am.aca.wftartproject.service.impl;
 import am.aca.wftartproject.repository.AbstractUserRepo;
 import am.aca.wftartproject.repository.UserRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.User;
 import am.aca.wftartproject.service.UserService;
@@ -12,10 +11,6 @@ import am.aca.wftartproject.util.ServiceHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
-import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isValidEmailAddressForm;
-
 
 @Service
 public class UserServiceImpl extends ServiceHelper implements UserService {
@@ -42,11 +37,7 @@ public class UserServiceImpl extends ServiceHelper implements UserService {
     public void addUser(User user) {
 
         //check user for validity
-        if (user == null || !user.isValidUser() || !isValidEmailAddressForm(user.getEmail())) {
-            String error = "Incorrect data or Empty fields ";
-            LOGGER.error(String.format("Failed to add User: %s: %s", error, user));
-            throw new InvalidEntryException(error);
-        }
+       checkUserForValidity(user);
 
         //find user from db
         findAbsUser(abstractUserRepo,user);
@@ -73,10 +64,7 @@ public class UserServiceImpl extends ServiceHelper implements UserService {
     public User findUser(Long id) {
 
         //check user id for validity
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid Id");
-        }
+       checkIdForValidity(id);
 
         //try to find user by id
         try {
@@ -98,10 +86,7 @@ public class UserServiceImpl extends ServiceHelper implements UserService {
 
 
         //check email for validity
-        if (isEmptyString(email) || !isValidEmailAddressForm(email)) {
-            LOGGER.error(String.format("Email is not valid: %s", email));
-            throw new InvalidEntryException("Invalid email");
-        }
+       checkEmailForValidity(email);
 
         //find user from db by email
         try {
@@ -122,10 +107,7 @@ public class UserServiceImpl extends ServiceHelper implements UserService {
     public void updateUser(User user) {
 
         //check user for validity
-        if (user == null || !user.isValidUser() || user.getId() == null || user.getId() < 0) {
-            LOGGER.error(String.format("User is not valid: %s", user));
-            throw new InvalidEntryException("Invalid user");
-        }
+        checkDbUserForValidity(user);
 
         //encrypt user password set and update it in db
         try {
@@ -150,10 +132,7 @@ public class UserServiceImpl extends ServiceHelper implements UserService {
     public void deleteUser(User user) {
 
         //check user for validity
-        if (user == null || !user.isValidUser()) {
-            LOGGER.error(String.format("User is not valid: %s", user));
-            throw new InvalidEntryException("Invalid User");
-        }
+       checkUserForValidity(user);
 
         //try to delete user from db
         try {
@@ -175,10 +154,7 @@ public class UserServiceImpl extends ServiceHelper implements UserService {
         User user1;
 
         //check users email and password for validity
-        if (isEmptyString(password) || isEmptyString(email)) {
-            LOGGER.error(String.format("Email or password is not valid: %s , %s", email, password));
-            throw new InvalidEntryException("Invalid Id");
-        }
+       checkEmailAndPasswordForValidity(email,password);
 
         // find user from db by email
         try {

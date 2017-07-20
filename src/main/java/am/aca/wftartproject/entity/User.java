@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-/**
- * Created by ASUS on 24-May-17
- */
 @Entity
 @Table(name = "user")
 public class User extends AbstractUser implements Serializable,Cloneable {

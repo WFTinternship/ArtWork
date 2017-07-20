@@ -3,19 +3,17 @@ package am.aca.wftartproject.service.impl;
 import am.aca.wftartproject.repository.ShoppingCardRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
-import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.ShoppingCard;
 import am.aca.wftartproject.service.ShoppingCardService;
+import am.aca.wftartproject.util.ServiceHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by ASUS on 03-Jun-17
- */
+
 @Service
-public class ShoppingCardServiceImpl implements ShoppingCardService {
+public class ShoppingCardServiceImpl extends ServiceHelper implements ShoppingCardService {
 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardServiceImpl.class);
 
@@ -34,10 +32,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public void addShoppingCard(ShoppingCard shoppingCard) {
 
         //check shoppingCard for validity
-        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()) {
-            LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
-            throw new InvalidEntryException("Invalid shoppingCard");
-        }
+       checkShoppingCardForValidity(shoppingCard);
 
         //try to save shoppingcCard into db
         try {
@@ -57,10 +52,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public ShoppingCard getShoppingCard(Long id) {
 
         //check user id for validity
-        if (id == null || id < 0) {
-            LOGGER.error(String.format("Id is not valid: %s", id));
-            throw new InvalidEntryException("Invalid id");
-        }
+       checkIdForValidity(id);
 
         //try to find shoppingCard frpom db by user id
         try {
@@ -81,10 +73,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public void updateShoppingCard(ShoppingCard shoppingCard) {
 
         //check shoppingCard for validity
-        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()) {
-            LOGGER.error(String.format("Shopping card is not valid: %s", shoppingCard));
-            throw new InvalidEntryException("Invalid shoppingCard");
-        }
+        checkShoppingCardForValidity(shoppingCard);
 
         //try to update shoppingCard in db
         try {
@@ -108,10 +97,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public void debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
 
         //check item price and buyer id for validity
-        if (itemPrice == null || itemPrice < 0 || buyerId == null || buyerId < 0) {
-            LOGGER.error(String.format("buyerId or itemPrice is not valid: %s, %s", buyerId, itemPrice));
-            throw new InvalidEntryException("Invalid id");
-        }
+       checkItemPriceAndBuyerIdForValidity(itemPrice,buyerId);
 
         //debit balance for item buying
         try {
@@ -136,10 +122,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
     public void deleteShoppingCard(ShoppingCard shoppingCard) {
 
         //check shoppingCard for validity
-        if (shoppingCard == null || !shoppingCard.isValidShoppingCard()) {
-            LOGGER.error(String.format("Id is not valid: %s", shoppingCard));
-            throw new InvalidEntryException("Invalid id");
-        }
+       checkShoppingCardForValidity(shoppingCard);
 
         //try to delete shoppingCard
         try {
@@ -169,8 +152,7 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
 //        }
 //    }
 
-    private Boolean debitBalance(Long buyerId, Double itemPrice) {
-        Boolean isEnoughBalance;
+    private void debitBalance(Long buyerId, Double itemPrice) {
 
         //get shoppingCard from db by user id
         ShoppingCard shoppingCard = getShoppingCard(buyerId);
@@ -180,7 +162,6 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             if (shoppingCard.getBalance() >= itemPrice) {
                 shoppingCard.setBalance(shoppingCard.getBalance() - itemPrice);
                 updateShoppingCard(shoppingCard);
-                isEnoughBalance = true;
             } else {
                 throw new NotEnoughMoneyException("Not enough money on the account.");
             }
@@ -193,7 +174,5 @@ public class ShoppingCardServiceImpl implements ShoppingCardService {
             LOGGER.error(String.format(error, e.getMessage()));
             throw new ServiceException(String.format(error, e.getMessage()));
         }
-
-        return isEnoughBalance;
     }
 }

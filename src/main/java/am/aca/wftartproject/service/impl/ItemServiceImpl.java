@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -55,7 +54,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
     public void addItem(Item item) {
 
         //  check for item validity
-        itemValidateAndProcess(item);
+        checkItemForValidity(item);
 
         //save item into db
         try {
@@ -75,7 +74,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
     public Item findItem(Long id) {
 
         //check items id for validity
-       idValidateAndProcess(id);
+       checkIdForValidity(id);
 
         //find item from db by id
         try {
@@ -158,10 +157,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
 
         //check minprice and maxprice for validity
-        if (minPrice == null || minPrice < 0 || maxPrice == null || maxPrice < 0) {
-            LOGGER.error(String.format("price is not valid: %s , %s", minPrice, maxPrice));
-            throw new InvalidEntryException("Invalid price");
-        }
+       checkMinPriceAndMAxPriceForValidity(minPrice,maxPrice);
 
         //get specific list by price range from db
         try {
@@ -182,7 +178,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
     public List<Item> getArtistItems(Long artistId) {
 
         //check artists id for validity
-       idValidateAndProcess(artistId);
+       checkIdForValidity(artistId);
 
         // try to get all artist items by id
         try {
@@ -204,7 +200,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
     public void updateItem(Item item) {
 
         //check item for validity
-       dbItemValidateAndProcess(item);
+       checkDbItemForValidity(item);
 
         //try to update item
         try {
@@ -226,7 +222,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
     public void deleteItem(Item item) {
 
         //check item for validity
-        dbItemValidateAndProcess(item);
+        checkDbItemForValidity(item);
 
         //try to delete item from db
         try {
@@ -249,15 +245,12 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
 
         //check buyer for validity
         if (buyer == null || !buyer.isValidUser()) {
-            LOGGER.error(String.format("buyerId is not valid: %s", buyer));
-            throw new InvalidEntryException("Invalid Id");
+            LOGGER.error(String.format("user is not valid: %s", buyer));
+            throw new InvalidEntryException("Invalid user");
         }
 
         //check item for validity
-        if (item == null || !item.isValidItem()) {
-            LOGGER.error(String.format("Item is not valid: %s", item));
-            throw new InvalidEntryException("Invalid item");
-        }
+       checkItemForValidity(item);
 
         // Withdraw money from payment method
         try {
@@ -276,11 +269,7 @@ public class ItemServiceImpl extends ServiceHelper implements ItemService {
 
         // Add item to the buyer's purchase history
         try {
-            PurchaseHistory purchaseHistory = new PurchaseHistory();
-            purchaseHistory.setItem(item);
-            purchaseHistory.setAbsUser(buyer);
-            purchaseHistory.setPurchaseDate(Calendar.getInstance().getTime());
-            purchaseHistoryService.addPurchase(purchaseHistory);
+           purchaseHistoryCreateAndSave(item,buyer,purchaseHistoryService);
         } catch (DAOException e) {
             String error = "Failed to add item in purchaseHistory: %s";
             LOGGER.error(String.format(error, e.getMessage()));

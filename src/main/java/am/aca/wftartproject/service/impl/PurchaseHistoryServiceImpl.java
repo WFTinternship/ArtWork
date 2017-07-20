@@ -2,10 +2,10 @@ package am.aca.wftartproject.service.impl;
 
 import am.aca.wftartproject.repository.PurchaseHistoryRepo;
 import am.aca.wftartproject.exception.dao.DAOException;
-import am.aca.wftartproject.exception.service.InvalidEntryException;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.entity.PurchaseHistory;
 import am.aca.wftartproject.service.PurchaseHistoryService;
+import am.aca.wftartproject.util.ServiceHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
+public class PurchaseHistoryServiceImpl extends ServiceHelper implements PurchaseHistoryService {
 
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryServiceImpl.class);
 
@@ -34,10 +34,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     public void addPurchase(PurchaseHistory purchaseHistory) {
 
         //check purchase history for validity
-        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
-            LOGGER.error(String.format("PurchaseHistory is not valid: %s", purchaseHistory));
-            throw new InvalidEntryException("Invalid purchaseHistory");
-        }
+       checkPurchaseHistoryForValidity(purchaseHistory);
 
         //try to save purchase history into db
         try {
@@ -58,10 +55,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     public PurchaseHistory getPurchase(Long itemId) {
 
         //check item id for validity
-        if (itemId == null || itemId < 0) {
-            LOGGER.error(String.format("ItemId is not valid: %s", itemId));
-            throw new InvalidEntryException("Invalid itemId");
-        }
+       checkIdForValidity(itemId);
 
         //find purchase from db by item id
         try {
@@ -82,10 +76,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     public List<PurchaseHistory> getPurchaseList(Long userId) {
 
         //check user id for validity
-        if (userId == null || userId < 0) {
-            LOGGER.error(String.format("UserId is not valid: %s", userId));
-            throw new InvalidEntryException("Invalid userId");
-        }
+            checkIdForValidity(userId);
 
         //get purchase list from db by user id
         try {
@@ -107,10 +98,7 @@ public class PurchaseHistoryServiceImpl implements PurchaseHistoryService {
     public void deletePurchase(PurchaseHistory purchaseHistory) {
 
         //check purchase history for validity
-        if (purchaseHistory == null || !purchaseHistory.isValidPurchaseHistory()) {
-            LOGGER.error(String.format("UserId is not valid: %s", purchaseHistory));
-            throw new InvalidEntryException("Invalid userId");
-        }
+        checkPurchaseHistoryForValidity(purchaseHistory);
 
         //try to delete purchase history from db
         try {
