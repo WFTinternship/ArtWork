@@ -3,11 +3,11 @@ package am.aca.wftartproject.controller;
 import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.entity.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -33,10 +33,9 @@ public class SignUpController extends ControllerHelper {
         return mav;
     }
 
-    @Transactional
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request,
-                                @ModelAttribute(USER) User user) {
+                                @ModelAttribute(USER) User user) throws MessagingException {
         String page;
 
         //throw exception if password don't match
@@ -56,10 +55,9 @@ public class SignUpController extends ControllerHelper {
         return new ModelAndView(page, USER, user);
     }
 
-    @Transactional
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request,
-                                  @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+                                  @RequestParam(value = "image", required = false) MultipartFile image) throws IOException, MessagingException {
         String page;
         Artist artistFromRequest = new Artist();
 

@@ -3,10 +3,12 @@ package am.aca.wftartproject.controller.helper;
 import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.service.*;
+import am.aca.wftartproject.util.EmailSender;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -139,7 +141,7 @@ public class ControllerHelper {
         }
     }
 
-    protected void artistSaver(Artist artistFromRequest, HttpServletRequest request) {
+    protected void artistSaver(Artist artistFromRequest, HttpServletRequest request) throws MessagingException {
         ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
         artistFromRequest.setShoppingCard(shoppingCard);
         artistService.addArtist(artistFromRequest);
@@ -148,9 +150,10 @@ public class ControllerHelper {
         request.setAttribute("message", "Hi " + artistFromRequest.getFirstName());
         HttpSession session = request.getSession(true);
         session.setAttribute("user", artistFromRequest);
+        EmailSender.sendEmail(artistFromRequest,"You are successfully registered as artist","Your username is " + artistFromRequest.getEmail());
     }
 
-    protected void userSaver(User user, HttpServletRequest request) {
+    protected void userSaver(User user, HttpServletRequest request) throws MessagingException {
         ShoppingCard shoppingCard = new ShoppingCard(5000, ShoppingCardType.PAYPAL);
         shoppingCard.setAbstractUser(user);
         user.setShoppingCard(shoppingCard);
@@ -160,6 +163,7 @@ public class ControllerHelper {
         shoppingCardService.addShoppingCard(user.getShoppingCard());
         request.getSession(true).setAttribute("message", "Hi " + user.getFirstName());
         request.getSession().setAttribute("user", user);
+        EmailSender.sendEmail(user,"You are successfully registered as buyer","Your username is " + user.getEmail());
     }
 
     protected void itemServiceSaver(Item item, HttpServletRequest request) {
