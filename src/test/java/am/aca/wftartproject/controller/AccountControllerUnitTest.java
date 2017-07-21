@@ -14,10 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import am.aca.wftartproject.controller.helper.ControllerHelper;
 import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.service.*;
-import am.aca.wftartproject.service.impl.ArtistServiceImpl;
-import am.aca.wftartproject.service.impl.ItemServiceImpl;
-import am.aca.wftartproject.service.impl.PurchaseHistoryServiceImpl;
-import am.aca.wftartproject.service.impl.UserServiceImpl;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,10 +25,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +38,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations= {"classpath:application-context.xml"})
+@ContextConfiguration(locations= {"classpath:applicationContext.xml"})
 public class AccountControllerUnitTest extends BaseUnitTest {
     private MockMvc mockMvc;
     private User user;

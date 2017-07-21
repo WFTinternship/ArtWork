@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author surik
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:application-context.xml"})
+@ContextConfiguration(locations= {"classpath:applicationContext.xml"})
 @EnableTransactionManagement
 @Transactional
 public abstract class BaseIntegrationTest extends BaseTest {

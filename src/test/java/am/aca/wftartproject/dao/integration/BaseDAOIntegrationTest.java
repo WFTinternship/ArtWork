@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author surik
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"classpath:application-context.xml"})
+@ContextConfiguration(locations= {"classpath:applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 abstract class BaseDAOIntegrationTest {
