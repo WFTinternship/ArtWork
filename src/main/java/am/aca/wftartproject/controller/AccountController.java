@@ -47,8 +47,8 @@ public class AccountController {
 
     @RequestMapping(value = {"/account"})
     public ModelAndView accountInformation(HttpServletRequest request) {
-        session = request.getSession();
         ModelAndView mv = new ModelAndView();
+        session = request.getSession();
         String page = "account";
         AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
 
@@ -57,7 +57,8 @@ public class AccountController {
             return new ModelAndView("redirect:/login");
         }
 
-        // Check and get user information for account.jsp view page
+        // Check and get user/artist information for account.jsp view page,
+        // make additional configuration, if needed
         try {
             if (abstractUser instanceof User) {
                 User userFromRequest = (User) session.getAttribute("user");
@@ -184,7 +185,7 @@ public class AccountController {
             // Save item in database
             itemService.addItem(abstractUser.getId(), item);
             message = "Your ArtWork has been successfully added, Now you can see it in 'My ArtWork' page";
-        }catch (InvalidEntryException e){
+        } catch (InvalidEntryException e) {
             message = "There are invalid fields, please fill them correctly and try again!!!";
             page = "redirect:/add-item";
         } catch (RuntimeException e) {
@@ -300,6 +301,7 @@ public class AccountController {
     private void changePersonalInfo(AbstractUser abstractUser, HttpServletRequest request, ModelAndView modelAndView) {
         User user = null;
         Artist artist = null;
+
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         int age = 0;
@@ -320,6 +322,7 @@ public class AccountController {
             ArtistSpecialization artistSpecialization = ArtistSpecialization.valueOf(request.getParameter("specialization"));
             artist.setSpecialization(artistSpecialization);
         }
+
         try {
             if (user != null) {
                 userService.updateUser(user.getId(), user);
@@ -367,7 +370,9 @@ public class AccountController {
             } else {
                 throw new RuntimeException();
             }
+
             artistService.updateArtist(artist.getId(), artist);
+
             modelAndView.addObject("user", artist);
             modelAndView.addObject("message", "You have successfully updated your profile picture");
         } catch (RuntimeException e) {
@@ -396,14 +401,18 @@ public class AccountController {
 
         for (MultipartFile multipartFile : image) {
             byte[] imageBytes = multipartFile.getBytes();
+
             String uploadPath = "resources/images/artists/" + abstractUser.getId();
             String realPath = request.getServletContext().getRealPath("resources/images/artists/" + abstractUser.getId());
+
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
+
             String fileName = multipartFile.getOriginalFilename();
             String filePath = realPath + File.separator + fileName + ".jpg";
+
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
             photoUrl.add(uploadPath + File.separator + fileName + ".jpg");
         }
@@ -416,14 +425,18 @@ public class AccountController {
         List<String> photoUrlList = new ArrayList<>();
         if (image != null) {
             byte[] imageBytes = image.getBytes();
+
             String uploadPath = "resources/images/artists/" + item.getArtistId();
             String realPath = request.getServletContext().getRealPath("resources/images/artists/" + item.getArtistId());
+
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
+
             String fileName = image.getOriginalFilename();
             String filePath = realPath + File.separator + fileName + ".jpg";
+
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
             photoUrlList.add(uploadPath + File.separator + fileName + ".jpg");
         }

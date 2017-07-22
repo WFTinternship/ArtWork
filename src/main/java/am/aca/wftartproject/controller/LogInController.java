@@ -39,12 +39,15 @@ public class LogInController {
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView();
         session = request.getSession(true);
-        ModelAndView mav;
+        String page;
 
+        // Get email and password parameters from request
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
 
+        // Get user/artist from db and create cookie with their info
         try {
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
             Artist artistFromDB = artistService.findArtist(userFromDB.getId());
@@ -53,18 +56,15 @@ public class LogInController {
                 setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
             } else if (userFromDB != null) {
                 setAttributeInSessionAndCreateCookie(userFromDB, response, session);
-            } else {
-                throw new RuntimeException();
             }
-
-            mav = new ModelAndView("redirect:/index");
+            page = "redirect:/index";
 
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
             request.setAttribute("message", userNotExists);
-            mav = new ModelAndView("login");
+            page = "login";
         }
-
+        mav.setViewName(page);
         return mav;
     }
 
