@@ -50,6 +50,7 @@ public class ControllerHelper {
     public static final String ADD_ITEM = "additem";
     public static final String ACCOUNT = "account";
     public static final String ABOUT = "about";
+    public static final String EDIT_ITEM = "editItem";
 
     //model attribute constants
     public static final String USER = "user";
@@ -118,7 +119,7 @@ public class ControllerHelper {
     }
 
 
-    protected void userServiceUpdater(User findUser, HttpServletRequest request) {
+    protected void userUpdater(User findUser, HttpServletRequest request) {
         try {
             userService.updateUser(findUser);
             String message = "User updated successfully";
@@ -130,7 +131,7 @@ public class ControllerHelper {
         }
     }
 
-    protected void artistServiceUpdater(Artist findArtist, HttpServletRequest request) {
+    protected void artistUpdater(Artist findArtist, HttpServletRequest request) {
         try {
             artistService.updateArtist(findArtist);
             request.setAttribute("message", "You have successfully updated your profile");
@@ -167,6 +168,7 @@ public class ControllerHelper {
     }
 
     protected void itemServiceSaver(Item item, HttpServletRequest request) {
+        item.setAdditionDate(Calendar.getInstance().getTime());
         itemService.addItem(item);
         request.getSession().setAttribute("item", item);
         String message = "Your ArtWork has been successfully added, Now you can see it in My ArtWorks page";
@@ -193,7 +195,7 @@ public class ControllerHelper {
         } else throw new RuntimeException("");
     }
 
-    protected void createItemFromRequest(Item item, Artist findArtist, List<String> photoUrl, HttpServletRequest request) {
+    protected void createItemFromRequest(Item item,Artist findArtist, List<String> photoUrl, HttpServletRequest request) {
         if (!request.getParameter("title").isEmpty() && !request.getParameter("description").isEmpty() && !request.getParameter("type").isEmpty() && !request.getParameter("price").isEmpty() && !request.getParameter("type").equals("-1")) {
             item.setTitle(request.getParameter("title"));
             item.setDescription(request.getParameter("description"));
@@ -207,6 +209,7 @@ public class ControllerHelper {
 
     }
 
+
     protected void createArtistFromRequest(Artist artistFromRequest, MultipartFile image, HttpServletRequest request) throws IOException {
         artistFromRequest
                 .setSpecialization(ArtistSpecialization.valueOf(request.getParameter("artistSpec")))
@@ -219,7 +222,7 @@ public class ControllerHelper {
                 .setUserPasswordRepeat(request.getParameter("passwordRepeat"));
     }
 
-    protected void artistImageUploader(Artist artist, MultipartFile[] image, List<String> photoUrl, HttpServletRequest request) throws IOException {
+    protected void itemImageUploader(Artist artist, MultipartFile[] image, List<String> photoUrl, HttpServletRequest request) throws IOException {
         for (MultipartFile multipartFile : image) {
             byte[] imageBytes = multipartFile.getBytes();
             String uploadPath = "/resources/images/artists/" + artist.getId();

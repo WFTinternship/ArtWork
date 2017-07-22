@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class AccountController extends ControllerHelper {
                 finduser.setUserPasswordRepeat(finduser.getPassword());
                 try {
                     updateUserParameters(finduser, request);
-                    userServiceUpdater(finduser, request);
+                    userUpdater(finduser, request);
                 } catch (Exception e) {
                     setErrorMessage(request);
                     LOGGER.error(e.getMessage());
@@ -78,7 +79,7 @@ public class AccountController extends ControllerHelper {
                     setErrorMessage(request);
                     return new ModelAndView(EDIT_PROFILE);
                 }
-                artistServiceUpdater(findArtist, request);
+                artistUpdater(findArtist, request);
             }
         }
 
@@ -135,8 +136,8 @@ public class AccountController extends ControllerHelper {
                 Artist findArtist = artistService.findArtist(artist.getId());
                 if (findArtist != null && image != null) {
                     session.setAttribute(USER, findArtist);
-                    artistImageUploader(findArtist, image, photoUrl, request);
-                    createItemFromRequest(item, findArtist, photoUrl, request);
+                    itemImageUploader(findArtist, image, photoUrl, request);
+                    createItemFromRequest(item,findArtist, photoUrl, request);
                     itemServiceSaver(item, request);
                 } else {
                     setErrorMessage(request);
@@ -148,6 +149,69 @@ public class AccountController extends ControllerHelper {
         }
 
         return new ModelAndView(ADD_ITEM);
+    }
+
+    @RequestMapping(value = {"edit-item/*"}, method = RequestMethod.GET)
+    public ModelAndView editItem(HttpServletRequest request) {
+        String page = MY_WORKS;
+
+        //check if User attribute is null then redirect to SignUp page
+        if (request.getSession().getAttribute(USER) == null) {
+            page = REDIRECT_SIGNUP;
+        }
+
+        //get item id from servlet path
+        String[] pathInfo = request.getServletPath().split("/");
+        Long itemId = Long.parseLong(pathInfo[pathInfo.length - 1]);
+
+        //find item from db by id that will be removing and try to delete
+        Item itemForUpdate = itemService.findItem(itemId);
+
+        if (itemForUpdate != null) {
+            //set item types list to session
+            request.getSession().setAttribute("itemTypes", ItemType.values());
+            request.getSession().setAttribute("item", itemForUpdate);
+            page = EDIT_ITEM;
+        } else request.getSession().setAttribute("message", "Invalid ArtWork");
+
+        return new ModelAndView(page);
+    }
+
+    @RequestMapping(value = {"edit-item/*"}, method = RequestMethod.POST)
+    public ModelAndView editItemProcess(HttpServletRequest request, @RequestParam(value = "files", required = false) MultipartFile[] image) throws IOException {
+        HttpSession session = request.getSession();
+        String page = MY_WORKS;
+
+        //check if User attribute is null then redirect to SignUp page
+        if (session.getAttribute(USER) == null || session.getAttribute(USER).getClass() != Artist.class) {
+            return new ModelAndView(REDIRECT_SIGNUP);
+        }
+
+        //get item id from servlet path
+        Item itemFromSession = (Item) request.getSession().getAttribute("item");
+        Long itemId = itemFromSession.getId();
+
+        //cerate Item list and item for retrieving data from session
+        List<String> photoUrl = new ArrayList<>();
+        Item item = new Item();
+
+        // retrieve User attribute from session, check type and  add item into db and into user items
+        try {
+            //find item from db by id that will be update and try to update
+            if (itemService.findItem(itemId) != null) {
+                Artist artist = (Artist) session.getAttribute(USER);
+                itemImageUploader(artist, image, photoUrl, request);
+                createItemFromRequest(item,artist, photoUrl, request);
+                itemService.updateItem(item);
+                request.setAttribute("message", "Your ArtWork has been succesfully updated");
+            } else throw new ServiceException("");
+
+        } catch (ServiceException e) {
+            page = REDIRECT_MY_WORKS;
+            request.setAttribute("message", "The entered info is not correct or empty fields");
+        }
+
+        return new ModelAndView(page);
     }
 
     @RequestMapping(value = {"my-works"}, method = RequestMethod.GET)

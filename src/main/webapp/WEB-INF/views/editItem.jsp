@@ -7,10 +7,8 @@
 
 
 <c:set var="itemTypes" value='<%=request.getSession().getAttribute("itemTypes")%>'/>
-<c:set var="artistSpecTypes" value='<%=request.getSession().getAttribute("artistSpecTypes")%>'/>
-<c:set var="artistItems" value='<%=request.getSession().getAttribute("artistItems")%>'/>
-<c:set var="message" value='<%=request.getAttribute("message")%>'/>
-
+<c:set var="item" value='<%=request.getSession().getAttribute("item")%>'/>
+<c:set var="Message" value='<%=request.getAttribute("message")%>'/>
 
 
 <!Doctype html>
@@ -33,6 +31,18 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <%--<script>submitForms = function(){--%>
+    <%--document.getElementById("form1").submit();--%>
+    <%--document.getElementById("form2").submit();--%>
+    <%--}</script>--%>
+    <script>  function dothat() {
+        var div = document.getElementById('fileuploads');
+        var field = div.getElementsByTagName('input')[0];
+
+        div.appendChild(document.createElement("br"));
+        div.appendChild(field.cloneNode(false));
+    }</script>
+
     <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon"/>
 
     <!-- **CSS - stylesheets** -->
@@ -41,8 +51,6 @@
     <link id="default-css" rel="stylesheet" href="../../resources/style.css" type="text/css" media="all"/>
     <link href="../../resources/css/A.style.css+style-less.css,Mcc.U0a7i6ixff.css.pagespeed.cf.gaKpoO-umx.css"
           rel="stylesheet"/>
-
-
     <!-- **Additional - stylesheets** -->
     <link href="../../resources/css/animations.css" rel="stylesheet" type="text/css" media="all"/>
     <link id="shortcodes-css" href="../../resources/css/shortcodes.css" rel="stylesheet" type="text/css" media="all"/>
@@ -57,19 +65,12 @@
 
     <!-- **Font Awesome** -->
     <link rel="stylesheet" href="../../resources/css/font-awesome.min.css" type="text/css"/>
-    <script type="application/javascript">
-        deleteItem = function(itemId) {
-            if (confirm("Want to delete?")) {
-                jQuery.ajax({url: "/deleteItem/" + itemId, success: function(){
-                    document.getElementById(itemId).remove();
-                    jQuery(window).resize();
-                    //$(itemId).remove();
-                }});
-                //window.location.replace ("/deleteItem/" + itemId);
-            }
+    <style type="text/css" >
+        .shop-dropdown ul li span:hover{
+            background: #f5f5f5;
         }
+    </style>
 
-    </script>
 </head>
 
 <body>
@@ -117,53 +118,72 @@
                             <div class="col-md-9 col-sm-9">
                                 <!-- inner main content area -->
                                 <div class="inner-main account">
-                                    <!-- top heading -->
                                     <c:choose>
                                         <c:when test="${message!=null}">
-                                            <header class="cd-main-header">
-                                                <h3 style="color:red;">${message}</h3>
-                                            </header>
+                                            <h4 style="color:red;">${Message}</h4>
                                         </c:when>
                                         <c:otherwise>
                                             <header class="cd-main-header">
-                                                <h2>Your ArtWorks</h2>
+                                                <h2>Edit ArtWork</h2>
                                             </header>
                                         </c:otherwise>
                                     </c:choose>
-                                    <ul class="products isotope">
-                                        <c:forEach items="${artistItems}" var="itemElement">
-                                            <c:if test="${itemElement.status eq true}">
-                                                <li class="product-wrapper dt-sc-one-fifth" id="${itemElement.id}">
-                                                    <!-- **product-wrapper - Starts** -->
-                                                    <!-- **product-container - Starts** -->
-                                                    <div class="product-container">
-                                                        <a href="/item-detail/${itemElement.id}">
-                                                            <div class="product-thumb"><img
-                                                                    src="${itemElement.photoURL[0]}" alt="image"/></div>
-                                                        </a>
-                                                        <!-- **product-title - Starts** -->
-                                                        <div class="product-title">
-                                                            <a href="/edit-item/${itemElement.id}" class="type1 dt-sc-button"> <span
-                                                                    class="fa fa-shopping-cart"></span> Edit </a>
-                                                            <a href="javascript:void(0)"
-                                                               class="type1 dt-sc-button" onclick="deleteItem(${itemElement.id})"> <span
-                                                                    class="fa fa-unlink"></span> Delete </a>
-                                                            <p>You don't take a photograph, Just make it</p>
-                                                        </div> <!-- **product-title - Ends** -->
-                                                    </div> <!-- **product-container - Ends** -->
-                                                    <!-- **product-details - Starts** -->
-                                                    <div class="product-details">
-                                                        <h5><a href="item-detail/${itemElement.id}"> ${itemElement.title} </a></h5>
-                                                        <span class="amount"> $${itemElement.price} </span>
-                                                    </div> <!-- **product-details - Ends** -->
-                                                </li>
-                                                <!-- **product-wrapper - Ends** -->
-                                            </c:if>
-                                        </c:forEach>
-                                    </ul>
+                                    <div class="edit-form">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <!-- edit personal details -->
+                                                <%--<div class="form-group">--%>
+                                                <%----%>
+                                                <%--</div>--%>
+
+                                                <form action="/edit-item/${item.id}" method="post" id="form2"
+                                                      enctype="multipart/form-data">
+                                                    <table border="2" align="left">
+                                                        <tr>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <div id="fileuploads" align="left">
+                                                                <input type="file" name="files" id="fileField"/>
+                                                            </div>
+                                                        </tr>
+                                                        <td align="left">
+
+                                                            <input type="button" name="addmore" class="button"
+                                                                   id="addmore" style="width: 100%;height: 100%;color: #c7254e" value="Add Another Imaage(Optional)" onClick="dothat();"/>
+                                                        </td>
+                                                    </table>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInput1">Title</label>
+                                                        <input type="text" name="title" class="form-control"
+                                                               id="exampleInput1" placeholder="Brennan Doe" required autofocus>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInput2">Description</label>
+                                                        <input type="text" name="description" class="form-control"
+                                                               id="exampleInput2" placeholder=" write descritpion " required autofocus>
+                                                    </div>
+                                                    <label for="exampleInput171">Art Type</label>
+                                                    <select class="shop-dropdown" name="type" id="exampleInput171" required autofocus>
+                                                        <option value="-1" selected>Choose art type</option>
+                                                        <c:forEach items="${itemTypes}" var="element">
+                                                            <option value="${element.type}"   ${element.type == selectedDept ? 'selected="selected"' : ''}
+                                                                    class="fa fa-flask">${element.type}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                    <div class="form-group">
+                                                        <label for="exampleInput3">Price</label>
+                                                        <input type="text" name="price" class="form-control"
+                                                               id="exampleInput3" required autofocus>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-warning">Update ArtWork</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <!-- inner page content end -->
