@@ -7,7 +7,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="artistSpecTypes" value='<%=request.getSession().getAttribute("artistSpecTypes")%>'/>
-<c:set var="errormessage" value='<%=request.getAttribute("errorMessage")%>'/>
+<c:set var="errorMessage" value='<%=request.getAttribute("message")%>'/>
 
 
 
@@ -30,7 +30,7 @@
 <body>
 
 <c:choose>
-	<c:when test="${errormessage!=null}">
+	<c:when test="${errorMessage!=null}">
 		<header class="cd-main-header">
 			<h2 style="color:red;">${errorMessage}</h2>
 		</header>

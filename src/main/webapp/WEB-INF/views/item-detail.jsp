@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <c:set var="itemDetail" value='<%=request.getSession().getAttribute("itemDetail")%>'/>
@@ -78,11 +77,11 @@
                     <h2>Product <span>Detail</span></h2>
                     <div class="user-summary">
                         <div class="account-links">
-                            <a href="#">My Account</a>
+                            <a href="/account-details">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
-                            <a href="#">Shopping Bag: 0 items</a>
+                            <a href="/shop-cart">Shopping Bag: 0 items</a>
                             <a href="#">($0.00)</a>
                         </div>
                     </div>

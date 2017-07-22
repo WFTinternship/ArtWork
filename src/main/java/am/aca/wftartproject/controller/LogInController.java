@@ -52,7 +52,7 @@ public class LogInController extends ControllerHelper {
             }
         } catch (Exception e) {
             String userNotExists = "The user with the entered username and password does not exists.";
-            request.setAttribute("errorMessage", userNotExists);
+            request.setAttribute("message", userNotExists);
             mav = new ModelAndView(LOGIN);
         }
 

@@ -65,21 +65,21 @@
 	<div class="inner-wrapper">
 		<jsp:include page="header.jsp" />
         <div id="main">
-        	<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
-                <div class="container">
-                    <h2>Product <span>Detail</span></h2>
-                    <div class="user-summary">
-                    	<div class="account-links">
-                        	<a href="/account">My Account</a>
-                            <a href="#">Checkout</a>
-                        </div>
-                        <div class="cart-count">
-                        	<a href="#">Shopping Bag: 0 items</a>
-                            <a href="#">($0.00)</a>
-                        </div>
-                    </div>
-                </div>
-        	</div><!-- *BreadCrumb Ends here** -->
+			<div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
+				<div class="container">
+					<h2>Product <span>Detail</span></h2>
+					<div class="user-summary">
+						<div class="account-links">
+							<a href="/account-details">My Account</a>
+							<a href="#">Checkout</a>
+						</div>
+						<div class="cart-count">
+							<a href="/shop-cart">Shopping Bag: 0 items</a>
+							<a href="#">($0.00)</a>
+						</div>
+					</div>
+				</div>
+			</div><!-- *BreadCrumb Ends here** -->
             <!-- main content -->
             <div class="main-content">
                 <div class="container"> 
@@ -158,15 +158,15 @@
 												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
-														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password" required autofocus>
+														<input type="password" name="oldPassword" class="form-control" id="exampleInput31" placeholder="Old Password" required autofocus>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput32">New Password</label>
-														<input type="password" name="newpassword" class="form-control" id="exampleInput32" placeholder="New Password" required autofocus>
+														<input type="password" name="newPassword" class="form-control" id="exampleInput32" placeholder="New Password" required autofocus>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput33">Re - Type Password</label>
-														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password" required autofocus>
+														<input type="password" name="retypePassword" class="form-control" id="exampleInput33" placeholder="New Password" required autofocus>
 													</div>
 													<button type="submit" class="btn btn-warning">Update Password</button>
 												</form>

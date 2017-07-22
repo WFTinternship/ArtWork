@@ -4,6 +4,7 @@ import am.aca.wftartproject.entity.*;
 import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.service.*;
 import am.aca.wftartproject.util.EmailSender;
+import am.aca.wftartproject.util.HashGenerator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +37,7 @@ public class ControllerHelper {
     //page location constants
     public static final String HOME = "/index";
     public static final String SIGNUP = "/signUp";
-    public static final String REDIRECT_SIGNUP = "redirect:/signUp";
+    public static final String REDIRECT_SIGNUP = "redirect:/signup";
     public static final String MY_WORKS = "my-works";
     public static final String REDIRECT_MY_WORKS = "redirect:/my-works";
     public static final String PURCHASE_HISTORY = "purchaseHistory";
@@ -72,9 +73,9 @@ public class ControllerHelper {
             findUser.setAge(Integer.parseInt(request.getParameter("age")));
             counter++;
         }
-        if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() && request.getParameter("oldpassword").equals(findUser.getPassword()) && request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
-            findUser.setPassword(request.getParameter("newpassword"));
-            findUser.setUserPasswordRepeat(request.getParameter("retypepassword"));
+        if (request.getParameter("oldPassword") != null && !request.getParameter("oldPassword").isEmpty() && request.getParameter("oldPassword").equals(findUser.getPassword()) && request.getParameter("newPassword") != null && request.getParameter("retypePassword") != null && request.getParameter("newPassword").equals(request.getParameter("retypePassword"))) {
+            findUser.setPassword(request.getParameter("newPassword"));
+            findUser.setUserPasswordRepeat(request.getParameter("retypePassword"));
             counter++;
         }
         if (counter == 0) {
@@ -88,32 +89,39 @@ public class ControllerHelper {
         findArtist.setUserPasswordRepeat(findArtist.getPassword());
         if (request.getParameter("firstName") != null && !request.getParameter("firstName").isEmpty()) {
             findArtist.setFirstName(request.getParameter("firstName"));
-            count++;
+            ++count;
         }
         if (request.getParameter("lastName") != null && !request.getParameter("lastName").isEmpty()) {
             findArtist.setLastName(request.getParameter("lastName"));
-            count++;
+            ++count;
         }
         if (request.getParameter("age") != null && !request.getParameter("age").isEmpty()) {
             findArtist.setAge(Integer.parseInt(request.getParameter("age")));
-            count++;
+            ++count;
         }
         if (request.getParameter("specialization") != null && !request.getParameter("specialization").isEmpty() && Integer.valueOf(request.getParameter("specialization")) != -1) {
             findArtist.setSpecialization(ArtistSpecialization.valueOf(request.getParameter("specialization")));
-            count++;
+            ++count;
         }
-        if (request.getParameter("oldpassword") != null && !request.getParameter("oldpassword").isEmpty() && request.getParameter("oldpassword").equals(findArtist.getPassword()) && request.getParameter("newpassword") != null && !request.getParameter("newpassword").isEmpty() && !request.getParameter("retypepassword").isEmpty() && request.getParameter("retypepassword") != null && request.getParameter("newpassword").equals(request.getParameter("retypepassword"))) {
-            findArtist.setPassword(request.getParameter("newpassword"));
-            findArtist.setUserPasswordRepeat(request.getParameter("retypepassword"));
-            count++;
+        if (request.getParameter("oldPassword") != null
+                && !request.getParameter("oldPassword").isEmpty()
+                && HashGenerator.generateHashString(request.getParameter("oldPassword")).equals( findArtist.getPassword())
+                && request.getParameter("newPassword") != null
+                && !request.getParameter("newPassword").isEmpty()
+                && !request.getParameter("retypePassword").isEmpty()
+                && request.getParameter("retypePassword") != null
+                && request.getParameter("newPassword").equals(request.getParameter("retypePassword"))) {
+            findArtist.setPassword(request.getParameter("newPassword"));
+            findArtist.setUserPasswordRepeat(request.getParameter("retypePassword"));
+            ++count;
         }
-        if ((image) != null) {
+        if ( image != null && !image.isEmpty()) {
             byte[] imageBytes = image.getBytes();
             findArtist.setArtistPhoto(imageBytes);
-            count++;
+            ++count;
         }
         if (count == 0) {
-            throw new RuntimeException();
+            throw new RuntimeException("empty fields");
         }
         return findArtist;
 
@@ -253,7 +261,7 @@ public class ControllerHelper {
     }
 
     protected void setErrorMessage(HttpServletRequest request) {
-        String message = "No changes ,empty field or The entered info is not correct";
+        String message = "No changes ,empty fields, or the entered info is not correct";
         request.setAttribute("message", message);
     }
 

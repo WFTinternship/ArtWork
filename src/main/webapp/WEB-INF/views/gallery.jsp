@@ -79,7 +79,7 @@
                 <div class="fullwidth-section"> <!-- **Full-width-section Starts Here** -->
                     <div class="container">
                         <div class="main-title animate" data-animation="pullDown" data-delay="100">
-                            <h2 class="aligncenter"> Portfolio </h2>
+                            <h2 class="aligncenter"> Gallery </h2>
                             <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>
                         </div>
                     </div>

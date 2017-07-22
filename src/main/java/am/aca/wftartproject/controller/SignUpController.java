@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -40,7 +41,8 @@ public class SignUpController extends ControllerHelper {
 
         //throw exception if password don't match
         if (!user.getPassword().equals(request.getParameter("userPasswordRepeat"))) {
-            throw new RuntimeException("Password don't match");
+            request.setAttribute("message", "Password don't match");
+            return new ModelAndView(SIGNUP);
         }
 
         // save bound user object into db
@@ -48,7 +50,7 @@ public class SignUpController extends ControllerHelper {
             userSaver(user, request);
             page = HOME;
         } catch (RuntimeException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute("message", e.getMessage());
             page = SIGNUP;
         }
 
@@ -57,7 +59,7 @@ public class SignUpController extends ControllerHelper {
 
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request,
-                                  @RequestParam(value = "image", required = false) MultipartFile image) throws IOException, MessagingException {
+                                  @RequestParam(value = "image", required = false) MultipartFile image) throws IOException, MessagingException, ServletException {
         String page;
         Artist artistFromRequest = new Artist();
 
@@ -66,7 +68,7 @@ public class SignUpController extends ControllerHelper {
             createArtistFromRequest(artistFromRequest, image, request);
         } else {
             setErrorMessage(request);
-            return new ModelAndView(SIGNUP);
+            return new ModelAndView(SIGNUP).addObject("user",new User());
         }
 
         //try to save created Artist into db
@@ -74,7 +76,7 @@ public class SignUpController extends ControllerHelper {
             artistSaver(artistFromRequest, request);
             page = HOME;
         } catch (RuntimeException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute("message", e.getMessage());
             page = SIGNUP;
         }
 

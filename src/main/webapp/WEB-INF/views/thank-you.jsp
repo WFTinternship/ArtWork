@@ -174,8 +174,8 @@
                         </p>
                         <p style="color: blue" class="lead">
                             <a rel="nofollow" rel="noreferrer" class="btn btn-primary btn-sm"
-                               href="${pageContext.request.contextPath}/index"
-                               role="button">Continue to homepage</a>
+                               href="${pageContext.request.contextPath}/shop"
+                               role="button">Continue shopping</a>
                         </p>
                     </div>
                     <div class="dt-sc-hr-invisible"></div>

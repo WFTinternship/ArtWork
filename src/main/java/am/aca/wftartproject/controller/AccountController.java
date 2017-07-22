@@ -61,11 +61,11 @@ public class AccountController extends ControllerHelper {
         // get User attribute from session, check User type , and update fields
         if (session.getAttribute(USER) != null) {
             if (session.getAttribute(USER).getClass() == User.class && session.getAttribute(USER) != null) {
-                User finduser = getUserFromSession(session);
-                finduser.setUserPasswordRepeat(finduser.getPassword());
+                User findUser = getUserFromSession(session);
+                findUser.setUserPasswordRepeat(findUser.getPassword());
                 try {
-                    updateUserParameters(finduser, request);
-                    userUpdater(finduser, request);
+                    updateUserParameters(findUser, request);
+                    userUpdater(findUser, request);
                 } catch (Exception e) {
                     setErrorMessage(request);
                     LOGGER.error(e.getMessage());
@@ -134,7 +134,7 @@ public class AccountController extends ControllerHelper {
             if (session.getAttribute(USER) != null && session.getAttribute(USER).getClass() == Artist.class) {
                 Artist artist = (Artist) session.getAttribute(USER);
                 Artist findArtist = artistService.findArtist(artist.getId());
-                if (findArtist != null && image != null) {
+                if (findArtist != null && image[0]!=null && !image[0].isEmpty()) {
                     session.setAttribute(USER, findArtist);
                     itemImageUploader(findArtist, image, photoUrl, request);
                     createItemFromRequest(item, findArtist, photoUrl, request);
