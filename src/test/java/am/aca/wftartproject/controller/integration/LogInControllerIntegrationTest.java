@@ -164,7 +164,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         logInController.loginProcess(testRequest, testResponse);
 
         // Check errorMessage
-        assertEquals(testRequest.getAttribute("errorMessage"), "The user with the entered username and password does not exists.");
+        assertEquals(testRequest.getAttribute("message"), "The user with the entered username and password does not exists.");
     }
 
     /**

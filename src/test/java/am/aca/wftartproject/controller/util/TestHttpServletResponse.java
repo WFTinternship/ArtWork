@@ -14,7 +14,7 @@ import java.util.Locale;
  * @author surik
  */
 public class TestHttpServletResponse implements HttpServletResponse {
-    List<Cookie> cookieList = new ArrayList<>();
+    private List<Cookie> cookieList = new ArrayList<>();
 
     @Override
     public void addCookie(Cookie cookie) {

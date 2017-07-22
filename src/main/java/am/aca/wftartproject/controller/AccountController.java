@@ -140,7 +140,7 @@ public class AccountController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/additem"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/add-item"}, method = RequestMethod.GET)
     public ModelAndView addItemInitialPage(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         session = request.getSession();
@@ -158,7 +158,7 @@ public class AccountController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/additem"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/add-item"}, method = RequestMethod.POST)
     public ModelAndView addItemProcess(HttpServletRequest request,
                                        @RequestParam(value = "files", required = false) MultipartFile[] image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
@@ -186,10 +186,10 @@ public class AccountController {
             message = "Your ArtWork has been successfully added, Now you can see it in 'My ArtWork' page";
         }catch (InvalidEntryException e){
             message = "There are invalid fields, please fill them correctly and try again!!!";
-            page = "redirect:/additem";
+            page = "redirect:/add-item";
         } catch (RuntimeException e) {
             message = "There is problem in item addition";
-            page = "redirect:/additem";
+            page = "redirect:/add-item";
         }
         request.getSession().setAttribute("message", message);
         modelAndView.setViewName(page);
@@ -254,7 +254,6 @@ public class AccountController {
                 .setDescription(description)
                 .setItemType(ItemType.valueOf(itemType))
                 .setPrice(price);
-        //TODO item photo editing should be fixed
         item.setPhotoURL(getItemFromRequest(request, item, image));
 
         // Update item details in database

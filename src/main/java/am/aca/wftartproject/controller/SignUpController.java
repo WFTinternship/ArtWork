@@ -35,7 +35,7 @@ public class SignUpController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView showRegistrationPage(HttpServletRequest request) {
+    public ModelAndView showRegistrationPage() {
         ModelAndView mv = new ModelAndView("sign-up");
 
         // Get required information and add attributes for view page

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LogInController {
 
+    private HttpSession session;
     private UserService userService;
     private ArtistService artistService;
 
@@ -38,8 +39,9 @@ public class LogInController {
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(true);
+        session = request.getSession(true);
         ModelAndView mav;
+
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
 
@@ -59,7 +61,7 @@ public class LogInController {
 
         } catch (RuntimeException e) {
             String userNotExists = "The user with the entered username and password does not exists.";
-            request.setAttribute("errorMessage", userNotExists);
+            request.setAttribute("message", userNotExists);
             mav = new ModelAndView("login");
         }
 
@@ -68,7 +70,7 @@ public class LogInController {
 
     @RequestMapping(value = "/logoutProcess", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
+        session = request.getSession(false);
 
         if (session != null) {
             Cookie cookie = new Cookie("userEmail", "");

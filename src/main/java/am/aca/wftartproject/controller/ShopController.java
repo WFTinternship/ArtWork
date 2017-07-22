@@ -107,7 +107,6 @@ public class ShopController {
         } catch (NotEnoughMoneyException ex) {
             request.getSession().setAttribute("message",
                     "You don't have enough money. Please top-up your account and try again.");
-            //TODO "message" session attribute should be removed after showing.
             page = "redirect:/shop";
         } catch (RuntimeException ex) {
             request.getSession().setAttribute("message",

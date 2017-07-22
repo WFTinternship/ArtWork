@@ -120,7 +120,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
             String query1 = "SELECT * FROM user WHERE email=?";
             artist = jdbcTemplate.queryForObject(query1, new Object[]{email}, (rs, rowNum) -> new ArtistMapper().mapRow(rs,rowNum));
 
-
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
             Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs,rowNum));
