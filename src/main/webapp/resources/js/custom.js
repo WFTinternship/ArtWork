@@ -475,9 +475,9 @@ jQuery(document).ready(function($){
 			$('.blog-slider').bxSlider({auto: false, mode: 'fade', pager: '', adaptiveHeight:true, autoHover:true });
 		}
 		
-		//Recent gallery slider...
-		if( $(".recent-gallery").find("li").length > 1 ) {
-			$(".recent-gallery").bxSlider({ auto: true, useCSS:false, pagerCustom: '#bx-pager', autoHover:true, adaptiveHeight:true });
+		//Recent gallery.jsp slider...
+		if( $(".recent-gallery.jsp").find("li").length > 1 ) {
+			$(".recent-gallery.jsp").bxSlider({ auto: true, useCSS:false, pagerCustom: '#bx-pager', autoHover:true, adaptiveHeight:true });
 		}		
 		
 		//Donutchart

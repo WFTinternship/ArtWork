@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
@@ -168,7 +169,7 @@ public class ControllerHelper {
     }
 
     protected void itemServiceSaver(Item item, HttpServletRequest request) {
-        item.setAdditionDate(Calendar.getInstance().getTime());
+        item.setAdditionDate(new Date(Calendar.getInstance().getTimeInMillis()));
         itemService.addItem(item);
         request.getSession().setAttribute("item", item);
         String message = "Your ArtWork has been successfully added, Now you can see it in My ArtWorks page";
@@ -204,7 +205,7 @@ public class ControllerHelper {
             item.setStatus(true);
             item.setPhotoURL(photoUrl);
             item.setArtist(findArtist);
-            item.setAdditionDate(Calendar.getInstance().getTime());
+            item.setAdditionDate(new Date(Calendar.getInstance().getTimeInMillis()));
         } else throw new ServiceException("The entered info is not correct or empty fields");
 
     }

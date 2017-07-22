@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <c:set var="itemDetail" value='<%=request.getSession().getAttribute("itemDetail")%>'/>
@@ -96,15 +97,15 @@
                     <div class="cart-wrapper"><!-- *cart-wrapper starts here** -->
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
-                                <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
-                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}" alt="" title="Acrylic">
+                                <a data-fancybox="gallery" href="${itemDetail.photoURL[0]}">
+                                    <img src="${itemDetail.photoURL[0]}" alt="" title="Acrylic">
                                 </a>
                             </div>
                             <ul class="thumblist">
                                 <c:forEach items="${itemDetail.photoURL}" var="itemElement">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/${itemElement}" class="product">
-                                            <img src="${pageContext.request.contextPath}/${itemElement}"
+                                        <a href="${itemElement}" class="product">
+                                            <img src="${itemElement}"
                                                 alt="" height="150" width="150" title=""></a>
                                     </li>
                                 </c:forEach>
@@ -114,149 +115,14 @@
                                 <c:forEach items="${artistItems}" var="itemElement">
                                     <li>
                                         <a href="/item-detail/${itemElement.id}" class="product"><img
-                                                src="${pageContext.request.contextPath}/${itemElement.photoURL[0]}"
+                                                src="${itemElement.photoURL[0]}"
                                                 alt="" height="150" width="150" title=""></a>
                                     </li>
                                 </c:forEach>
                             </ul>
-                            <%--<div class="commententries"><!-- *commententries starts here** -->--%>
-                            <%--<h4> Comments ( 3 ) </h4>--%>
-                            <%--<h6><a href="#"><i class="fa fa-comments-o"></i>Add Comments</a></h6>--%>
-                            <%--<ul class="commentlist"><!-- *commentlist starts here** -->--%>
-                            <%--<li>--%>
-                            <%--<div class="comment">--%>
-                            <%--<header class="comment-author">--%>
-                            <%--<img title="" alt="image" src="http://placehold.it/85x85&text=Post+Image">--%>
-                            <%--</header>--%>
-                            <%--<div class="comment-details">--%>
-                            <%--<div class="author-name">--%>
-                            <%--<a href="#">Callahan James</a>--%>
-                            <%--</div>--%>
-                            <%--<div class="commentmetadata"><span>/</span> Acrylic Painting</div>--%>
-                            <%--<div title="Rated 5.00 out of 5" class="star-rating"><span style="width:80%"></span></div>--%>
-                            <%--<div class="comment-body">--%>
-                            <%--<div class="comment-content">--%>
-                            <%--<p>The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>--%>
-                            <%--<div class="author-metadata">--%>
-                            <%--<p><span class="fa fa-comments"></span><a href="#"> 19 </a></p>--%>
-                            <%--<p><span class="fa fa-folder-open"> </span><a href="#"> Art</a></p>--%>
-                            <%--<p><span class="fa fa-calendar"></span><a href="#"> 05 Apr 2015 </a></p>--%>
-                            <%--</div>                                                    --%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<ul class="children">--%>
-                            <%--<li>--%>
-                            <%--<div class="comment">--%>
-                            <%--<header class="comment-author">--%>
-                            <%--<img title="" alt="image" src="http://placehold.it/85x85&text=Post+Image">--%>
-                            <%--</header>--%>
-                            <%--<div class="comment-details">--%>
-                            <%--<div class="author-name">--%>
-                            <%--<a href="#">Sean Bean</a>--%>
-                            <%--</div>--%>
-                            <%--<div class="commentmetadata"><span>/</span> Sculpture</div>--%>
-                            <%--<div title="Rated 5.00 out of 5" class="star-rating"><span style="width:70%"></span></div>                                                    --%>
-                            <%--<div class="comment-body">--%>
-                            <%--<div class="comment-content">--%>
-                            <%--<p>The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>--%>
-                            <%--<div class="author-metadata">--%>
-                            <%--<p><span class="fa fa-comments"></span><a href="#"> 08 </a></p>--%>
-                            <%--<p><span class="fa fa-folder-open"> </span><a href="#"> Creative</a></p>--%>
-                            <%--<p><span class="fa fa-calendar"></span><a href="#"> 26 Aug 2015 </a></p>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</li>--%>
-                            <%--</ul>                                    --%>
-                            <%--</li>--%>
-                            <%--</ul><!-- *commentlist Ends here** -->--%>
-                            <%--</div><!-- *commententries Ends here** -->--%>
                         </div>
                         <div class="dt-sc-two-fifth column">
-                            <form action="/item-detail/*" method="post">
-                                <!-- Author Detail Starts Here -->
-                                <%--<div class="post-author-details">--%>
-                                <%--<div class="entry-author-image">--%>
-                                <%--<img src="http://placehold.it/100x100&text=Thumb" alt="" title=""/>--%>
-                                <%--</div>--%>
-                                <%--<div class="author-title">--%>
-                                <%--<h5><a href="#">James Dean</a></h5>--%>
-                                <%--<span>Garland, TX - United States</span>--%>
-                                <%--<div class="woocommerce-product-rating">--%>
-                                <%--<div title="Rated 4.40 out of 5" class="star-rating"><span--%>
-                                <%--style="width:85%"></span></div>--%>
-                                <%--<a href="#">( 4 customer reviews )</a>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="author-desc">--%>
-                                <%--<p>Remaining art are essentially unchanged. It was popularised in the 1960s with a--%>
-                                <%--release of Latest sheets containing passages, and more recently with desktop--%>
-                                <%--publishing software.</p>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <!-- Author Detail Ends Here -->
-                                <%--<ul class="cart-thumb-categories"><!-- cart-thumb-categories starts Here -->--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Canvas Print </a> </h6>--%>
-                                <%--<span> $25 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> photogenic </a> </h6>--%>
-                                <%--<span> $30 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li class="last">--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Oil painting </a> </h6>--%>
-                                <%--<span> $28 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Acrylic Art </a> </h6>--%>
-                                <%--<span> $45 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Sketches </a> </h6>--%>
-                                <%--<span> $15 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li class="last">--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Dropper Art </a> </h6>--%>
-                                <%--<span> $20 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Sculpture </a> </h6>--%>
-                                <%--<span> $55 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="#" class="product"><img src="http://placehold.it/100x100&text=Cart+Thumb" alt="" title=""></a>--%>
-                                <%--<div class="category-details"> --%>
-                                <%--<h6><a href="#"> Water Print </a> </h6>--%>
-                                <%--<span> $10 </span> --%>
-                                <%--</div>                                    --%>
-                                <%--</li>                                                                                                --%>
-                                <%--</ul><!-- cart-thumb-categories Ends Here -->--%>
+                            <form action="/item-detail/${itemDetail.id}" method="post">
                                 <div class="project-details">
                                     <ul class="client-details">
                                         <li>
@@ -272,33 +138,13 @@
                                             <p><span>Description :</span>${itemDetail.description}</p>
                                         </li>
                                         <li>
+                                            <%--<fmt:formatDate value="${itemDetail.additionDate.calendar.time}" pattern="yyyy-MM-dd HH:mm:ss" />--%>
                                             <p><span>Uploaded :</span>${itemDetail.additionDate}</p>
                                         </li>
+
                                         <li>
                                             <p><span>Price :</span> $${itemDetail.price}</p>
                                         </li>
-                                        <%--<li>--%>
-                                        <%--<p><span>Colors :</span><a href="#" class="yellow"></a><a href="#" class="green"></a><a href="#" class="orange"></a><a href="#" class="red"></a></p>--%>
-                                        <%--</li>--%>
-                                        <%--<li>--%>
-                                        <%--<p><span>Sales Sheet :</span>PDF</p>--%>
-                                        <%--</li>--%>
-                                        <%--<li>--%>
-                                        <%--<p>--%>
-                                        <%--<span>Tags :</span>--%>
-                                        <%--<div class="tagcloud type3">--%>
-                                        <%--<a href="#">Sketches</a>--%>
-                                        <%--<a href="#">Fashion</a>--%>
-                                        <%--<a href="#">Art</a>--%>
-                                        <%--<a href="#">Rain</a>--%>
-                                        <%--<a href="#">Scupture</a>--%>
-                                        <%--<a href="#">Lonely</a>--%>
-                                        <%--<a href="#">Oil color</a>--%>
-                                        <%--<a href="#">Gallery</a>--%>
-                                        <%--<a href="#">Mordern Art</a>                                                                                                                                                --%>
-                                        <%--</div>--%>
-                                        <%--</p>--%>
-                                        <%--</li>                                                                                                                                                --%>
                                     </ul>
                                 </div>
                                 <c:if test="${itemDetail.status==true}">

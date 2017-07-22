@@ -1,4 +1,4 @@
-<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -100,10 +100,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/500x800&text=Portfolio+Image1"></a><span>3</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/500x800&text=Portfolio+Image1"></a><span>3</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail.html">Proposing Love</a></h5>
+                                                    <h5><a href="gallery.jsp-detail.html">Proposing Love</a></h5>
                                                     <p>Sample text here looks good</p>
                                                 </div>
                                             </div>
@@ -117,10 +117,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/1250x1160&text=Portfolio+Image2"></a><span>7</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/1250x1160&text=Portfolio+Image2"></a><span>7</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail-with-lhs.html">Brave Man</a></h5>
+                                                    <h5><a href="gallery.jsp-detail-with-lhs.html">Brave Man</a></h5>
                                                     <p>A cowboy is a man with guts</p>
                                                 </div>
                                             </div>
@@ -134,10 +134,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/1300x900&text=Portfolio+Image3"></a><span>9</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/1300x900&text=Portfolio+Image3"></a><span>9</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail-with-rhs.html">Mountain Ride</a></h5>
+                                                    <h5><a href="gallery.jsp-detail-with-rhs.html">Mountain Ride</a></h5>
                                                     <p>the swagger of a cowboy</p>
                                                 </div>
                                             </div>
@@ -151,10 +151,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/700x600&text=Portfolio+Image4"></a><span>5</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/700x600&text=Portfolio+Image4"></a><span>5</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail.html">River Ride</a></h5>
+                                                    <h5><a href="gallery.jsp-detail.html">River Ride</a></h5>
                                                     <p>Live Free, Ride Hard!!</p>
                                                 </div>
                                             </div>
@@ -168,10 +168,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/1600x1300&text=Portfolio+Image5"></a><span>6</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/1600x1300&text=Portfolio+Image5"></a><span>6</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail-with-lhs.html">Ride Hard</a></h5>
+                                                    <h5><a href="gallery.jsp-detail-with-lhs.html">Ride Hard</a></h5>
                                                     <p>Saddle your horse</p>
                                                 </div>
                                             </div>
@@ -185,10 +185,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/1200x1500&text=Portfolio+Image6"></a><span>1</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/1200x1500&text=Portfolio+Image6"></a><span>1</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail-with-rhs.html">Black Rider</a></h5>
+                                                    <h5><a href="gallery.jsp-detail-with-rhs.html">Black Rider</a></h5>
                                                     <p>No reason to ride a horse</p>
                                                 </div>
                                             </div>
@@ -202,10 +202,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/1500x2000&text=Portfolio+Image7"></a><span>5</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/1500x2000&text=Portfolio+Image7"></a><span>5</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail.html">Stay single</a></h5>
+                                                    <h5><a href="gallery.jsp-detail.html">Stay single</a></h5>
                                                     <p>Make Way</p>
                                                 </div>
                                             </div>
@@ -219,10 +219,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/1600x1100&text=Portfolio+Image8"></a><span>12</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/1600x1100&text=Portfolio+Image8"></a><span>12</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail-with-lhs.html">Born to Ride</a></h5>
+                                                    <h5><a href="gallery.jsp-detail-with-lhs.html">Born to Ride</a></h5>
                                                     <p>Cowboys are born, ain't made!</p>
                                                 </div>
                                             </div>
@@ -236,10 +236,10 @@
                                         <figcaption>
                                             <div class="portfolio-detail">
                                                 <div class="views">
-                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery]" href="http://placehold.it/650x450&text=Portfolio+Image9"></a><span>15</span>
+                                                    <a class="fa fa-camera-retro" data-gal="prettyPhoto[gallery.jsp]" href="http://placehold.it/650x450&text=Portfolio+Image9"></a><span>15</span>
                                                 </div>
                                                 <div class="portfolio-title">
-                                                    <h5><a href="gallery-detail-with-rhs.html">Stand Tall</a></h5>
+                                                    <h5><a href="gallery.jsp-detail-with-rhs.html">Stand Tall</a></h5>
                                                     <p>Hard to Settle!!</p>
                                                 </div>
                                             </div>
@@ -275,7 +275,7 @@
                                 <%--<div class="entry-body">--%>
                                     <%--<p><b>Acrylic painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
                                 <%--</div>--%>
-                                <%--<a class="type1 dt-sc-button small" href="gallery-detail.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery.jsp-detail.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
                             <%--</div>                   	--%>
                         <%--</article>--%>
 					<%--</div>--%>
@@ -289,7 +289,7 @@
                                 <%--<div class="entry-body">--%>
                                     <%--<p><b>Encaustic painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
                                 <%--</div>--%>
-                                <%--<a class="type1 dt-sc-button small" href="gallery-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery.jsp-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
                             <%--</div>                   	--%>
 							<%--<div class="entry-thumb">--%>
                                 <%--<ul class="blog-slider">--%>
@@ -319,7 +319,7 @@
                                 <%--<div class="entry-body">--%>
                                     <%--<p><b>Oil painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
                                 <%--</div>--%>
-                                <%--<a class="type1 dt-sc-button small" href="gallery-detail-with-rhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery.jsp-detail-with-rhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
                             <%--</div>                   	--%>
                         <%--</article>--%>
 					<%--</div>--%>
@@ -333,7 +333,7 @@
                                 <%--<div class="entry-body">--%>
                                     <%--<p><b>Impasto painting</b>, technique in which pigments are mixed with hot, liquid wax. After all of the colours have been applied to the painting surface, a heating element is passed over them until the individual brush or spatula marks fuse into a uniform film. </p>--%>
                                 <%--</div>--%>
-                                <%--<a class="type1 dt-sc-button small" href="gallery-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
+                                <%--<a class="type1 dt-sc-button small" href="gallery.jsp-detail-with-lhs.html">View Gallery<i class="fa fa-angle-right"></i></a>--%>
                             <%--</div>                   	--%>
 							<%--<div class="entry-thumb">--%>
                                 <%--<ul class="blog-slider">--%>

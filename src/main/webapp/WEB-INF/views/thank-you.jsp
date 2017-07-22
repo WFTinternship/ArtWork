@@ -91,11 +91,11 @@
             <%--<li class="current_page_item menu-item-simple-parent">--%>
             <%--<a href="/about">About us <span class="fa fa-user-secret"></span></a>--%>
             <%--</li>--%>
-            <%--<li class="menu-item-simple-parent"><a href="gallery.html">Gallery <span class="fa fa-camera-retro"></span></a>--%>
+            <%--<li class="menu-item-simple-parent"><a href="gallery.jsp.html">Gallery <span class="fa fa-camera-retro"></span></a>--%>
             <%--<ul class="sub-menu">--%>
-            <%--<li><a href="gallery-detail.html">Gallery detail</a></li>--%>
-            <%--<li><a href="gallery-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>--%>
-            <%--<li><a href="gallery-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>--%>
+            <%--<li><a href="gallery.jsp-detail.html">Gallery detail</a></li>--%>
+            <%--<li><a href="gallery.jsp-detail-with-lhs.html">Gallery-detail-left-sidebar</a></li>--%>
+            <%--<li><a href="gallery.jsp-detail-with-rhs.html">Gallery-detail-right-sidebar</a></li>--%>
             <%--</ul>--%>
             <%--<a class="dt-menu-expand">+</a>--%>
             <%--</li>--%>

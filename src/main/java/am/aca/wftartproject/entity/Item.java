@@ -2,7 +2,7 @@ package am.aca.wftartproject.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import static am.aca.wftartproject.service.impl.validator.ValidatorUtil.isEmptyString;
@@ -33,7 +33,7 @@ public class Item implements Serializable {
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
     @Column(name = "addition_date", nullable = false)
-    private java.util.Date additionDate;
+    private Date additionDate;
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "purchaseItem", cascade = CascadeType.ALL)
     private PurchaseHistory purchaseHistory;
 
@@ -116,11 +116,11 @@ public class Item implements Serializable {
         return this;
     }
 
-    private java.util.Date getAdditionDate() {
+    public Date getAdditionDate() {
         return additionDate;
     }
 
-    public void setAdditionDate(java.util.Date additionDate) {
+    public void setAdditionDate(Date additionDate) {
         this.additionDate = additionDate;
     }
 

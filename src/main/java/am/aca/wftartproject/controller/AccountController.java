@@ -137,7 +137,7 @@ public class AccountController extends ControllerHelper {
                 if (findArtist != null && image != null) {
                     session.setAttribute(USER, findArtist);
                     itemImageUploader(findArtist, image, photoUrl, request);
-                    createItemFromRequest(item,findArtist, photoUrl, request);
+                    createItemFromRequest(item, findArtist, photoUrl, request);
                     itemServiceSaver(item, request);
                 } else {
                     setErrorMessage(request);
@@ -167,8 +167,8 @@ public class AccountController extends ControllerHelper {
         //find item from db by id that will be removing and try to delete
         Item itemForUpdate = itemService.findItem(itemId);
 
+        //check item for null and set item types list to session
         if (itemForUpdate != null) {
-            //set item types list to session
             request.getSession().setAttribute("itemTypes", ItemType.values());
             request.getSession().setAttribute("item", itemForUpdate);
             page = EDIT_ITEM;
@@ -187,21 +187,21 @@ public class AccountController extends ControllerHelper {
             return new ModelAndView(REDIRECT_SIGNUP);
         }
 
-        //get item id from servlet path
+        //get item id
         Item itemFromSession = (Item) request.getSession().getAttribute("item");
         Long itemId = itemFromSession.getId();
 
         //cerate Item list and item for retrieving data from session
         List<String> photoUrl = new ArrayList<>();
-        Item item = new Item();
+        Item item;
 
-        // retrieve User attribute from session, check type and  add item into db and into user items
+        //find item from db by id that will be update and try to update
         try {
-            //find item from db by id that will be update and try to update
             if (itemService.findItem(itemId) != null) {
+                item = itemService.findItem(itemId);
                 Artist artist = (Artist) session.getAttribute(USER);
                 itemImageUploader(artist, image, photoUrl, request);
-                createItemFromRequest(item,artist, photoUrl, request);
+                createItemFromRequest(item, artist, photoUrl, request);
                 itemService.updateItem(item);
                 request.setAttribute("message", "Your ArtWork has been succesfully updated");
             } else throw new ServiceException("");
