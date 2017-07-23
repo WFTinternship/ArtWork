@@ -34,21 +34,17 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
 
     private Artist testArtist;
 
-    @InjectMocks
-    @Autowired
-    private ArtistService artistService;
-
     @Mock
     private ArtistDao artistDaoMock;
-
     @Mock
     private ShoppingCardService shoppingCardServiceMock;
 
+    @InjectMocks
+    private ArtistService artistService = new ArtistServiceImpl(artistDaoMock);
+
     @Before
     public void beforeTest() {
-//        MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(artistService, "artistDao", artistDaoMock);
-        ((ArtistServiceImpl) artistService).setShoppingCardService(shoppingCardServiceMock);
+
     }
 
     @After
@@ -74,7 +70,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Makes testArtist firstName not valid
+        // Make testArtist firstName not valid
         testArtist = createTestArtist();
         testArtist.setFirstName(null);
 
@@ -86,7 +82,7 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidEntryException);
         }
 
-        // Makes testArtist email not valid
+        // Make testArtist email not valid
         testArtist = createTestArtist();
         testArtist.setEmail("invalidEmail");
 
@@ -111,9 +107,8 @@ public class ArtistServiceUnitTest extends BaseUnitTest {
         // Setup mock
         doReturn(testArtist).when(artistDaoMock).findArtist(testArtist.getEmail());
 
-        // Try to add user into db
-        // Test method
         try {
+            // Test method
             artistService.addArtist(testArtist);
             fail();
         } catch (Exception e) {

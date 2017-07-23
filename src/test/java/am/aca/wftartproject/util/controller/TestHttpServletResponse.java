@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller.util;
+package am.aca.wftartproject.util.controller;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -14,7 +14,7 @@ import java.util.Locale;
  * @author surik
  */
 public class TestHttpServletResponse implements HttpServletResponse {
-    List<Cookie> cookieList = new ArrayList<>();
+    private List<Cookie> cookieList = new ArrayList<>();
 
     @Override
     public void addCookie(Cookie cookie) {

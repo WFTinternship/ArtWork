@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller.util;
+package am.aca.wftartproject.util.controller;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;

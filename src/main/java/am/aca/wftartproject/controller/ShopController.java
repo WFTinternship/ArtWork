@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,11 +33,15 @@ public class ShopController {
 
     @RequestMapping(value = "/shop", method = RequestMethod.GET)
     public ModelAndView shopInitialPage() {
+        // Get items and shuffle for randomize viewing
+        List<Item> itemList = itemService.getRecentlyAddedItems(100);
+        Collections.shuffle(itemList);
+
         // Set initial information for shop.jsp page
         ModelAndView mav = new ModelAndView("shop");
         mav.addObject("artistSpecTypes", ArtistSpecialization.values());
         mav.addObject("itemTypes", ItemType.values());
-        mav.addObject("itemList", itemService.getRecentlyAddedItems(100));
+        mav.addObject("itemList", itemList);
         return mav;
     }
 
@@ -47,6 +52,7 @@ public class ShopController {
 
         // Get items list by client chosen sorting parameters
         List<Item> itemList = itemService.getRecentlyAddedItems(100);
+
         try {
             if (!NO_SORTING_PARAM.equals(itemTypeStr)) {
                 itemList = itemService.getItemsByType(itemTypeStr);
@@ -60,7 +66,7 @@ public class ShopController {
             mv.addObject("itemList", itemList);
             mv.addObject("itemTypes", ItemType.values());
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            mv.addObject("message", "There is problem with item list retrieving");
         }
         return mv;
     }
@@ -77,14 +83,22 @@ public class ShopController {
         ModelAndView mv = new ModelAndView("item-detail");
 
         // Get required information and add attributes for view page
-        Item itemById = itemService.findItem(itemId);
-        List<Item> artistItems = itemService.getArtistItems(itemById.getArtistId(), itemById.getId(), 10L);
-        Artist artist = artistService.findArtist(itemById.getArtistId());
+        try {
+            Item itemById = itemService.findItem(itemId);
 
-        // Add attributes to the session object
-        session.setAttribute("itemDetail", itemById);
-        session.setAttribute("artistItems", artistItems);
-        session.setAttribute("artistInfo", artist);
+            if (itemById == null)
+                throw new RuntimeException("Item by this id is not found");
+
+            List<Item> artistItems = itemService.getArtistItems(itemById.getArtistId(), itemById.getId(), 10L);
+            Artist artist = artistService.findArtist(itemById.getArtistId());
+
+            // Add attributes to the session object
+            session.setAttribute("itemDetail", itemById);
+            session.setAttribute("artistItems", artistItems);
+            session.setAttribute("artistInfo", artist);
+        } catch (RuntimeException exc) {
+            mv.addObject("message", "There was a problem: " + exc.getMessage());
+        }
 
         return mv;
     }

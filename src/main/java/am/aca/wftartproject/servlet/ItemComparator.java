@@ -2,7 +2,6 @@ package am.aca.wftartproject.servlet;
 
 import am.aca.wftartproject.model.Item;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -55,21 +54,19 @@ public enum ItemComparator implements Comparator<Item> {
     }
 
 
-
-
     public static List<Item> getSortedItemList(String idStr, List<Item> itemList) {
         switch (idStr) {
             case "1":
-                Collections.sort(itemList, getComparator(PRICE_SORT));
+                itemList.sort(getComparator(PRICE_SORT));
                 break;
             case "2":
-                Collections.sort(itemList, getComparator(TITLE_SORT));
+                itemList.sort(getComparator(TITLE_SORT));
                 break;
             case "3":
-                Collections.sort(itemList, getComparator(AVAILIBILITY_SORT));
+                itemList.sort(getComparator(AVAILIBILITY_SORT));
                 break;
             case "4":
-                Collections.sort(itemList, descending(AVAILIBILITY_SORT));
+                itemList.sort(descending(AVAILIBILITY_SORT));
                 break;
             default:
                 throw new RuntimeException("Wrong sorting argument");

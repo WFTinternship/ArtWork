@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller.util;
+package am.aca.wftartproject.util.controller;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -15,7 +15,17 @@ public class TestHttpServletRequest implements HttpServletRequest {
 
     private final Map<String, Object> attributes = new LinkedHashMap<>();
     private final Map<String, String[]> parameters = new LinkedHashMap<>(16);
-    private HttpSession httpSession;
+    private final Cookie[] cookies = new Cookie[1];
+
+    private HttpSession httpSession = new TestHttpSession();
+
+    public void setHttpSession(HttpSession httpSession) {
+        this.httpSession = httpSession;
+    }
+
+    public void setCookie(Cookie cookie) {
+        this.cookies[0] = cookie;
+    }
 
     @Override
     public String getAuthType() {
@@ -24,7 +34,7 @@ public class TestHttpServletRequest implements HttpServletRequest {
 
     @Override
     public Cookie[] getCookies() {
-        return new Cookie[0];
+        return cookies;
     }
 
     @Override
@@ -115,7 +125,9 @@ public class TestHttpServletRequest implements HttpServletRequest {
     @Override
     public HttpSession getSession(boolean create) {
         if (create) {
-            httpSession = new TestHttpSession();
+            if (httpSession == null)
+                httpSession = new TestHttpSession();
+
             return httpSession;
         }
 

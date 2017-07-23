@@ -29,13 +29,13 @@
         </div>
         <ul class="menu type1"><!-- Menu Starts -->
             <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
-                <%--<ul class="sub-menu">--%>
-                    <%--<li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>--%>
-                    <%--<li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>--%>
-                    <%--<li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>--%>
-                    <%--<li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>--%>
-                <%--</ul>--%>
-                <%--<a class="dt-menu-expand">+</a>--%>
+                <ul class="sub-menu">
+                    <li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>
+                    <li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>
+                    <li><a href="http://www.wedesignthemes.com/html/redart/slide-bar">Slide Bar</a></li>
+                    <li><a href="http://www.wedesignthemes.com/html/redart/slider-over-menu">Slider Over Menu</a></li>
+                </ul>
+                <a class="dt-menu-expand">+</a>
             </li>
             <li class="menu-item-simple-parent">
                 <a href="${pageContext.request.contextPath}/about">About us <span class="fa fa-user-secret"></span></a>

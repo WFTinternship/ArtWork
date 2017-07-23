@@ -154,6 +154,9 @@
                                                         </label>
                                                     </div>
                                                     <div class="row">
+                                                        <div>
+                                                            <input type="hidden" id="photoURL" name="photoURL" value="${item.photoURL}">
+                                                        </div>
                                                         <c:forEach items="${item.photoURL}" var="element">
                                                             <div class="col-md-6 col-sm-6">
                                                                 <div class="form-group">

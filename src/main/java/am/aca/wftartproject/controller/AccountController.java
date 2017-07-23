@@ -238,16 +238,18 @@ public class AccountController {
 
     @RequestMapping(value = "/edit-item/{id}", method = RequestMethod.POST)
     public ModelAndView editItemProcess(HttpServletRequest request,
-                                        @PathVariable("id") Integer id,
+                                        @PathVariable("id") Long id,
                                         @RequestParam("title") String title,
                                         @RequestParam("description") String description,
                                         @RequestParam("price") Double price,
                                         @RequestParam("itemType") String itemType,
-                                        @RequestParam(value = "image", required = false) MultipartFile image,
-                                        @ModelAttribute("item") Item item) throws IOException {
+                                        @RequestParam(value = "image", required = false) MultipartFile image
+                                        /*@ModelAttribute("item") Item item*/) throws IOException {
         ModelAndView mv = new ModelAndView("edit-item");
         String page = null;
         String message;
+
+        Item item = itemService.findItem(id);
 
         // Change item details
         item.setTitle(title)
@@ -415,7 +417,7 @@ public class AccountController {
 
     private List<String> getItemFromRequest(HttpServletRequest request, Item item, MultipartFile image) throws IOException {
         List<String> photoUrlList = new ArrayList<>();
-        if (image != null) {
+        if (image.getSize() != 0) {
             byte[] imageBytes = image.getBytes();
             String uploadPath = "resources/images/artists/" + item.getArtistId();
             String realPath = request.getServletContext().getRealPath("resources/images/artists/" + item.getArtistId());
@@ -427,6 +429,8 @@ public class AccountController {
             String filePath = realPath + File.separator + fileName + ".jpg";
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
             photoUrlList.add(uploadPath + File.separator + fileName + ".jpg");
+        } else {
+            photoUrlList = item.getPhotoURL();
         }
         return photoUrlList;
     }

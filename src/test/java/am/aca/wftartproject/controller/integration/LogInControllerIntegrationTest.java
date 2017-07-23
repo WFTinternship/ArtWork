@@ -2,8 +2,8 @@ package am.aca.wftartproject.controller.integration;
 
 import am.aca.wftartproject.controller.BaseIntegrationTest;
 import am.aca.wftartproject.controller.LogInController;
-import am.aca.wftartproject.controller.util.TestHttpServletRequest;
-import am.aca.wftartproject.controller.util.TestHttpServletResponse;
+import am.aca.wftartproject.util.controller.TestHttpServletRequest;
+import am.aca.wftartproject.util.controller.TestHttpServletResponse;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
@@ -19,9 +19,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.List;
-
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualArtists;
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualCookies;
+import static am.aca.wftartproject.util.AssertTemplates.assertEqualModelAndViews;
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualUsers;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
 import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
@@ -54,8 +54,10 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     public void setUp() {
         testRequest = new TestHttpServletRequest();
         testResponse = new TestHttpServletResponse();
+
         testUser = createTestUser();
         testArtist = createTestArtist();
+
         userService.addUser(testUser);
         artistService.addArtist(testArtist);
     }
@@ -98,7 +100,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     public void showLogin_Success() {
         // Test method
         ModelAndView modelAndView = logInController.showLogin();
-        assertEquals(modelAndView.getView(), new ModelAndView("logIn").getView());
+        assertEqualModelAndViews(modelAndView, new ModelAndView("login"));
     }
 
     /**
@@ -120,7 +122,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse);
 
         // Assertions
-        assertEquals(modelAndView.getView(), new ModelAndView("index").getView());
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
         assertEqualCookies(emailCookie, testResponse.getCookieList());
         assertEqualUsers((User) testRequest.getSession().getAttribute("user"), userFromDB);
     }
@@ -144,7 +146,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse);
 
         // Assertions
-        assertEquals(modelAndView.getView(), new ModelAndView("index").getView());
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
         assertEqualCookies(emailCookie, testResponse.getCookieList());
         assertEqualArtists((Artist) testRequest.getSession().getAttribute("user"), artistFromDB);
     }
@@ -153,7 +155,8 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
      * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
      */
     @Test
-    public void loginProcess_Failure() {
+    public void loginProcess_UserPasswordNotCorrect_Failure() {
+        // Set user fake password
         testUser.setPassword("fake password");
 
         // Put testArtist email and password to testRequest
@@ -172,25 +175,33 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
      */
     @Test
     public void logout_Success() {
+        // Create cookie
+        Cookie emptyCookie = new Cookie("userEmail", "");
+        emptyCookie.setMaxAge(0);
+
+        // Test method
+        ModelAndView modelAndView = logInController.logout(testRequest, testResponse);
+
+        // Assertions
+        assertEqualCookies(emptyCookie, testResponse.getCookieList());
+        assertTrue(testRequest.getSession().getAttribute("user") == null);
+        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+    }
+
+    @Test
+    public void logout_Failure() {
+        testRequest.setHttpSession(null);
+
         // Test method
         ModelAndView modelAndView = logInController.logout(testRequest, testResponse);
 
         // Assertions
         assertTrue(testResponse.getCookieList().isEmpty());
-        assertEquals(modelAndView.getView(), new ModelAndView("index").getView());
+        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
     }
 
 
     // endregion
 
 
-
-
-
-
-    private void assertEqualCookies(Cookie expected, List<Cookie> real) {
-        assertEquals(expected.getMaxAge(), real.get(0).getMaxAge());
-        assertEquals(expected.getName(), real.get(0).getName());
-        assertEquals(expected.getValue(), real.get(0).getValue());
-    }
 }

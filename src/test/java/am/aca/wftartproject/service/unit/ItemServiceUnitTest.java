@@ -8,10 +8,8 @@ import am.aca.wftartproject.exception.service.ServiceException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.PurchaseHistory;
 import am.aca.wftartproject.model.ShoppingCard;
-import am.aca.wftartproject.service.BaseUnitTest;
-import am.aca.wftartproject.service.ItemService;
-import am.aca.wftartproject.service.PurchaseHistoryService;
-import am.aca.wftartproject.service.ShoppingCardService;
+import am.aca.wftartproject.model.User;
+import am.aca.wftartproject.service.*;
 import am.aca.wftartproject.service.impl.ItemServiceImpl;
 import am.aca.wftartproject.util.AssertTemplates;
 import org.junit.After;
@@ -39,7 +37,7 @@ import static org.mockito.Mockito.*;
  * Created by ASUS on 24-Jun-17
  */
 public class ItemServiceUnitTest extends BaseUnitTest {
-
+    private User testUser;
     private Item testItem;
     private ShoppingCard shoppingCard;
     private PurchaseHistory purchaseHistory;
@@ -50,12 +48,12 @@ public class ItemServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private ItemDao itemDaoMock;
-
     @Mock
     private ShoppingCardService shoppingCardServiceMock;
-
     @Mock
     private PurchaseHistoryService purchaseHistoryServiceMock;
+    @Mock
+    private UserService userServiceMock;
 
     @Before
     public void beforeTest() {
@@ -1052,12 +1050,15 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
         doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
         doNothing().when(itemDaoMock).updateItem(anyLong(), any(Item.class));
+        doReturn(testUser).when(userServiceMock).findUser(argument.capture());
+        doNothing().when(userServiceMock).sendEmailAfterBuyingItem(any());
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
         assertEquals(buyerId, argument.getAllValues().get(0));
         assertEquals(shoppingCard.getId(), argument.getAllValues().get(1));
+        assertEquals(buyerId, argument.getAllValues().get(2));
         assertEqualShoppingCards(shoppingCard, argument1.getValue());
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
     }
@@ -1113,12 +1114,15 @@ public class ItemServiceUnitTest extends BaseUnitTest {
         doNothing().when(shoppingCardServiceMock).updateShoppingCard(argument.capture(), argument1.capture());
         doNothing().when(purchaseHistoryServiceMock).addPurchase(argument2.capture());
         doNothing().when(itemDaoMock).updateItem(argument.capture(), argument3.capture());
+        doReturn(testUser).when(userServiceMock).findUser(argument.capture());
+        doNothing().when(userServiceMock).sendEmailAfterBuyingItem(any());
 
         // Test method
         itemService.itemBuying(testItem, buyerId);
 
         assertEquals(buyerId, argument.getAllValues().get(0));
         assertEquals(shoppingCard.getId(), argument.getAllValues().get(1));
+        assertEquals(buyerId, argument.getAllValues().get(2));
         assertEqualShoppingCards(shoppingCard, argument1.getValue());
         assertEqualPurchaseHistory(purchaseHistory, argument2.getValue());
         assertEquals(testItem.getArtistId(), argument.getAllValues().get(2));

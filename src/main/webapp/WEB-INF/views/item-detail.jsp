@@ -12,7 +12,6 @@
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
 
 
-
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
 <!--[if IE 8 ]> <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
@@ -71,14 +70,14 @@
 <!-- **Wrapper** -->
 <div class="wrapper">
     <div class="inner-wrapper">
-        <jsp:include page="header.jsp" />
+        <jsp:include page="header.jsp"/>
         <div id="main">
             <div class="breadcrumb"><!-- *BreadCrumb Starts here** -->
                 <div class="container">
                     <h2>Product <span>Detail</span></h2>
                     <div class="user-summary">
                         <div class="account-links">
-                            <a href="#">My Account</a>
+                            <a href="${pageContext.request.contextPath}/account">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
@@ -97,16 +96,19 @@
                     <div class="cart-wrapper"><!-- *cart-wrapper starts here** -->
                         <div class="dt-sc-three-fifth column first">
                             <div class="cart-thumb">
-                                <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
-                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}" alt="" title="Acrylic">
+                                <a data-fancybox="gallery"
+                                   href="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}">
+                                    <img src="${pageContext.request.contextPath}/${itemDetail.photoURL[0]}" alt=""
+                                         title="Acrylic">
                                 </a>
                             </div>
                             <ul class="thumblist">
                                 <c:forEach items="${itemDetail.photoURL}" var="itemElement" begin="1">
                                     <li>
-                                        <a data-fancybox="gallery" href="${pageContext.request.contextPath}/${itemElement}" class="product">
+                                        <a data-fancybox="gallery"
+                                           href="${pageContext.request.contextPath}/${itemElement}" class="product">
                                             <img src="${pageContext.request.contextPath}/${itemElement}"
-                                                alt="" height="150" width="150" title=""></a>
+                                                 alt="" height="150" width="150" title=""></a>
                                     </li>
                                 </c:forEach>
                             </ul>

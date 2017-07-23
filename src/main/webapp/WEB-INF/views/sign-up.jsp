@@ -50,9 +50,7 @@
 			</header> <!-- .cd-pricing-header -->
 
 			<div class="cd-pricing-features">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Fusce ut ante quis sem pretium viverra.
-				Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.
+				Sign up as buyer and get your artwork
 			</div> <!-- .cd-pricing-features -->
 
 			<footer class="cd-pricing-footer">
@@ -67,9 +65,7 @@
 			</header> <!-- .cd-pricing-header -->
 
 			<div class="cd-pricing-features">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Fusce ut ante quis sem pretium viverra.
-				Aliquam sit amet ligula dignissim, vestibulum mi quis, congue lorem.
+				Sign up as artist and show the world your works
 			</div> <!-- .cd-pricing-features -->
 
 			<footer class="cd-pricing-footer1">

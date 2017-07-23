@@ -121,7 +121,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
             LOGGER.warn("Failed to find recently added items: %s");
             return null;
         } catch (DataAccessException e) {
-            String error = "Failed to get ItemsByTitle: %s";
+            String error = "Failed to get recently added items: %s";
             LOGGER.error(String.format(error, e.getMessage()));
             throw new DAOException(error, e);
         }

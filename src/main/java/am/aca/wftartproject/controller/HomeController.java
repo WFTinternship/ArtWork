@@ -30,7 +30,7 @@ public class HomeController {
 
     @RequestMapping(value = {"/", "index"})
     public ModelAndView welcome(HttpServletRequest request) {
-        HttpSession session;
+        HttpSession session = request.getSession(true);
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
 
@@ -47,16 +47,15 @@ public class HomeController {
         if (userEmailFromCookie != null) {
             if (artistService.findArtist(userEmailFromCookie) != null) {
                 Artist artist = artistService.findArtist(userEmailFromCookie);
-                session = request.getSession(true);
                 session.setAttribute("user", artist);
             } else {
                 if (userService.findUser(userEmailFromCookie) != null) {
                     User user = userService.findUser(userEmailFromCookie);
-                    session = request.getSession(true);
                     session.setAttribute("user", user);
                 }
             }
         }
+
         return new ModelAndView("index");
     }
 }

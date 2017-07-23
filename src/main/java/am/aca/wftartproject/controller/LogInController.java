@@ -49,10 +49,8 @@ public class LogInController {
 
             if (artistFromDB != null) {
                 setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
-            } else if (userFromDB != null) {
-                setAttributeInSessionAndCreateCookie(userFromDB, response, session);
             } else {
-                throw new RuntimeException();
+                setAttributeInSessionAndCreateCookie(userFromDB, response, session);
             }
 
             mav = new ModelAndView("redirect:/index");

@@ -1,6 +1,11 @@
 package am.aca.wftartproject.util;
 
 import am.aca.wftartproject.model.*;
+import junit.framework.TestCase;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.Cookie;
+import java.util.List;
 
 import static am.aca.wftartproject.util.DateHelper.dateComparison;
 import static org.junit.Assert.assertArrayEquals;
@@ -51,5 +56,19 @@ public class AssertTemplates {
         assertEquals(expectedPurchaseHistory.getUserId(), actualPurchaseHistory.getUserId());
         assertTrue(dateComparison(expectedPurchaseHistory.getPurchaseDate(), actualPurchaseHistory.getPurchaseDate()));
 //        assertEquals(expectedPurchaseHistory.getPurchaseDate().getTime() / 1000000000, actualPurchaseHistory.getPurchaseDate().getTime() / 1000000000);
+    }
+
+    public static void assertEqualCookies(Cookie expected, List<Cookie> real) {
+        TestCase.assertEquals(expected.getMaxAge(), real.get(0).getMaxAge());
+        TestCase.assertEquals(expected.getName(), real.get(0).getName());
+        TestCase.assertEquals(expected.getValue(), real.get(0).getValue());
+    }
+
+    public static void assertEqualModelAndViews(ModelAndView expected, ModelAndView real) {
+        TestCase.assertEquals(expected.getViewName(), real.getViewName());
+        TestCase.assertEquals(expected.getView(), real.getView());
+        TestCase.assertEquals(expected.getModel(), real.getModel());
+        TestCase.assertEquals(expected.getModelMap(), real.getModelMap());
+        TestCase.assertEquals(expected.getStatus(), real.getStatus());
     }
 }

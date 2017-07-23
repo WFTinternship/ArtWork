@@ -72,7 +72,7 @@
                     <h2>Shop <span>Art</span></h2>
                     <div class="user-summary">
                         <div class="account-links">
-                            <a href="#">My Account</a>
+                            <a href="${pageContext.request.contextPath}/account">My Account</a>
                             <a href="#">Checkout</a>
                         </div>
                         <div class="cart-count">
@@ -86,7 +86,7 @@
                 <div class="container">
                     <div class="main-title animate" data-animation="pullDown" data-delay="100">
                         <h3> Shop </h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+                        <p>Discover new work by emerging artists from around the world</p>
                     </div>
                     <c:if test="${message!=null}">
                         <h5 style="color:red;" >${message}</h5>
@@ -200,7 +200,7 @@
                                 <!-- **product-container - Starts** -->
                                 <div class="product-container">
                                     <a href="item-detail/${itemElement.id}">
-                                        <div class="product-thumb"><img src="${itemElement.photoURL[0]}" alt="image"/>
+                                        <div class="product-thumb"><img src="${itemElement.photoURL[0]}" width="250" alt="image"/>
                                         </div>
                                     </a>
                                     <!-- **product-title - Starts** -->

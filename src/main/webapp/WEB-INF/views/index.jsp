@@ -80,8 +80,8 @@
                 <div class="fullwidth-section"> <!-- **Full-width-section Starts Here** -->
                     <div class="container">
                         <div class="main-title animate" data-animation="pullDown" data-delay="100">
-                            <h2 class="aligncenter"> Portfolio </h2>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </p>
+                            <h2 class="aligncenter"> find your inspiration </h2>
+                            <p> Discover new work by emerging artists from around the world </p>
                         </div>
                     </div>
                     <div class="dt-sc-sorting-container">
@@ -466,7 +466,7 @@
                     <div class="copyright">
                     
                         <ul class="footer-links">
-                            <li><a href="#">Contact us</a></li>
+                            <li><a href="${pageContext.request.contextPath}/contact">Contact us</a></li>
                             <li><a href="#">Privacy policy</a></li>
                             <li><a href="#">Terms of use</a></li>
                             <li><a href="#">Faq</a></li>                    
