@@ -9,7 +9,7 @@
 
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 <c:set var="item" value='<%=request.getAttribute("item")%>'/>
-<c:set var="message" value='<%=session.getAttribute("message")%>'/>
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
 
 <!Doctype html>
 <!--[if IE 7 ]> <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
@@ -133,7 +133,7 @@
                                                 <%----%>
                                                 <%--</div>--%>
 
-                                                <form:form action="${pageContext.request.contextPath}/additem" method="post" id="form2"
+                                                <form:form action="${pageContext.request.contextPath}/add-item" method="post" id="form2"
                                                       enctype="multipart/form-data">
                                                     <%--<div class="form-group">--%>
                                                     <%--<label for="imageUpload">Choose Image</label>--%>
@@ -164,12 +164,12 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
                                                         <input type="text" name="title" class="form-control"
-                                                               id="exampleInput1" placeholder="Brennan Doe">
+                                                               id="exampleInput1" placeholder="" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput2">Description</label>
                                                         <input type="text" name="description" class="form-control"
-                                                               id="exampleInput2" placeholder="write description">
+                                                               id="exampleInput2" placeholder="" required>
                                                     </div>
                                                     <label for="exampleInput171">Art Type</label>
                                                     <select class="shop-dropdown" name="type" id="exampleInput171">
@@ -182,7 +182,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
                                                         <input type="text" name="price" class="form-control"
-                                                               id="exampleInput3" placeholder="100$" value="${item.price}">
+                                                               id="exampleInput3" placeholder=""  required>
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>
                                                 </form:form>

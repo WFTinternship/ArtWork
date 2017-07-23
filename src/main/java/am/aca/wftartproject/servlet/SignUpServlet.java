@@ -82,7 +82,7 @@ public class SignUpServlet extends HttpServlet {
             } else {
                 artistService.addArtist(artistFromRequest);
             }
-            page = "/index";
+            page = "/home";
         } catch (RuntimeException e) {
             String errorMessage = "The entered info is not correct";
             request.setAttribute("errorMessage", errorMessage);

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +34,9 @@ public class AccountController {
     private HttpSession session;
     private UserService userService;
     private ArtistService artistService;
-    private PurchaseHistoryService purchaseHistoryService;
     private ItemService itemService;
+    private PurchaseHistoryService purchaseHistoryService;
+    private static final String MESSAGE_ATTR = "message";
 
     @Autowired
     public AccountController(UserService userService, ArtistService artistService,
@@ -46,7 +48,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = {"/account"})
-    public ModelAndView accountInformation(HttpServletRequest request) {
+    public ModelAndView accountInformation(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mv = new ModelAndView();
         session = request.getSession();
         String page = "account";
@@ -76,9 +78,8 @@ public class AccountController {
                 }
             }
         } catch (RuntimeException e) {
-            String errorMessage = "There is problem with the info retrieving";
-            page = "redirect:/index";
-            request.getSession().setAttribute("message", errorMessage);
+            page = "redirect:/home";
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, "There is problem with the info retrieving");
         }
         mv.setViewName(page);
         return mv;
@@ -101,22 +102,23 @@ public class AccountController {
 
     @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST)
     public ModelAndView editProfileProcess(HttpServletRequest request,
+                                           RedirectAttributes redirectAttributes,
                                            @RequestParam(value = "image", required = false) MultipartFile image,
                                            @RequestParam(value = "editBlock") String command) throws IOException {
         session = request.getSession();
-        ModelAndView modelAndView = new ModelAndView("edit-profile");
+        ModelAndView modelAndView = new ModelAndView("redirect:/edit-profile");
         AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
 
         // Perform user profile information editing based on chosen command
         switch (command) {
             case ("persInfo"):
-                changePersonalInfo(abstractUser, request, modelAndView);
+                changePersonalInfo(abstractUser, request, modelAndView, redirectAttributes);
                 break;
             case ("password"):
-                changePassword(abstractUser, request, modelAndView);
+                changePassword(abstractUser, request, modelAndView, redirectAttributes);
                 break;
             case ("avatar"):
-                changeProfilePicture((Artist) abstractUser, modelAndView, image);
+                changeProfilePicture((Artist) abstractUser, modelAndView, image, redirectAttributes);
                 break;
         }
         return modelAndView;
@@ -161,11 +163,12 @@ public class AccountController {
 
     @RequestMapping(value = {"/add-item"}, method = RequestMethod.POST)
     public ModelAndView addItemProcess(HttpServletRequest request,
+                                       RedirectAttributes redirectAttributes,
                                        @RequestParam(value = "files", required = false) MultipartFile[] image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
         session = request.getSession();
         AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
-        String page = "add-item";
+        String page = "redirect:/add-item";
         String message;
         Item item = null;
 
@@ -187,12 +190,10 @@ public class AccountController {
             message = "Your ArtWork has been successfully added, Now you can see it in 'My ArtWork' page";
         } catch (InvalidEntryException e) {
             message = "There are invalid fields, please fill them correctly and try again!!!";
-            page = "redirect:/add-item";
         } catch (RuntimeException e) {
             message = "There is problem in item addition";
-            page = "redirect:/add-item";
         }
-        request.getSession().setAttribute("message", message);
+        redirectAttributes.addFlashAttribute(MESSAGE_ATTR, message);
         modelAndView.setViewName(page);
 
         return modelAndView;
@@ -239,6 +240,7 @@ public class AccountController {
 
     @RequestMapping(value = "/edit-item/{id}", method = RequestMethod.POST)
     public ModelAndView editItemProcess(HttpServletRequest request,
+                                        RedirectAttributes redirectAttributes,
                                         @PathVariable("id") Integer id,
                                         @RequestParam("title") String title,
                                         @RequestParam("description") String description,
@@ -266,8 +268,7 @@ public class AccountController {
         } catch (ServiceException e) {
             message = "Failed to update item info. Please try again";
         }
-
-        mv.addObject("message", message);
+        redirectAttributes.addFlashAttribute(MESSAGE_ATTR, message);
         mv.addObject("item", item);
 
         return mv;
@@ -276,8 +277,10 @@ public class AccountController {
 
     @RequestMapping(value = {"/deleteItem/{id}"}, method = RequestMethod.GET)
     public ModelAndView deleteItem(HttpServletRequest request,
+                                   RedirectAttributes redirectAttributes,
                                    @PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("redirect:/my-works");
+        String message;
         session = request.getSession();
         AbstractUser abstractUser = (AbstractUser) session.getAttribute("user");
 
@@ -289,19 +292,24 @@ public class AccountController {
         // Delete item from artist list
         try {
             itemService.deleteItem(id);
-            session.setAttribute("message", "Your ArtWork has been successfully deleted");
+            message = "Your ArtWork has been successfully deleted";
         } catch (RuntimeException e) {
-            String errorMessage = "There is problem with item deletion. Please try again";
-            session.setAttribute("message", errorMessage);
+            message = "There is problem with item deletion. Please try again";
         }
+        redirectAttributes.addFlashAttribute(MESSAGE_ATTR, message);
         return modelAndView;
     }
 
 
-    private void changePersonalInfo(AbstractUser abstractUser, HttpServletRequest request, ModelAndView modelAndView) {
+    private void changePersonalInfo(AbstractUser abstractUser, HttpServletRequest request,
+                                    ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
         User user = null;
         Artist artist = null;
+        String page;
+        String message;
+        session = request.getSession();
 
+        // Get client changed firstname, lastname and age
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         int age = 0;
@@ -309,6 +317,7 @@ public class AccountController {
             age = Integer.parseInt(request.getParameter("age"));
         }
 
+        // Set gotten user/artist info to appropriate object
         if (abstractUser instanceof User) {
             user = (User) abstractUser;
             user.setFirstName(firstName)
@@ -323,23 +332,28 @@ public class AccountController {
             artist.setSpecialization(artistSpecialization);
         }
 
+        // Update database info with new values
         try {
             if (user != null) {
                 userService.updateUser(user.getId(), user);
-                request.getSession().setAttribute("user", user);
+                session.setAttribute("user", user);
             } else {
                 artistService.updateArtist(artist.getId(), artist);
-                request.getSession().setAttribute("user", artist);
+                session.setAttribute("user", artist);
             }
-            modelAndView.addObject("message", "You have successfully updated your profile info");
+            message = "You have successfully updated your profile info";
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
-            modelAndView.addObject("message", errorMessage);
+            message = "The entered info is not correct";
         }
+        redirectAttributes.addFlashAttribute(MESSAGE_ATTR, message);
     }
 
-    private void changePassword(AbstractUser tempUser, HttpServletRequest request, ModelAndView modelAndView) {
+    private void changePassword(AbstractUser tempUser, HttpServletRequest request,
+                                ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
+        String page;
+        String message;
         String newPassword = null;
+
         if (request.getParameter("oldpassword") != null &&
                 request.getParameter("oldpassword").equals(tempUser.getPassword()) &&
                 request.getParameter("newpassword") != null && request.getParameter("retypepassword") != null
@@ -355,29 +369,27 @@ public class AccountController {
                 artistService.updateArtist(tempUser.getId(), (Artist) tempUser);
             }
             request.getSession().setAttribute("user", tempUser);
-            modelAndView.addObject("message", "You have successfully updated your password");
+            message = "You have successfully updated your password";
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
-            modelAndView.addObject("message", errorMessage);
+            message = "The entered info is not correct";
         }
+        redirectAttributes.addFlashAttribute(MESSAGE_ATTR, message);
     }
 
-    private void changeProfilePicture(Artist artist, ModelAndView modelAndView, MultipartFile image) throws IOException {
+    private void changeProfilePicture(Artist artist, ModelAndView modelAndView,
+                                      MultipartFile image, RedirectAttributes redirectAttributes) throws IOException {
         try {
             if ((image) != null) {
                 byte[] imageBytes = image.getBytes();
                 artist.setArtistPhoto(imageBytes);
+                artistService.updateArtist(artist.getId(), artist);
+                modelAndView.addObject("user", artist);
+                redirectAttributes.addFlashAttribute(MESSAGE_ATTR, "You have successfully updated your profile picture");
             } else {
                 throw new RuntimeException();
             }
-
-            artistService.updateArtist(artist.getId(), artist);
-
-            modelAndView.addObject("user", artist);
-            modelAndView.addObject("message", "You have successfully updated your profile picture");
         } catch (RuntimeException e) {
-            String errorMessage = "The entered info is not correct";
-            modelAndView.addObject("message", errorMessage);
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, "The entered info is not correct");
         }
     }
 
@@ -390,7 +402,8 @@ public class AccountController {
                 && !request.getParameter("type").equals("-1");
     }
 
-    private Item getItemFromRequest(HttpServletRequest request, MultipartFile[] image, AbstractUser abstractUser) throws IOException {
+    private Item getItemFromRequest(HttpServletRequest request, MultipartFile[] image,
+                                    AbstractUser abstractUser) throws IOException {
         Item item = new Item();
         List<String> photoUrl = new ArrayList<>();
 

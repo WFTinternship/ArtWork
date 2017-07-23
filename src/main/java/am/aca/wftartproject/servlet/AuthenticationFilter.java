@@ -32,7 +32,7 @@ public class AuthenticationFilter implements Filter {
 
 //        if (session == null && !uri.endsWith("index")) {
 //            this.context.log("Unauthorized access request");
-//            res.sendRedirect("/index");
+//            res.sendRedirect("/home");
 //        } else
 
         if (session.getAttribute("user") == null && uri.endsWith("account")) {

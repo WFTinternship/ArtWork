@@ -28,7 +28,7 @@ public class HomeController {
         this.artistService = artistService;
     }
 
-    @RequestMapping(value = {"/", "index"})
+    @RequestMapping(value = {"/", "home"})
     public ModelAndView welcome(HttpServletRequest request) {
         HttpSession session;
         Cookie[] cookies = request.getCookies();
@@ -57,6 +57,6 @@ public class HomeController {
                 }
             }
         }
-        return new ModelAndView("index");
+        return new ModelAndView("home");
     }
 }

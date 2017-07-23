@@ -4,6 +4,7 @@ import am.aca.wftartproject.controller.BaseIntegrationTest;
 import am.aca.wftartproject.controller.LogInController;
 import am.aca.wftartproject.controller.util.TestHttpServletRequest;
 import am.aca.wftartproject.controller.util.TestHttpServletResponse;
+import am.aca.wftartproject.controller.util.TestRedirectAttributes;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +46,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
 
     private TestHttpServletRequest testRequest;
     private TestHttpServletResponse testResponse;
+    private TestRedirectAttributes testRedirectAttributes;
     private User testUser;
     private Artist testArtist;
 
@@ -54,6 +57,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     public void setUp() {
         testRequest = new TestHttpServletRequest();
         testResponse = new TestHttpServletResponse();
+        testRedirectAttributes = new TestRedirectAttributes();
         testUser = createTestUser();
         testArtist = createTestArtist();
         userService.addUser(testUser);
@@ -102,7 +106,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_UserLoginSuccess() {
@@ -117,7 +121,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         emailCookie.setMaxAge(3600);
 
         // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse);
+        ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse, testRedirectAttributes);
 
         // Assertions
         assertEquals(modelAndView.getView(), new ModelAndView("index").getView());
@@ -126,7 +130,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_ArtistLoginSuccess() {
@@ -141,7 +145,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         emailCookie.setMaxAge(3600);
 
         // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse);
+        ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse, testRedirectAttributes);
 
         // Assertions
         assertEquals(modelAndView.getView(), new ModelAndView("index").getView());
@@ -150,21 +154,24 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_Failure() {
         testUser.setPassword("fake password");
+        String message = "The user with the entered username and password does not exists.";
 
         // Put testArtist email and password to testRequest
         testRequest.getParameterMap().put("email", new String[]{testUser.getEmail()});
         testRequest.getParameterMap().put("password", new String[]{testUser.getPassword()});
+        testRedirectAttributes.addFlashAttribute("message",message);
 
         // Test method
-        logInController.loginProcess(testRequest, testResponse);
+        logInController.loginProcess(testRequest, testResponse, testRedirectAttributes);
 
         // Check errorMessage
-        assertEquals(testRequest.getAttribute("message"), "The user with the entered username and password does not exists.");
+        assertEquals(testRedirectAttributes.getFlashAttributes().get("message"),message);
+//        assertEquals(testRequest.getAttribute("message"), "The user with the entered username and password does not exists.");
     }
 
     /**

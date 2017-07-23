@@ -14,7 +14,7 @@
 <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
     <div id="header" class="header">
         <div class="container menu-container">
-            <a class="logo" href="${pageContext.request.contextPath}/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+            <a class="logo" href="${pageContext.request.contextPath}/home"><img alt="Logo" src="../../resources/images/logo.png"></a>
 
             <a href="#" class="menu-trigger">
                 <span></span>
@@ -28,7 +28,7 @@
             <span class="dt-menu-toggle-icon"></span>
         </div>
         <ul class="menu type1"><!-- Menu Starts -->
-            <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/index">Home <span class="fa fa-home"></span></a>
+            <li class="current_page_item menu-item-simple-parent"><a href="${pageContext.request.contextPath}/home">Home <span class="fa fa-home"></span></a>
                 <%--<ul class="sub-menu">--%>
                     <%--<li class="current_page_item"><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>--%>
                     <%--<li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>--%>
