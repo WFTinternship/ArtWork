@@ -1,4 +1,4 @@
-package am.aca.wftartproject.dao.implsimplejdbc;
+package am.aca.wftartproject.dao.implplainjdbc;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;

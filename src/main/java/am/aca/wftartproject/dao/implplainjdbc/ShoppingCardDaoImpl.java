@@ -1,4 +1,4 @@
-package am.aca.wftartproject.dao.implsimplejdbc;
+package am.aca.wftartproject.dao.implplainjdbc;
 
 import am.aca.wftartproject.dao.ShoppingCardDao;
 import am.aca.wftartproject.exception.dao.DAOException;

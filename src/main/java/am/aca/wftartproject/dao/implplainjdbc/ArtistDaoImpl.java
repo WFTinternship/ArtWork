@@ -1,4 +1,4 @@
-package am.aca.wftartproject.dao.implsimplejdbc;
+package am.aca.wftartproject.dao.implplainjdbc;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.exception.dao.DAOException;
