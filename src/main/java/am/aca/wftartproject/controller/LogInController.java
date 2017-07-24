@@ -56,7 +56,7 @@ public class LogInController {
 
             if (artistFromDB != null) {
                 setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
-            } else if (userFromDB != null) {
+            } else {
                 setAttributeInSessionAndCreateCookie(userFromDB, response, session);
             }
             page = "redirect:/home";
@@ -65,6 +65,7 @@ public class LogInController {
                     "The user with the entered username and password does not exists.");
             page = "redirect:/login";
         }
+
         mav.setViewName(page);
         return mav;
     }

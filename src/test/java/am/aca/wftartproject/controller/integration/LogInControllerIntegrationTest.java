@@ -4,7 +4,7 @@ import am.aca.wftartproject.controller.BaseIntegrationTest;
 import am.aca.wftartproject.controller.LogInController;
 import am.aca.wftartproject.util.controller.TestHttpServletRequest;
 import am.aca.wftartproject.util.controller.TestHttpServletResponse;
-import am.aca.wftartproject.controller.util.TestRedirectAttributes;
+import am.aca.wftartproject.util.controller.TestRedirectAttributes;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
@@ -34,6 +34,11 @@ import static junit.framework.TestCase.assertTrue;
  * @author surik
  */
 public class LogInControllerIntegrationTest extends BaseIntegrationTest {
+    private TestHttpServletRequest testRequest;
+    private TestHttpServletResponse testResponse;
+    private TestRedirectAttributes testRedirectAttributes;
+    private User testUser;
+    private Artist testArtist;
 
     @Autowired
     private LogInController logInController;
@@ -43,12 +48,6 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
     private ArtistService artistService;
     @Autowired
     private ShoppingCardService shoppingCardService;
-
-    private TestHttpServletRequest testRequest;
-    private TestHttpServletResponse testResponse;
-    private TestRedirectAttributes testRedirectAttributes;
-    private User testUser;
-    private Artist testArtist;
 
     /**
      * Creates testRequest, testResponse, testUser and testArtist for test
@@ -125,7 +124,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse, testRedirectAttributes);
 
         // Assertions
-        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/home"));
         assertEqualCookies(emailCookie, testResponse.getCookieList());
         assertEqualUsers((User) testRequest.getSession().getAttribute("user"), userFromDB);
     }
@@ -149,7 +148,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = logInController.loginProcess(testRequest, testResponse, testRedirectAttributes);
 
         // Assertions
-        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/home"));
         assertEqualCookies(emailCookie, testResponse.getCookieList());
         assertEqualArtists((Artist) testRequest.getSession().getAttribute("user"), artistFromDB);
     }
@@ -166,14 +165,13 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         // Put testArtist email and password to testRequest
         testRequest.getParameterMap().put("email", new String[]{testUser.getEmail()});
         testRequest.getParameterMap().put("password", new String[]{testUser.getPassword()});
-        testRedirectAttributes.addFlashAttribute("message",message);
+//        testRedirectAttributes.addFlashAttribute("message", message);
 
         // Test method
         logInController.loginProcess(testRequest, testResponse, testRedirectAttributes);
 
         // Check errorMessage
-        assertEquals(testRedirectAttributes.getFlashAttributes().get("message"),message);
-//        assertEquals(testRequest.getAttribute("message"), "The user with the entered username and password does not exists.");
+        assertEquals(testRedirectAttributes.getFlashAttributes().get("message"), message);
     }
 
     /**
@@ -191,7 +189,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
         // Assertions
         assertEqualCookies(emptyCookie, testResponse.getCookieList());
         assertTrue(testRequest.getSession().getAttribute("user") == null);
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
     }
 
     @Test
@@ -203,7 +201,7 @@ public class LogInControllerIntegrationTest extends BaseIntegrationTest {
 
         // Assertions
         assertTrue(testResponse.getCookieList().isEmpty());
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
     }
 
 

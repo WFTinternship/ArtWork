@@ -56,7 +56,7 @@ public class SignUpController {
                                 @RequestParam("userPasswordRepeat") String userPasswordRepeat) {
         ModelAndView mv = new ModelAndView();
         session = request.getSession(true);
-        String page = "index";
+        String page = "home";
 
         try {
             // Get new user info from UI
@@ -87,13 +87,13 @@ public class SignUpController {
 
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
-                                  RedirectAttributes redirectAttributes,
-                                  @ModelAttribute("user") User user,
+                                  RedirectAttributes redirectAttributes
+                                  /*@ModelAttribute("user") User user*/,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         ModelAndView mv = new ModelAndView();
         session = request.getSession();
         Artist artistFromRequest = new Artist();
-        String page = "index";
+        String page = "home";
 
         try {
             // Check artist info validation and

@@ -315,6 +315,11 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidEntryException("Invalid item");
         }
 
+        if (item.getStatus()) {
+            LOGGER.error(String.format("Item is not valid: %s", item));
+            throw new InvalidEntryException("Item is sold");
+        }
+
         // Withdraw money from payment method
         try {
             ShoppingCard shoppingCard = shoppingCardService.getShoppingCardByBuyerId(buyerId);

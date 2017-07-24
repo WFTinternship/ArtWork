@@ -1,4 +1,4 @@
-package am.aca.wftartproject.controller.util;
+package am.aca.wftartproject.util.controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

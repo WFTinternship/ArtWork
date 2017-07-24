@@ -220,7 +220,11 @@ public class UserServiceImpl implements UserService {
         }
 
         String subject = "Order Confirmation";
-        String emailText = "Easy~";
+        String emailText = "Thank you for ordering the featured selection this month.\n" +
+                "\n" +
+                "This is an automatically generated message to confirm receipt of your order via the Internet. You do not need to reply to this e-mail, but you may wish to save it for your records.\n" +
+                "\n" +
+                "Your order should arrive in four to six weeks. Thank you.";
 
         EmailUtil.sendEmail(abstractUser, subject, emailText);
     }

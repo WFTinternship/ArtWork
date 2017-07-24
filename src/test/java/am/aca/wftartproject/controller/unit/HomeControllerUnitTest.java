@@ -80,7 +80,7 @@ public class HomeControllerUnitTest extends BaseUnitTest {
         ModelAndView modelAndView = homeController.welcome(testRequestMock);
 
         // Assertions
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertNull(testSession.getAttribute("user"));
     }
 
@@ -100,7 +100,7 @@ public class HomeControllerUnitTest extends BaseUnitTest {
         ModelAndView modelAndView = homeController.welcome(testRequestMock);
 
         // Assertions
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertNull(testSession.getAttribute("user"));
     }
 
@@ -124,7 +124,7 @@ public class HomeControllerUnitTest extends BaseUnitTest {
         ModelAndView modelAndView = homeController.welcome(testRequestMock);
 
         // Assertions
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertEqualArtists(testArtist, (Artist) testSession.getAttribute("user"));
         assertEquals(testArtist.getEmail(), argumentCaptor.getValue());
     }
@@ -150,7 +150,7 @@ public class HomeControllerUnitTest extends BaseUnitTest {
         ModelAndView modelAndView = homeController.welcome(testRequestMock);
 
         // Assertions
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertEqualUsers(testUser, (User) testSession.getAttribute("user"));
         assertEquals(testUser.getEmail(), argumentCaptor.getValue());
     }
@@ -172,7 +172,7 @@ public class HomeControllerUnitTest extends BaseUnitTest {
         // Test method
         ModelAndView modelAndView = homeController.welcome(testRequestMock);
 
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertNull(testSession.getAttribute("user"));
     }
 

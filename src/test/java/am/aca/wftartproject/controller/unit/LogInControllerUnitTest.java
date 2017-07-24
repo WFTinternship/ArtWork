@@ -8,6 +8,7 @@ import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.util.controller.TestRedirectAttributes;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +39,10 @@ public class LogInControllerUnitTest extends BaseUnitTest {
     private User testUser;
     private Artist testArtist;
     private HttpSession testSession;
+    private RedirectAttributes testRedirectAttributes;
 
     @InjectMocks
     private LogInController logInController;
-
     @Mock
     private UserService userServiceMock;
     @Mock
@@ -50,9 +51,6 @@ public class LogInControllerUnitTest extends BaseUnitTest {
     private HttpServletResponse testResponseMock;
     @Mock
     private HttpServletRequest testRequestMock;
-    @Mock
-    private RedirectAttributes testRedirectAttributes;
-
 
     /**
      * Creates testSession, testArtist and testUser for test
@@ -65,6 +63,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         // Create testUser and testArtist
         testUser = createTestUser();
         testArtist = createTestArtist();
+        testRedirectAttributes = new TestRedirectAttributes();
     }
 
     @After
@@ -93,7 +92,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         // Test method
         ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
-        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/home"));
         assertEqualUsers((User) testSession.getAttribute("user"), testUser);
         assertEquals(testUser.getEmail(), argumentCaptor.getAllValues().get(0));
         assertEquals(testUser.getPassword(), argumentCaptor.getAllValues().get(1));
@@ -105,6 +104,9 @@ public class LogInControllerUnitTest extends BaseUnitTest {
      */
     @Test
     public void loginProcess_FindUserFromDBForLoginFailed() {
+        // Error message
+        String message = "The user with the entered username and password does not exists.";
+
         // Setup mocks
         doReturn(testSession).when(testRequestMock).getSession(anyBoolean());
         doReturn(testUser.getEmail()).when(testRequestMock).getParameter("email");
@@ -115,7 +117,8 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         // Test method
         ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
-        assertEqualModelAndViews(modelAndView, new ModelAndView("login"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/login"));
+        assertEquals(testRedirectAttributes.getFlashAttributes().get("message"), message);
     }
 
 
@@ -138,35 +141,11 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         // Test method
         ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
-        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/home"));
         assertEqualArtists((Artist) testSession.getAttribute("user"), testArtist);
         assertEquals(testArtist.getEmail(), argumentCaptor.getAllValues().get(0));
         assertEquals(testArtist.getPassword(), argumentCaptor.getAllValues().get(1));
         assertEquals(testUser.getId(), argumentCaptor1.getValue());
-    }
-
-
-    /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
-     */
-    @Test
-    public void loginProcess_findArtistFailed() {
-        // Create argument captor
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-
-        // Setup mocks
-        doReturn(testSession).when(testRequestMock).getSession(anyBoolean());
-        doReturn(testArtist.getEmail()).when(testRequestMock).getParameter("email");
-        doReturn(testArtist.getPassword()).when(testRequestMock).getParameter("password");
-        doReturn(testUser).when(userServiceMock).login(argumentCaptor.capture(), argumentCaptor.capture());
-        doThrow(ServiceException.class).when(artistServiceMock).findArtist(anyLong());
-
-        // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
-
-        assertEqualModelAndViews(modelAndView, new ModelAndView("login"));
-        assertEquals(testArtist.getEmail(), argumentCaptor.getAllValues().get(0));
-        assertEquals(testArtist.getPassword(), argumentCaptor.getAllValues().get(1));
     }
 
 
@@ -181,7 +160,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         // Test method
         ModelAndView modelAndView = logInController.logout(testRequestMock, testResponseMock);
 
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         verify(testResponseMock).addCookie(any());
     }
 
@@ -197,7 +176,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         // Test method
         ModelAndView modelAndView = logInController.logout(testRequestMock, testResponseMock);
 
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         verify(testResponseMock, never()).addCookie(any());
     }
 

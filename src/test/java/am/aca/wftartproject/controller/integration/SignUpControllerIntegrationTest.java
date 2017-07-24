@@ -11,6 +11,7 @@ import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.service.ArtistService;
 import am.aca.wftartproject.service.ShoppingCardService;
 import am.aca.wftartproject.service.UserService;
+import am.aca.wftartproject.util.controller.TestRedirectAttributes;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,13 @@ import static org.junit.Assert.assertNull;
  * @author surik
  */
 public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
+    private TestHttpServletResponse testResponse;
+    private TestHttpServletRequest testRequest;
+    private TestRedirectAttributes testRedirectAttributes;
+    private User testUser;
+    private Artist testArtist;
+    private MultipartFile image;
+
     @Autowired
     private SignUpController signUpController;
     @Autowired
@@ -50,17 +59,12 @@ public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
     @Autowired
     private ShoppingCardService shoppingCardService;
 
-    private TestHttpServletResponse testResponse;
-    private TestHttpServletRequest testRequest;
-    private User testUser;
-    private Artist testArtist;
-    private MultipartFile image;
-
     @Before
     public void setUp() {
         // Create testRequest and testResponse
         testRequest = new TestHttpServletRequest();
         testResponse = new TestHttpServletResponse();
+        testRedirectAttributes = new TestRedirectAttributes();
 
         // Create testUser
         testUser = createTestUser();
@@ -116,7 +120,7 @@ public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see SignUpController#addUser(HttpServletRequest, HttpServletResponse, User, String, String)
+     * @see SignUpController#addUser(HttpServletRequest, HttpServletResponse, RedirectAttributes, User, String, String)
      */
     @Test
     public void addUser_Success() {
@@ -125,7 +129,7 @@ public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
         userEmailCookie.setMaxAge(3600);
 
         // Test method
-        ModelAndView modelAndView = signUpController.addUser(testRequest, testResponse,
+        ModelAndView modelAndView = signUpController.addUser(testRequest, testResponse, testRedirectAttributes,
                 testUser, testUser.getShoppingCard().getShoppingCardType().getType(), testUser.getUserPasswordRepeat());
 
         // Check testUser and its id for not null
@@ -139,29 +143,31 @@ public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
         // Check session and cookie
         assertEqualUsers((User) testRequest.getSession().getAttribute("user"), testUser);
         assertEqualCookies(userEmailCookie, testResponse.getCookieList());
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
     }
 
     /**
-     * @see SignUpController#addUser(HttpServletRequest, HttpServletResponse, User, String, String)
+     * @see SignUpController#addUser(HttpServletRequest, HttpServletResponse, RedirectAttributes, User, String, String)
      */
     @Test
     public void addUser_AddInvalidUserFailure() {
+        // Error message
+        String errorMessage = "There are invalid fields, please fill them all correctly and try again.";
         // Set testUser invalid firstName
         testUser.setFirstName(null);
 
         // Test method
-        ModelAndView modelAndView = signUpController.addUser(testRequest, testResponse,
+        ModelAndView modelAndView = signUpController.addUser(testRequest, testResponse, testRedirectAttributes,
                 testUser, testUser.getShoppingCard().getShoppingCardType().getType(), testUser.getUserPasswordRepeat());
 
         // Assertions
         assertNull(userService.findUser(testUser.getEmail()));
-        assertEquals(testRequest.getSession().getAttribute("message"), "There are invalid fields, please fill them all correctly and try again.");
+        assertEquals(testRedirectAttributes.getFlashAttributes().get("message"), errorMessage);
         assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/signup"));
     }
 
     /**
-     * @see SignUpController#addUser(HttpServletRequest, HttpServletResponse, User, String, String)
+     * @see SignUpController#addUser(HttpServletRequest, HttpServletResponse, RedirectAttributes, User, String, String)
      */
     @Test
     public void addUser_UserExistsFailure() {
@@ -170,41 +176,49 @@ public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
         ShoppingCard shoppingCard = testUser.getShoppingCard();
 
         // Test method
-        ModelAndView modelAndView = signUpController.addUser(testRequest, testResponse,
+        ModelAndView modelAndView = signUpController.addUser(testRequest, testResponse, testRedirectAttributes,
                 testUser, testUser.getShoppingCard().getShoppingCardType().getType(), testUser.getUserPasswordRepeat());
 
         // Set shoppingCard because in addUser method it changed
         testUser.setShoppingCard(shoppingCard);
 
         // Assertions
-        assertEquals(testRequest.getSession().getAttribute("message"), "User already exists");
+        assertNotNull(testRedirectAttributes.getFlashAttributes().get("message"));
         assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/signup"));
     }
 
     /**
-     * @see SignUpController#addArtist(HttpServletRequest, HttpServletResponse, MultipartFile)
+     * @see SignUpController#addArtist(HttpServletRequest, HttpServletResponse, RedirectAttributes, MultipartFile)
      */
     @Test
     public void addArtist_Success() throws IOException {
-/*
         // Create userEmailCookie
         Cookie userEmailCookie = new Cookie("userEmail", testArtist.getEmail());
         userEmailCookie.setMaxAge(3600);
 
-//        testRequest.setAttribute();
+        // Set to testRequest all parameters
+        testRequest.getParameterMap().put("firstName", new String[]{testArtist.getFirstName()});
+        testRequest.getParameterMap().put("lastName", new String[]{testArtist.getLastName()});
+        testRequest.getParameterMap().put("age", new String[]{String.valueOf(testArtist.getAge())});
+        testRequest.getParameterMap().put("email", new String[]{testArtist.getEmail()});
+        testRequest.getParameterMap().put("password", new String[]{testArtist.getPassword()});
+        testRequest.getParameterMap().put("passwordRepeat", new String[]{testArtist.getUserPasswordRepeat()});
+        testRequest.getParameterMap().put("artistSpec", new String[]{testArtist.getSpecialization().getType()});
+        testRequest.getParameterMap().put("paymentType", new String[]{testArtist.getShoppingCard().getShoppingCardType().toString()});
 
         // Test method
-        ModelAndView modelAndView = signUpController.addArtist(testRequest, testResponse, image);
+        ModelAndView modelAndView = signUpController.addArtist(testRequest, testResponse, testRedirectAttributes, image);
 
+        Artist addedArtist = artistService.findArtist(((Artist) testRequest.getSession().getAttribute("user")).getId());
 
-
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
-*/
-
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
+        assertEqualArtists((Artist) testRequest.getSession().getAttribute("user"), testArtist);
+        assertEqualCookies(userEmailCookie, testResponse.getCookieList());
+        assertEqualArtists(testArtist, addedArtist);
     }
 
     /**
-     * @see SignUpController#addArtist(HttpServletRequest, HttpServletResponse, MultipartFile)
+     * @see SignUpController#addArtist(HttpServletRequest, HttpServletResponse, RedirectAttributes, MultipartFile)
      */
     @Test
     public void addArtist_Failure() {

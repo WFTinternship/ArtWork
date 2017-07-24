@@ -97,7 +97,7 @@ public class HomeControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = homeController.welcome(testRequest);
 
         // Check modelAndView and session
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertEqualArtists((Artist) testRequest.getSession().getAttribute("user"), testArtist);
     }
 
@@ -114,7 +114,7 @@ public class HomeControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = homeController.welcome(testRequest);
 
         // Check modelAndView and session
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertEqualUsers((User) testRequest.getSession().getAttribute("user"), testUser);
     }
 
@@ -131,7 +131,7 @@ public class HomeControllerIntegrationTest extends BaseIntegrationTest {
         ModelAndView modelAndView = homeController.welcome(testRequest);
 
         // Check modelAndView and session
-        assertEqualModelAndViews(modelAndView, new ModelAndView("index"));
+        assertEqualModelAndViews(modelAndView, new ModelAndView("home"));
         assertTrue(testRequest.getSession().getAttribute("user") == null);
     }
 
