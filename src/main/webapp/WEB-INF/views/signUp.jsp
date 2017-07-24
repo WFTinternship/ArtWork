@@ -110,7 +110,7 @@
 
 				<div class="half-width">
 					<label for="userEmail">Email</label>
-					<input type="email" id="userEmail" name="email" required autofocus>
+					<input type="email" id="userEmail" name="email" value="" autocomplete="off" required autofocus>
 				</div>
 				
 				<div class="half-width">
@@ -163,7 +163,7 @@
 			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
 		<%--</div>--%>
 
-		<form action="/artistRegister"  method="post" enctype="multipart/form-data" name="regF">
+		<form action="/artistRegister"  method="post" enctype="multipart/form-data"  id="regF">
 			<fieldset>
 				<legend>Account Info</legend>
 
@@ -184,7 +184,7 @@
 
 				<div class="half-width">
 					<label for="artistEmail">Email</label>
-					<input type="email" id="artistEmail" name="email" required autofocus>
+					<input type="email" id="artistEmail" name="email" value="" autocomplete="off"  required autofocus>
 				</div>
 
 				<div class="half-width">
@@ -269,28 +269,91 @@
   		});
   	});
 </script>
-
 <script>
-    function checkExist(){
-        var xmlhttp = new XMLHttpRequest();
-        var username = document.forms["regF"]["email"].value;
-        var url = "exist.jsp?username=" + username;
-        xmlhttp.onreadystatechange = function(){
-            if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-                if(xmlhttp.responseText == "\n\n\n\n\nUser already exists")
-                    document.getElementById("isE").style.color = "red";
-                else
-                    document.getElementById("isE").style.color = "green";
-                document.getElementById("isE").innerHTML = xmlhttp.responseText;
+    $(document).ready(function() {
+        $("#artistEmail").change(function() {
+            //Remove any span after the text field
+            $(".aval,.exists,.wait").remove();
+            //Display a loading gif image
+            $("<span class='wait'></span>").insertAfter("#artistEmail");
+            var artistEmail = $(this).val();
+            if(artistEmail != "") {
+                var len = artistEmail.length;
+                if(len >=5 && len <= 25) {
+                    //Username must be 5 to 10 characters long.
+                    //Change accrodangly yours
+                    $.ajax({
+                        url:"checkUserName",
+                        data:{email:artistEmail},
+                        type:'POST',
+                        success:function(response) {
+                            var resp = $.trim(response);
+                            $(".aval,.exists, .wait").remove();
+                            if(resp == "exists") {
+                                //If username already exists it will display the following message
+                                $("<br><span style='color: red' class='exists'>Email is already exists!</span>").insertAfter("#artistEmail");
+                            } else if(resp == "notexists") {
+                                //If username is available it will display the following message
+                                $("<br> <span style='color: green' class='aval'>Email is available!</span>").insertAfter("#artistEmail");
+                            }
+                        }
+                    });
+                } else {
+                    //If the given username is less than 5 or greater than 10 this warning will display
+                    $(".aval,.exists, .wait").remove();
+                    $("<br><span style='color: red' class='exists'>Email must be 5 to 25 characters long!</span>").insertAfter("#artistEmail");
+                }
+            } else {
+                //If the field is empty then remove any span after the text field
+                $(".aval,.exists, .wait").remove();
             }
+        });
+    });
 
-        };
-        try{
-            xmlhttp.open("GET",url,true);
-            xmlhttp.send();
-        }catch(e){alert("unable to connect to server");
-        }
 </script>
+<script>
+    $(document).ready(function() {
+        $("#userEmail").change(function() {
+            //Remove any span after the text field
+            $(".aval,.exists,.wait").remove();
+            //Display a loading gif image
+            $("<span class='wait'></span>").insertAfter("#userEmail");
+            var userEmail = $(this).val();
+            if(userEmail != "") {
+                var len = userEmail.length;
+                if(len >=5 && len <= 25) {
+                    //Username must be 5 to 10 characters long.
+                    //Change accrodangly yours
+                    $.ajax({
+                        url:"checkUserName",
+                        data:{email:userEmail},
+                        type:'POST',
+                        success:function(response) {
+                            var resp = $.trim(response);
+                            $(".aval,.exists, .wait").remove();
+                            if(resp == "exists") {
+                                //If username already exists it will display the following message
+                                $("<br><span style='color: red' class='exists'>Email is already exists!</span>").insertAfter("#userEmail");
+                            } else if(resp == "notexists") {
+                                //If username is available it will display the following message
+                                $("<br> <span style='color: green' class='aval'>Email is available!</span>").insertAfter("#userEmail");
+                            }
+                        }
+                    });
+                } else {
+                    //If the given username is less than 5 or greater than 10 this warning will display
+                    $(".aval,.exists, .wait").remove();
+                    $("<br><span style='color: red' class='exists'>Email must be 5 to 25 characters long!</span>").insertAfter("#userEmail");
+                }
+            } else {
+                //If the field is empty then remove any span after the text field
+                $(".aval,.exists, .wait").remove();
+            }
+        });
+    });
+
+</script>
+
 </body>
 
 <!-- Mirrored from codyhouse.co/demo/animated-sign-up-flow/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 12:52:12 GMT -->
