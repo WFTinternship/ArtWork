@@ -24,7 +24,6 @@ public class ConnectionPool implements DatabaseConnection {
         return getDBConnection("jdbcUrlTest");
     }
 
-
     private DataSource getDBConnection(String dbUrl) throws SQLException {
         cpds.setJdbcUrl(propertyHelper.getProperties().getProperty(dbUrl));
         cpds.setUser(propertyHelper.getProperties().getProperty("jdbcUserName"));

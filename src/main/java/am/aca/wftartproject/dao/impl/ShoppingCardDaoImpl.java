@@ -34,9 +34,9 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      * @param userId
      * @param shoppingCard
+     * @see ShoppingCardDao#addShoppingCard(Long, ShoppingCard)
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
@@ -72,9 +72,9 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#getShoppingCard(Long)
      * @param id
      * @return
+     * @see ShoppingCardDao#getShoppingCard(Long)
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
@@ -114,9 +114,9 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     }
 
     /**
-     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      * @param id
      * @param shoppingCard
+     * @see ShoppingCardDao#updateShoppingCard(Long, ShoppingCard)
      */
     @Override
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
@@ -164,8 +164,8 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
 
 
     /**
-     * @see ShoppingCardDao#deleteShoppingCard(Long)
      * @param id
+     * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Override
     public Boolean deleteShoppingCard(Long id) {

@@ -39,6 +39,10 @@ public class User extends AbstractUser {
                 ", shoppingCard='" + shoppingCard + '\'' +
                 '}';
     }
+
+
+    //region <UserBuilder>
+
 //    public User(UserInfoBuilder userinfo) {
 //        this.firstName = userinfo.firstName;
 //        this.lastName = userinfo.lastName;
@@ -91,4 +95,6 @@ public class User extends AbstractUser {
 //            return new User(this);
 //        }
 //    }
+
+    //endregion
 }

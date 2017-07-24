@@ -266,7 +266,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         try {
             String query = "UPDATE item SET title=?, description=?, price=?, type=?, status=?, photo_url=? WHERE id=?";
             Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(),
-                    item.getStatus(), item.getPhotoURL().toString().substring(1,item.getPhotoURL().toString().length()-1), item.getId()};
+                    item.getStatus(), item.getPhotoURL().toString().substring(1, item.getPhotoURL().toString().length() - 1), item.getId()};
 
             int rowsAffected = jdbcTemplate.update(query, args);
             if (rowsAffected <= 0) {

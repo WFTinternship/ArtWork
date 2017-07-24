@@ -18,7 +18,6 @@ public class EmailUtil {
     private static final String PASSWORD = "project2017";
 
     public static void sendEmail(AbstractUser abstractUser, String subject, String mailText) {
-
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
