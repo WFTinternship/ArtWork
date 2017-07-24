@@ -9,14 +9,12 @@ import java.util.List;
  */
 public interface PurchaseHistoryDao {
 
-
     /**
-     * Adds purchased item to the springconfig.database.
+     * Adds purchased item to the database.
      *
      * @param purchaseHistory
      */
     void addPurchase(PurchaseHistory purchaseHistory);
-
 
     /**
      * Gets purchase item by userId and itemId
@@ -27,7 +25,6 @@ public interface PurchaseHistoryDao {
      */
     PurchaseHistory getPurchase(Long userId, Long itemId);
 
-
     /**
      * Gets all purchase items by userId
      *
@@ -36,7 +33,6 @@ public interface PurchaseHistoryDao {
      */
     List<PurchaseHistory> getPurchase(Long userId);
 
-
     /**
      * Deletes purchase item by userId and itemId
      *
@@ -44,6 +40,4 @@ public interface PurchaseHistoryDao {
      * @param itemId
      */
     Boolean deletePurchase(Long userId, Long itemId);
-
-
 }

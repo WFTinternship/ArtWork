@@ -17,7 +17,6 @@ public interface ItemDao {
      */
     void addItem(Long artistID, Item item);
 
-
     /**
      * Finds Item by id
      *
@@ -25,7 +24,6 @@ public interface ItemDao {
      * @return
      */
     Item findItem(Long id);
-
 
     /**
      * Gets recently added items
@@ -35,7 +33,6 @@ public interface ItemDao {
      */
     List<Item> getRecentlyAddedItems(int limit);
 
-
     /**
      * Gets all items with the following title.
      *
@@ -44,7 +41,6 @@ public interface ItemDao {
      */
     List<Item> getItemsByTitle(String title);
 
-
     /**
      * Gets all items with the following type.
      *
@@ -52,7 +48,6 @@ public interface ItemDao {
      * @return
      */
     List<Item> getItemsByType(String itemType);
-
 
     /**
      * Gets all items for the given price range.
@@ -63,7 +58,6 @@ public interface ItemDao {
      */
     List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice);
 
-
     /**
      * Gets artist items for the given limit.
      *
@@ -73,7 +67,6 @@ public interface ItemDao {
      * @return
      */
     List<Item> getArtistItems(Long artistId, Long itemId, Long limit);
-
 
     /**
      * Gets available items for sell by artistID.
@@ -90,7 +83,6 @@ public interface ItemDao {
      * @param item
      */
     void updateItem(Long id, Item item);
-
 
     /**
      * Deletes Item by id

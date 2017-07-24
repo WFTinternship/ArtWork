@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class ArtistSpecializationlkpMapper implements RowMapper<ArtistSpecialization> {
     @Override
-    public ArtistSpecialization mapRow(ResultSet resultSet, int i) throws SQLException {
+    public ArtistSpecialization mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         return ArtistSpecialization.valueOf(resultSet.getString("spec_type"));
     }
 }
