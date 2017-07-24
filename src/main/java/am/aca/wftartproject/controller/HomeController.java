@@ -28,9 +28,9 @@ public class HomeController {
         this.artistService = artistService;
     }
 
-    @RequestMapping(value = {"/", "index"})
+    @RequestMapping(value = {"/", "home"})
     public ModelAndView welcome(HttpServletRequest request) {
-        HttpSession session = request.getSession(true);
+        HttpSession session;
         Cookie[] cookies = request.getCookies();
         String userEmailFromCookie = null;
 
@@ -47,15 +47,16 @@ public class HomeController {
         if (userEmailFromCookie != null) {
             if (artistService.findArtist(userEmailFromCookie) != null) {
                 Artist artist = artistService.findArtist(userEmailFromCookie);
+                session = request.getSession(true);
                 session.setAttribute("user", artist);
             } else {
                 if (userService.findUser(userEmailFromCookie) != null) {
                     User user = userService.findUser(userEmailFromCookie);
+                    session = request.getSession(true);
                     session.setAttribute("user", user);
                 }
             }
         }
-
-        return new ModelAndView("index");
+        return new ModelAndView("home");
     }
 }

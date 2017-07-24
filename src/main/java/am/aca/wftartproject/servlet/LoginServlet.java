@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
                 Cookie userEmail = new Cookie("userEmail", userFromDB.getEmail());
                 userEmail.setMaxAge(3600);    // 60 minutes
                 response.addCookie(userEmail);
-                response.sendRedirect("/index");
+                response.sendRedirect("/home");
             }else{
                 throw new RuntimeException();
             }

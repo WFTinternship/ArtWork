@@ -124,17 +124,17 @@
                                                     <div class="form-group">
                                                         <label for="exampleInput1">Title</label>
                                                         <input type="text" name="title" class="form-control"
-                                                               id="exampleInput1" value="${item.title}">
+                                                               id="exampleInput1" value="${item.title}" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput111">Description</label>
                                                         <input type="text" name="description" class="form-control"
-                                                               id="exampleInput111" value="${item.description}">
+                                                               id="exampleInput111" value="${item.description}" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInput4">Price</label>
                                                         <input type="text" name="price" class="form-control"
-                                                               id="exampleInput4" value="${item.price}">
+                                                               id="exampleInput4" value="${item.price}" required>
                                                     </div>
 
                                                     <div class="form-group">

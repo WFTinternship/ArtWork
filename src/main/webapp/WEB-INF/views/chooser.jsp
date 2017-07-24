@@ -13,6 +13,6 @@
     <li><a href="${pageContext.request.contextPath}/purchase-history"><i class="fa fa-list-alt"></i> Purchase History</a></li>
     <c:if test="${user['class'].simpleName eq 'Artist'}">
         <li><a href="${pageContext.request.contextPath}/my-works"><i class="fa fa-list-alt"></i> My ArtWorks </a></li>
-        <li><a href="${pageContext.request.contextPath}/additem"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
+        <li><a href="${pageContext.request.contextPath}/add-item"><i class="fa fa-list-alt"></i> Add ArtWork </a></li>
     </c:if>
 </ul>

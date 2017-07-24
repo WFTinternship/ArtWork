@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,9 +22,10 @@ import java.util.List;
 @Controller
 public class ShopController {
 
-    private static final String NO_SORTING_PARAM = "-1";
     private ItemService itemService;
     private ArtistService artistService;
+    private static final String NO_SORTING_PARAM = "-1";
+    private static final String MESSAGE_ATTR = "message";
 
     @Autowired
     public ShopController(ItemService itemService, ArtistService artistService) {
@@ -46,9 +48,11 @@ public class ShopController {
     }
 
     @RequestMapping(value = "/shop", method = RequestMethod.POST)
-    public ModelAndView shopSortingProcess(@RequestParam("itemType") String itemTypeStr,
-                                      @RequestParam("sortType") String sortingType) {
-        ModelAndView mv = new ModelAndView("shop");
+    public ModelAndView shopSortingProcess(RedirectAttributes redirectAttributes,
+                                           @RequestParam("itemType") String itemTypeStr,
+                                           @RequestParam("sortType") String sortingType) {
+        ModelAndView mv = new ModelAndView();
+        String page = "shop";
 
         // Get items list by client chosen sorting parameters
         List<Item> itemList = itemService.getRecentlyAddedItems(100);
@@ -66,8 +70,10 @@ public class ShopController {
             mv.addObject("itemList", itemList);
             mv.addObject("itemTypes", ItemType.values());
         } catch (RuntimeException e) {
-            mv.addObject("message", "There is problem with item list retrieving");
+            page = "redirect:/shop";
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, "There is problem with item list retrieving");
         }
+        mv.setViewName(page);
         return mv;
     }
 
@@ -105,7 +111,8 @@ public class ShopController {
 
     @RequestMapping(value = "/item-detail/*", method = RequestMethod.POST)
     public ModelAndView itemBuyingProcess(HttpServletRequest request,
-                                   @SessionAttribute("itemDetail") Item item) {
+                                          RedirectAttributes redirectAttributes,
+                                          @SessionAttribute("itemDetail") Item item) {
         String page;
 
         // Get and check whether the user is authenticated
@@ -119,16 +126,14 @@ public class ShopController {
             itemService.itemBuying(item, abstractUser.getId());
             page = "thank-you";
         } catch (NotEnoughMoneyException ex) {
-            request.getSession().setAttribute("message",
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR,
                     "You don't have enough money. Please top-up your account and try again.");
-            //TODO "message" session attribute should be removed after showing.
             page = "redirect:/shop";
         } catch (RuntimeException ex) {
-            request.getSession().setAttribute("message",
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR,
                     "There is problem with website. Please try again");
             page = "redirect:/shop";
         }
-
         return new ModelAndView(page);
     }
 }

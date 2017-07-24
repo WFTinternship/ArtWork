@@ -7,7 +7,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
-<c:set var="message" value='<%=session.getAttribute("message")%>'/>
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
 
 
 
@@ -96,7 +96,7 @@
 
 				<div class="half-width">
 					<form:label path="lastName">LastName</form:label>
-					<form:input path="lastName" name="lastName" id="lastName" />
+					<form:input path="lastName" name="lastName" id="lastName"/>
 				</div>
 
 				<div class="half-width">
@@ -165,32 +165,32 @@
 
 				<div class="half-width">
 					<label for="artistName">FirstName</label>
-					<input type="text" id="artistName" name="firstName">
+					<input type="text" id="artistName" name="firstName" required>
 				</div>
 
 				<div class="half-width">
 					<label for="artistLastName">LastName</label>
-					<input type="text" id="artistLastName" name="lastName">
+					<input type="text" id="artistLastName" name="lastName" required>
 				</div>
 
 				<div class="half-width">
 					<label for="artistAge">Age</label>
-					<input type="text" id="artistAge" name="age" value="0">
+					<input type="text" id="artistAge" name="age" value="0" required>
 				</div>
 
 				<div class="half-width">
 					<label for="artistEmail">Email</label>
-					<input type="email" id="artistEmail" name="email">
+					<input type="email" id="artistEmail" name="email" required>
 				</div>
 
 				<div class="half-width">
 					<label for="artistPassword">Password</label>
-					<input type="password" id="artistPassword" name="password">
+					<input type="password" id="artistPassword" name="password" required>
 				</div>
 
 				<div class="half-width">
 					<label for="artistPasswordRepeat">Repeat Password</label>
-					<input type="password" id="artistPasswordRepeat" name="passwordRepeat">
+					<input type="password" id="artistPasswordRepeat" name="passwordRepeat" required>
 				</div>
 
 				<div class="half-width">
@@ -206,7 +206,7 @@
 				</div>
 				<br/>
 				<div class="half-width">
-					<input type="file" name="image" id="imageUpload" class="hide"/>
+					<input type="file" name="image" id="imageUpload" class="hide" required/>
 					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
 					<img src="" id="imagePreview" alt="" width="200px"/>
 				</div>

@@ -8,7 +8,7 @@
 <c:set var="itemTypes" value='<%=request.getAttribute("itemTypes")%>'/>
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>'/>
 <c:set var="itemList" value='<%=request.getAttribute("itemList")%>'/>
-<c:set var="message" value='<%=session.getAttribute("message")%>'/>
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
 <c:set var="artist" value='<%=session.getAttribute("artist")%>'/>
 

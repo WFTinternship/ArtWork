@@ -8,7 +8,7 @@
 
 <c:set var="user" value='<%=session.getAttribute("user")%>' />
 <c:set var="artistSpecTypes" value='<%=request.getAttribute("artistSpecTypes")%>' />
-<%--<c:set var="message" value='<%=session.getAttribute("message")%>' />--%>
+<c:set var="message" value='<%=request.getAttribute("message")%>' />
 
 
 
@@ -119,15 +119,15 @@
 												<form role="form" action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group" >
 														<label for="exampleInput1">First Name</label>
-														<input type="text" name="firstname" class="form-control" id="exampleInput1" value="${user.firstName}">
+														<input type="text" name="firstname" class="form-control" id="exampleInput1" value="${user.firstName}" required>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput111">Last Name</label>
-														<input type="text" name="lastname" class="form-control" id="exampleInput111" value="${user.lastName}">
+														<input type="text" name="lastname" class="form-control" id="exampleInput111" value="${user.lastName}" required>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput4">Age</label>
-														<input type="text" name="age" class="form-control" id="exampleInput4" value="${user.age}">
+														<input type="text" name="age" class="form-control" id="exampleInput4" value="${user.age}" required>
 													</div>
 
 													<input type="hidden" id="thisField1" name="editBlock" value="persInfo">
@@ -153,7 +153,7 @@
 												<div class="form-group">
 													<form action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 														<label for="imageUpload">Choose Avatar</label>
-														<input type="file" id="imageUpload" name="image"  />
+														<input type="file" id="imageUpload" name="image" required/>
 														<img src="" id="imagePreview" alt="" width="200px"/><br/>
 
 														<input type="hidden" id="thisField2" name="editBlock" value="avatar">
@@ -167,15 +167,15 @@
 												<form role="form" action="${pageContext.request.contextPath}/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="exampleInput31">Old Password</label>
-														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password">
+														<input type="password" name="oldpassword" class="form-control" id="exampleInput31" placeholder="Old Password" required>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput32">New Password</label>
-														<input type="password" name="newpassword" class="form-control" id="exampleInput32" placeholder="New Password">
+														<input type="password" name="newpassword" class="form-control" id="exampleInput32" placeholder="New Password" required>
 													</div>
 													<div class="form-group">
 														<label for="exampleInput33">Re - Type Password</label>
-														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password">
+														<input type="password" name="retypepassword" class="form-control" id="exampleInput33" placeholder="New Password" required>
 													</div>
 													<input type="hidden" id="thisField3" name="editBlock" value="password">
 													<button type="submit" class="btn btn-warning">Update Password</button>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Cookie;
@@ -27,6 +28,7 @@ public class SignUpController {
     private HttpSession session;
     private UserService userService;
     private ArtistService artistService;
+    private static final String MESSAGE_ATTR = "message";
 
     @Autowired
     public SignUpController(UserService userService, ArtistService artistService) {
@@ -48,6 +50,7 @@ public class SignUpController {
 
     @RequestMapping(value = "/userRegister", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
+                                RedirectAttributes redirectAttributes,
                                 @ModelAttribute("user") User user,
                                 @RequestParam("paymentType") String paymentType,
                                 @RequestParam("userPasswordRepeat") String userPasswordRepeat) {
@@ -70,10 +73,11 @@ public class SignUpController {
             userEmail.setMaxAge(3600);    // 60 minutes
             response.addCookie(userEmail);
         } catch (InvalidEntryException e) {
-            request.getSession().setAttribute("message", "There are invalid fields, please fill them all correctly and try again.");
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR,
+                    "There are invalid fields, please fill them all correctly and try again.");
             page = "redirect:/signup";
         } catch (RuntimeException e) {
-            request.getSession().setAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, e.getMessage());
             page = "redirect:/signup";
         }
         mv.setViewName(page);
@@ -83,7 +87,8 @@ public class SignUpController {
 
     @RequestMapping(value = "/artistRegister", method = RequestMethod.POST)
     public ModelAndView addArtist(HttpServletRequest request, HttpServletResponse response,
-                                  /*@ModelAttribute("user") User user,*/
+                                  RedirectAttributes redirectAttributes,
+                                  @ModelAttribute("user") User user,
                                   @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
         ModelAndView mv = new ModelAndView();
         session = request.getSession();
@@ -106,10 +111,11 @@ public class SignUpController {
             userEmail.setMaxAge(3600);     // 60 minutes
             response.addCookie(userEmail);
         } catch (InvalidEntryException e) {
-            request.getSession().setAttribute("message", "There are invalid fields, please fill them all correctly and try again.");
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR,
+                    "There are invalid fields, please fill them all correctly and try again.");
             page = "redirect:/signup";
         } catch (RuntimeException e) {
-            request.getSession().setAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, e.getMessage());
             page = "redirect:/signup";
         }
         mv.setViewName(page);

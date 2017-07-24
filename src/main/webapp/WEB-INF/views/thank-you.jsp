@@ -64,7 +64,7 @@
         <div id="header-wrapper" class="dt-sticky-menu"> <!-- **header-wrapper Starts** -->
             <div id="header" class="header">
                 <div class="container menu-container">
-                    <a class="logo" href="/index"><img alt="Logo" src="../../resources/images/logo.png"></a>
+                    <a class="logo" href="${pageContext.request.contextPath}/home"><img alt="Logo" src="../../resources/images/logo.png"></a>
 
                     <%--<a href="#" class="menu-trigger">--%>
                     <span></span>
@@ -78,7 +78,7 @@
             <%--<span class="dt-menu-toggle-icon"></span>--%>
             <%--</div>            --%>
             <%--<ul class="menu type1"><!-- Menu Starts -->--%>
-            <%--<li class="menu-item-simple-parent"><a href="/index">Home <span class="fa fa-home"></span></a>--%>
+            <%--<li class="menu-item-simple-parent"><a href="/home">Home <span class="fa fa-home"></span></a>--%>
             <%--<ul class="sub-menu">--%>
             <%--<li><a href="http://www.wedesignthemes.com/html/redart/default">Default</a></li>--%>
             <%--<li><a href="http://www.wedesignthemes.com/html/redart/menu-overlay">Menu Overlay</a></li>--%>
@@ -174,7 +174,7 @@
                         </p>
                         <p style="color: blue" class="lead">
                             <a rel="nofollow" rel="noreferrer" class="btn btn-primary btn-sm"
-                               href="${pageContext.request.contextPath}/index"
+                               href="${pageContext.request.contextPath}/home"
                                role="button">Continue to homepage</a>
                         </p>
                     </div>

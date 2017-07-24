@@ -15,6 +15,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,8 @@ public class LogInControllerUnitTest extends BaseUnitTest {
     private HttpServletResponse testResponseMock;
     @Mock
     private HttpServletRequest testRequestMock;
+    @Mock
+    private RedirectAttributes testRedirectAttributes;
 
 
     /**
@@ -71,7 +74,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
     // region <TEST CASE>
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_userLoginSuccess() {
@@ -88,7 +91,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         doReturn(testArtist).when(artistServiceMock).findArtist(anyLong());
 
         // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock);
+        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
         assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
         assertEqualUsers((User) testSession.getAttribute("user"), testUser);
@@ -98,7 +101,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
 
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_FindUserFromDBForLoginFailed() {
@@ -110,14 +113,14 @@ public class LogInControllerUnitTest extends BaseUnitTest {
 
 
         // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock);
+        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
         assertEqualModelAndViews(modelAndView, new ModelAndView("login"));
     }
 
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_artistLoginSuccess() {
@@ -133,7 +136,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         doReturn(testArtist).when(artistServiceMock).findArtist(argumentCaptor1.capture());
 
         // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock);
+        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
         assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/index"));
         assertEqualArtists((Artist) testSession.getAttribute("user"), testArtist);
@@ -144,7 +147,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
 
 
     /**
-     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse)
+     * @see LogInController#loginProcess(HttpServletRequest, HttpServletResponse, RedirectAttributes)
      */
     @Test
     public void loginProcess_findArtistFailed() {
@@ -159,7 +162,7 @@ public class LogInControllerUnitTest extends BaseUnitTest {
         doThrow(ServiceException.class).when(artistServiceMock).findArtist(anyLong());
 
         // Test method
-        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock);
+        ModelAndView modelAndView = logInController.loginProcess(testRequestMock, testResponseMock, testRedirectAttributes);
 
         assertEqualModelAndViews(modelAndView, new ModelAndView("login"));
         assertEquals(testArtist.getEmail(), argumentCaptor.getAllValues().get(0));

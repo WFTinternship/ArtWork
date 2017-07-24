@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +23,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LogInController {
 
+    private HttpSession session;
     private UserService userService;
     private ArtistService artistService;
+    private static final String MESSAGE_ATTR = "message";
 
     @Autowired
     public LogInController(UserService userService, ArtistService artistService) {
@@ -37,36 +40,38 @@ public class LogInController {
     }
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-    public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(true);
-        ModelAndView mav;
+    public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+        ModelAndView mav = new ModelAndView();
+        session = request.getSession(true);
+        String page;
+
+        // Get email and password parameters from request
         String userEmailStr = request.getParameter("email");
         String userPasswordStr = request.getParameter("password");
 
+        // Get user/artist from db and create cookie with their info
         try {
             User userFromDB = userService.login(userEmailStr, userPasswordStr);
             Artist artistFromDB = artistService.findArtist(userFromDB.getId());
 
             if (artistFromDB != null) {
                 setAttributeInSessionAndCreateCookie(artistFromDB, response, session);
-            } else {
+            } else if (userFromDB != null) {
                 setAttributeInSessionAndCreateCookie(userFromDB, response, session);
             }
-
-            mav = new ModelAndView("redirect:/index");
-
+            page = "redirect:/home";
         } catch (RuntimeException e) {
-            String userNotExists = "The user with the entered username and password does not exists.";
-            request.setAttribute("errorMessage", userNotExists);
-            mav = new ModelAndView("login");
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR,
+                    "The user with the entered username and password does not exists.");
+            page = "redirect:/login";
         }
-
+        mav.setViewName(page);
         return mav;
     }
 
     @RequestMapping(value = "/logoutProcess", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
+        session = request.getSession(false);
 
         if (session != null) {
             Cookie cookie = new Cookie("userEmail", "");
@@ -75,8 +80,7 @@ public class LogInController {
             session.setAttribute("user", null);
             session.invalidate();
         }
-
-        return new ModelAndView("index");
+        return new ModelAndView("home");
     }
 
 

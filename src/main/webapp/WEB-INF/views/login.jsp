@@ -6,7 +6,7 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <c:set var="user" value='<%=session.getAttribute("user")%>'/>
-<c:set var="errorMessage" value='<%=request.getAttribute("errorMessage")%>'/>
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
 
 
 <!doctype html>
@@ -28,8 +28,8 @@
 <body>
 <header class="cd-main-header">
     <c:choose>
-        <c:when test="${errorMessage!=null}">
-            <h2 style="color:red;">${errorMessage}</h2>
+        <c:when test="${message!=null}">
+            <h2 style="color:red;">${message}</h2>
         </c:when>
         <c:otherwise>
             <h1>Log In</h1>
@@ -45,7 +45,7 @@
         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
         <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
         <p id="profile-name" class="profile-name-card"></p>
-        <form class="form-signin" action="/loginProcess" method="post">
+        <form class="form-signin" action="${pageContext.request.contextPath}/loginProcess" method="post">
             <span id="reauth-email" class="reauth-email"></span>
             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required
                    autofocus>
@@ -58,9 +58,9 @@
             </div>
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
         </form><!-- /form -->
-        <a href="#" class="forgot-password">
-            Forgot the password?
-        </a>
+        <%--<a href="#" class="forgot-password">--%>
+            <%--Forgot the password?--%>
+        <%--</a>--%>
     </div><!-- /card-container -->
 </div><!-- /container -->
 
