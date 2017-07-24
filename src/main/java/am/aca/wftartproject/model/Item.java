@@ -110,7 +110,8 @@ public class Item {
 
     }
 
-    public Item(String title, String description, List<String> photoURL, Double price, Long artistId, Boolean status, ItemType itemType, LocalDateTime additionDate) {
+    public Item(String title, String description, List<String> photoURL, Double price, Long artistId,
+                Boolean status, ItemType itemType, LocalDateTime additionDate) {
         this.title = title;
         this.description = description;
         this.photoURL = photoURL;
@@ -161,7 +162,7 @@ public class Item {
         if (!getArtistId().equals(item.getArtistId())) return false;
         if (!getStatus().equals(item.getStatus())) return false;
         if (getItemType() != item.getItemType()) return false;
-        return dateComparison(this.getAdditionDate(), item.getAdditionDate())/*getAdditionDate().equals(item.getAdditionDate())*/;
+        return dateComparison(this.getAdditionDate(), item.getAdditionDate());
     }
 
     @Override

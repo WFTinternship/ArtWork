@@ -8,7 +8,7 @@ import am.aca.wftartproject.model.User;
 public interface UserDao {
 
     /**
-     * Adds user to the springconfig.database
+     * Adds user to the database
      *
      * @param user
      */
@@ -44,6 +44,4 @@ public interface UserDao {
      * @param id
      */
     Boolean deleteUser(Long id);
-
-
 }

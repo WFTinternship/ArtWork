@@ -12,7 +12,6 @@ public enum SpringBeanType {
     PURCHUSEHISTORYSERVICE("purchaseHistoryService"),
     ARTISTSPECIALIZATIONSERVICE("artistSpecializationService");
 
-
     private String type;
 
     SpringBeanType(String type){

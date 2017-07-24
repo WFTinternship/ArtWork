@@ -1,11 +1,11 @@
-package am.aca.wftartproject.dao.implsimplejdbc;
+package am.aca.wftartproject.dao.implplainjdbc;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
+
 import javax.sql.DataSource;
 import java.sql.*;
 
@@ -17,7 +17,7 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
 
     public ArtistDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
 
 
@@ -81,7 +81,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(Long id) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -257,7 +256,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
         return success;
     }
-
 
     private void getArtistFromResultSet(Artist artist, ResultSet rs) throws SQLException {
         artist.setId(rs.getLong("id"))

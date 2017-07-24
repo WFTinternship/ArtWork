@@ -11,5 +11,4 @@ public interface DatabaseConnection {
     DataSource getTestDBConnection() throws SQLException, ClassNotFoundException;
 
     DataSource getProductionDBConnection() throws SQLException, ClassNotFoundException;
-
 }

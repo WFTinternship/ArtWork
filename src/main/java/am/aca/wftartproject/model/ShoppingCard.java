@@ -10,7 +10,6 @@ public class ShoppingCard {
     private double balance;
     private ShoppingCardType shoppingCardType;
 
-
     public ShoppingCard() {
     }
 

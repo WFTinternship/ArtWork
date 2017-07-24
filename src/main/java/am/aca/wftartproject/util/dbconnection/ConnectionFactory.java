@@ -6,7 +6,6 @@ package am.aca.wftartproject.util.dbconnection;
 public class ConnectionFactory {
 
     public DatabaseConnection getConnection(ConnectionModel connModel) {
-
         if (connModel == null) {
             return null;
         }

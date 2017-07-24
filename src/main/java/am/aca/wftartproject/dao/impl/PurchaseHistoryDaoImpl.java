@@ -30,8 +30,8 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
-     * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      * @param purchaseHistory
+     * @see PurchaseHistoryDao#addPurchase(PurchaseHistory)
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
@@ -57,10 +57,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     }
 
     /**
-     * @see PurchaseHistoryDao#getPurchase(Long, Long)
      * @param userId
      * @param itemId
      * @return
+     * @see PurchaseHistoryDao#getPurchase(Long, Long)
      */
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
@@ -82,9 +82,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
-     * @see PurchaseHistoryDao#getPurchase(Long)
      * @param userId
      * @return
+     * @see PurchaseHistoryDao#getPurchase(Long)
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
@@ -107,10 +107,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
 
 
     /**
-     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
      * @param userId
      * @param itemId
      * @return
+     * @see PurchaseHistoryDao#deletePurchase(Long, Long)
      */
     @Override
     public Boolean deletePurchase(Long userId, Long itemId) {
@@ -122,7 +122,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
             int rowsAffected = jdbcTemplate.update(query, userId, itemId);
             if (rowsAffected <= 0) {
                 throw new DAOException("Failed to delete PurchaseHistory");
-            }else{
+            } else {
                 status = true;
             }
         } catch (DataAccessException e) {
