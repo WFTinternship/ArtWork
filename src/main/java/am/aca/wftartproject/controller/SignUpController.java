@@ -20,7 +20,7 @@ import java.io.IOException;
 @Controller
 public class SignUpController extends ControllerHelper {
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = "/signUp", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request) {
 
         //get session and set artist specialization types

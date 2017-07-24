@@ -80,7 +80,7 @@
                     <c:choose>
                         <c:when test="${user==null}">
                             <li><a href="/login">Log in  </a> </li>
-                            <li><a href="/signup">Sign up </a> </li>
+                            <li><a href="/signUp">Sign up </a> </li>
                         </c:when>
                         <c:otherwise>
                             <li><a href="account-details">My Account </a> </li>

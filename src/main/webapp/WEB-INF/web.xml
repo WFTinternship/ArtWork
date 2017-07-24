@@ -19,18 +19,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>check</servlet-name>
-        <servlet-class>
-            am.aca.wftartproject.controller.Check
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>check</servlet-name>
-        <url-pattern>/check</url-pattern>
-    </servlet-mapping>
 
 
     <!--<listener>-->

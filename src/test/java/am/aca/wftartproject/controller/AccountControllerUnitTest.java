@@ -142,7 +142,7 @@ public class AccountControllerUnitTest extends BaseUnitTest {
                 .andExpect(status().isOk())
                 .andExpect(request().sessionAttribute("user", hasProperty("firstName", is(user.getFirstName()))))
                 .andExpect(request().sessionAttribute("user", hasProperty("lastName", is(user.getLastName()))))
-                .andExpect(request().attribute("message", is("No changes ,empty field or The entered info is not correct")))
+                .andExpect(request().attribute("message", is("Error Nothing Was Changed")))
                 .andExpect(forwardedUrl(ControllerHelper.EDIT_PROFILE));
     }
 

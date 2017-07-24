@@ -30,14 +30,14 @@ public class ControllerHelper {
     @Autowired
     protected ItemService itemService;
     @Autowired
-    ShoppingCardService shoppingCardService;
+    protected ShoppingCardService shoppingCardService;
     @Autowired
     protected PurchaseHistoryService purchaseHistoryService;
 
     //page location constants
     public static final String HOME = "/index";
     public static final String SIGNUP = "/signUp";
-    public static final String REDIRECT_SIGNUP = "redirect:/signup";
+    public static final String REDIRECT_SIGNUP = "redirect:/signUp";
     public static final String MY_WORKS = "my-works";
     public static final String REDIRECT_MY_WORKS = "redirect:/my-works";
     public static final String PURCHASE_HISTORY = "purchaseHistory";
