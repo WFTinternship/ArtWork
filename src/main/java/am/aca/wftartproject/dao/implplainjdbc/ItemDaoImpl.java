@@ -5,7 +5,6 @@ import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Item;
 import am.aca.wftartproject.model.ItemType;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -23,7 +22,7 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
     public ItemDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
 
 
@@ -316,7 +315,11 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return true;
     }
 
-
+    /**
+     * @param artistId
+     * @return
+     * @see ItemDao#getAvailableItemsForGivenArtist(Long)
+     */
     @Override
     public List<Item> getAvailableItemsForGivenArtist(Long artistId) {
         return null;

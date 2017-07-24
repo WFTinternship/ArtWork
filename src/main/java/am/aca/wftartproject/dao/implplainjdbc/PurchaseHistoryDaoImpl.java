@@ -4,7 +4,6 @@ import am.aca.wftartproject.dao.PurchaseHistoryDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.PurchaseHistory;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -24,7 +23,7 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
 
     public PurchaseHistoryDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
 
 
@@ -34,11 +33,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         DateTimeFormatter dtf =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement(
@@ -59,7 +58,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         }
     }
 
-
     /**
      * @param userId
      * @param itemId
@@ -68,11 +66,11 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         PurchaseHistory purchaseHistory = new PurchaseHistory();
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement(
@@ -99,7 +97,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         return purchaseHistory;
     }
 
-
     /**
      * @param userId
      * @return
@@ -107,12 +104,12 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         PurchaseHistory purchaseHistory = new PurchaseHistory();
         List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("SELECT * FROM purchase_history WHERE userId = ?");
@@ -137,7 +134,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         return purchaseHistoryList;
     }
 
-
     /**
      * @param userId
      * @param itemId
@@ -146,10 +142,10 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public Boolean deletePurchase(Long userId, Long itemId) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         Boolean success = false;
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement(

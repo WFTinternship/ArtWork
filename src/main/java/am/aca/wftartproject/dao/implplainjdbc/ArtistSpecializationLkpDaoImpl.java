@@ -4,7 +4,6 @@ import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.ArtistSpecialization;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,7 +16,7 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
     private static final Logger LOGGER = Logger.getLogger(ArtistSpecializationLkpDaoImpl.class);
 
     public ArtistSpecializationLkpDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
 
 

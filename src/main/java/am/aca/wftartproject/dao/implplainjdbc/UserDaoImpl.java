@@ -4,7 +4,6 @@ import am.aca.wftartproject.dao.UserDao;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,7 +16,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
 
     /**
@@ -26,10 +25,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+
         try {
             conn = getDataSource().getConnection();
 
@@ -55,7 +54,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         }
     }
 
-
     /**
      * @param id
      * @return
@@ -63,11 +61,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         User user = new User();
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("SELECT * FROM user WHERE id = ?");
@@ -75,12 +73,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             rs = ps.executeQuery();
             if (rs.next()) {
                 getUserFromResultSet(user, rs);
-//                user.setId(rs.getLong("id"))
-//                        .setFirstName(rs.getString("firstname"))
-//                        .setLastName(rs.getString("lastname"))
-//                        .setAge(rs.getInt("age"))
-//                        .setEmail(rs.getString("email"))
-//                        .setPassword(rs.getString("password"));
             } else {
                 return null;
             }
@@ -94,7 +86,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return user;
     }
 
-
     /**
      * @param email
      * @return
@@ -102,11 +93,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(String email) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         User user = new User();
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("SELECT * FROM user WHERE email = ?");
@@ -127,7 +118,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return user;
     }
 
-
     /**
      * @param id
      * @param user
@@ -135,10 +125,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public Boolean updateUser(Long id, User user) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         Boolean success = false;
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement(
@@ -161,17 +151,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return success;
     }
 
-
     /**
      * @param id
      * @see UserDao#deleteUser(Long)
      */
     @Override
     public Boolean deleteUser(Long id) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         Boolean success = false;
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("DELETE FROM user WHERE id =?");
@@ -189,9 +178,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return success;
     }
 
-
-
-    private void getUserFromResultSet(User user,ResultSet rs) throws SQLException {
+    private void getUserFromResultSet(User user, ResultSet rs) throws SQLException {
         user.setId(rs.getLong("id"))
                 .setFirstName(rs.getString("firstname"))
                 .setLastName(rs.getString("lastname"))

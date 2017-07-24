@@ -18,9 +18,9 @@ public abstract class BaseDaoImpl {
 
     private static final Logger LOGGER = Logger.getLogger(BaseDaoImpl.class);
 
-    void closeResources(ResultSet rs, Statement st, Connection conn){
+    void closeResources(ResultSet rs, Statement st, Connection conn) {
         try {
-            if (rs != null){
+            if (rs != null) {
                 rs.close();
             }
         } catch (SQLException e) {
@@ -28,7 +28,7 @@ public abstract class BaseDaoImpl {
         }
 
         try {
-            if (st != null){
+            if (st != null) {
                 st.close();
             }
         } catch (SQLException e) {
@@ -36,7 +36,7 @@ public abstract class BaseDaoImpl {
         }
 
         try {
-            if (conn != null){
+            if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
@@ -44,33 +44,33 @@ public abstract class BaseDaoImpl {
         }
     }
 
-    void closeResources(Statement st, Connection conn){
+    void closeResources(Statement st, Connection conn) {
         closeResources(null, st, conn);
     }
 
-    void closeResources(ResultSet rs, Statement st){
+    void closeResources(ResultSet rs, Statement st) {
         closeResources(rs, st, null);
     }
 
-    void closeResources(Connection conn){
+    void closeResources(Connection conn) {
         closeResources(null, conn);
     }
 
-    void closeResources(Statement st){
+    void closeResources(Statement st) {
         closeResources(st, null);
     }
 
 
-    LocalDateTime getCurrentDateTime(){
+    LocalDateTime getCurrentDateTime() {
         return LocalDateTime.now();
     }
 
-    double getRandomBalance(){
+    double getRandomBalance() {
         return ThreadLocalRandom.current().nextInt(1000, 100000 + 1);
     }
 
 
-    private DataSource dataSource = null;
+    DataSource dataSource = null;
     JdbcTemplate jdbcTemplate = null;
 
     public DataSource getDataSource() {

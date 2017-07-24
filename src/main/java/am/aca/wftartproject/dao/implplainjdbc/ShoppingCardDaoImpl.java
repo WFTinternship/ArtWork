@@ -6,7 +6,6 @@ import am.aca.wftartproject.exception.dao.NotEnoughMoneyException;
 import am.aca.wftartproject.model.ShoppingCard;
 import am.aca.wftartproject.model.ShoppingCardType;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,7 +18,7 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
     public ShoppingCardDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
 
 
@@ -30,10 +29,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+
         try {
             shoppingCard.setBalance(getRandomBalance());
 
@@ -59,7 +58,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         }
     }
 
-
     /**
      * @param id
      * @return
@@ -67,11 +65,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         ShoppingCard shoppingCard = new ShoppingCard();
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE id=?");
@@ -94,12 +92,18 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return shoppingCard;
     }
 
+    /**
+     * @param buyerId
+     * @return
+     * @see ShoppingCardDao#getShoppingCardByBuyerId(Long)
+     */
     @Override
     public ShoppingCard getShoppingCardByBuyerId(Long buyerId) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         ShoppingCard shoppingCard = new ShoppingCard();
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("SELECT * FROM shopping_card WHERE buyer_id = ?");
@@ -122,7 +126,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return shoppingCard;
     }
 
-
     /**
      * @param id
      * @param shoppingCard
@@ -130,10 +133,10 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         Boolean success = false;
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("UPDATE shopping_card SET balance=?, type=? WHERE id = ?");
@@ -153,7 +156,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return success;
     }
 
-
     /**
      * @param itemPrice
      * @param buyerId
@@ -162,7 +164,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
-
         Boolean isEnoughBalance;
         ShoppingCard shoppingCard = getShoppingCard(buyerId);
 
@@ -177,17 +178,16 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return isEnoughBalance;
     }
 
-
     /**
      * @param id
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Override
     public Boolean deleteShoppingCard(Long id) {
-
         Connection conn = null;
         PreparedStatement ps = null;
         Boolean success = false;
+
         try {
             conn = getDataSource().getConnection();
             ps = conn.prepareStatement("DELETE FROM shopping_card WHERE id=?");
@@ -205,6 +205,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return success;
     }
 
+    /**
+     * @param buyerId
+     * @return
+     * @see ShoppingCardDao#deleteShoppingCardByBuyerId(Long)
+     */
     @Override
     public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
         Connection conn = null;
