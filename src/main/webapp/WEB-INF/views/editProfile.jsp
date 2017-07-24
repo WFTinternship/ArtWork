@@ -118,15 +118,15 @@
 												<form role="form" action="/edit-profile" method="post" enctype="multipart/form-data">
 													<div class="form-group" >
 														<label for="exampleInput1">First Name</label>
-														<input type="text" name="firstName" class="form-control" id="exampleInput1" placeholder="Current name is: ${user.firstName}">
+														<input type="text" name="firstName" class="form-control" id="exampleInput1" placeholder="Current Name is: ${user.firstName}">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput111">Last Name</label>
-														<input type="text" name="lastName" class="form-control" id="exampleInput111" placeholder="Current lastname is: ${user.lastName}">
+														<input type="text" name="lastName" class="form-control" id="exampleInput111" placeholder="Current lastName is: ${user.lastName}">
 													</div>
 													<div class="form-group">
 														<label for="exampleInput4">Age</label>
-														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="Current age is: ${user.age}">
+														<input type="text" name="age" class="form-control" id="exampleInput4" placeholder="Current Age is: ${user.age}">
 													</div>
 												<c:if test="${user['class'].simpleName eq 'Artist'}">
 													<div class="form-group">
@@ -146,7 +146,7 @@
 												<div class="form-group">
 													<form action="/edit-profile" method="post" enctype="multipart/form-data">
 														<label for="imageUpload">Choose Avatar</label>
-														<input type="file" id="imageUpload" name="image"  />
+														<input type="file" id="imageUpload" name="image" required />
 														<img src="" id="imagePreview" alt="" width="200px"/><br/>
 														<button type="submit" class="btn btn-warning">Apply</button>
 													</form>

@@ -143,7 +143,7 @@
                                                         </tr>
                                                         <tr>
                                                             <div id="fileuploads" align="left">
-                                                                <input type="file" name="files" id="fileField"/>
+                                                                <input type="file" name="files" id="fileField" required />
                                                             </div>
                                                         </tr>
                                                         <td align="left">
@@ -173,7 +173,7 @@
                                                     </select>
                                                     <div class="form-group">
                                                         <label for="exampleInput3">Price</label>
-                                                        <input type="text" name="price" class="form-control"
+                                                        <input type="number" name="price" class="form-control"
                                                                id="exampleInput3" required autofocus>
                                                     </div>
                                                     <button type="submit" class="btn btn-warning">Save ArtWork</button>

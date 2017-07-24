@@ -67,7 +67,7 @@ public class AccountController extends ControllerHelper {
                     updateUserParameters(findUser, request);
                     userUpdater(findUser, request);
                 } catch (Exception e) {
-                    setErrorMessage(request);
+                    request.setAttribute("message","Error " + e.getMessage());
                     LOGGER.error(e.getMessage());
                 }
             } else if (session.getAttribute(USER).getClass() == Artist.class && session.getAttribute(USER) != null) {
@@ -76,7 +76,7 @@ public class AccountController extends ControllerHelper {
                 try {
                     updateArtistParameters(findArtist, request, image);
                 } catch (RuntimeException e) {
-                    setErrorMessage(request);
+                    request.setAttribute("message","Error " + e.getMessage());
                     return new ModelAndView(EDIT_PROFILE);
                 }
                 artistUpdater(findArtist, request);
@@ -140,12 +140,12 @@ public class AccountController extends ControllerHelper {
                     createItemFromRequest(item, findArtist, photoUrl, request);
                     itemServiceSaver(item, request);
                 } else {
-                    setErrorMessage(request);
+                    request.setAttribute("message","No changes ,empty fields, or the entered info is not correct");
                     return new ModelAndView(ADD_ITEM);
                 }
             }
-        } catch (ServiceException e) {
-            request.setAttribute("message", "The entered info is not correct or empty fields");
+        } catch (Exception e) {
+            request.setAttribute("message","Error " + e.getMessage());
         }
 
         return new ModelAndView(ADD_ITEM);
@@ -172,7 +172,7 @@ public class AccountController extends ControllerHelper {
             request.getSession().setAttribute("itemTypes", ItemType.values());
             request.getSession().setAttribute("item", itemForUpdate);
             page = EDIT_ITEM;
-        } else request.getSession().setAttribute("message", "Invalid ArtWork");
+        } else request.setAttribute("message", "Invalid ArtWork");
 
         return new ModelAndView(page);
     }

@@ -94,33 +94,33 @@
 				<legend>Account Info</legend>
 
 				<div class="half-width">
-					<form:label path="firstName">FirstName</form:label>
-					<form:input path="firstName" name="firstName" id="firstName" />
+					<label for="firstName">FirstName</label>
+					<input type =text name="firstName" id="firstName" required autofocus />
 				</div>
 
 				<div class="half-width">
-					<form:label path="lastName">LastName</form:label>
-					<form:input path="lastName" name="lastName" id="lastName" />
+					<label for="lastName">LastName</label>
+					<input type =text name="lastName" id="lastName" required autofocus />
 				</div>
 
 				<div class="half-width">
-					<form:label path="age">Age</form:label>
-					<form:input path="age" name="age" id="age" />
+					<label for="age">Age</label>
+					<input type =text name="age" id="age" pattern="\d*" required autofocus />
 				</div>
 
 				<div class="half-width">
-					<form:label path="email">Email</form:label>
-					<input type="email" id="userEmail" name="email">
+					<label for="userEmail">Email</label>
+					<input type="email" id="userEmail" name="email" required autofocus>
 				</div>
 				
 				<div class="half-width">
 					<label for="userPassword">Password</label>
-					<input type="password" id="userPassword" name="password">
+					<input type="password" id="userPassword" name="password" required autofocus>
 				</div>
 				
 				<div class="half-width">
 					<label for="userPasswordRepeat">Repeat Password</label>
-					<input type="password" id="userPasswordRepeat" name="userPasswordRepeat">
+					<input type="password" id="userPasswordRepeat" name="userPasswordRepeat" required autofocus>
 				</div>
 
 				<fieldset>
@@ -163,54 +163,53 @@
 			<%--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>--%>
 		<%--</div>--%>
 
-		<form action="/artistRegister"  method="post" enctype="multipart/form-data">
+		<form action="/artistRegister"  method="post" enctype="multipart/form-data" name="regF">
 			<fieldset>
 				<legend>Account Info</legend>
 
 				<div class="half-width">
 					<label for="artistName">FirstName</label>
-					<input type="text" id="artistName" name="firstName">
+					<input type="text" id="artistName" name="firstName" required autofocus>
 				</div>
 
 				<div class="half-width">
 					<label for="artistLastName">LastName</label>
-					<input type="text" id="artistLastName" name="lastName">
+					<input type="text" id="artistLastName" name="lastName" required autofocus>
 				</div>
 
 				<div class="half-width">
 					<label for="artistAge">Age</label>
-					<input type="text" id="artistAge" name="age">
+					<input type="text" id="artistAge" name="age" pattern="\d*" required autofocus>
 				</div>
 
 				<div class="half-width">
 					<label for="artistEmail">Email</label>
-					<input type="email" id="artistEmail" name="email">
+					<input type="email" id="artistEmail" name="email" required autofocus>
 				</div>
 
 				<div class="half-width">
 					<label for="artistPassword">Password</label>
-					<input type="password" id="artistPassword" name="password">
+					<input type="password" id="artistPassword" name="password" required autofocus>
 				</div>
 
 				<div class="half-width">
 					<label for="artistPasswordRepeat">Repeat Password</label>
-					<input type="password" id="artistPasswordRepeat" name="passwordRepeat">
+					<input type="password" id="artistPasswordRepeat" name="passwordRepeat" required autofocus>
 				</div>
 
 				<div class="half-width">
 					<label for="artistSpec">Specialization</label>
 					<br/>
-					<select name="artistSpec" id="artistSpec">
+					<select name="artistSpec" id="artistSpec" required>
 						<option value="PAINTER" selected>Choose Specialization</option>
 						<c:forEach items="${artistSpecTypes}" var="element">
 							<option value="${element.type}"  ${element.type == selectedDept ? 'selected="selected"' : ''}>${element.type}</option>
 						</c:forEach>
-
 					</select>
 				</div>
 				<br/>
 				<div class="half-width">
-					<input type="file" name="image" id="imageUpload" class="hide"/>
+					<input type="file" name="image" id="imageUpload" class="hide" required/>
 					<label for="imageUpload" class="btn btn-large">Select file</label><br/><br/><br/>
 					<img src="" id="imagePreview" alt="" width="200px"/>
 				</div>
@@ -269,6 +268,28 @@
   			$('#carbonads-container').hide();
   		});
   	});
+</script>
+
+<script>
+    function checkExist(){
+        var xmlhttp = new XMLHttpRequest();
+        var username = document.forms["regF"]["email"].value;
+        var url = "exist.jsp?username=" + username;
+        xmlhttp.onreadystatechange = function(){
+            if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                if(xmlhttp.responseText == "\n\n\n\n\nUser already exists")
+                    document.getElementById("isE").style.color = "red";
+                else
+                    document.getElementById("isE").style.color = "green";
+                document.getElementById("isE").innerHTML = xmlhttp.responseText;
+            }
+
+        };
+        try{
+            xmlhttp.open("GET",url,true);
+            xmlhttp.send();
+        }catch(e){alert("unable to connect to server");
+        }
 </script>
 </body>
 

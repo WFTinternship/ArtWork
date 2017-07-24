@@ -67,7 +67,7 @@ public class SignUpController extends ControllerHelper {
         if (!image.isEmpty() && request.getParameter("artistSpec") != null && !request.getParameter("artistSpec").equals("-1") && !request.getParameter("password").isEmpty() && request.getParameter("password").equals(request.getParameter("passwordRepeat"))) {
             createArtistFromRequest(artistFromRequest, image, request);
         } else {
-            setErrorMessage(request);
+            request.setAttribute("message","No changes ,empty fields, or the entered info is not correct");
             return new ModelAndView(SIGNUP).addObject("user",new User());
         }
 

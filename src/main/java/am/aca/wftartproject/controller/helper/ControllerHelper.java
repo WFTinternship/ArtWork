@@ -260,10 +260,6 @@ public class ControllerHelper {
         return artist;
     }
 
-    protected void setErrorMessage(HttpServletRequest request) {
-        String message = "No changes ,empty fields, or the entered info is not correct";
-        request.setAttribute("message", message);
-    }
 
 
 }
