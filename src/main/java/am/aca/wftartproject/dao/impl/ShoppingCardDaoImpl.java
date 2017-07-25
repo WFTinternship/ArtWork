@@ -40,7 +40,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public void addShoppingCard(Long userId, ShoppingCard shoppingCard) {
-
         try {
             shoppingCard.setBalance(getRandomBalance());
 
@@ -70,7 +69,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         }
     }
 
-
     /**
      * @param id
      * @return
@@ -78,7 +76,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public ShoppingCard getShoppingCard(Long id) {
-
         try {
             String query = "SELECT * FROM shopping_card WHERE id=?";
             return jdbcTemplate.queryForObject(query, new Object[]{id}, new ShoppingCardMapper());
@@ -120,7 +117,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public Boolean updateShoppingCard(Long id, ShoppingCard shoppingCard) {
-
         Boolean status;
         try {
             String query = "UPDATE shopping_card SET balance=?, type=? WHERE id = ?";
@@ -147,7 +143,6 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
      */
     @Override
     public Boolean debitBalanceForItemBuying(Long buyerId, Double itemPrice) {
-
         Boolean isEnoughBalance;
         ShoppingCard shoppingCard = getShoppingCardByBuyerId(buyerId);
 
@@ -162,14 +157,12 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return isEnoughBalance;
     }
 
-
     /**
      * @param id
      * @see ShoppingCardDao#deleteShoppingCard(Long)
      */
     @Override
     public Boolean deleteShoppingCard(Long id) {
-
         Boolean status;
         try {
             String query = "DELETE FROM shopping_card WHERE id=?";
@@ -188,6 +181,11 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
         return status;
     }
 
+    /**
+     * @see ShoppingCardDao#deleteShoppingCardByBuyerId(Long)
+     * @param buyerId
+     * @return
+     */
     @Override
     public Boolean deleteShoppingCardByBuyerId(Long buyerId) {
         Boolean status;

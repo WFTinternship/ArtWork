@@ -35,7 +35,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public void addPurchase(PurchaseHistory purchaseHistory) {
-
         try {
             purchaseHistory.setPurchaseDate(getCurrentDateTime());
 
@@ -64,7 +63,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public PurchaseHistory getPurchase(Long userId, Long itemId) {
-
         try {
             String query = "SELECT * FROM purchase_history WHERE item_id = ? AND  user_id = ? ";
             return jdbcTemplate.queryForObject(query, new Object[]{itemId, userId},
@@ -80,7 +78,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         }
     }
 
-
     /**
      * @param userId
      * @return
@@ -88,7 +85,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public List<PurchaseHistory> getPurchase(Long userId) {
-
         List<PurchaseHistory> purchaseHistoryList;
         try {
             String query = "SELECT * FROM purchase_history WHERE user_id = ?";
@@ -105,7 +101,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
         return purchaseHistoryList;
     }
 
-
     /**
      * @param userId
      * @param itemId
@@ -114,7 +109,6 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
      */
     @Override
     public Boolean deletePurchase(Long userId, Long itemId) {
-
         Boolean status;
         try {
             String query = "DELETE FROM purchase_history WHERE user_id=? AND item_id = ?";

@@ -38,7 +38,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public void addUser(User user) {
-
         try {
             String query = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -64,7 +63,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         }
     }
 
-
     /**
      * @param id
      * @return
@@ -72,7 +70,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public User findUser(Long id) {
-
         try {
             String query = "SELECT * FROM user WHERE id = ?";
             return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
@@ -85,7 +82,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         }
     }
-
 
     /**
      * @param email
@@ -106,7 +102,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new DAOException(error, e);
         }
     }
-
 
     /**
      * @param id
@@ -134,14 +129,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return status;
     }
 
-
     /**
      * @param id
      * @see UserDao#deleteUser(Long)
      */
     @Override
     public Boolean deleteUser(Long id) {
-
         try {
             String query = "DELETE FROM user WHERE id =?";
 

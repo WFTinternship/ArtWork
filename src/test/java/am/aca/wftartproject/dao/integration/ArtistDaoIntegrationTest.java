@@ -57,7 +57,6 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
         }
     }
 
-
     /**
      * Deletes artists created during the test
      *

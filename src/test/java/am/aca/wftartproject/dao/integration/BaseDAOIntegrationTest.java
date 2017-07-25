@@ -32,7 +32,6 @@ abstract class BaseDAOIntegrationTest {
     }
 
 
-
     protected JdbcTemplate jdbcTemplate;
 
     public JdbcTemplate getJdbcTemplate() {
