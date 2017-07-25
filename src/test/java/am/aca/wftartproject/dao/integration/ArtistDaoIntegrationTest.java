@@ -2,7 +2,6 @@ package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.ArtistDao;
 import am.aca.wftartproject.dao.ArtistSpecializationLkpDao;
-import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.ArtistSpecialization;
@@ -31,6 +30,9 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Autowired
     private ArtistDao artistDao;
 
+    @Autowired
+    private ArtistSpecializationLkpDao artistSpecializationLkpDao;
+
     public ArtistDaoIntegrationTest() {
     }
 
@@ -42,11 +44,9 @@ public class ArtistDaoIntegrationTest extends BaseDAOIntegrationTest {
      */
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        // Create artistSpecialization
-        ArtistSpecializationLkpDao artistSpecialization= new ArtistSpecializationLkpDaoImpl(dataSource);
-
-        if (artistSpecialization.getArtistSpecialization(1) == null) {
-            artistSpecialization.addArtistSpecialization();
+        // Add specialization values, if appropriate table is empty
+        if (artistSpecializationLkpDao.getArtistSpecialization(1) == null) {
+            artistSpecializationLkpDao.addArtistSpecialization();
         }
         testArtist = createTestArtist();
 

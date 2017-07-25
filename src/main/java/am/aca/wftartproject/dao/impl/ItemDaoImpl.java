@@ -14,7 +14,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
@@ -30,10 +29,9 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
     private static final Logger LOGGER = Logger.getLogger(ItemDaoImpl.class);
 
     @Autowired
-    public ItemDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ItemDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
-
 
     /**
      * @param artistID

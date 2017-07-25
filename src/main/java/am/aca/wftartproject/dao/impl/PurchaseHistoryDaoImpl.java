@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -24,10 +23,9 @@ public class PurchaseHistoryDaoImpl extends BaseDaoImpl implements PurchaseHisto
     private static final Logger LOGGER = Logger.getLogger(PurchaseHistoryDaoImpl.class);
 
     @Autowired
-    public PurchaseHistoryDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public PurchaseHistoryDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
-
 
     /**
      * @param purchaseHistory
