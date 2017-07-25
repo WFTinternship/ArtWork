@@ -174,7 +174,7 @@
 
                                                     <div class="row col-md-6 col-sm-6">
                                                         <button type="submit" class="btn btn-warning">
-                                                            Update Personal Details
+                                                            Update Details
                                                         </button>
                                                     </div>
                                                 </form>

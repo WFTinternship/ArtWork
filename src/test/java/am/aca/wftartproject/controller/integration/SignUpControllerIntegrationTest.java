@@ -215,14 +215,34 @@ public class SignUpControllerIntegrationTest extends BaseIntegrationTest {
         assertEqualArtists((Artist) testRequest.getSession().getAttribute("user"), testArtist);
         assertEqualCookies(userEmailCookie, testResponse.getCookieList());
         assertEqualArtists(testArtist, addedArtist);
+
+        // Delete added artist
+        shoppingCardService.deleteShoppingCardByBuyerId(addedArtist.getId());
+        artistService.deleteArtist(addedArtist.getId());
     }
 
     /**
      * @see SignUpController#addArtist(HttpServletRequest, HttpServletResponse, RedirectAttributes, MultipartFile)
      */
     @Test
-    public void addArtist_Failure() {
+    public void addArtist_invalidArtistFromRequestFailure() throws IOException {
+        image = null;
 
+        // Set to testRequest all parameters
+        testRequest.getParameterMap().put("firstName", new String[]{testArtist.getFirstName()});
+        testRequest.getParameterMap().put("lastName", new String[]{testArtist.getLastName()});
+        testRequest.getParameterMap().put("age", new String[]{String.valueOf(testArtist.getAge())});
+        testRequest.getParameterMap().put("email", new String[]{testArtist.getEmail()});
+        testRequest.getParameterMap().put("password", new String[]{testArtist.getPassword()});
+        testRequest.getParameterMap().put("passwordRepeat", new String[]{testArtist.getUserPasswordRepeat()});
+        testRequest.getParameterMap().put("artistSpec", new String[]{testArtist.getSpecialization().getType()});
+        testRequest.getParameterMap().put("paymentType", new String[]{testArtist.getShoppingCard().getShoppingCardType().toString()});
+
+        // Test method
+        ModelAndView modelAndView = signUpController.addArtist(testRequest, testResponse, testRedirectAttributes, image);
+
+        assertEqualModelAndViews(modelAndView, new ModelAndView("redirect:/signup"));
+        assertNotNull(testRedirectAttributes.getFlashAttributes().get("message"));
     }
 
     // endregion

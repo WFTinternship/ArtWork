@@ -115,7 +115,7 @@ public class SignUpController {
                     "There are invalid fields, please fill them all correctly and try again.");
             page = "redirect:/signup";
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, e.getMessage());
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTR, "There was a problem " + e.getMessage());
             page = "redirect:/signup";
         }
         mv.setViewName(page);
