@@ -42,7 +42,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public void addItem(Long artistID, Item item) {
-
         try {
             item.setAdditionDate(getCurrentDateTime());
             item.setStatus(false);
@@ -80,7 +79,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
     }
 
-
     /**
      * @param id
      * @return
@@ -88,7 +86,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public Item findItem(Long id) {
-
         try {
             String query = "SELECT * FROM item WHERE id = ?";
             return jdbcTemplate.queryForObject(query, new Object[]{id}, new ItemMapper());
@@ -103,7 +100,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
     }
 
-
     /**
      * @param limit
      * @return
@@ -111,7 +107,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getRecentlyAddedItems(int limit) {
-
         List<Item> itemList;
         try {
             String query = "SELECT it.* FROM item it ORDER BY 1 DESC LIMIT ?";
@@ -128,7 +123,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return itemList;
     }
 
-
     /**
      * @param title
      * @return
@@ -136,7 +130,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByTitle(String title) {
-
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE title=?";
@@ -153,7 +146,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return itemList;
     }
 
-
     /**
      * @param itemType
      * @return
@@ -161,7 +153,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsByType(String itemType) {
-
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE type =?";
@@ -178,7 +169,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return itemList;
     }
 
-
     /**
      * @param minPrice
      * @param maxPrice
@@ -187,7 +177,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getItemsForGivenPriceRange(Double minPrice, Double maxPrice) {
-
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE status=0 AND price BETWEEN ? AND ?";
@@ -212,7 +201,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getArtistItems(Long artistId, Long itemId, Long limit) {
-
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE artist_id=? AND id!=? LIMIT ?";
@@ -229,7 +217,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return itemList;
     }
 
-
     /**
      * @param artistId
      * @return
@@ -237,7 +224,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public List<Item> getAvailableItemsForGivenArtist(Long artistId) {
-
         List<Item> itemList;
         try {
             String query = "SELECT * FROM item WHERE artist_id=? AND status=FALSE";
@@ -254,7 +240,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         return itemList;
     }
 
-
     /**
      * @param id
      * @param item
@@ -262,7 +247,6 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
      */
     @Override
     public void updateItem(Long id, Item item) {
-
         try {
             String query = "UPDATE item SET title=?, description=?, price=?, type=?, status=?, photo_url=? WHERE id=?";
             Object[] args = new Object[]{item.getTitle(), item.getDescription(), item.getPrice(), item.getItemType().getType(),
@@ -279,14 +263,12 @@ public class ItemDaoImpl extends BaseDaoImpl implements ItemDao {
         }
     }
 
-
     /**
      * @param id
      * @see ItemDao#deleteItem(Long)
      */
     @Override
     public Boolean deleteItem(Long id) {
-
         Boolean status;
         try {
             String query = "DELETE FROM item WHERE id=?";

@@ -38,7 +38,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public void addArtist(Artist artist) {
-
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             String query1 = "INSERT INTO user(firstname, lastname, age, email, password) VALUE (?,?,?,?,?)";
@@ -80,7 +79,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(Long id) {
-
         Artist artist;
         try {
             String query1 = "SELECT * FROM user WHERE id=?";
@@ -106,7 +104,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         return artist;
     }
 
-
     /**
      * @param email
      * @return
@@ -114,7 +111,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
      */
     @Override
     public Artist findArtist(String email) {
-
         Artist artist;
         try {
             String query1 = "SELECT * FROM user WHERE email=?";
@@ -122,7 +118,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
 
             String query2 = "SELECT ar.photo,art.spec_type FROM artist ar " +
                     "INNER JOIN artist_specialization_lkp art ON ar.spec_id=art.id WHERE user_id=?";
-            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()}, (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs, rowNum));
+            Artist tempArtist = jdbcTemplate.queryForObject(query2, new Object[]{artist.getId()},
+                    (rs, rowNum) -> new ArtistMapper().mapRowSecond(rs, rowNum));
             artist.setArtistPhoto(tempArtist.getArtistPhoto())
                     .setSpecialization(tempArtist.getSpecialization());
 
@@ -136,7 +133,6 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
         return artist;
     }
-
 
     /**
      * @param id
@@ -166,14 +162,12 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
         }
     }
 
-
     /**
      * @param id
      * @see ArtistDao#deleteArtist(Long)
      */
     @Override
     public Boolean deleteArtist(Long id) {
-
         Boolean status;
         try {
             String query1 = "DELETE FROM artist WHERE user_id=?";

@@ -32,7 +32,6 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
      */
     @Override
     public void addArtistSpecialization() {
-
         try {
             String query = "INSERT INTO artist_specialization_lkp(id,spec_type) VALUES(?,?)";
             int rowsAffected = 0;
@@ -50,7 +49,6 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
         }
     }
 
-
     /**
      * @param id
      * @return
@@ -58,10 +56,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(int id) {
-
         try {
             String query = "SELECT * FROM artist_specialization_lkp WHERE id = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs, rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{id},
+                    (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -71,7 +69,6 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
             throw new DAOException(error, e);
         }
     }
-
 
     /**
      * @param specialization
@@ -80,10 +77,10 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
      */
     @Override
     public ArtistSpecialization getArtistSpecialization(String specialization) {
-
         try {
             String query = "SELECT * FROM artist_specialization_lkp WHERE spec_type = ?";
-            return jdbcTemplate.queryForObject(query, new Object[]{specialization}, (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs, rowNum));
+            return jdbcTemplate.queryForObject(query, new Object[]{specialization},
+                    (rs, rowNum) -> new ArtistSpecializationlkpMapper().mapRow(rs, rowNum));
 
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -94,13 +91,11 @@ public class ArtistSpecializationLkpDaoImpl extends BaseDaoImpl implements Artis
         }
     }
 
-
     /**
      * @see ArtistSpecializationLkpDao#deleteArtistSpecialization()
      */
     @Override
     public void deleteArtistSpecialization() {
-
         try {
             String query = "DELETE FROM artist_specialization_lkp";
 
