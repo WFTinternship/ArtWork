@@ -15,7 +15,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
@@ -28,8 +27,8 @@ public class ShoppingCardDaoImpl extends BaseDaoImpl implements ShoppingCardDao 
     private static final Logger LOGGER = Logger.getLogger(ShoppingCardDaoImpl.class);
 
     @Autowired
-    public ShoppingCardDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ShoppingCardDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 

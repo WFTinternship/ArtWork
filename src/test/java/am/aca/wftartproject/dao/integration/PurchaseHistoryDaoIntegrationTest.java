@@ -1,7 +1,6 @@
 package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.*;
-import am.aca.wftartproject.dao.impl.ArtistSpecializationLkpDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.Artist;
 import am.aca.wftartproject.model.Item;
@@ -18,9 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static am.aca.wftartproject.util.AssertTemplates.assertEqualPurchaseHistory;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestArtist;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestItem;
-import static am.aca.wftartproject.util.TestObjectTemplate.createTestUser;
+import static am.aca.wftartproject.util.TestObjectTemplate.*;
 import static junit.framework.TestCase.*;
 
 /**
@@ -43,6 +40,9 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
     @Autowired
     private PurchaseHistoryDao purchaseHistoryDao;
 
+    @Autowired
+    private ArtistSpecializationLkpDao artistSpecializationLkpDao;
+
     private User testUser;
     private Artist testArtist;
     private Item testItem;
@@ -61,9 +61,9 @@ public class PurchaseHistoryDaoIntegrationTest extends BaseDAOIntegrationTest {
     public void setUp() throws SQLException, ClassNotFoundException {
         testArtist = createTestArtist();
 
-        ArtistSpecializationLkpDao artistSpecialization = new ArtistSpecializationLkpDaoImpl(dataSource);
-        if (artistSpecialization.getArtistSpecialization(1) == null) {
-            artistSpecialization.addArtistSpecialization();
+        // Add specialization values, if appropriate table is empty
+        if (artistSpecializationLkpDao.getArtistSpecialization(1) == null) {
+            artistSpecializationLkpDao.addArtistSpecialization();
         }
 
         // Create test Item,User, purchaseHistory and set them into db

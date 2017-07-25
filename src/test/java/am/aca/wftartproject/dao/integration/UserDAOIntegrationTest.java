@@ -1,7 +1,6 @@
 package am.aca.wftartproject.dao.integration;
 
 import am.aca.wftartproject.dao.UserDao;
-import am.aca.wftartproject.dao.impl.UserDaoImpl;
 import am.aca.wftartproject.exception.dao.DAOException;
 import am.aca.wftartproject.model.User;
 import am.aca.wftartproject.util.AssertTemplates;
@@ -29,7 +28,7 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
     private static Logger LOGGER = Logger.getLogger(ArtistDaoIntegrationTest.class);
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     private User testUser;
 
@@ -215,7 +214,6 @@ public class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
         User dbUserUpdate = userDao.findUser(testUser.getId());
         assertNotNull(dbUserUpdate);
     }
-
 
     /**
      * @see UserDao#deleteUser(Long)

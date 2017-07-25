@@ -14,7 +14,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
@@ -27,8 +26,8 @@ public class ArtistDaoImpl extends BaseDaoImpl implements ArtistDao {
     private static final Logger LOGGER = Logger.getLogger(ArtistDaoImpl.class);
 
     @Autowired
-    public ArtistDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ArtistDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
